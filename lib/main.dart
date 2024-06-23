@@ -1,3 +1,5 @@
+import 'package:elswhere/resources/app_resource.dart';
+import 'package:elswhere/views/els_list_view.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -9,6 +11,9 @@ class ELSwhere extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const MaterialApp(
+      title: appName,
+      home: ELSListView(),
+    );
   }
 }
