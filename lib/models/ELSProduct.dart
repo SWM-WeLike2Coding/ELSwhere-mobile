@@ -1,0 +1,3 @@
+class ELSProduct {
+  List<string> 
+}

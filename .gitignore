@@ -1,0 +1,79 @@
+# Flutter/Dart 관련
+**/build/
+**/ios/Flutter/.last_build_id
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/Flutter.xcframework
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/app.framework
+**/ios/Flutter/app.xcframework
+**/ios/Flutter/ephemeral
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Flutter/flutter_export_environment.xcconfig
+**/ios/Flutter/podhelper.rb
+**/ios/ServiceDefinitions.json
+**/ios/Runner/GeneratedPluginRegistrant.*
+
+# Android 관련
+**/android/.gradle/
+**/android/app/build/
+**/android/app/src/debug/
+**/android/app/src/profile/
+**/android/app/src/main/generated/
+**/android/local.properties
+**/android/gradle.properties
+**/android/key.properties
+
+# Flutter plugins
+**/.dart_tool/
+**/.packages
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.flutter-plugins-dependencies.lock
+
+# Dart
+*.dart.js
+*.dart.js.map
+*.info.json
+
+# Flutter related
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache
+.pub
+.metadata
+
+# VS Code
+.vscode/
+.history/
+
+# IntelliJ
+.idea/
+*.iml
+
+# Logs
+*.log
+
+# Gradle
+**/.gradle/
+**/build/
+
+# Miscellaneous
+*.class
+*.pyc
+*.pyo
+*.swp
+*.DS_Store
+*.env
+*.log
+*.lock
+*.gz
+*.apk
+*.jks
+*.keystore
+*.p12
+
+# Android Studio
+local.properties
+.idea/
