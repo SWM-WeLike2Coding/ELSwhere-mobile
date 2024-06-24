@@ -15,7 +15,7 @@ ELSProduct _$ELSProductFromJson(Map<String, dynamic> json) => ELSProduct(
           DateTime.parse(json['subscriptionStartDate'] as String),
       subscriptionEndDate:
           DateTime.parse(json['subscriptionEndDate'] as String),
-      productType: json['productType'] as ELSType,
+      productType: $enumDecode(_$ELSTypeEnumMap, json['productType']),
       couponRate: (json['couponRate'] as num).toDouble(),
       earlyRedemptionEvaluationDates:
           (json['earlyRedemptionEvaluationDates'] as List<dynamic>)
@@ -34,7 +34,7 @@ Map<String, dynamic> _$ELSProductToJson(ELSProduct instance) =>
       'maturityDate': instance.maturityDate.toIso8601String(),
       'subscriptionStartDate': instance.subscriptionStartDate.toIso8601String(),
       'subscriptionEndDate': instance.subscriptionEndDate.toIso8601String(),
-      'productType': instance.productType,
+      'productType': _$ELSTypeEnumMap[instance.productType]!,
       'couponRate': instance.couponRate,
       'earlyRedemptionEvaluationDates': instance.earlyRedemptionEvaluationDates
           .map((e) => e.toIso8601String())
@@ -44,3 +44,9 @@ Map<String, dynamic> _$ELSProductToJson(ELSProduct instance) =>
       'productCode': instance.productCode,
       'issuer': instance.issuer,
     };
+
+const _$ELSTypeEnumMap = {
+  ELSType.stepDown: 'stepDown',
+  ELSType.knockOut: 'knockOut',
+  ELSType.lizard: 'lizard',
+};
