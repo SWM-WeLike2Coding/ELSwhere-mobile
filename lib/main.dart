@@ -8,8 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
+bool temp = true;
+
 void main() {
-  runApp(ELSwhere());
+  runApp(const ELSwhere());
 }
 
 class ELSwhere extends StatelessWidget {
@@ -34,7 +36,7 @@ class ELSwhere extends StatelessWidget {
         ],
         title: appName,
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.purple,
           fontFamily: Assets.fontFamilyNanum,
           textTheme: textTheme,
         ),

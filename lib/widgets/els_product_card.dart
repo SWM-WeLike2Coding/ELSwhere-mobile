@@ -15,27 +15,64 @@ class ELSProductCard extends StatelessWidget {
 
     return Card(
       child: InkWell(
-        child: ListTile(
-          title: Text(
-            product.name,
-            style: const TextStyle(
-              letterSpacing: 0.1,
-              fontWeight: FontWeight.bold,
-            ),
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      product.name,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      product.equities,
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      '${product.subscriptionStartDate}',
+                    ),
+                  ],
+                ),
+              ),
+              Text(
+                '${product.yieldIfConditionsMet}%',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                ),
+              ),
+            ],
           ),
-          subtitle: Text(
-            'ID: ${product.id}\n기초자산명: ${product.equities}',
-            style: const TextStyle(letterSpacing: 0.1),
-          ),
-          trailing: Text(
-            '${product.yieldIfConditionsMet}%',
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          leading: const Icon(Icons.circle),
         ),
+        // child: ListTile(
+        //   title: Text(
+        //     product.name,
+        //     style: const TextStyle(
+        //       letterSpacing: 0.1,
+        //       fontWeight: FontWeight.bold,
+        //     ),
+        //   ),
+        //   subtitle: Text(
+        //     'ID: ${product.id}\n기초자산명: ${product.equities}',
+        //     style: const TextStyle(letterSpacing: 0.1),
+        //   ),
+        //   trailing: Text(
+        //     '${product.yieldIfConditionsMet}%',
+        //     style: const TextStyle(
+        //       fontSize: 20,
+        //       fontWeight: FontWeight.bold,
+        //     ),
+        //   ),
+        //   leading: const Icon(Icons.circle),
+        // ),
         onTap: () async {
           showDialog(
             context: context,

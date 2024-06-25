@@ -17,7 +17,7 @@ class ProductService {
       final data = json.decode(decodedResponse);
       return ResponsePageSummarizedProductDto.fromJson(data);
     } else {
-      throw Exception('Failed to load products');
+      throw Exception(errorMessage);
     }
   }
 
@@ -30,7 +30,7 @@ class ProductService {
       final data = json.decode(decodedResponse);
       return ResponseSingleProductDto.fromJson(data);
     } else {
-      throw Exception('Failed to load product');
+      throw Exception(errorMessage);
     }
   }
 }

@@ -9,10 +9,10 @@ sealed class Assets {
 }
 
 sealed class AppColors {
-  static Color contentPurple = const Color(0x005d63ff);
-  static Color contentGray = const Color(0x00BABABA);
-  static Color contentBlack = const Color(0x00000000);
-  static Color contentWhite = const Color(0x00FFFFFF);
+  static Color contentPurple = const Color(0xFF5D63FF);
+  static Color contentGray = const Color(0xFFBABABA);
+  static Color contentBlack = const Color(0xFF000000);
+  static Color contentWhite = const Color(0xFFFFFFFF);
 }
 
 final textTheme = TextTheme(
