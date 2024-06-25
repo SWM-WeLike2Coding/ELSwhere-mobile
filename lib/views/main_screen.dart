@@ -9,17 +9,18 @@ class MainScreen extends StatelessWidget {
     final productProvider = Provider.of<ELSProductProvider>(context, listen: false);
 
     return Scaffold(
-      appBar: AppBar(title: Text('임시 메인')),
+      appBar: AppBar(title: const Text('임시 메인')),
       body: Center(
         child: ElevatedButton(
           onPressed: () async {
+            productProvider.resetProducts();
             await productProvider.fetchProducts();
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => ELSProductListView()),
             );
           },
-          child: Text('ELS 상품 조회'),
+          child: const Text('ELS 상품 조회'),
         ),
       ),
     );

@@ -5,7 +5,7 @@ import '../services/els_product_service.dart';
 class ELSProductProvider with ChangeNotifier {
   List<SummarizedProductDto> _products = [];
   bool _isLoading = false;
-  bool _hasNext = false;
+  bool _hasNext = true;
   int _page = 0;
   final int _size = 20;
 
@@ -23,7 +23,7 @@ class ELSProductProvider with ChangeNotifier {
 
     try {
       final responsePage = await _productService.fetchProducts(_page, _size);
-      _products = responsePage.content;
+      _products += responsePage.content;
       _hasNext = responsePage.hasNext;
       _page++;
     } catch (error) {

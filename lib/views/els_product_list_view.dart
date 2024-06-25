@@ -6,10 +6,6 @@ import '../widgets/els_product_card.dart';
 class ELSProductListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final productProvider = Provider.of<ELSProductProvider>(context, listen: false);
-    productProvider.resetProducts();
-    productProvider.fetchProducts();
-
     return Scaffold(
       appBar: AppBar(title: Text('상품 목록')),
       body: Consumer<ELSProductProvider>(
