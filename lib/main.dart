@@ -1,4 +1,5 @@
 import 'package:elswhere/providers/els_product_provider.dart';
+import 'package:elswhere/providers/els_products_provider.dart';
 import 'package:elswhere/resources/app_resource.dart';
 import 'package:elswhere/resources/config.dart';
 import 'package:elswhere/services/els_product_service.dart';
@@ -16,8 +17,11 @@ class ELSwhere extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => ELSProductProvider(ProductService()),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ELSProductsProvider(ProductService())),
+        ChangeNotifierProvider(create: (context) => ELSProductProvider(ProductService())),
+      ],
       child: MaterialApp(
         localizationsDelegates: const [
           GlobalCupertinoLocalizations.delegate,

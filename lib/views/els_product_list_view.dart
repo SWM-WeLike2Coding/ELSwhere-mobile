@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/els_product_provider.dart';
+import '../providers/els_products_provider.dart';
 import '../widgets/els_product_card.dart';
 
 class ELSProductListView extends StatelessWidget {
@@ -8,27 +8,27 @@ class ELSProductListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('상품 목록')),
-      body: Consumer<ELSProductProvider>(
-        builder: (context, productProvider, child) {
-          if (productProvider.isLoading && productProvider.products.isEmpty) {
+      body: Consumer<ELSProductsProvider>(
+        builder: (context, productsProvider, child) {
+          if (productsProvider.isLoading && productsProvider.products.isEmpty) {
             return Center(child: CircularProgressIndicator());
           }
-          if (productProvider.products.isEmpty) {
+          if (productsProvider.products.isEmpty) {
             return Center(child: Text('상품이 존재하지 않습니다.'));
           }
           return NotificationListener<ScrollNotification>(
             onNotification: (ScrollNotification scrollInfo) {
-              if (!productProvider.isLoading &&
-                  productProvider.hasNext &&
+              if (!productsProvider.isLoading &&
+                  productsProvider.hasNext &&
                   scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
-                productProvider.fetchProducts();
+                productsProvider.fetchProducts();
               }
               return false;
             },
             child: ListView.builder(
-              itemCount: productProvider.products.length,
+              itemCount: productsProvider.products.length,
               itemBuilder: (context, index) {
-                return ELSProductCard(product: productProvider.products[index]);
+                return ELSProductCard(product: productsProvider.products[index]);
               },
             ),
           );

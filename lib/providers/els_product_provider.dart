@@ -1,44 +1,30 @@
 import 'package:flutter/material.dart';
-import '../models/dtos/summarized_product_dto.dart';
+import '../models/dtos/response_single_product_dto.dart';
 import '../services/els_product_service.dart';
 
 class ELSProductProvider with ChangeNotifier {
-  List<SummarizedProductDto> _products = [];
-  bool _isLoading = false;
-  bool _hasNext = true;
-  int _page = 0;
-  final int _size = 20;
-
   final ProductService _productService;
 
   ELSProductProvider(this._productService);
 
-  List<SummarizedProductDto> get products => _products;
-  bool get isLoading => _isLoading;
-  bool get hasNext => _hasNext;
+  ResponseSingleProductDto? _product;
+  bool _isLoading = false;
 
-  Future<void> fetchProducts() async {
+  ResponseSingleProductDto? get product => _product;
+  bool get isLoading => _isLoading;
+
+  Future<void> fetchProduct(int id) async {
     _isLoading = true;
     notifyListeners();
 
     try {
-      final responsePage = await _productService.fetchProducts(_page, _size);
-      _products += responsePage.content;
-      _hasNext = responsePage.hasNext;
-      _page++;
+      _product = await _productService.fetchProduct(id);
     } catch (error) {
-      print('Error fetching products: $error');
-      // 에러 처리 로직 추가
+      print('Error fetching product: $error');
+      _product = null;
     } finally {
       _isLoading = false;
       notifyListeners();
     }
-  }
-
-  void resetProducts() {
-    _products = [];
-    _page = 0;
-    _hasNext = false;
-    notifyListeners();
   }
 }

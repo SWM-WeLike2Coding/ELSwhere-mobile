@@ -1,23 +1,18 @@
 import 'package:elswhere/widgets/els_detail_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../models/dtos/summarized_product_dto.dart';
+import '../providers/els_product_provider.dart';
 
 class ELSProductCard extends StatelessWidget {
   final SummarizedProductDto product;
 
   ELSProductCard({required this.product});
 
-  void _showDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return ELSDetailDialog(elsProduct: product);
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    final productProvider = Provider.of<ELSProductProvider>(context, listen: false);
+
     return Card(
       child: InkWell(
         child: ListTile(
@@ -41,8 +36,25 @@ class ELSProductCard extends StatelessWidget {
           ),
           leading: const Icon(Icons.circle),
         ),
-        onTap: () {
-          _showDialog(context);
+        onTap: () async {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+          );
+
+          await productProvider.fetchProduct(product.id);
+
+          // 로딩 다이얼로그 닫기
+          Navigator.of(context).pop();
+
+          if (productProvider.product != null) {
+            ELSDetailDialog.show(context, productProvider.product!);
+          }
         },
       ),
     );
