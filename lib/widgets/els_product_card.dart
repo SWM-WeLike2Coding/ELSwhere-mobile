@@ -1,3 +1,5 @@
+import 'package:elswhere/resources/app_resource.dart';
+import 'package:elswhere/views/els_product_detail_view.dart';
 import 'package:elswhere/widgets/els_detail_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,16 +9,29 @@ import '../providers/els_product_provider.dart';
 class ELSProductCard extends StatelessWidget {
   final SummarizedProductDto product;
 
-  ELSProductCard({required this.product});
+  const ELSProductCard({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
-    final productProvider = Provider.of<ELSProductProvider>(context, listen: false);
+    final productProvider =
+        Provider.of<ELSProductProvider>(context, listen: false);
 
     return Card(
+      elevation: 3,
       child: InkWell(
-        child: Padding(
-          padding: EdgeInsets.all(16.0),
+        child: Container(
+          padding: edgeInsetsAll12,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                AppColors.contentPurple,
+                AppColors.contentPurple.withOpacity(0.9),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: borderRadiusCircular10,
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -26,59 +41,42 @@ class ELSProductCard extends StatelessWidget {
                   children: [
                     Text(
                       product.name,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
+                        color: AppColors.contentWhite,
                       ),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Text(
                       product.equities,
+                      style: const TextStyle(color: AppColors.contentWhite),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Text(
                       '${product.subscriptionStartDate}',
+                      style: const TextStyle(color: AppColors.contentWhite),
                     ),
                   ],
                 ),
               ),
               Text(
                 '${product.yieldIfConditionsMet}%',
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 24,
+                  color: AppColors.contentWhite,
                 ),
               ),
             ],
           ),
         ),
-        // child: ListTile(
-        //   title: Text(
-        //     product.name,
-        //     style: const TextStyle(
-        //       letterSpacing: 0.1,
-        //       fontWeight: FontWeight.bold,
-        //     ),
-        //   ),
-        //   subtitle: Text(
-        //     'ID: ${product.id}\n기초자산명: ${product.equities}',
-        //     style: const TextStyle(letterSpacing: 0.1),
-        //   ),
-        //   trailing: Text(
-        //     '${product.yieldIfConditionsMet}%',
-        //     style: const TextStyle(
-        //       fontSize: 20,
-        //       fontWeight: FontWeight.bold,
-        //     ),
-        //   ),
-        //   leading: const Icon(Icons.circle),
-        // ),
         onTap: () async {
           showDialog(
             context: context,
             barrierDismissible: false,
             builder: (BuildContext context) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             },
@@ -90,7 +88,8 @@ class ELSProductCard extends StatelessWidget {
           Navigator.of(context).pop();
 
           if (productProvider.product != null) {
-            ELSDetailDialog.show(context, productProvider.product!);
+            // ELSDetailDialog.show(context, productProvider.product!);
+            MaterialPageRoute(builder: (context) => ELSProductDetailView());
           }
         },
       ),
