@@ -1,46 +1,24 @@
+import 'package:elswhere/resources/app_resource.dart';
+import 'package:elswhere/views/detail_search_modal.dart';
+import 'package:elswhere/widgets/drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/els_products_provider.dart';
+import '../widgets/appbar_widget.dart';
+import '../widgets/bottom_navigation_bar_widget.dart';
 import '../widgets/els_product_card.dart';
+import '../widgets/search_text_field.dart';
 
 class ELSProductListView extends StatelessWidget {
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     appBar: AppBar(title: Text('상품 목록')),
-  //     body: Consumer<ELSProductsProvider>(
-  //       builder: (context, productsProvider, child) {
-  //         if (productsProvider.isLoading && productsProvider.products.isEmpty) {
-  //           return Center(child: CircularProgressIndicator());
-  //         }
-  //         if (productsProvider.products.isEmpty) {
-  //           return Center(child: Text('상품이 존재하지 않습니다.'));
-  //         }
-  //         return NotificationListener<ScrollNotification>(
-  //           onNotification: (ScrollNotification scrollInfo) {
-  //             if (!productsProvider.isLoading &&
-  //                 productsProvider.hasNext &&
-  //                 scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
-  //               productsProvider.fetchProducts();
-  //             }
-  //             return false;
-  //           },
-  //           child: ListView.builder(
-  //             itemCount: productsProvider.products.length,
-  //             itemBuilder: (context, index) {
-  //               return ELSProductCard(product: productsProvider.products[index]);
-  //             },
-  //           ),
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ELSwhere'),
+        title: const Text(
+          'ELSwhere',
+          style: TextStyle(color: AppColors.contentBlack),
+        ),
+        centerTitle: true,
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications),
@@ -52,6 +30,7 @@ class ELSProductListView extends StatelessWidget {
           ),
         ],
       ),
+      drawer: const DrawerWidget(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -62,27 +41,29 @@ class ELSProductListView extends StatelessWidget {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            TextField(
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search),
-                hintText: '키워드 입력',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide.none,
-                ),
-                filled: true,
-                fillColor: Colors.grey[200],
-                suffixIcon: Container(
-                  margin: const EdgeInsets.all(4),
+            Row(
+              children: [
+                Expanded(child: SearchTextField()),
+                Container(
+                  margin: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                   child: ElevatedButton(
                     onPressed: () {},
-                    // style: ElevatedButton.styleFrom(
-                    //   backgroundColor: Colors.blue, // 버튼의 색상
-                    // ),
-                    child: const Text('검색'),
+                    style: ElevatedButton.styleFrom(
+                      shape: const RoundedRectangleBorder(borderRadius: borderRadiusCircular10),
+                      fixedSize: const Size(50, 50),
+                      foregroundColor: AppColors.contentWhite,
+                      backgroundColor: AppColors.contentPurple,
+                    ),
+                    child: const FittedBox(
+                      fit: BoxFit.none,
+                      child: Text(
+                        '검색',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
             const SizedBox(height: 16),
             Row(
@@ -92,62 +73,53 @@ class ELSProductListView extends StatelessWidget {
                   '상품 목록',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                IconButton(
+                TextButton.icon(
                   icon: const Icon(Icons.filter_list),
-                  onPressed: () {},
+                  label: const Text(
+                    '필터링',
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  style: TextButton.styleFrom(
+                    foregroundColor: AppColors.contentBlack,
+                  ),
+                  onPressed: () {
+                    showModalBottomSheet(context: context, builder: (context) => const DetailSearchModal());
+                  },
                 ),
               ],
             ),
             Expanded(
               child: Consumer<ELSProductsProvider>(
-                builder: (context, productsProvider, child) {
-                  if (productsProvider.isLoading && productsProvider.products.isEmpty) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                  if (productsProvider.products.isEmpty) {
-                    return Center(child: Text('상품이 존재하지 않습니다.'));
-                  }
-                  return NotificationListener<ScrollNotification>(
-                    onNotification: (ScrollNotification scrollInfo) {
-                      if (!productsProvider.isLoading &&
-                          productsProvider.hasNext &&
-                          scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
-                        productsProvider.fetchProducts();
-                      }
-                      return false;
-                    },
-                    child: ListView.builder(
-                      itemCount: productsProvider.products.length,
-                      itemBuilder: (context, index) {
-                        return ELSProductCard(product: productsProvider.products[index]);
-                      },
-                    ),
-                  );
+                  builder: (context, productsProvider, child) {
+                if (productsProvider.isLoading && productsProvider.products.isEmpty) {
+                  return const Center(child: CircularProgressIndicator());
                 }
-              ),
+                if (productsProvider.products.isEmpty) {
+                  return const Center(child: Text('상품이 존재하지 않습니다.'));
+                }
+                return NotificationListener<ScrollNotification>(
+                  onNotification: (ScrollNotification scrollInfo) {
+                    if (!productsProvider.isLoading &&
+                        productsProvider.hasNext &&
+                        scrollInfo.metrics.pixels ==
+                            scrollInfo.metrics.maxScrollExtent) {
+                      productsProvider.fetchProducts();
+                    }
+                    return false;
+                  },
+                  child: ListView.builder(
+                    itemCount: productsProvider.products.length,
+                    itemBuilder: (context, index) {
+                      return ELSProductCard(product: productsProvider.products[index]);
+                    },
+                  ),
+                );
+              }),
             ),
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: '상품',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: '홈',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'MY',
-          ),
-        ],
-        currentIndex: 0,
-        // selectedItemColor: Colors.blue,
-        onTap: (index) {},
-      ),
+      bottomNavigationBar: const BottomNavigationBarWidget(),
     );
   }
 }

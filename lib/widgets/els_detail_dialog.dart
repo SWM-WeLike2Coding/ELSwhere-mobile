@@ -1,6 +1,8 @@
+import 'package:elswhere/resources/app_resource.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/dtos/response_single_product_dto.dart';
+import 'explain_card.dart';
 
 class ELSDetailDialog {
   static void show(BuildContext context, ResponseSingleProductDto product) {
@@ -11,24 +13,55 @@ class ELSDetailDialog {
 
         return AlertDialog(
           title: Text(product.name),
-          content: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('상품 ID: ${product.id}'),
-                Text('기초자산명: ${product.equities}'),
-                Text('발행일: ${dateFormat.format(product.issuedDate)}'),
-                Text('만기일: ${dateFormat.format(product.maturityDate)}'),
-                Text('조건충족시 이율: ${product.yieldIfConditionsMet}%'),
-                Text('최대손실률: ${product.maximumLossRate}%'),
-                Text('청약시작일: ${dateFormat.format(product.subscriptionStartDate)}'),
-                Text('청약마감일: ${dateFormat.format(product.subscriptionEndDate)}'),
-                Text('상품 종류: ${product.type}'),
-                Text('상품 링크: ${product.link}'),
-                Text('비고: ${product.remarks}'),
-                Text('간이투자설명서: ${product.summaryInvestmentProspectusLink ?? ''}'),
-                Text('자동조기상환평가일: ${product.earlyRepaymentEvaluationDates ?? ''}'),
-              ],
+          content: const SingleChildScrollView(
+            child: Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ExplainCard(
+                        borderRadius: 10,
+                        boxColors: [AppColors.contentPurple, Colors.white],
+                      ),
+                      SizedBox(width: 10),
+                      ExplainCard(borderRadius: 10,
+                        boxColors: [AppColors.contentPurple, Colors.white],
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10,),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ExplainCard(
+                        borderRadius: 10,
+                        boxColors: [AppColors.contentPurple, Colors.white],
+                      ),
+                      SizedBox(width: 10),
+                      ExplainCard(borderRadius: 10,
+                        boxColors: [AppColors.contentPurple, Colors.white],
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10,),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ExplainCard(
+                        borderRadius: 10,
+                        boxColors: [AppColors.contentPurple, Colors.white],
+                      ),
+                      SizedBox(width: 10),
+                      ExplainCard(borderRadius: 10,
+                        boxColors: [AppColors.contentPurple, Colors.white],
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10,),
+                ],
+              ),
             ),
           ),
           actions: [

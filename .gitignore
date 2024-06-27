@@ -77,3 +77,4 @@
 # Android Studio
 local.properties
 .idea/
+/devtools_options.yaml
