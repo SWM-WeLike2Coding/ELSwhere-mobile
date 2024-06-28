@@ -1,7 +1,9 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:elswhere/resources/app_resource.dart';
 import 'package:elswhere/views/els_product_detail_view.dart';
-import 'package:elswhere/widgets/els_detail_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
 import '../models/dtos/summarized_product_dto.dart';
 import '../providers/els_product_provider.dart';
@@ -15,6 +17,7 @@ class ELSProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final productProvider =
         Provider.of<ELSProductProvider>(context, listen: false);
+    final format = DateFormat('yyyy년 MM월 dd일');
 
     return Card(
       elevation: 3,
@@ -25,7 +28,7 @@ class ELSProductCard extends StatelessWidget {
             gradient: LinearGradient(
               colors: [
                 AppColors.contentPurple,
-                AppColors.contentPurple.withOpacity(0.9),
+                AppColors.contentPurple.withOpacity(0.8),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -47,14 +50,34 @@ class ELSProductCard extends StatelessWidget {
                         color: AppColors.contentWhite,
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      product.equities,
-                      style: const TextStyle(color: AppColors.contentWhite),
+                    // const SizedBox(height: 8),
+                    SizedBox(
+                      height: 16,
+                      child: AutoSizeText(
+                        product.equities,
+                        maxLines: 1,
+                        style: const TextStyle(color: AppColors.contentWhite),
+                        overflowReplacement: Marquee(
+                          text: product.equities,
+                          style: const TextStyle(color: AppColors.contentWhite),
+                          scrollAxis: Axis.horizontal,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          startAfter: Duration(seconds: 1),
+                          velocity: 30.0,
+                          pauseAfterRound: Duration(seconds: 1),
+                          startPadding: 10.0,
+                          accelerationDuration: Duration(seconds: 1),
+                          accelerationCurve: Curves.linear,
+                          fadingEdgeEndFraction: 0.7,
+                          decelerationDuration: Duration(milliseconds: 500),
+                          decelerationCurve: Curves.easeOut,
+                        ),
+                      ),
                     ),
+
                     const SizedBox(height: 8),
                     Text(
-                      '${product.subscriptionStartDate}',
+                      '${format.format(product.subscriptionStartDate)}',
                       style: const TextStyle(color: AppColors.contentWhite),
                     ),
                   ],
@@ -95,4 +118,14 @@ class ELSProductCard extends StatelessWidget {
       ),
     );
   }
+  //
+  // bool _willTextOverflow({required String text, required TextStyle style}) {
+  //   final TextPainter textPainter = TextPainter(
+  //     text: TextSpan(text: text, style: style),
+  //     maxLines: 1,
+  //     textDirection: TextDirection.LTR,
+  //   )..layout(minWidth: 0, maxWidth: 200);
+  //
+  //   return textPainter.didExceedMaxLines;
+  // }
 }
