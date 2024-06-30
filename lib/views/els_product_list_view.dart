@@ -4,7 +4,6 @@ import 'package:elswhere/widgets/drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/els_products_provider.dart';
-import '../widgets/appbar_widget.dart';
 import '../widgets/bottom_navigation_bar_widget.dart';
 import '../widgets/els_product_card.dart';
 import '../widgets/search_text_field.dart';
@@ -32,7 +31,7 @@ class ELSProductListView extends StatelessWidget {
       ),
       drawer: const DrawerWidget(),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: edgeInsetsAll16,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -83,7 +82,12 @@ class ELSProductListView extends StatelessWidget {
                     foregroundColor: AppColors.contentBlack,
                   ),
                   onPressed: () {
-                    showModalBottomSheet(context: context, builder: (context) => const DetailSearchModal());
+                    showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        useSafeArea: true,
+                        // constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height*0.8),
+                        builder: (context) => const DetailSearchModal());
                   },
                 ),
               ],

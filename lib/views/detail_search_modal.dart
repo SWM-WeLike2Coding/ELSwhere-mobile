@@ -1,45 +1,46 @@
+import 'package:elswhere/resources/app_resource.dart';
 import 'package:flutter/material.dart';
 
 class DetailSearchModal extends StatelessWidget {
-  const DetailSearchModal({Key? key}) : super(key: key);
+  const DetailSearchModal({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: MediaQuery.of(context).viewInsets,
-      child: DraggableScrollableSheet(
-        initialChildSize: 1.0,
-        minChildSize: 1.0,
-        expand: false,
-        builder: (BuildContext context, ScrollController scrollController) {
-          return SingleChildScrollView(
-            controller: scrollController,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '상세 검색',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 16),
-                  _buildSearchInput(),
-                  SizedBox(height: 16),
-                  _buildTagButtons(),
-                  SizedBox(height: 16),
-                  _buildDropDowns(),
-                  SizedBox(height: 16),
-                  _buildCheckboxes(),
-                  SizedBox(height: 16),
-                  _buildDatePickers(context),
-                  SizedBox(height: 16),
-                  _buildConfirmButton(),
-                ],
+      padding: edgeInsetsAll4,
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * .7,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '상세 검색',
+                      style:
+                      TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 16),
+                    _buildSearchInput(),
+                    SizedBox(height: 16),
+                    _buildTagButtons(),
+                    SizedBox(height: 16),
+                    _buildDropDowns(),
+                    SizedBox(height: 16),
+                    _buildCheckboxes(),
+                    SizedBox(height: 16),
+                    _buildDatePickers(context),
+                  ],
+                ),
               ),
             ),
-          );
-        },
+            _buildConfirmButton(context),
+          ],
+        ),
       ),
     );
   }
@@ -98,14 +99,12 @@ class DetailSearchModal extends StatelessWidget {
             child: DropdownButton<String>(
               isExpanded: true,
               hint: Text(hint),
-              items: ['선택1', '선택2', '선택3']
-                  .map((String value) {
+              items: ['선택1', '선택2', '선택3'].map((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value),
                 );
-              })
-                  .toList(),
+              }).toList(),
               onChanged: (_) {},
             ),
           ),
@@ -167,11 +166,13 @@ class DetailSearchModal extends StatelessWidget {
     );
   }
 
-  Widget _buildConfirmButton() {
+  Widget _buildConfirmButton(BuildContext context) {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pop(context);
+        },
         child: Text('확인'),
       ),
     );
