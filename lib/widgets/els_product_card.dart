@@ -1,4 +1,5 @@
-import 'package:auto_size_text/auto_size_text.dart';
+import 'dart:ui' as ui;
+
 import 'package:elswhere/resources/app_resource.dart';
 import 'package:elswhere/views/els_product_detail_view.dart';
 import 'package:flutter/material.dart';
@@ -53,25 +54,40 @@ class ELSProductCard extends StatelessWidget {
                     // const SizedBox(height: 8),
                     SizedBox(
                       height: 16,
-                      child: AutoSizeText(
-                        product.equities,
-                        maxLines: 1,
-                        style: const TextStyle(color: AppColors.contentWhite),
-                        overflowReplacement: Marquee(
-                          text: product.equities,
-                          style: const TextStyle(color: AppColors.contentWhite),
-                          scrollAxis: Axis.horizontal,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          startAfter: Duration(seconds: 1),
-                          velocity: 30.0,
-                          pauseAfterRound: Duration(seconds: 1),
-                          startPadding: 10.0,
-                          accelerationDuration: Duration(seconds: 1),
-                          accelerationCurve: Curves.linear,
-                          fadingEdgeEndFraction: 0.7,
-                          decelerationDuration: Duration(milliseconds: 500),
-                          decelerationCurve: Curves.easeOut,
-                        ),
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          final textPainter = TextPainter(
+                            text: TextSpan(
+                              text: product.equities,
+                              style: const TextStyle(color: Colors.white, fontSize: 14),
+                            ),
+                            maxLines: 1,
+                            textDirection: ui.TextDirection.ltr,
+                          )..layout(maxWidth: constraints.maxWidth);
+
+                          final isOverflowing = textPainter.didExceedMaxLines;
+
+                          return isOverflowing
+                              ? Marquee(
+                                  text: product.equities,
+                                  style: const TextStyle(color: Colors.white, fontSize: 14),
+                                  scrollAxis: Axis.horizontal,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  startAfter: const Duration(seconds: 1),
+                                  velocity: 30.0,
+                                  pauseAfterRound: const Duration(seconds: 1),
+                                  startPadding: 10.0,
+                                  accelerationDuration: const Duration(seconds: 1),
+                                  accelerationCurve: Curves.linear,
+                                  fadingEdgeEndFraction: 0.7,
+                                  decelerationDuration: const Duration(milliseconds: 500),
+                                  decelerationCurve: Curves.easeOut,
+                                )
+                              : Text(
+                                  product.equities,
+                                  style: const TextStyle(color: Colors.white, fontSize: 14),
+                                );
+                        },
                       ),
                     ),
 
@@ -118,14 +134,14 @@ class ELSProductCard extends StatelessWidget {
       ),
     );
   }
-  //
-  // bool _willTextOverflow({required String text, required TextStyle style}) {
-  //   final TextPainter textPainter = TextPainter(
-  //     text: TextSpan(text: text, style: style),
-  //     maxLines: 1,
-  //     textDirection: TextDirection.LTR,
-  //   )..layout(minWidth: 0, maxWidth: 200);
-  //
-  //   return textPainter.didExceedMaxLines;
-  // }
+//
+// bool _willTextOverflow({required String text, required TextStyle style}) {
+//   final TextPainter textPainter = TextPainter(
+//     text: TextSpan(text: text, style: style),
+//     maxLines: 1,
+//     textDirection: TextDirection.LTR,
+//   )..layout(minWidth: 0, maxWidth: 200);
+//
+//   return textPainter.didExceedMaxLines;
+// }
 }

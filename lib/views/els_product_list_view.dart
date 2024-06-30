@@ -31,7 +31,7 @@ class ELSProductListView extends StatelessWidget {
       ),
       drawer: const DrawerWidget(),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: edgeInsetsAll16,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
