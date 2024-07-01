@@ -1,3 +1,0 @@
-class ELSProduct {
-  List<string> 
-}
