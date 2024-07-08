@@ -128,7 +128,10 @@ class ELSProductCard extends StatelessWidget {
 
           if (productProvider.product != null) {
             // ELSDetailDialog.show(context, productProvider.product!);
-            MaterialPageRoute(builder: (context) => ELSProductDetailView());
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ELSProductDetailView())
+            );
           }
         },
       ),
