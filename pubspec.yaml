@@ -45,6 +45,7 @@ dependencies:
   marquee: ^2.2.3
   fluttertoast: ^8.2.6
   auto_size_text: ^3.0.0
+  google_fonts: ^6.2.1
 
 dependency_overrides:
   fading_edge_scrollview: ^4.1.1
