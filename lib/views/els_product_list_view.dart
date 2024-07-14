@@ -73,34 +73,46 @@ class ELSProductListView extends StatelessWidget {
             ],
           ),
           Expanded(
-            child: Consumer<ELSProductsProvider>(
-                builder: (context, productsProvider, child) {
-              if (productsProvider.isLoading &&
-                  productsProvider.products.isEmpty) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              if (productsProvider.products.isEmpty) {
-                return const Center(child: Text('상품이 존재하지 않습니다.'));
-              }
-              return NotificationListener<ScrollNotification>(
-                onNotification: (ScrollNotification scrollInfo) {
-                  if (!productsProvider.isLoading &&
-                      productsProvider.hasNext &&
-                      scrollInfo.metrics.pixels ==
-                          scrollInfo.metrics.maxScrollExtent) {
-                    productsProvider.fetchProducts();
-                  }
-                  return false;
-                },
-                child: ListView.builder(
-                  itemCount: productsProvider.products.length,
-                  itemBuilder: (context, index) {
-                    return ELSProductCard(
-                        product: productsProvider.products[index]);
-                  },
-                ),
-              );
-            }),
+            child: FutureBuilder(
+              future: Provider.of<ELSProductsProvider>(context, listen: false).fetchProducts(),
+              builder: (ctx, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return const Center(child: Text('An error occurred!'));
+                } else {
+                  return Consumer<ELSProductsProvider>(
+                    builder: (context, productsProvider, child) {
+                      if (productsProvider.isLoading &&
+                          productsProvider.products.isEmpty) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      if (productsProvider.products.isEmpty) {
+                        return const Center(child: Text('상품이 존재하지 않습니다.'));
+                      }
+                      return NotificationListener<ScrollNotification>(
+                        onNotification: (ScrollNotification scrollInfo) {
+                          if (!productsProvider.isLoading &&
+                              productsProvider.hasNext &&
+                              scrollInfo.metrics.pixels ==
+                                  scrollInfo.metrics.maxScrollExtent) {
+                            productsProvider.fetchProducts();
+                          }
+                          return false;
+                        },
+                        child: ListView.builder(
+                          itemCount: productsProvider.products.length,
+                          itemBuilder: (context, index) {
+                            return ELSProductCard(
+                                product: productsProvider.products[index]);
+                          },
+                        ),
+                      );
+                    },
+                  );
+                }
+              },
+            ),
           ),
         ],
       ),

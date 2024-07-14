@@ -16,13 +16,13 @@ class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 1;
 
   final List<Widget> _pages = [
-    ProductScreen(),
-    HomeScreen(),
-    MyScreen(),
+    const ProductScreen(),
+    const HomeScreen(),
+    const MyScreen(),
   ];
 
   void _onItemTapped(int index) {
-    setState(() async {
+    setState(() {
       _selectedIndex = index;
     });
   }
