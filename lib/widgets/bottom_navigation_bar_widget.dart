@@ -1,7 +1,23 @@
 import 'package:flutter/material.dart';
 
-class BottomNavigationBarWidget extends StatelessWidget {
-  const BottomNavigationBarWidget({super.key});
+class BottomNavigationBarWidget extends StatefulWidget {
+  BottomNavigationBarWidget({super.key, required this.changeIndex});
+
+  void Function(int) changeIndex;
+
+  @override
+  State<BottomNavigationBarWidget> createState() => _BottomNavigationBarWidgetState();
+}
+
+class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
+  int _selectedIndex = 1;
+
+  void _onItemTapped(int index) {
+    widget.changeIndex(index);
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +36,9 @@ class BottomNavigationBarWidget extends StatelessWidget {
           label: 'MY',
         ),
       ],
-      currentIndex: 0,
+      currentIndex: _selectedIndex,
       // selectedItemColor: Colors.blue,
-      onTap: (index) {},
+      onTap: _onItemTapped,
     );
   }
 }
