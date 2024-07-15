@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 
 sealed class Assets {
-  static const String fontFamilyNanum = "NanumBarunGothic";
-  static const String nanum = "assets/fonts/NanumBarunGothic.ttf";
-  static const String nanumBold = "assets/fonts/NanumBarunGothicBold.ttf";
-  static const String nanumLight = "assets/fonts/NanumBarunGothicLight.ttf";
-  static const String nanumUltraLight = "assets/fonts/NanumBarunGothicUltraLight.ttf";
+  static const String fontFamilyPretendard = "Pretendard";
+  static const String pretendardThin = "assets/fonts/pretendard/Pretendard-Thin.ttf";
+  static const String pretendardExtraLight = "assets/fonts/pretendard/Pretendard-ExtraLight.ttf";
+  static const String pretendardLight = "assets/fonts/pretendard/Pretendard-Light.ttf";
+  static const String pretendardRegular = "assets/fonts/pretendard/Pretendard-Regular.ttf";
+  static const String pretendardMedium = "assets/fonts/pretendard/Pretendard-Medium.ttf";
+  static const String pretendardSemiBold = "assets/fonts/pretendard/Pretendard-SemiBold.ttf";
+  static const String pretendardBold = "assets/fonts/pretendard/Pretendard-Bold.ttf";
+  static const String pretendardExtraBold = "assets/fonts/pretendard/Pretendard-ExtraBold.ttf";
+  static const String pretendardBlack = "assets/fonts/pretendard/Pretendard-Black.ttf";
 }
 
 sealed class AppColors {
@@ -14,19 +19,39 @@ sealed class AppColors {
   static const Color contentBlack = Color(0xFF000000);
   static const Color contentWhite = Color(0xFFFFFFFF);
   static const Color textFieldWhite = Color(0xFFF3F3F3);
+
+  static const Color cornflowerBlues1 = Color(0xFF7499FF); // 첫 번째 색상
+  static const Color cornflowerBlues2 = Color(0xFF7FA8FF); // 두 번째 색상
+  static const Color cornflowerBlues3 = Color(0xFFA4C1FF); // 세 번째 색상
+  static const Color cornflowerBlues4 = Color(0xFFC4D7FF); // 네 번째 색상
+  static const Color cornflowerBlues5 = Color(0xFFE0EAFF); // 다섯 번째 색상
+
+  static const Color blues1 = Color(0xFF3366FF); // 여섯 번째 색상
+  static const Color blues2 = Color(0xFF5588FF); // 일곱 번째 색상
+  static const Color blues3 = Color(0xFFBBEEFF); // 여덟 번째 색상
+  static const Color blues4 = Color(0xFF99CCFF); // 아홉 번째 색상
+  static const Color blues5 = Color(0xFF77AAFF); // 열 번째 색상
 }
 
 const textTheme = TextTheme(
-  bodyLarge: TextStyle(fontFamily: Assets.fontFamilyNanum),
-  bodyMedium: TextStyle(fontFamily: Assets.fontFamilyNanum),
-  displayLarge: TextStyle(fontFamily: Assets.fontFamilyNanum),
-  displayMedium: TextStyle(fontFamily: Assets.fontFamilyNanum),
-  displaySmall: TextStyle(fontFamily: Assets.fontFamilyNanum),
-  headlineMedium: TextStyle(fontFamily: Assets.fontFamilyNanum),
-  headlineSmall: TextStyle(fontFamily: Assets.fontFamilyNanum),
-  titleLarge: TextStyle(fontFamily: Assets.fontFamilyNanum),
+  bodyLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard),
+  bodyMedium: TextStyle(fontFamily: Assets.fontFamilyPretendard),
+  bodySmall: TextStyle(fontFamily: Assets.fontFamilyPretendard),
+  displayLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard),
+  displayMedium: TextStyle(fontFamily: Assets.fontFamilyPretendard),
+  displaySmall: TextStyle(fontFamily: Assets.fontFamilyPretendard),
+  headlineLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard, fontWeight: FontWeight.w700),
+  headlineMedium: TextStyle(fontFamily: Assets.fontFamilyPretendard),
+  headlineSmall: TextStyle(fontFamily: Assets.fontFamilyPretendard),
+  labelLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard),
+  labelMedium: TextStyle(fontFamily: Assets.fontFamilyPretendard),
+  labelSmall: TextStyle(fontFamily: Assets.fontFamilyPretendard),
+  titleLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard, fontWeight: FontWeight.w600),
+  titleMedium: TextStyle(fontFamily: Assets.fontFamilyPretendard),
+  titleSmall: TextStyle(fontFamily: Assets.fontFamilyPretendard),
 );
 
+const edgeInsetsZero = EdgeInsets.zero;
 const edgeInsetsAll4 = EdgeInsets.all(4);
 const edgeInsetsAll8 = EdgeInsets.all(8);
 const edgeInsetsAll12 = EdgeInsets.all(12);

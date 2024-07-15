@@ -3,9 +3,10 @@ import 'dart:convert';
 import '../models/dtos/response_page_summarized_product_dto.dart';
 import '../models/dtos/response_single_product_dto.dart';
 import '../resources/config.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ProductService {
-  final String _baseUrl = ELS_BASE_URL;
+  final String _baseUrl = dotenv.env['ELS_BASE_URL'] as String;
 
   Future<ResponsePageSummarizedProductDto> fetchProducts(int page, int size) async {
     final url = '$_baseUrl/product?page=$page&size=$size';
