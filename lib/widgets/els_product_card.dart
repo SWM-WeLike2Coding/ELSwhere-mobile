@@ -137,14 +137,108 @@ class ELSProductCard extends StatelessWidget {
       ),
     );
   }
-//
-// bool _willTextOverflow({required String text, required TextStyle style}) {
-//   final TextPainter textPainter = TextPainter(
-//     text: TextSpan(text: text, style: style),
-//     maxLines: 1,
-//     textDirection: TextDirection.LTR,
-//   )..layout(minWidth: 0, maxWidth: 200);
-//
-//   return textPainter.didExceedMaxLines;
-// }
 }
+
+// import 'package:flutter/material.dart';
+//
+// void main() {
+//   runApp(MaterialApp(home: CardListScreen()));
+// }
+//
+// class CardListScreen extends StatefulWidget {
+//   @override
+//   _CardListScreenState createState() => _CardListScreenState();
+// }
+//
+// class _CardListScreenState extends State<CardListScreen> {
+//   int _selectedIndex = -1;
+//
+//   void _onCardTapped(int index) {
+//     setState(() {
+//       _selectedIndex = _selectedIndex == index ? -1 : index;
+//     });
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Card List with Animation'),
+//       ),
+//       body: ListView.builder(
+//         itemCount: 10,
+//         itemBuilder: (context, index) {
+//           return CardItem(
+//             index: index,
+//             isSelected: _selectedIndex == index,
+//             onTap: _onCardTapped,
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }
+//
+// class CardItem extends StatelessWidget {
+//   final int index;
+//   final bool isSelected;
+//   final Function(int) onTap;
+//
+//   const CardItem({
+//     required this.index,
+//     required this.isSelected,
+//     required this.onTap,
+//   });
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return GestureDetector(
+//       onTap: () => onTap(index),
+//       child: Stack(
+//         children: [
+//           AnimatedContainer(
+//             curve: Curves.fastOutSlowIn,
+//             duration: Duration(milliseconds: 500),
+//             margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+//             padding: EdgeInsets.all(20),
+//             decoration: BoxDecoration(
+//               color: Colors.blue,
+//               borderRadius: BorderRadius.circular(15),
+//             ),
+//             transform: Matrix4.translationValues(isSelected ? 150 : 0, 0, 0),
+//             child: Row(
+//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//               children: [
+//                 Text(
+//                   'Card $index',
+//                   style: TextStyle(color: Colors.white, fontSize: 18),
+//                 ),
+//                 if (isSelected)
+//                   Icon(
+//                     Icons.arrow_forward,
+//                     color: Colors.white,
+//                   ),
+//               ],
+//             ),
+//           ),
+//           AnimatedContainer(
+//             curve: Curves.fastOutSlowIn,
+//             duration: Duration(milliseconds: 500),
+//             transform: Matrix4.translationValues(isSelected ? 0 : -150, 0, 0),
+//             child: Container(
+//               height: 70,
+//               width: 150,
+//               color: Colors.red,
+//               child: Center(
+//                 child: Text(
+//                   'Additional Menu',
+//                   style: TextStyle(color: Colors.white),
+//                 ),
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
