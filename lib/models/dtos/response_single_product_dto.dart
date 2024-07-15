@@ -5,35 +5,51 @@ part 'response_single_product_dto.g.dart';
 @JsonSerializable()
 class ResponseSingleProductDto {
   final int id;
+  final String publisher;
   final String name;
   final String equities;
-  final DateTime issuedDate;
-  final DateTime maturityDate;
+  final int equityCount;
+  final String? knockIn;
+  final String volatilites;
+  final String earlyRepaymentEvaluationDates;
+  final String issuedDate;
+  final String maturityDate;
   final double yieldIfConditionsMet;
   final double maximumLossRate;
-  final DateTime subscriptionStartDate;
-  final DateTime subscriptionEndDate;
+  final String subscriptionStartDate;
+  final String subscriptionEndDate;
+  final String initialBasePriceEvaluationDate;
   final String type;
+  final String productFullInfo;
+  final String productInfo;
+  final String remarks;
   final String link;
-  final String? remarks;
-  final String? summaryInvestmentProspectusLink;
-  final String? earlyRepaymentEvaluationDates;
+  final String summaryInvestmentProspectusLink;
+  final Map<String, String> equityTickerSymbols;
 
   ResponseSingleProductDto({
     required this.id,
+    required this.publisher,
     required this.name,
     required this.equities,
+    required this.equityCount,
+    this.knockIn,
+    required this.volatilites,
+    required this.earlyRepaymentEvaluationDates,
     required this.issuedDate,
     required this.maturityDate,
     required this.yieldIfConditionsMet,
     required this.maximumLossRate,
     required this.subscriptionStartDate,
     required this.subscriptionEndDate,
+    required this.initialBasePriceEvaluationDate,
     required this.type,
-    required this.link,
+    required this.productFullInfo,
+    required this.productInfo,
     required this.remarks,
+    required this.link,
     required this.summaryInvestmentProspectusLink,
-    required this.earlyRepaymentEvaluationDates,
+    required this.equityTickerSymbols,
   });
 
   factory ResponseSingleProductDto.fromJson(Map<String, dynamic> json) => _$ResponseSingleProductDtoFromJson(json);

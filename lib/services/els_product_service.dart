@@ -6,10 +6,10 @@ import '../resources/config.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ProductService {
-  final String _baseUrl = dotenv.env['ELS_BASE_URL'] as String;
+  static final String _baseUrl = dotenv.env['ELS_BASE_URL']!;
 
-  Future<ResponsePageSummarizedProductDto> fetchProducts(int page, int size) async {
-    final url = '$_baseUrl/product?page=$page&size=$size';
+  Future<ResponsePageSummarizedProductDto> fetchProducts(String type, int page, int size) async {
+    final url = '$_baseUrl/product/on-sale?type=$type&page=$page&size=$size';
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {

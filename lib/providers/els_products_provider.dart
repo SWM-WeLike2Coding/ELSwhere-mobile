@@ -17,12 +17,12 @@ class ELSProductsProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   bool get hasNext => _hasNext;
 
-  Future<void> fetchProducts() async {
+  Future<void> fetchProducts(String type) async {
     _isLoading = true;
     notifyListeners();
 
     try {
-      final responsePage = await _productService.fetchProducts(_page, _size);
+      final responsePage = await _productService.fetchProducts(type, _page, _size);
       _products += responsePage.content;
       _hasNext = responsePage.hasNext;
       _page++;
