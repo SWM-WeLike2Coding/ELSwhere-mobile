@@ -1,75 +1,87 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../providers/els_products_provider.dart';
+import '../resources/app_resource.dart';
+import '../views/detail_search_modal.dart';
 import '../views/els_product_list_view.dart';
-import '../widgets/els_product_card.dart';
+import '../widgets/search_text_field.dart';
 
-class ProductScreen extends StatelessWidget {
+class ProductScreen extends StatefulWidget {
   const ProductScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ELSProductListView();
-    // final productProvider = Provider.of<ELSProductsProvider>(context, listen: false);
-    // productProvider.resetProducts();
-    // return Expanded(
-    //   child: FutureBuilder(
-    //     future: productProvider.fetchProducts(),
-    //     builder: (ctx, snapshot) {
-    //       if (snapshot.connectionState == ConnectionState.waiting) {
-    //         return Center(child: CircularProgressIndicator());
-    //       } else if (snapshot.hasError) {
-    //         return Center(child: Text('오류가 발생했습니다'));
-    //       } else {
-    //         return Consumer<ELSProductsProvider>(
-    //             builder: (context, productsProvider, child) {
-    //           if (productsProvider.isLoading &&
-    //               productsProvider.products.isEmpty) {
-    //             return const Center(child: CircularProgressIndicator());
-    //           }
-    //           if (productsProvider.products.isEmpty) {
-    //             return const Center(child: Text('상품이 존재하지 않습니다.'));
-    //           }
-    //           return NotificationListener<ScrollNotification>(
-    //             onNotification: (ScrollNotification scrollInfo) {
-    //               if (!productsProvider.isLoading &&
-    //                   productsProvider.hasNext &&
-    //                   scrollInfo.metrics.pixels ==
-    //                       scrollInfo.metrics.maxScrollExtent) {
-    //                 productsProvider.fetchProducts();
-    //               }
-    //               return false;
-    //             },
-    //             child: ListView.builder(
-    //               itemCount: productsProvider.products.length,
-    //               itemBuilder: (context, index) {
-    //                 return ELSProductCard(
-    //                     product: productsProvider.products[index]);
-    //               },
-    //             ),
-    //           );
-    //         });
-    //       }
-    //     },
-    //   ),
-    // );
+  State<ProductScreen> createState() => _ProductScreenState();
+}
 
-    // return const Placeholder();
-    return ELSProductListView();
-    //
-    // Center(
-    //   child: ElevatedButton(
-    //     onPressed: () async {
-    //       productProvider.resetProducts();
-    //       await productProvider.fetchProducts();
-    //       Navigator.push(
-    //         context,
-    //         MaterialPageRoute(builder: (context) => ELSProductListView()),
-    //       );
-    //     },
-    //     child: const Text('ELS 상품 조회'),
-    //   ),
-    // );
+class _ProductScreenState extends State<ProductScreen> {
+  String type = 'latest';
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: edgeInsetsAll16,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'ELS 상품',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(child: SearchTextField()),
+              Container(
+                margin: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: borderRadiusCircular10),
+                    fixedSize: const Size(50, 50),
+                    foregroundColor: AppColors.contentWhite,
+                    backgroundColor: AppColors.contentPurple,
+                  ),
+                  child: const FittedBox(
+                    fit: BoxFit.none,
+                    child: Text(
+                      '검색',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                '상품 목록',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              TextButton.icon(
+                icon: const Icon(Icons.filter_list),
+                label: const Text(
+                  '필터링',
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
+                style: TextButton.styleFrom(
+                  foregroundColor: AppColors.contentBlack,
+                ),
+                onPressed: () {
+                  showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      useSafeArea: true,
+                      builder: (context) => const DetailSearchModal(),
+                  );
+                },
+              ),
+            ],
+          ),
+          ELSProductListView(type: type),
+        ],
+      ),
+    );
   }
 }

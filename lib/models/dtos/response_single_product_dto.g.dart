@@ -10,41 +10,57 @@ ResponseSingleProductDto _$ResponseSingleProductDtoFromJson(
         Map<String, dynamic> json) =>
     ResponseSingleProductDto(
       id: (json['id'] as num).toInt(),
+      publisher: json['publisher'] as String,
       name: json['name'] as String,
       equities: json['equities'] as String,
-      issuedDate: DateTime.parse(json['issuedDate'] as String),
-      maturityDate: DateTime.parse(json['maturityDate'] as String),
+      equityCount: (json['equityCount'] as num).toInt(),
+      knockIn: json['knockIn'] as String?,
+      volatilites: json['volatilites'] as String,
+      earlyRepaymentEvaluationDates:
+          json['earlyRepaymentEvaluationDates'] as String,
+      issuedDate: json['issuedDate'] as String,
+      maturityDate: json['maturityDate'] as String,
       yieldIfConditionsMet: (json['yieldIfConditionsMet'] as num).toDouble(),
       maximumLossRate: (json['maximumLossRate'] as num).toDouble(),
-      subscriptionStartDate:
-          DateTime.parse(json['subscriptionStartDate'] as String),
-      subscriptionEndDate:
-          DateTime.parse(json['subscriptionEndDate'] as String),
+      subscriptionStartDate: json['subscriptionStartDate'] as String,
+      subscriptionEndDate: json['subscriptionEndDate'] as String,
+      initialBasePriceEvaluationDate:
+          json['initialBasePriceEvaluationDate'] as String,
       type: json['type'] as String,
+      productFullInfo: json['productFullInfo'] as String,
+      productInfo: json['productInfo'] as String,
+      remarks: json['remarks'] as String,
       link: json['link'] as String,
-      remarks: json['remarks'] as String? ?? '',
       summaryInvestmentProspectusLink:
-          json['summaryInvestmentProspectusLink'] as String? ?? '',
-      earlyRepaymentEvaluationDates:
-          json['earlyRepaymentEvaluationDates'] as String? ?? '',
+          json['summaryInvestmentProspectusLink'] as String,
+      equityTickerSymbols:
+          Map<String, String>.from(json['equityTickerSymbols'] as Map),
     );
 
 Map<String, dynamic> _$ResponseSingleProductDtoToJson(
         ResponseSingleProductDto instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'publisher': instance.publisher,
       'name': instance.name,
       'equities': instance.equities,
-      'issuedDate': instance.issuedDate.toIso8601String(),
-      'maturityDate': instance.maturityDate.toIso8601String(),
+      'equityCount': instance.equityCount,
+      'knockIn': instance.knockIn,
+      'volatilites': instance.volatilites,
+      'earlyRepaymentEvaluationDates': instance.earlyRepaymentEvaluationDates,
+      'issuedDate': instance.issuedDate,
+      'maturityDate': instance.maturityDate,
       'yieldIfConditionsMet': instance.yieldIfConditionsMet,
       'maximumLossRate': instance.maximumLossRate,
-      'subscriptionStartDate': instance.subscriptionStartDate.toIso8601String(),
-      'subscriptionEndDate': instance.subscriptionEndDate.toIso8601String(),
+      'subscriptionStartDate': instance.subscriptionStartDate,
+      'subscriptionEndDate': instance.subscriptionEndDate,
+      'initialBasePriceEvaluationDate': instance.initialBasePriceEvaluationDate,
       'type': instance.type,
-      'link': instance.link,
+      'productFullInfo': instance.productFullInfo,
+      'productInfo': instance.productInfo,
       'remarks': instance.remarks,
+      'link': instance.link,
       'summaryInvestmentProspectusLink':
           instance.summaryInvestmentProspectusLink,
-      'earlyRepaymentEvaluationDates': instance.earlyRepaymentEvaluationDates,
+      'equityTickerSymbols': instance.equityTickerSymbols,
     };

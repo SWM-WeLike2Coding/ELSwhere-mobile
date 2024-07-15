@@ -7,9 +7,16 @@ import 'package:elswhere/screens/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() {
+  initApp();
   runApp(const ELSwhere());
+}
+
+Future<void> initApp() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
 }
 
 class ELSwhere extends StatelessWidget {
