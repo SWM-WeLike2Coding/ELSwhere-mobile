@@ -45,92 +45,87 @@ class _ELSProductCardState extends State<ELSProductCard> {
         print('$width');
         return GestureDetector(
           onTap: () => _onItemTapped(),
-          child: Stack(
-            children: [
-              Positioned(
-                left: width - 165,
-                child: Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10),
-                  height: cardHeight,
-                  width: 165,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.horizontal(right: Radius.circular(10)),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 15,
-                        decoration: const BoxDecoration(color: Colors.grey),
-                      ),
-                      Expanded(
-                        child: InkWell(
+          child: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Stack(
+              children: [
+                Positioned(
+                  left: width - 175,
+                  child: Container(
+                    height: cardHeight,
+                    width: 165,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.horizontal(right: Radius.circular(10)),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 15,
+                          decoration: const BoxDecoration(color: Colors.grey),
+                        ),
+                        Expanded(
+                          child: InkWell(
+                            child: Container(
+                              decoration: const BoxDecoration(color: Colors.grey),
+                              child: const Center(
+                                child: Text(
+                                  '상세보기',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                            onTap: () async {
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (BuildContext context) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                },
+                              );
+
+                              await productProvider.fetchProduct(widget.product.id);
+
+                              // 로딩 다이얼로그 닫기
+                              Navigator.of(context).pop();
+
+                              if (productProvider.product != null) {
+                                // ELSDetailDialog.show(context, productProvider.product!);
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => ELSProductDetailView()));
+                              }
+                            },
+                          ),
+                        ),
+                        Expanded(
                           child: Container(
-                            decoration: const BoxDecoration(color: Colors.grey),
+                            decoration: const BoxDecoration(
+                                color: Colors.blue,
+                                borderRadius: BorderRadius.horizontal(right: Radius.circular(10))),
                             child: const Center(
                               child: Text(
-                                '상세보기',
+                                '비교하기',
                                 style: TextStyle(color: Colors.white),
                               ),
                             ),
                           ),
-                          onTap: () async {
-                            showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (BuildContext context) {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              },
-                            );
-
-                            await productProvider.fetchProduct(widget.product.id);
-
-                            // 로딩 다이얼로그 닫기
-                            Navigator.of(context).pop();
-
-                            if (productProvider.product != null) {
-                              // ELSDetailDialog.show(context, productProvider.product!);
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => ELSProductDetailView()));
-                            }
-                          },
                         ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          decoration: const BoxDecoration(
-                              color: Colors.blue,
-                              borderRadius: BorderRadius.horizontal(
-                                  right: Radius.circular(10))),
-                          child: const Center(
-                            child: Text(
-                              '비교하기',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              AnimatedContainer(
-                curve: Curves.fastOutSlowIn,
-                duration: Duration(milliseconds: 500),
-                // left: isSelected ? 150 : 0,
-                // right: isSelected ? -150 : 0,
-                // top: 0,
-                // bottom: 0,
-                transform: Matrix4.translationValues(isSelected ? -150 : 0, 0, 0),
-                child: Card(
+                AnimatedContainer(
+                  curve: Curves.fastOutSlowIn,
+                  duration: Duration(milliseconds: 500),
+                  transform: Matrix4.translationValues(isSelected ? -150 : 0, 0, 0),
                   child: Container(
                     height: cardHeight,
                     padding: edgeInsetsAll12,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
-                          AppColors.contentPurple,
-                          AppColors.contentPurple.withOpacity(0.8),
+                          AppColors.blues1,
+                          AppColors.blues2,
                         ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -172,8 +167,7 @@ class _ELSProductCardState extends State<ELSProductCard> {
                                         )
                                           ..layout(maxWidth: constraints.maxWidth);
 
-                                        final isOverflowing =
-                                            textPainter.didExceedMaxLines;
+                                        final isOverflowing = textPainter.didExceedMaxLines;
 
                                         return isOverflowing
                                             ? Marquee(
@@ -222,8 +216,8 @@ class _ELSProductCardState extends State<ELSProductCard> {
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       }
