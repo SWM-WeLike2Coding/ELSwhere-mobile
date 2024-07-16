@@ -17,6 +17,11 @@ class ELSProductsProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   bool get hasNext => _hasNext;
 
+  Future<void> refreshProducts(String type) async {
+    resetProducts();
+    fetchProducts(type);
+  }
+
   Future<void> fetchProducts(String type) async {
     _isLoading = true;
     notifyListeners();
