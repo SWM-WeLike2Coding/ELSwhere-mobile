@@ -9,10 +9,23 @@ import 'package:provider/provider.dart';
 import '../models/dtos/summarized_product_dto.dart';
 import '../providers/els_product_provider.dart';
 
-class ELSProductCard extends StatelessWidget {
+class ELSProductCard extends StatefulWidget {
   final SummarizedProductDto product;
+  final int index;
 
-  const ELSProductCard({super.key, required this.product});
+  const ELSProductCard({
+    super.key,
+    required this.product,
+    required this.index,
+  });
+
+  @override
+  State<ELSProductCard> createState() => _ELSProductCardState();
+}
+
+class _ELSProductCardState extends State<ELSProductCard> {
+  bool isSelected = false;
+  final cardHeight = 110.0;
 
   @override
   Widget build(BuildContext context) {
@@ -20,131 +33,200 @@ class ELSProductCard extends StatelessWidget {
         Provider.of<ELSProductProvider>(context, listen: false);
     final format = DateFormat('yyyy년 MM월 dd일');
 
-    return Card(
-      elevation: 3,
-      child: InkWell(
-        child: Container(
-          padding: edgeInsetsAll12,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                AppColors.contentPurple,
-                AppColors.contentPurple.withOpacity(0.8),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: borderRadiusCircular10,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    void _onItemTapped() {
+      setState(() {
+        isSelected = !isSelected;
+      });
+    }
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth;
+        print('$width');
+        return GestureDetector(
+          onTap: () => _onItemTapped(),
+          child: Stack(
             children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      product.name,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: AppColors.contentWhite,
+              Positioned(
+                left: width - 165,
+                child: Container(
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  height: cardHeight,
+                  width: 165,
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.horizontal(right: Radius.circular(10)),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 15,
+                        decoration: const BoxDecoration(color: Colors.grey),
                       ),
-                    ),
-                    // const SizedBox(height: 8),
-                    SizedBox(
-                      height: 16,
-                      child: LayoutBuilder(
-                        builder: (context, constraints) {
-                          final textPainter = TextPainter(
-                            text: TextSpan(
-                              text: product.equities,
-                              style: const TextStyle(color: Colors.white, fontSize: 14),
+                      Expanded(
+                        child: InkWell(
+                          child: Container(
+                            decoration: const BoxDecoration(color: Colors.grey),
+                            child: const Center(
+                              child: Text(
+                                '상세보기',
+                                style: TextStyle(color: Colors.white),
+                              ),
                             ),
-                            maxLines: 1,
-                            textDirection: ui.TextDirection.ltr,
-                          )..layout(maxWidth: constraints.maxWidth);
-
-                          final isOverflowing = textPainter.didExceedMaxLines;
-
-                          return isOverflowing
-                              ? Marquee(
-                                  text: product.equities,
-                                  style: const TextStyle(color: Colors.white, fontSize: 14),
-                                  scrollAxis: Axis.horizontal,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  startAfter: const Duration(seconds: 1),
-                                  velocity: 30.0,
-                                  pauseAfterRound: const Duration(seconds: 1),
-                                  startPadding: 10.0,
-                                  accelerationDuration: const Duration(seconds: 1),
-                                  accelerationCurve: Curves.linear,
-                                  fadingEdgeEndFraction: 0.7,
-                                  decelerationDuration: const Duration(milliseconds: 500),
-                                  decelerationCurve: Curves.easeOut,
-                                )
-                              : Text(
-                                  product.equities,
-                                  style: const TextStyle(color: Colors.white, fontSize: 14),
+                          ),
+                          onTap: () async {
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (BuildContext context) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
                                 );
-                        },
-                      ),
-                    ),
+                              },
+                            );
 
-                    const SizedBox(height: 8),
-                    Text(
-                      '${format.format(product.subscriptionStartDate)}',
-                      style: const TextStyle(color: AppColors.contentWhite),
-                    ),
-                  ],
+                            await productProvider.fetchProduct(widget.product.id);
+
+                            // 로딩 다이얼로그 닫기
+                            Navigator.of(context).pop();
+
+                            if (productProvider.product != null) {
+                              // ELSDetailDialog.show(context, productProvider.product!);
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => ELSProductDetailView()));
+                            }
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          decoration: const BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.horizontal(
+                                  right: Radius.circular(10))),
+                          child: const Center(
+                            child: Text(
+                              '비교하기',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              Text(
-                '${product.yieldIfConditionsMet}%',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                  color: AppColors.contentWhite,
+              AnimatedContainer(
+                curve: Curves.fastOutSlowIn,
+                duration: Duration(milliseconds: 500),
+                // left: isSelected ? 150 : 0,
+                // right: isSelected ? -150 : 0,
+                // top: 0,
+                // bottom: 0,
+                transform: Matrix4.translationValues(isSelected ? -150 : 0, 0, 0),
+                child: Card(
+                  child: Container(
+                    height: cardHeight,
+                    padding: edgeInsetsAll12,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColors.contentPurple,
+                          AppColors.contentPurple.withOpacity(0.8),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: borderRadiusCircular10,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    widget.product.name,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      color: AppColors.contentWhite,
+                                    ),
+                                  ),
+                                  // const SizedBox(height: 8),
+                                  SizedBox(
+                                    height: 16,
+                                    child: LayoutBuilder(
+                                      builder: (context, constraints) {
+                                        final textPainter = TextPainter(
+                                          text: TextSpan(
+                                            text: widget.product.equities,
+                                            style: const TextStyle(
+                                                color: Colors.white, fontSize: 14),
+                                          ),
+                                          maxLines: 1,
+                                          textDirection: ui.TextDirection.ltr,
+                                        )
+                                          ..layout(maxWidth: constraints.maxWidth);
+
+                                        final isOverflowing =
+                                            textPainter.didExceedMaxLines;
+
+                                        return isOverflowing
+                                            ? Marquee(
+                                          text: widget.product.equities,
+                                          style: const TextStyle(color: Colors.white, fontSize: 14),
+                                          scrollAxis: Axis.horizontal,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          startAfter: const Duration(seconds: 1),
+                                          velocity: 30.0,
+                                          pauseAfterRound: const Duration(seconds: 1),
+                                          startPadding: 10.0,
+                                          accelerationDuration: const Duration(seconds: 1),
+                                          accelerationCurve: Curves.linear,
+                                          fadingEdgeEndFraction: 0.7,
+                                          decelerationDuration:
+                                          const Duration(milliseconds: 500),
+                                          decelerationCurve: Curves.easeOut,
+                                        ) : Text(
+                                          widget.product.equities,
+                                          style: const TextStyle(
+                                              color: Colors.white, fontSize: 14),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              // const SizedBox(height: 8),
+                              Text(
+                                '${format.format(widget.product.subscriptionStartDate)}',
+                                style: const TextStyle(color: AppColors.contentWhite),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Text(
+                          '${widget.product.yieldIfConditionsMet}%',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
+                            color: AppColors.contentWhite,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ],
           ),
-        ),
-        onTap: () async {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            },
-          );
-
-          await productProvider.fetchProduct(product.id);
-
-          // 로딩 다이얼로그 닫기
-          Navigator.of(context).pop();
-
-          if (productProvider.product != null) {
-            // ELSDetailDialog.show(context, productProvider.product!);
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ELSProductDetailView())
-            );
-          }
-        },
-      ),
+        );
+      }
     );
   }
-//
-// bool _willTextOverflow({required String text, required TextStyle style}) {
-//   final TextPainter textPainter = TextPainter(
-//     text: TextSpan(text: text, style: style),
-//     maxLines: 1,
-//     textDirection: TextDirection.LTR,
-//   )..layout(minWidth: 0, maxWidth: 200);
-//
-//   return textPainter.didExceedMaxLines;
-// }
 }

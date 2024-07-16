@@ -12,7 +12,7 @@ class ELSProductListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: FutureBuilder(
-        future: Provider.of<ELSProductsProvider>(context, listen: false).fetchProducts(type),
+        future: Provider.of<ELSProductsProvider>(context, listen: false).refreshProducts(type),
         builder: (ctx, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -21,36 +21,41 @@ class ELSProductListView extends StatelessWidget {
           } else {
             return Consumer<ELSProductsProvider>(
               builder: (context, productsProvider, child) {
+                Widget body;
                 if (productsProvider.isLoading &&
                     productsProvider.products.isEmpty) {
-                  return const Center(child: CircularProgressIndicator());
+                  body = const Center(child: CircularProgressIndicator());
                 }
-                if (productsProvider.products.isEmpty) {
-                  return const Center(child: Text('상품이 존재하지 않습니다.'));
+                else if (productsProvider.products.isEmpty) {
+                  body = const Center(child: Text('상품이 존재하지 않습니다.'));
                 }
-                return NotificationListener<ScrollNotification>(
-                  onNotification: (ScrollNotification scrollInfo) {
-                    if (!productsProvider.isLoading &&
-                        productsProvider.hasNext &&
-                        scrollInfo.metrics.pixels ==
-                            scrollInfo.metrics.maxScrollExtent) {
-                      productsProvider.fetchProducts(type);
-                    }
-                    return false;
-                  },
-                  child: RefreshIndicator(
-                    onRefresh: () async {
-                      // productsProvider.resetProducts();
-                      productsProvider.fetchProducts(type);
+                else {
+                  body = NotificationListener<ScrollNotification>(
+                    onNotification: (ScrollNotification scrollInfo) {
+                      if (!productsProvider.isLoading &&
+                          productsProvider.hasNext &&
+                          scrollInfo.metrics.pixels ==
+                              scrollInfo.metrics.maxScrollExtent) {
+                        productsProvider.fetchProducts(type);
+                      }
+                      return false;
                     },
                     child: ListView.builder(
                       itemCount: productsProvider.products.length,
                       itemBuilder: (context, index) {
                         return ELSProductCard(
-                            product: productsProvider.products[index]);
+                          product: productsProvider.products[index],
+                          index: index,
+                        );
                       },
                     ),
-                  ),
+                  );
+                }
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    productsProvider.refreshProducts(type);
+                  },
+                  child: body,
                 );
               },
             );
