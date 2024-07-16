@@ -15,7 +15,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 1;
 
-  final List<Widget> _pages = const [
+  final List<Widget> _pages = [
     ProductScreen(),
     HomeScreen(),
     MyScreen(),
@@ -45,7 +45,9 @@ class _MainScreenState extends State<MainScreen> {
         index: _selectedIndex,
         children: _pages,
       ),
-      bottomNavigationBar: BottomNavigationBarWidget(changeIndex: _onItemTapped,),
+      bottomNavigationBar: BottomNavigationBarWidget(
+        changeIndex: _onItemTapped,
+      ),
     );
   }
 }
