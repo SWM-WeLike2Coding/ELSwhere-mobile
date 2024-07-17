@@ -5,7 +5,7 @@ import '../models/dtos/response_single_product_dto.dart';
 import '../resources/config.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-class ProductService {
+class  ProductService {
   static final String _baseUrl = dotenv.env['ELS_BASE_URL']!;
 
   Future<ResponsePageSummarizedProductDto> fetchProducts(String type, int page, int size) async {

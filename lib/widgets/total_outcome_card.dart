@@ -55,7 +55,7 @@ class TotalOutcomeCard extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        isHoldingNow ? "현재 보유중인 상품" : "상환 완료한 상품",
+                        isHoldingNow ? "보유상품" : "상환완료 상품",
                         style: const TextStyle(
                           fontSize: 12,
                           color: Color(0xFF444444),
@@ -99,9 +99,10 @@ class TotalOutcomeCard extends StatelessWidget {
                         width: 10,
                       ),
                       Text(
-                        "+${formatCurrency((sumOfProperty * interestRate / 100).toInt())}원",
+                        "+${formatCurrency((sumOfProperty * interestRate / 100).toInt())}원(+${interestRate}%)",
                         style: TextStyle(
                           fontSize: 12,
+                          fontWeight: FontWeight.bold,
                           color: Color(0xFF5D63FF),
                         ),
                       )
