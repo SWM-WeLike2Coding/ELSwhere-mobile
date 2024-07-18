@@ -35,7 +35,7 @@ class TotalAttentionCard extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    "내가 관심 등록한 상품",
+                    "관심상품",
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
