@@ -1,4 +1,6 @@
 import 'package:elswhere/resources/app_resource.dart';
+import 'package:elswhere/screens/attention_setting_screen.dart';
+import 'package:elswhere/screens/holding_products_screen.dart';
 import 'package:elswhere/views/els_product_list_view.dart';
 import 'package:elswhere/views/holding_product_list_view.dart';
 import 'package:elswhere/widgets/holding_product_card.dart';
@@ -46,34 +48,42 @@ class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 12,),
-              Card(
-                elevation: 3,
-                child: InkWell(
-                  child: Container(
-                    padding: edgeInsetsAll12,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.white,
-                          Color(0xFFA4C1FF),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: borderRadiusCircular10,
-                    ),
-                    child: Center(
-                      child:
-                        Text(
-                          "원하는 조건을 등록하고\n관심상품 알림을 받아보세요.",
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF444444),
-                          ),
-                          textAlign: TextAlign.center,
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AttentionSettingScreen()),
+                  );
+                },
+                child: Card(
+                  elevation: 3,
+                  child: InkWell(
+                    child: Container(
+                      padding: edgeInsetsAll12,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.white,
+                            Color(0xFFA4C1FF),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
                         ),
+                        borderRadius: borderRadiusCircular10,
+                      ),
+                      child: Center(
+                        child:
+                          Text(
+                            "원하는 조건을 등록하고\n관심상품 알림을 받아보세요.",
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF444444),
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                      ),
                     ),
                   ),
                 ),

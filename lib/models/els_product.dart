@@ -9,6 +9,7 @@ enum ELSType {
   lizard,
 }
 
+
 @JsonSerializable()
 class ELSProduct {
   final List<String> assetNames; // 기초자산명

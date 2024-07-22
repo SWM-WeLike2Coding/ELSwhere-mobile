@@ -9,7 +9,7 @@ class  ProductService {
   static final String _baseUrl = dotenv.env['ELS_BASE_URL']!;
 
   Future<ResponsePageSummarizedProductDto> fetchProducts(String type, int page, int size) async {
-    final url = '$_baseUrl/product/on-sale?type=$type&page=$page&size=$size';
+    final url = '$_baseUrl/product-service/product/on-sale?type=$type&page=$page&size=$size';
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
@@ -23,7 +23,7 @@ class  ProductService {
   }
 
   Future<ResponseSingleProductDto> fetchProduct(int id) async {
-    final url = '$_baseUrl/product/$id';
+    final url = '$_baseUrl/product-service/product/$id';
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
