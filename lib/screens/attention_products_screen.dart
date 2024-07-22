@@ -1,4 +1,6 @@
 import 'package:elswhere/resources/app_resource.dart';
+import 'package:elswhere/screens/attention_setting_screen.dart';
+import 'package:elswhere/screens/holding_products_screen.dart';
 import 'package:elswhere/views/els_product_list_view.dart';
 import 'package:elswhere/views/holding_product_list_view.dart';
 import 'package:elswhere/widgets/holding_product_card.dart';
@@ -26,6 +28,10 @@ class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
             icon: const Icon(Icons.arrow_back_rounded),
             onPressed: () {
               Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AttentionSettingScreen()),
+              );
             },
           ),
           actions: [
@@ -49,6 +55,12 @@ class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
               Card(
                 elevation: 3,
                 child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AttentionSettingScreen()),
+                    );
+                  },
                   child: Container(
                     padding: edgeInsetsAll12,
                     height: 100,
