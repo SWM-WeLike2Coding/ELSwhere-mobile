@@ -28,6 +28,10 @@ class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
             icon: const Icon(Icons.arrow_back_rounded),
             onPressed: () {
               Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AttentionSettingScreen()),
+              );
             },
           ),
           actions: [
@@ -48,42 +52,40 @@ class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 12,),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AttentionSettingScreen()),
-                  );
-                },
-                child: Card(
-                  elevation: 3,
-                  child: InkWell(
-                    child: Container(
-                      padding: edgeInsetsAll12,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.white,
-                            Color(0xFFA4C1FF),
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        borderRadius: borderRadiusCircular10,
+              Card(
+                elevation: 3,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AttentionSettingScreen()),
+                    );
+                  },
+                  child: Container(
+                    padding: edgeInsetsAll12,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.white,
+                          Color(0xFFA4C1FF),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
                       ),
-                      child: Center(
-                        child:
-                          Text(
-                            "원하는 조건을 등록하고\n관심상품 알림을 받아보세요.",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF444444),
-                            ),
-                            textAlign: TextAlign.center,
+                      borderRadius: borderRadiusCircular10,
+                    ),
+                    child: Center(
+                      child:
+                        Text(
+                          "원하는 조건을 등록하고\n관심상품 알림을 받아보세요.",
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF444444),
                           ),
-                      ),
+                          textAlign: TextAlign.center,
+                        ),
                     ),
                   ),
                 ),
