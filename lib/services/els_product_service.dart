@@ -34,4 +34,25 @@ class  ProductService {
       throw Exception(errorMessage);
     }
   }
+
+  Future<ResponsePageSummarizedProductDto> fetchFilteredProducts(String body) async {
+    final url = Uri.parse('$_baseUrl/product-service/product/search');
+    final headers = {'Content-Type': 'application/json; charset=UTF-8'};
+
+    print(body);
+    try {
+      final response = await http.post(url, headers: headers, body: body);
+      if (response.statusCode == 200) {
+        final decodedResponse = utf8.decode(response.bodyBytes);
+        final data = json.decode(decodedResponse);
+        return ResponsePageSummarizedProductDto.fromJson(data);
+      } else {
+        print('Failed to post data. Status code: ${response.statusCode}');
+        throw Exception(errorMessage);
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception(errorMessage);
+    }
+  }
 }

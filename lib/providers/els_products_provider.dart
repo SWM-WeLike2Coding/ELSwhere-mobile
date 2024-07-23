@@ -40,6 +40,25 @@ class ELSProductsProvider with ChangeNotifier {
     }
   }
 
+  // 07-22 상품 검색 구현하면서 try 함수
+  Future<void> fetchFilteredProducts(String body) async {
+    resetProducts();
+    _isLoading = true;
+    notifyListeners();
+    try {
+      final responsePage = await _productService.fetchFilteredProducts(body);
+      _products += responsePage.content;
+      _hasNext = responsePage.hasNext;
+      _page++;
+    } catch (error) {
+      print('Error fetching products: $error');
+      // 에러 처리 로직 추가
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
   void resetProducts() {
     _products = [];
     _page = 0;
