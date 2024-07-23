@@ -5,6 +5,7 @@ part 'summarized_product_dto.g.dart';
 @JsonSerializable()
 class SummarizedProductDto {
   final int id;
+  final String issuer;
   final String name;
   final String equities;
   final double yieldIfConditionsMet;
@@ -13,6 +14,7 @@ class SummarizedProductDto {
 
   SummarizedProductDto({
     required this.id,
+    required this.issuer,
     required this.name,
     required this.equities,
     required this.yieldIfConditionsMet,
