@@ -47,7 +47,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
     } else if (_isStock) {
       equityType = "STOCK";
     } else {
-      equityType = "MIX";  // 이거 바꿔줘야함
+      equityType = null;  // 이거 바꿔줘야함
     }
 
     List<String> typeList = ["STEP_DOWN", "LIZARD", "MONTHLY_PAYMENT", "ETC"];
