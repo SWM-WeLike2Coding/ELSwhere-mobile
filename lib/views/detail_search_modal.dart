@@ -40,7 +40,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
 
   Future<void> _getFilteredData() async {
     String? equityType = null;
-    if (_isStock && _isStock) {
+    if (_isStock && _isIndex) {
       equityType = "MIX";
     } else if (_isIndex) {
       equityType = "INDEX";
