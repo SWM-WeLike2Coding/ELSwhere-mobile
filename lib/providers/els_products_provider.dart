@@ -17,6 +17,21 @@ class ELSProductsProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   bool get hasNext => _hasNext;
 
+  Future<void> initProducts(String type) async {
+    try {
+      final responsePage = await _productService.fetchProducts(type, _page, _size);
+      _products += responsePage.content;
+      _hasNext = responsePage.hasNext;
+      _page++;
+    } catch (error) {
+      print('Error fetching products: $error');
+      // 에러 처리 로직 추가
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
   Future<void> refreshProducts(String type) async {
     resetProducts();
     fetchProducts(type);

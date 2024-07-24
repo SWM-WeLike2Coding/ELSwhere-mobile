@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/els_products_provider.dart';
 import '../resources/app_resource.dart';
-import '../views/detail_search_modal.dart';
 import '../views/els_product_list_view.dart';
 import '../widgets/search_text_field.dart';
 
@@ -29,18 +28,13 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   String type = 'latest';
   String selectedValue = '최신순';
-
-  late Future<void> _productsFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    _productsFuture = _initializeProducts();
-    print('Hello: $_productsFuture');
-  }
-
-  Future<void> _initializeProducts() async {
-    await Provider.of<ELSProductsProvider>(context, listen: false).refreshProducts(type);
+  
+  Future<void> typeChanged(BuildContext context, String? value) async {
+    await Provider.of<ELSProductsProvider>(context, listen: false).refreshProducts(value!);
+    setState(() {
+      selectedValue = value!;
+      type = widget.itemsMap[value]!;
+    });
   }
 
   @override
@@ -103,11 +97,8 @@ class _ProductScreenState extends State<ProductScreen> {
                     child: Text(item),
                   )).toList(),
                   value: selectedValue,
-                  onChanged: (String? value) {
-                    setState(() {
-                      selectedValue = value!;
-                      type = widget.itemsMap[value]!;
-                    });
+                  onChanged: (String? value) async {
+                    await typeChanged(context, value);
                   },
                   buttonStyleData: const ButtonStyleData(
                     height: 40,
@@ -118,24 +109,6 @@ class _ProductScreenState extends State<ProductScreen> {
                   ),
                 ),
               ),
-              // TextButton.icon(
-              //   icon: const Icon(Icons.filter_list),
-              //   label: const Text(
-              //     '필터링',
-              //     style: TextStyle(fontWeight: FontWeight.w600),
-              //   ),
-              //   style: TextButton.styleFrom(
-              //     foregroundColor: AppColors.contentBlack,
-              //   ),
-              //   onPressed: () {
-              //     showModalBottomSheet(
-              //         context: context,
-              //         isScrollControlled: true,
-              //         useSafeArea: true,
-              //         builder: (context) => const DetailSearchModal(),
-              //     );
-              //   },
-              // ),
             ],
           ),
           ELSProductListView(type: type),
