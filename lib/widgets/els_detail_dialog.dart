@@ -17,7 +17,7 @@ class ELSDetailDialog {
             child: Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: [  
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [

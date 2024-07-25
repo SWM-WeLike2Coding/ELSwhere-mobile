@@ -1,8 +1,6 @@
 import 'package:elswhere/screens/product_screen.dart';
 import 'package:elswhere/widgets/drawer_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../providers/els_products_provider.dart';
 import '../widgets/bottom_navigation_bar_widget.dart';
 import 'home_screen.dart';
 import 'my_screen.dart';

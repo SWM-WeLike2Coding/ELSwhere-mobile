@@ -5,11 +5,11 @@ part 'response_single_product_dto.g.dart';
 @JsonSerializable()
 class ResponseSingleProductDto {
   final int id;
-  final String publisher;
+  final String issuer;
   final String name;
   final String equities;
   final int equityCount;
-  final String? knockIn;
+  final int? knockIn;
   final String volatilites;
   final String earlyRepaymentEvaluationDates;
   final String issuedDate;
@@ -29,7 +29,7 @@ class ResponseSingleProductDto {
 
   ResponseSingleProductDto({
     required this.id,
-    required this.publisher,
+    required this.issuer,
     required this.name,
     required this.equities,
     required this.equityCount,

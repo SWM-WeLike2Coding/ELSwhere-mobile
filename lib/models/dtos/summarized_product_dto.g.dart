@@ -10,6 +10,7 @@ SummarizedProductDto _$SummarizedProductDtoFromJson(
         Map<String, dynamic> json) =>
     SummarizedProductDto(
       id: (json['id'] as num).toInt(),
+      issuer: json['issuer'] as String,
       name: json['name'] as String,
       equities: json['equities'] as String,
       yieldIfConditionsMet: (json['yieldIfConditionsMet'] as num).toDouble(),
@@ -23,6 +24,7 @@ Map<String, dynamic> _$SummarizedProductDtoToJson(
         SummarizedProductDto instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'issuer': instance.issuer,
       'name': instance.name,
       'equities': instance.equities,
       'yieldIfConditionsMet': instance.yieldIfConditionsMet,

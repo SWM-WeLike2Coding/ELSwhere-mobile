@@ -1,4 +1,7 @@
 import 'package:elswhere/resources/app_resource.dart';
+import 'package:elswhere/screens/attention_products_screen.dart';
+import 'package:elswhere/screens/holding_products_screen.dart';
+import 'package:elswhere/screens/redempted_products_screen.dart';
 import 'package:elswhere/widgets/total_attention_card.dart';
 import 'package:elswhere/widgets/total_outcome_card.dart';
 import 'package:flutter/material.dart';
@@ -28,23 +31,46 @@ class _MyScreenState extends State<MyScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              '내 자산',
+              '내자산',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 12,),
-            TotalOutcomeCard(
-              isHoldingNow: true,
-              numProducts: 4,
-              sumOfProperty: 5540000,
-              interestRate: 10,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HoldingProductsScreen()),
+                );
+              },
+              child: TotalOutcomeCard(
+                isHoldingNow: true,
+                numProducts: 4,
+                sumOfProperty: 5540000,
+                interestRate: 10,
+              ),
             ),
-            TotalOutcomeCard(
-              isHoldingNow: false,
-              numProducts: 10,
-              sumOfProperty: 55540000,
-              interestRate: 10,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RedemptedProductsScreen()),
+                );
+              },
+              child: TotalOutcomeCard(
+                isHoldingNow: false,
+                numProducts: 10,
+                sumOfProperty: 55540000,
+                interestRate: 10,
+              ),
             ),
-            TotalAttentionCard(numProducts: 4),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AttentionProductsScreen()),
+                );
+              },
+              child: TotalAttentionCard(numProducts: 4)),
             SizedBox(height: 20,),
             Padding(
               padding: edgeInsetsAll8,
@@ -53,7 +79,7 @@ class _MyScreenState extends State<MyScreen> {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: "이번 ${DateTime.now().month}월 WL2C님의\n",
+                      text: "${DateTime.now().month}월, WL2C님의\n",
                       style: TextStyle(color: Colors.black, fontSize: 16),
                     ),
                     TextSpan(
@@ -69,11 +95,11 @@ class _MyScreenState extends State<MyScreen> {
                       style: TextStyle(color: Colors.black, fontSize: 16),
                     ),
                     TextSpan(
-                      text: "3개\n",
+                      text: "3개 ",
                       style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
-                      text: "있습니다.",
+                      text: "있어요.",
                       style: TextStyle(color: Colors.black, fontSize: 16),
                     ),
                   ],
