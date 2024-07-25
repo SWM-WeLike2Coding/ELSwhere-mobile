@@ -5,14 +5,14 @@ import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class ELSProductDetailView extends StatefulWidget {
-  const ELSProductDetailView({super.key});
+class ELSProductDetailScreen extends StatefulWidget {
+  const ELSProductDetailScreen({super.key});
 
   @override
-  State<ELSProductDetailView> createState() => _ELSProductDetailViewState();
+  State<ELSProductDetailScreen> createState() => _ELSProductDetailScreenState();
 }
 
-class _ELSProductDetailViewState extends State<ELSProductDetailView> {
+class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
   bool isLiked = false;
   bool isStared = false;
 
