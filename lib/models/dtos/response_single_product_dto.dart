@@ -9,7 +9,7 @@ class ResponseSingleProductDto {
   final String name;
   final String equities;
   final int equityCount;
-  final String? knockIn;
+  final int? knockIn;
   final String volatilites;
   final String earlyRepaymentEvaluationDates;
   final String issuedDate;
