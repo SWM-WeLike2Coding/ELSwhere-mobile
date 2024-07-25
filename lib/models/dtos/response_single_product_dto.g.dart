@@ -10,7 +10,7 @@ ResponseSingleProductDto _$ResponseSingleProductDtoFromJson(
         Map<String, dynamic> json) =>
     ResponseSingleProductDto(
       id: (json['id'] as num).toInt(),
-      publisher: json['publisher'] as String,
+      issuer: json['publisher'] as String,
       name: json['name'] as String,
       equities: json['equities'] as String,
       equityCount: (json['equityCount'] as num).toInt(),
@@ -41,7 +41,7 @@ Map<String, dynamic> _$ResponseSingleProductDtoToJson(
         ResponseSingleProductDto instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'publisher': instance.publisher,
+      'publisher': instance.issuer,
       'name': instance.name,
       'equities': instance.equities,
       'equityCount': instance.equityCount,

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:elswhere/providers/els_product_provider.dart';
 import 'package:elswhere/providers/els_products_provider.dart';
 import 'package:elswhere/resources/app_resource.dart';
@@ -9,9 +10,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
-  initApp();
-  runApp(const ELSwhere());
+void main() async {
+  await initApp();
+  runApp(ELSwhere());
 }
 
 Future<void> initApp() async {
@@ -20,14 +21,20 @@ Future<void> initApp() async {
 }
 
 class ELSwhere extends StatelessWidget {
-  const ELSwhere({super.key});
+  final Dio _dio = Dio();
+  late final ProductService _productService;
+
+  ELSwhere({super.key}) {
+    _productService = ProductService(_dio);
+  }
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => ELSProductsProvider(ProductService())),
-        ChangeNotifierProvider(create: (context) => ELSProductProvider(ProductService())),
+        ChangeNotifierProvider(create: (context) => ELSOnSaleProductsProvider(_productService)),
+        ChangeNotifierProvider(create: (context) => ELSEndSaleProductsProvider(_productService)),
+        ChangeNotifierProvider(create: (context) => ELSProductProvider(_productService)),
       ],
       child: MaterialApp(
         localizationsDelegates: const [

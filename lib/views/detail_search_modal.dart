@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 
+import '../models/dtos/request_product_search_dto.dart';
 import '../providers/els_products_provider.dart';
 
 
@@ -73,8 +74,10 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
     if (subscriptionStartDate != null) body['subscriptionStartDate'] = subscriptionStartDate;
     if (subscriptionEndDate != null) body['subscriptionEndDate'] = subscriptionEndDate;
 
-    String jsonBody = jsonEncode(body);
-    await Provider.of<ELSProductsProvider>(context, listen: false).fetchFilteredProducts(jsonBody);
+    // String jsonBody = jsonEncode(body);
+    final requestBody = RequestProductSearchDto.fromJson(body);
+    await Provider.of<ELSOnSaleProductsProvider>(context, listen: false).fetchFilteredProducts(requestBody);
+    await Provider.of<ELSEndSaleProductsProvider>(context, listen: false).fetchFilteredProducts(requestBody);
   }
 
   void _addChip() {

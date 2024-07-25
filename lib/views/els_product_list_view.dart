@@ -3,13 +3,13 @@ import 'package:provider/provider.dart';
 import '../providers/els_products_provider.dart';
 import '../widgets/els_product_card.dart';
 
-class ELSProductListView extends StatelessWidget {
+class ELSProductListView<T extends ELSProductsProvider> extends StatelessWidget {
   const ELSProductListView({super.key, required this.type});
 
   final String type;
 
   void _refreshList(BuildContext context) {
-    Provider.of<ELSProductsProvider>(context, listen: false).refreshProducts(type);
+    Provider.of<T>(context, listen: false).refreshProducts(type);
   }
 
   @override
@@ -17,14 +17,14 @@ class ELSProductListView extends StatelessWidget {
     print(type);
     return Expanded(
       child: FutureBuilder(
-        future: Provider.of<ELSProductsProvider>(context, listen: false).initProducts(type),
+        future: Provider.of<T>(context, listen: false).initProducts(type),
         builder: (ctx, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return const Center(child: Text('An error occurred!'));
           } else {
-            return Consumer<ELSProductsProvider>(
+            return Consumer<T>(
               builder: (context, productsProvider, child) {
                 if (productsProvider.isLoading && productsProvider.products.isEmpty) {
                   return const Center(child: CircularProgressIndicator());

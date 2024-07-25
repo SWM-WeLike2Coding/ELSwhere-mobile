@@ -25,12 +25,26 @@ class ProductScreen extends StatefulWidget {
   State<ProductScreen> createState() => _ProductScreenState();
 }
 
-class _ProductScreenState extends State<ProductScreen> {
+class _ProductScreenState extends State<ProductScreen> with SingleTickerProviderStateMixin {
   String type = 'latest';
   String selectedValue = '최신순';
+  int _tabIndex = 0;
+
+  late final TabController tabController = TabController(
+    length: 2,
+    vsync: this,
+    initialIndex: 0,
+    animationDuration: const Duration(milliseconds: 300),
+  );
   
   Future<void> typeChanged(BuildContext context, String? value) async {
-    await Provider.of<ELSProductsProvider>(context, listen: false).refreshProducts(value!);
+    //TODO: ProductProvider에 따라서 on sale end sale 구분해서 refresh 해야함
+    // switch(_tabIndex) {
+      // case 0:
+        await Provider.of<ELSOnSaleProductsProvider>(context, listen: false).refreshProducts(value!);
+      // case 1:
+        await Provider.of<ELSEndSaleProductsProvider>(context, listen: false).refreshProducts(value!);
+    // }
     setState(() {
       selectedValue = value!;
       type = widget.itemsMap[value]!;
@@ -111,7 +125,39 @@ class _ProductScreenState extends State<ProductScreen> {
               ),
             ],
           ),
-          ELSProductListView(type: type),
+          TabBar(
+            controller: tabController,
+            tabs: const [
+              Tab(text: '청약 중'),
+              Tab(text: '청약 종료'),
+            ],
+            labelColor: AppColors.contentBlack,
+            labelStyle: Theme.of(context).textTheme.displayMedium,
+            unselectedLabelColor: AppColors.contentGray,
+            unselectedLabelStyle: Theme.of(context).textTheme.displayMedium,
+            overlayColor: WidgetStatePropertyAll(AppColors.contentGray),
+            splashBorderRadius: BorderRadius.circular(10),
+            indicatorSize: TabBarIndicatorSize.tab,
+            indicatorPadding: const EdgeInsets.symmetric(horizontal: 12),
+            indicatorColor: AppColors.contentBlack,
+          ),
+          Expanded(
+            child: TabBarView(
+              controller: tabController,
+              children: [
+                Column(
+                  children: [
+                    ELSProductListView<ELSOnSaleProductsProvider>(type: type),
+                  ],
+                ),
+                Column(
+                  children: [
+                    ELSProductListView<ELSEndSaleProductsProvider>(type: type),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
