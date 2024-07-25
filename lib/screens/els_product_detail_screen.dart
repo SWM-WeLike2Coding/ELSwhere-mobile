@@ -5,6 +5,8 @@ import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import '../views/els_product_detail_view.dart';
+
 class ELSProductDetailScreen extends StatefulWidget {
   const ELSProductDetailScreen({super.key});
 
@@ -93,43 +95,7 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
                     ),
                   ],
                 ),
-                Consumer<ELSProductProvider>(
-                    builder: (context, productProvider, child) {
-                  if (productProvider.isLoading &&
-                      productProvider.product == null) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (productProvider.product == null) {
-                    return const Center(child: Text('상품이 존재하지 않습니다.'));
-                  }
-                  return Column(
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('발행 회사'),
-                                _buildCompanyCard(constraints),
-                              ],
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('발행 회사'),
-                              _buildCompanyCard(constraints),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                    ],
-                  );
-                })
+                ELSProductDetailView(constraints: constraints),
               ],
             ),
           ),

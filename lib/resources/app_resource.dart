@@ -37,7 +37,7 @@ const textTheme = TextTheme(
   bodyLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard),
   bodyMedium: TextStyle(fontFamily: Assets.fontFamilyPretendard),
   bodySmall: TextStyle(fontFamily: Assets.fontFamilyPretendard),
-  displayLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard),
+  displayLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard, fontSize: 24, fontWeight: FontWeight.w700),
   displayMedium: TextStyle(fontFamily: Assets.fontFamilyPretendard, fontSize: 18),
   displaySmall: TextStyle(fontFamily: Assets.fontFamilyPretendard),
   headlineLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard, fontWeight: FontWeight.w700),
