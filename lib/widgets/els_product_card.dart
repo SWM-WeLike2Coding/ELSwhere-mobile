@@ -1,7 +1,7 @@
 import 'dart:ui' as ui;
 
 import 'package:elswhere/resources/app_resource.dart';
-import 'package:elswhere/views/els_product_detail_view.dart';
+import 'package:elswhere/screens/els_product_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:marquee/marquee.dart';
@@ -92,7 +92,7 @@ class _ELSProductCardState extends State<ELSProductCard> {
 
                               if (productProvider.product != null) {
                                 // ELSDetailDialog.show(context, productProvider.product!);
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => ELSProductDetailView()));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => ELSProductDetailScreen()));
                               }
                             },
                           ),
