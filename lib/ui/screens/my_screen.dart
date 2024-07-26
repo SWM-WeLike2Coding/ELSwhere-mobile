@@ -1,9 +1,9 @@
-import 'package:elswhere/resources/app_resource.dart';
-import 'package:elswhere/screens/attention_products_screen.dart';
-import 'package:elswhere/screens/holding_products_screen.dart';
-import 'package:elswhere/screens/redempted_products_screen.dart';
-import 'package:elswhere/widgets/total_attention_card.dart';
-import 'package:elswhere/widgets/total_outcome_card.dart';
+import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/ui/screens/attention_products_screen.dart';
+import 'package:elswhere/ui/screens/holding_products_screen.dart';
+import 'package:elswhere/ui/screens/redempted_products_screen.dart';
+import 'package:elswhere/ui/widgets/total_attention_card.dart';
+import 'package:elswhere/ui/widgets/total_outcome_card.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 

@@ -1,13 +1,10 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:elswhere/resources/app_resource.dart';
+import 'package:elswhere/data/models/dtos/request_product_search_dto.dart';
+import 'package:elswhere/data/providers/els_products_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
-
-import '../models/dtos/request_product_search_dto.dart';
-import '../providers/els_products_provider.dart';
 
 
 class DetailSearchModal extends StatefulWidget {

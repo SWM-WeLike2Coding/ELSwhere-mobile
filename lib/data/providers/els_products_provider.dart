@@ -1,6 +1,5 @@
-import 'package:elswhere/models/dtos/request_product_search_dto.dart';
+import 'package:elswhere/data/models/dtos/request_product_search_dto.dart';
 import 'package:flutter/material.dart';
-import '../models/dtos/response_page_summarized_product_dto.dart';
 import '../models/dtos/summarized_product_dto.dart';
 import '../services/els_product_service.dart';
 

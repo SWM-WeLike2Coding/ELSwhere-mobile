@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:elswhere/resources/config.dart';
+import 'package:elswhere/config/config.dart';
 
 class ApiInterceptor extends Interceptor {
   @override

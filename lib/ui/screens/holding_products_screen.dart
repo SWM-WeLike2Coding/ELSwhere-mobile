@@ -1,6 +1,5 @@
-import 'package:elswhere/resources/app_resource.dart';
-import 'package:elswhere/views/holding_product_list_view.dart';
-import 'package:elswhere/widgets/holding_product_card.dart';
+import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/ui/widgets/holding_product_card.dart';
 import 'package:flutter/material.dart';
 
 // 이슈들

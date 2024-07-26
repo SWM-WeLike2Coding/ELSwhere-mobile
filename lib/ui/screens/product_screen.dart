@@ -1,8 +1,8 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/data/providers/els_products_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/els_products_provider.dart';
-import '../resources/app_resource.dart';
 import '../views/els_product_list_view.dart';
 import '../widgets/search_text_field.dart';
 

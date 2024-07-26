@@ -1,12 +1,7 @@
-import 'package:elswhere/resources/app_resource.dart';
-import 'package:elswhere/screens/attention_setting_screen.dart';
-import 'package:elswhere/screens/holding_products_screen.dart';
-import 'package:elswhere/views/els_product_list_view.dart';
-import 'package:elswhere/views/holding_product_list_view.dart';
-import 'package:elswhere/widgets/holding_product_card.dart';
+import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/ui/screens/attention_setting_screen.dart';
+import 'package:elswhere/ui/views/els_product_list_view.dart';
 import 'package:flutter/material.dart';
-
-import '../widgets/rounded_text_container.dart';
 
 // 이슈들
 // 1. 피그마에서 우측 상단에 '+' 버튼이 있는데 어떤 역할을 하는건지 모르겠음

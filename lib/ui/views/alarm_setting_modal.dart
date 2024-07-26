@@ -1,4 +1,4 @@
-import 'package:elswhere/resources/app_resource.dart';
+import 'package:elswhere/config/app_resource.dart';
 import 'package:flutter/material.dart';
 
 

@@ -1,5 +1,5 @@
-import 'package:elswhere/resources/app_resource.dart';
-import 'package:elswhere/widgets/rounded_text_container.dart';
+import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/ui/widgets/rounded_text_container.dart';
 import 'package:flutter/material.dart';
 
 class TotalAttentionCard extends StatelessWidget {

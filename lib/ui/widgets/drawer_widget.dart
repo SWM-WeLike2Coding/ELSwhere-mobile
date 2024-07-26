@@ -1,6 +1,5 @@
+import 'package:elswhere/config/app_resource.dart';
 import 'package:flutter/material.dart';
-
-import '../resources/app_resource.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({super.key});
