@@ -1,7 +1,7 @@
-import 'package:elswhere/resources/app_resource.dart';
+import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/data/models/dtos/response_single_product_dto.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../models/dtos/response_single_product_dto.dart';
 import 'explain_card.dart';
 
 class ELSDetailDialog {

@@ -1,13 +1,13 @@
 import 'dart:ui' as ui;
 
-import 'package:elswhere/resources/app_resource.dart';
-import 'package:elswhere/screens/els_product_detail_screen.dart';
+import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/data/models/dtos/summarized_product_dto.dart';
+import 'package:elswhere/data/providers/els_product_provider.dart';
+import 'package:elswhere/ui/screens/els_product_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
-import '../models/dtos/summarized_product_dto.dart';
-import '../providers/els_product_provider.dart';
 
 class ELSProductCard extends StatefulWidget {
   final SummarizedProductDto product;

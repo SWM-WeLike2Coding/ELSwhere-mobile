@@ -1,10 +1,5 @@
-import 'package:elswhere/screens/holding_products_screen.dart';
-import 'package:elswhere/views/alarm_setting_modal.dart';
+import 'package:elswhere/ui/views/alarm_setting_modal.dart';
 import 'package:flutter/material.dart';
-
-import '../resources/app_resource.dart';
-import '../views/detail_search_modal.dart';
-import '../views/els_product_list_view.dart';
 
 class AttentionSettingScreen extends StatefulWidget {
   const AttentionSettingScreen({super.key});

@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:elswhere/providers/els_product_provider.dart';
-import 'package:elswhere/providers/els_products_provider.dart';
-import 'package:elswhere/resources/app_resource.dart';
-import 'package:elswhere/resources/config.dart';
-import 'package:elswhere/services/els_product_service.dart';
-import 'package:elswhere/screens/main_screen.dart';
+import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/config/config.dart';
+import 'package:elswhere/data/providers/els_product_provider.dart';
+import 'package:elswhere/data/providers/els_products_provider.dart';
+import 'package:elswhere/data/services/els_product_service.dart';
+import 'package:elswhere/ui/screens/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';

@@ -1,8 +1,7 @@
+import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../providers/els_product_provider.dart';
-import '../resources/app_resource.dart';
 
 class ELSProductDetailView extends StatelessWidget {
   final BoxConstraints constraints;

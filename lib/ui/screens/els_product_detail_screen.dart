@@ -1,11 +1,8 @@
-import 'package:elswhere/providers/els_product_provider.dart';
-import 'package:elswhere/resources/app_resource.dart';
+import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/ui/views/els_product_detail_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
-import '../views/els_product_detail_view.dart';
 
 class ELSProductDetailScreen extends StatefulWidget {
   const ELSProductDetailScreen({super.key});

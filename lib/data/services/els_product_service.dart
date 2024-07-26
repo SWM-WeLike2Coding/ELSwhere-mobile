@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:elswhere/models/dtos/request_product_search_dto.dart';
-import 'package:elswhere/resources/config.dart';
-import 'package:elswhere/services/api_interceptor.dart';
+import 'package:elswhere/config/config.dart';
+import 'package:elswhere/data/models/dtos/request_product_search_dto.dart';
+import 'package:elswhere/data/services/api_interceptor.dart';
 import 'package:retrofit/retrofit.dart';
 import '../models/dtos/response_page_summarized_product_dto.dart';
 import '../models/dtos/response_single_product_dto.dart';

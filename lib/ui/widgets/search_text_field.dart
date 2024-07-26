@@ -1,7 +1,7 @@
 import 'dart:ui';
 
-import 'package:elswhere/resources/app_resource.dart';
-import 'package:elswhere/views/detail_search_modal.dart';
+import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/ui/views/detail_search_modal.dart';
 import 'package:flutter/material.dart';
 
 import '../views/alarm_setting_modal.dart';
