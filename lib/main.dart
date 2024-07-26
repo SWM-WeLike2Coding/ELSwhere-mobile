@@ -18,6 +18,8 @@ void main() async {
 Future<void> initApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
+  baseUrl = dotenv.env['ELS_BASE_URL']!;
+  accessToken = dotenv.env['ACCESS_TOKEN']!;
 }
 
 class ELSwhere extends StatelessWidget {
