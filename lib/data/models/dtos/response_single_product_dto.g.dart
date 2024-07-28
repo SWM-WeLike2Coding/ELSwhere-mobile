@@ -14,7 +14,7 @@ ResponseSingleProductDto _$ResponseSingleProductDtoFromJson(
       name: json['name'] as String,
       equities: json['equities'] as String,
       equityCount: (json['equityCount'] as num).toInt(),
-      knockIn: json['knockIn'] as int?,
+      knockIn: (json['knockIn'] as num?)?.toInt(),
       volatilites: json['volatilites'] as String,
       earlyRepaymentEvaluationDates:
           json['earlyRepaymentEvaluationDates'] as String,
