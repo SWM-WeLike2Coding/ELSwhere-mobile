@@ -7,6 +7,7 @@ class SummarizedProductDto {
   final int id;
   final String issuer;
   final String name;
+  final String productType;
   final String equities;
   final double yieldIfConditionsMet;
   final DateTime subscriptionStartDate;
@@ -16,6 +17,7 @@ class SummarizedProductDto {
     required this.id,
     required this.issuer,
     required this.name,
+    required this.productType,
     required this.equities,
     required this.yieldIfConditionsMet,
     required this.subscriptionStartDate,

@@ -1,6 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/data/providers/els_products_provider.dart';
+import 'package:elswhere/ui/widgets/stock_index_card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../views/els_product_list_view.dart';
@@ -28,7 +29,9 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> with SingleTickerProviderStateMixin {
   String type = 'latest';
   String selectedValue = '최신순';
+  bool applyTendency = false;
   int _tabIndex = 0;
+  int _count = 0;
 
   late final TabController tabController = TabController(
     length: 2,
@@ -51,115 +54,199 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
     });
   }
 
+  void _changeTendency(bool value) {
+    setState(() {
+      applyTendency = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: edgeInsetsAll16,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'ELS 상품',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              Expanded(child: SearchTextField()),
-              Container(
-                margin: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: borderRadiusCircular10),
-                    fixedSize: const Size(50, 50),
-                    foregroundColor: AppColors.contentWhite,
-                    backgroundColor: AppColors.contentPurple,
-                  ),
-                  child: const FittedBox(
-                    fit: BoxFit.none,
-                    child: Text(
-                      '검색',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                '상품 목록',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              DropdownButtonHideUnderline(
-                child: DropdownButton2<String>(
-                  isExpanded: true,
-                  hint: Text(
-                    'Select Item',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(context).hintColor,
-                    ),
-                  ),
-                  items: widget.items.map((String item) => DropdownMenuItem<String>(
-                    value: item,
-                    child: Text(item),
-                  )).toList(),
-                  value: selectedValue,
-                  onChanged: (String? value) async {
-                    await typeChanged(context, value);
-                  },
-                  buttonStyleData: const ButtonStyleData(
-                    height: 40,
-                    width: 90,
-                  ),
-                  menuItemStyleData: const MenuItemStyleData(
-                    height: 40,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          TabBar(
-            controller: tabController,
-            tabs: const [
-              Tab(text: '청약 중'),
-              Tab(text: '청약 종료'),
-            ],
-            labelColor: AppColors.contentBlack,
-            labelStyle: Theme.of(context).textTheme.displayMedium,
-            unselectedLabelColor: AppColors.contentGray,
-            unselectedLabelStyle: Theme.of(context).textTheme.displayMedium,
-            overlayColor: WidgetStatePropertyAll(AppColors.contentGray),
-            splashBorderRadius: BorderRadius.circular(10),
-            indicatorSize: TabBarIndicatorSize.tab,
-            indicatorPadding: const EdgeInsets.symmetric(horizontal: 12),
-            indicatorColor: AppColors.contentBlack,
-          ),
-          Expanded(
-            child: TabBarView(
-              controller: tabController,
-              children: [
-                Column(
-                  children: [
-                    ELSProductListView<ELSOnSaleProductsProvider>(type: type),
-                  ],
-                ),
-                Column(
-                  children: [
-                    ELSProductListView<ELSEndSaleProductsProvider>(type: type),
-                  ],
-                ),
-              ],
+    return Scaffold(
+      appBar: AppBar(
+        leading: Padding(
+          padding: edgeInsetsAll8,
+          child: StockIndexCardSwiper(),
+        ),
+        leadingWidth: 300,
+        actions: [
+          Padding(
+            padding: edgeInsetsAll8,
+            child: IconButton(
+              icon: const Icon(Icons.notifications_none_rounded, size: 30,),
+              onPressed: () {},
             ),
           ),
         ],
       ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // const Text(
+            //   'ELS 상품',
+            //   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            // ),
+            // const SizedBox(height: 16),
+            const Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: edgeInsetsAll8,
+                    child: SearchTextField(),
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: edgeInsetsAll8,
+              child: TabBar(
+                controller: tabController,
+                tabs: const [
+                  Tab(text: '청약 중'),
+                  Tab(text: '청약 종료'),
+                ],
+                tabAlignment: TabAlignment.start,
+                isScrollable: true,
+                labelColor: AppColors.contentBlack,
+                labelStyle: Theme.of(context).textTheme.displayMedium,
+                unselectedLabelColor: AppColors.contentGray,
+                unselectedLabelStyle: Theme.of(context).textTheme.displayMedium,
+                overlayColor: const WidgetStatePropertyAll(AppColors.contentGray),
+                splashBorderRadius: BorderRadius.circular(10),
+                indicatorSize: TabBarIndicatorSize.tab,
+                indicatorPadding: const EdgeInsets.symmetric(horizontal: 12),
+                indicatorColor: AppColors.contentBlack,
+                dividerColor: const Color(0xFFE6E7E8),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: edgeInsetsAll8,
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton2<String>(
+                      isExpanded: true,
+                      hint: Text(
+                        'Select Item',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Theme.of(context).hintColor,
+                        ),
+                      ),
+                      items: widget.items.map((String item) => DropdownMenuItem<String>(
+                        value: item,
+                        child: Text(item),
+                      )).toList(),
+                      value: selectedValue,
+                      onChanged: (String? value) async {
+                        await typeChanged(context, value);
+                      },
+                      buttonStyleData: const ButtonStyleData(
+                        height: 40,
+                        width: 90,
+                      ),
+                      menuItemStyleData: const MenuItemStyleData(
+                        height: 40,
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: edgeInsetsAll8,
+                  child: Row(
+                    children: [
+                      Text(
+                        '투자 성향 반영',
+                        style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                          fontSize: 14,
+                          color: const Color(0xFF838A8E),
+                        )
+                      ),
+                      const SizedBox(width: 8),
+                      SizedBox(
+                        height: 32,
+                        child: FittedBox(
+                          fit: BoxFit.fitHeight,
+                          child: Switch(
+                            value: applyTendency,
+                            onChanged: (value) => _changeTendency(value),
+                            inactiveTrackColor: AppColors.contentGray,
+                            trackOutlineWidth: const WidgetStatePropertyAll(0),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            Expanded(
+              child: TabBarView(
+                controller: tabController,
+                children: [
+                  Column(
+                    children: [
+                      ELSProductListView<ELSOnSaleProductsProvider>(type: type),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      ELSProductListView<ELSEndSaleProductsProvider>(type: type),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: ElevatedButton.icon(
+        label: FittedBox(
+          fit: BoxFit.fitWidth,
+          child: Row(
+            children: [
+              Text(
+                '상품 비교',
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  color: AppColors.contentWhite,
+                  fontSize: 15,
+                  letterSpacing: -0.7
+                ),
+              ),
+              const SizedBox(width: 10),
+              SizedBox(
+                height: 20,
+                child: FittedBox(
+                  fit: BoxFit.fitHeight,
+                  child: CircleAvatar(
+                    child: Text(
+                      '$_count',
+                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        color: Color(0xFF434648),
+                        fontSize: 30,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    backgroundColor: AppColors.contentWhite,
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+        onPressed: () {
+          setState(() {
+            _count++;
+          });
+        },
+        style: const ButtonStyle(
+          backgroundColor: const WidgetStatePropertyAll(Color(0xFF434648)),
+        ),
+      ),
     );
   }
+
 }

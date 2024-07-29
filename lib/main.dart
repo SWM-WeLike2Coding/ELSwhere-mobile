@@ -5,10 +5,9 @@ import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/data/providers/els_products_provider.dart';
 import 'package:elswhere/data/services/els_product_service.dart';
 import 'package:elswhere/ui/screens/login_screen.dart';
-import 'package:elswhere/ui/screens/main_screen.dart';
-import 'package:elswhere/ui/screens/more_screen.dart';
 import 'package:elswhere/utils/material_color_builder.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -43,6 +42,7 @@ class ELSwhere extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => ELSProductProvider(_productService)),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         localizationsDelegates: const [
           GlobalCupertinoLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -56,19 +56,30 @@ class ELSwhere extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: MaterialColorBuilder.createMaterialColor(AppColors.mainBlue),
           primaryColor: AppColors.mainBlue,
+          colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: MaterialColorBuilder.createMaterialColor(Colors.white),
+          ),
+          scaffoldBackgroundColor: AppColors.contentWhite,
           textTheme: textTheme,
           buttonTheme: ButtonThemeData(
             buttonColor: AppColors.mainBlue,
             textTheme: ButtonTextTheme.primary,
           ),
+          appBarTheme: AppBarTheme(
+            backgroundColor: AppColors.contentWhite,
+          ),
           bottomNavigationBarTheme: BottomNavigationBarThemeData(
-            selectedItemColor: AppColors.mainBlue
+            selectedItemColor: AppColors.mainBlue,
+            backgroundColor: AppColors.contentWhite,
           ),
           switchTheme: SwitchThemeData(
             trackColor: WidgetStatePropertyAll(AppColors.mainBlue),
+            trackOutlineColor: WidgetStatePropertyAll(AppColors.contentGray),
+            thumbColor: WidgetStatePropertyAll(AppColors.contentWhite),
           )
         ),
         home: const LoginScreen(),
+        // home: MainScreen(),
       ),
     );
   }

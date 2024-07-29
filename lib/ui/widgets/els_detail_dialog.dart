@@ -23,11 +23,11 @@ class ELSDetailDialog {
                     children: [
                       ExplainCard(
                         borderRadius: 10,
-                        boxColors: [AppColors.contentPurple, Colors.white],
+                        boxColors: [AppColors.mainBlue, Colors.white],
                       ),
                       SizedBox(width: 10),
                       ExplainCard(borderRadius: 10,
-                        boxColors: [AppColors.contentPurple, Colors.white],
+                        boxColors: [AppColors.mainBlue, Colors.white],
                       ),
                     ],
                   ),
@@ -37,11 +37,11 @@ class ELSDetailDialog {
                     children: [
                       ExplainCard(
                         borderRadius: 10,
-                        boxColors: [AppColors.contentPurple, Colors.white],
+                        boxColors: [AppColors.mainBlue, Colors.white],
                       ),
                       SizedBox(width: 10),
                       ExplainCard(borderRadius: 10,
-                        boxColors: [AppColors.contentPurple, Colors.white],
+                        boxColors: [AppColors.mainBlue, Colors.white],
                       ),
                     ],
                   ),
@@ -51,11 +51,11 @@ class ELSDetailDialog {
                     children: [
                       ExplainCard(
                         borderRadius: 10,
-                        boxColors: [AppColors.contentPurple, Colors.white],
+                        boxColors: [AppColors.mainBlue, Colors.white],
                       ),
                       SizedBox(width: 10),
                       ExplainCard(borderRadius: 10,
-                        boxColors: [AppColors.contentPurple, Colors.white],
+                        boxColors: [AppColors.mainBlue, Colors.white],
                       ),
                     ],
                   ),

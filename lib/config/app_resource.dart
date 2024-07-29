@@ -11,10 +11,12 @@ sealed class Assets {
   static const String pretendardBold = "assets/fonts/pretendard/Pretendard-Bold.ttf";
   static const String pretendardExtraBold = "assets/fonts/pretendard/Pretendard-ExtraBold.ttf";
   static const String pretendardBlack = "assets/fonts/pretendard/Pretendard-Black.ttf";
+
+  static const String iconHana = "assets/icons/icon_hana.png";
 }
 
 sealed class AppColors {
-  static const Color contentPurple = Color(0xFF5D63FF);
+  static const Color contentRed = Color(0xFFEE5648);
   static const Color contentGray = Color(0xFFBABABA);
   static const Color contentBlack = Color(0xFF000000);
   static const Color contentWhite = Color(0xFFFFFFFF);
@@ -44,7 +46,7 @@ const textTheme = TextTheme(
   displaySmall: TextStyle(fontFamily: Assets.fontFamilyPretendard),
   headlineLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard, fontWeight: FontWeight.w700),
   headlineMedium: TextStyle(fontFamily: Assets.fontFamilyPretendard),
-  headlineSmall: TextStyle(fontFamily: Assets.fontFamilyPretendard),
+  headlineSmall: TextStyle(fontFamily: Assets.fontFamilyPretendard, fontSize: 16, fontWeight: FontWeight.w500),
   labelLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard),
   labelMedium: TextStyle(fontFamily: Assets.fontFamilyPretendard),
   labelSmall: TextStyle(fontFamily: Assets.fontFamilyPretendard),
