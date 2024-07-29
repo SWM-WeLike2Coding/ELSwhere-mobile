@@ -24,21 +24,21 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
     return BottomNavigationBar(
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(Icons.list),
-          label: '상품',
-        ),
-        BottomNavigationBarItem(
           icon: Icon(Icons.home),
           label: '홈',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: 'MY',
+          icon: Icon(Icons.sell_outlined),
+          label: '상품',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.menu),
+          label: '더보기',
         ),
       ],
       currentIndex: _selectedIndex,
-      // selectedItemColor: Colors.blue,
       onTap: _onItemTapped,
+
     );
   }
 }
