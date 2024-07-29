@@ -97,6 +97,7 @@ class _MemberQuitScreenState extends State<MemberQuitScreen> {
                     _isAgreeBtnChecked = value ?? false;
                   });
                 },
+                checkColor: Color(0xFFFFFFFF),
                 activeColor: Color(0xFF1C6BF9),
               ),
               GestureDetector(
