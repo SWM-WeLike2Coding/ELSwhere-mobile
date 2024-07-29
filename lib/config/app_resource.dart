@@ -31,6 +31,8 @@ sealed class AppColors {
   static const Color blues3 = Color(0xFFBBEEFF); // 여덟 번째 색상
   static const Color blues4 = Color(0xFF99CCFF); // 아홉 번째 색상
   static const Color blues5 = Color(0xFF77AAFF); // 열 번째 색상
+
+  static const Color mainBlue = Color(0xFF1C6BF9); // 메인 색상
 }
 
 const textTheme = TextTheme(
