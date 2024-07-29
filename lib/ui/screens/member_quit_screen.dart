@@ -99,8 +99,11 @@ class _MemberQuitScreenState extends State<MemberQuitScreen> {
                 },
                 activeColor: Color(0xFF1C6BF9),
               ),
-              Text(
-                "안내사항을 모두 확인하였고, 이에 동의합니다."
+              GestureDetector(
+                onTap: _toggleCheckbox,
+                child: Text(
+                  "안내사항을 모두 확인하였고, 이에 동의합니다."
+                ),
               ),
             ],
           ),
@@ -176,6 +179,12 @@ class _MemberQuitScreenState extends State<MemberQuitScreen> {
         ],
       ),
     );
+  }
+
+  void _toggleCheckbox() {
+    setState(() {
+      _isAgreeBtnChecked = !_isAgreeBtnChecked;
+    });
   }
 }
 
