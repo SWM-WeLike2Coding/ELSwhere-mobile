@@ -34,6 +34,7 @@ class _ELSProductCardState extends State<ELSProductCard> {
     final productProvider =
         Provider.of<ELSProductProvider>(context, listen: false);
     final format = DateFormat('yyyy년 MM월 dd일');
+    final dayDifference = widget.product.subscriptionEndDate.difference(DateTime.now()).inDays;
 
     void _onItemTapped() {
       setState(() {
@@ -271,7 +272,7 @@ class _ELSProductCardState extends State<ELSProductCard> {
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            '${widget.product.subscriptionEndDate.difference(DateTime.now()).inDays}일 뒤 마감',
+                            '${dayDifference.abs()}일 ${dayDifference < 0 ? '전' : '후'} 마감',
                             style: Theme.of(context).textTheme.displayMedium?.copyWith(
                               fontSize: 14,
                               color: const Color(0xFF595E62),
