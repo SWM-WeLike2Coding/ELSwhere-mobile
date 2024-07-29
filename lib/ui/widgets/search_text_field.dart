@@ -47,20 +47,20 @@ class _SearchTextFieldState extends State<SearchTextField> {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       height: 50,
       child: TextField(
         focusNode: _focusNode,
         decoration: InputDecoration(
           focusColor: Colors.amber,
-          prefixIcon: Icon(Icons.search),
-          hintText: '키워드 입력',
-          hintStyle: TextStyle(color: AppColors.contentGray),
+          prefixIcon: Icon(Icons.search, color: Colors.black.withOpacity(0.4),),
+          hintText: '상품 검색',
+          hintStyle: TextStyle(color: Color(0xFF595E62), letterSpacing: -0.02),
           border: OutlineInputBorder(
             borderRadius: borderRadiusCircular10,
             borderSide: BorderSide.none,
           ),
+          fillColor: Color(0xFFF5F6F6),
           filled: true,
           // fillColor: AppColors.contentPurple,
         ),

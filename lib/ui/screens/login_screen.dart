@@ -57,7 +57,7 @@ class LoginScreen extends StatelessWidget {
                         onPressed: () async {
                           final authUrl = baseUrl + loginEndpoint;
                           final response = await AuthService.authenticateUser(authUrl);
-                          accessToken = response.accessToken;
+                          if (response != null) accessToken = response.accessToken;
 
                           Navigator.push(
                             context,

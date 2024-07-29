@@ -57,6 +57,7 @@ dependencies:
   flutter_svg: ^2.0.10+1
   url_launcher: ^6.3.0
   webview_flutter: ^4.8.0
+  card_swiper: ^3.0.1
 
 dependency_overrides:
   fading_edge_scrollview: ^4.1.1
@@ -93,6 +94,7 @@ flutter:
   assets:
     - .env
     - assets/icons/icon_google.svg
+    - assets/icons/icon_hana.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -14,10 +14,10 @@ class DrawerWidget extends StatelessWidget {
             decoration: BoxDecoration(
               // image: const DecorationImage(
               //     image: AssetImage(Assets.appIconPath)),
-              color: AppColors.contentPurple,
+              color: AppColors.mainBlue,
               gradient: LinearGradient(colors: [
-                AppColors.contentPurple.withOpacity(0.9),
-                AppColors.contentPurple.withOpacity(0.5)
+                AppColors.mainBlue.withOpacity(0.9),
+                AppColors.mainBlue.withOpacity(0.5)
               ],
                   begin: Alignment.centerLeft),
             ),
