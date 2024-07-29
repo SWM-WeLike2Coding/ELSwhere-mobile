@@ -4,6 +4,7 @@ import 'package:elswhere/config/config.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/data/providers/els_products_provider.dart';
 import 'package:elswhere/data/services/els_product_service.dart';
+import 'package:elswhere/ui/screens/login_screen.dart';
 import 'package:elswhere/ui/screens/main_screen.dart';
 import 'package:elswhere/ui/screens/member_quit_screen.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ Future<void> initApp() async {
   await dotenv.load(fileName: ".env");
   baseUrl = dotenv.env['ELS_BASE_URL']!;
   accessToken = dotenv.env['ACCESS_TOKEN']!;
+  loginEndpoint = dotenv.env['ELS_LOGIN_ENDPOINT']!;
 }
 
 class ELSwhere extends StatelessWidget {
@@ -54,8 +56,7 @@ class ELSwhere extends StatelessWidget {
           primarySwatch: Colors.purple,
           textTheme: textTheme,
         ),
-        // home: MainScreen(),
-        home: MainScreen(),
+        home: const LoginScreen(),
       ),
     );
   }
