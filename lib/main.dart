@@ -6,6 +6,7 @@ import 'package:elswhere/data/providers/els_products_provider.dart';
 import 'package:elswhere/data/services/els_product_service.dart';
 import 'package:elswhere/ui/screens/login_screen.dart';
 import 'package:elswhere/ui/screens/main_screen.dart';
+import 'package:elswhere/ui/screens/member_quit_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
