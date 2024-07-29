@@ -55,7 +55,7 @@ class ELSwhere extends StatelessWidget {
           textTheme: textTheme,
         ),
         // home: MainScreen(),
-        home: MemberQuitScreen(),
+        home: MainScreen(),
       ),
     );
   }
