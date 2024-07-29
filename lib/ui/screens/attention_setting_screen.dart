@@ -12,30 +12,66 @@ class _AttentionSettingScreenState extends State<AttentionSettingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("관심상품 알림설정"),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_rounded),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: () {
-                showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    useSafeArea: true,
-                    builder: (context) => const AlarmSettingModal(),
-                );
-              },
+        body: SafeArea(
+          child: Column(
+              children: [
+                Container(
+                  height: 72,
+                  child: Row(
+                    children: [
+                      SizedBox(width: 24,),
+                      IconButton(
+                        icon: Icon(
+                          Icons.arrow_back,
+                          size: 24,
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      SizedBox(width: 8,),
+                      Text(
+                        "관심 상품",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                          color: Color(0xFF131415),
+                        ),
+                      ),
+                      Spacer(),
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Color(0xFFF5F6F6),
+                          shape: BoxShape.circle,
+                        ),
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.add,
+                            size: 27,
+                          ),
+                          onPressed: () {
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              useSafeArea: true,
+                              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                              builder: (context) => Container(
+                                height: MediaQuery.of(context).size.height,
+                                child: const AlarmSettingModal(),
+                              )
+                            );
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 24,),
+                    ],
+                  ),
+                )
+              ],
             ),
-          ],
-        ),
-        body:
-          SizedBox(height: 10,),
+        )
     );
   }
 }

@@ -2,6 +2,7 @@
 
 import 'dart:ui';
 
+import 'package:elswhere/ui/screens/attention_setting_screen.dart';
 import 'package:elswhere/ui/screens/member_quit_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -234,7 +235,12 @@ class _MoreScreenState extends State<MoreScreen> {
                     context: context,
                     title: "관심 상품 알림 설정",
                     onTap: () {
-
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AttentionSettingScreen(),
+                          )
+                      );
                     }
                   ),
 

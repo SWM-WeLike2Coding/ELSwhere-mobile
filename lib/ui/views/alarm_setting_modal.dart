@@ -11,207 +11,239 @@ class AlarmSettingModal extends StatefulWidget {
 
 class _AlarmSettingModalState extends State<AlarmSettingModal> {
   final TextEditingController _controller = TextEditingController();
-  final List<String> _chips = [];
+  final TextEditingController _controllerKIB = TextEditingController();
+  final TextEditingController _controllerCoupon = TextEditingController();
 
-  void _addChip() {
-    if (_controller.text.isNotEmpty) {
-      setState(() {
-        _chips.add(_controller.text);
-        _controller.clear();
-      });
-    }
-  }
-
-  void _deleteChip(String chip) {
-    setState(() {
-      _chips.remove(chip);
-    });
-  }
+  int _selectedTypeIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: edgeInsetsAll4,
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * .7,
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '조건등록',
-                      style:
-                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 24,),
+                  _buildSearchInput(),
+                  Container(
+                    decoration: BoxDecoration(
+                        border: Border(
+                            bottom: BorderSide(
+                              color: Color(0xFFF5F6F6),
+                              width: 1,
+                            )
+                        )
                     ),
-                    SizedBox(height: 16),
-                    Text(
-                      "기초자산명",
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
+                  ),
+                  SizedBox(height: 16),
+                  Padding(
+                    padding: EdgeInsets.only(left: 24, right: 24, top: 24),
+                    child: Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "검색필터",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF595E62),
+                            ),
+                          ),
+                          SizedBox(height: 12,),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: _controllerKIB,
+                                  decoration: InputDecoration(
+                                    labelText: "최대 KI 낙인배리어",
+                                    labelStyle: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14,
+                                      color: Color(0xFFACB2B5),
+                                    ),
+                                    border: InputBorder.none,
+                                    filled: true,
+                                    fillColor: Color(0xFFF5F6F6),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 12,),
+                              Expanded(
+                                child: TextField(
+                                  controller: _controllerCoupon,
+                                  decoration: InputDecoration(
+                                    labelText: "최수 수익률",
+                                    labelStyle: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14,
+                                      color: Color(0xFFACB2B5),
+                                    ),
+                                    border: InputBorder.none,
+                                    filled: true,
+                                    fillColor: Color(0xFFF5F6F6),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
                       ),
                     ),
-                    _buildSearchInput(),
-                    SizedBox(height: 16),
-                    // _buildTagButtons(),
-                    Wrap(
-                      spacing: 8.0,
-                      children: _chips.map((chip) => InputChip(
-                        label: Text(chip),
-                        deleteIcon: Icon(Icons.close),
-                        onDeleted: () => _deleteChip(chip),
-                      )).toList(),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 24, right: 24, top: 24),
+                    child: Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "상품종류",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF595E62),
+                            ),
+                          ),
+                          SizedBox(height: 12,),
+                          SizedBox(
+                            height: 86,
+                            child: GridView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 12,
+                                mainAxisSpacing: 12,
+                                childAspectRatio: 5, // 버튼의 가로:세로 비율을 조정하세요
+                              ),
+                              itemCount: 4,
+                              itemBuilder: (context, index) {
+                                return ElevatedButton(
+                                  onPressed: () => _onButtonPressed(index),
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    backgroundColor: _selectedTypeIndex == index ? Color(0xFF1C6BF9) : Color(0xFFF5F6F6),
+                                  ),
+                                  child: Text(
+                                    _getButtonText(index),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        color: _selectedTypeIndex == index ? Color(0xFFFFFFFF) : Color(0xFFACB2B5)
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                    SizedBox(height: 16),
-                    _buildDropDowns(),
-                    SizedBox(height: 16),
-                    _buildCheckboxes(),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 16),
+                  SizedBox(height: 16),
+                  // _buildCheckboxes(),
+                ],
               ),
             ),
-            _buildConfirmButton(context),
           ],
         ),
       ),
+      bottomNavigationBar: Container(
+        padding: EdgeInsets.all(16),
+        child: ElevatedButton(
+          onPressed: () {
+            // 저장 버튼 기능 구현
+          },
+          child: Text(
+            '관심 상품 알림 저장',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 16,
+              color: Color(0xFFFFFFFF),
+            ),
+          ),
+          style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            backgroundColor: Color(0xFF1C6BF9),
+          ),
+        ),
+      ),
     );
+  }
+
+  String _getButtonText(int index) {
+    switch (index) {
+      case 0:
+        return '스텝다운형';
+      case 1:
+        return '낙아웃형';
+      case 2:
+        return '월지급형';
+      case 3:
+        return '리자드형';
+      default:
+        return '';
+    }
+  }
+
+  void _onButtonPressed(int index) {
+    setState(() {
+      _selectedTypeIndex = index; // 선택된 버튼의 인덱스를 업데이트
+    });
   }
 
   Widget _buildSearchInput() {
     return Row(
       children: [
+        SizedBox(width: 8,),
+        IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         Expanded(
           child: TextField(
             controller: _controller,
             decoration: InputDecoration(
-              prefixIcon: Icon(Icons.search),
-              hintText: '키워드 입력',
+              hintText: '기초자산명을 검색해보세요',
+              hintStyle: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Color(0xFF838A8E),
+              ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide.none,
               ),
               filled: true,
-              fillColor: Colors.grey[200],
+              fillColor: Theme.of(context).scaffoldBackgroundColor,
             ),
           ),
         ),
         SizedBox(width: 8,),
-        ElevatedButton(
-          onPressed: () {
-            _addChip();
-            print("hello");
-          },
-          child: Text('추가'),
-        ),
+        // ElevatedButton(
+        //   onPressed: () {
+        //     _addChip();
+        //     print("hello");
+        //   },
+        //   child: Text('추가'),
+        // ),
       ],
-    );
-  }
-
-  Widget _buildDropDowns() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        _buildDropdownWithIcon('최대 KI(낙인 배리어)', '최소'),
-        SizedBox(width: 20,),
-        Text('~'),
-        SizedBox(width: 20,),
-        _buildDropdownWithIcon('최소수익률', '최대'),
-      ],
-    );
-  }
-
-  Widget _buildDropdownWithIcon(String title, String hint) {
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "${title}",
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Row(
-            children: [
-              Icon(Icons.search),
-              SizedBox(width: 8),
-              Expanded(
-                child: DropdownButton<String>(
-                  isExpanded: true,
-                  hint: Text(hint),
-                  items: ['선택1', '선택2', '선택3'].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (_) {},
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCheckboxes() {
-    return Wrap(
-      spacing: 16.0,
-      children: [
-        _buildCheckboxButton('스텝 다운형'),
-        _buildCheckboxButton('낙아웃형'),
-        _buildCheckboxButton('월지급형'),
-        _buildCheckboxButton('리자드형'),
-      ],
-    );
-  }
-
-  Widget _buildCheckboxButton(String label, {bool isChecked = false}) {
-    return FilterChip(
-      label: Text(label),
-      selected: isChecked,
-      onSelected: (bool selected) {},
-    );
-  }
-
-  Widget _buildDateButton(BuildContext context, String label) {
-    return Expanded(
-      child: ElevatedButton(
-        onPressed: () async {
-          DateTime? pickedDate = await showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(2000),
-            lastDate: DateTime(2101),
-          );
-          if (pickedDate != null) {
-            print(pickedDate); // 선택된 날짜를 처리하는 로직
-          }
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.grey[300],
-        ),
-        child: Text(label, style: TextStyle(color: Colors.black)),
-      ),
-    );
-  }
-
-  Widget _buildConfirmButton(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        child: Text('확인'),
-      ),
     );
   }
 }

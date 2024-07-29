@@ -1,3 +1,4 @@
+import 'package:elswhere/ui/screens/more_screen.dart';
 import 'package:elswhere/ui/screens/product_screen.dart';
 import 'package:elswhere/ui/widgets/drawer_widget.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,8 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _pages = [
     HomeScreen(),
     ProductScreen(),
-    MyScreen(),
+    // MyScreen(),
+    MoreScreen(),
   ];
 
   void _onItemTapped(int index) {
