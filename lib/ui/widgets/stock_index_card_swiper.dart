@@ -60,10 +60,10 @@ class _StockIndexCardSwiperState extends State<StockIndexCardSwiper> {
         },
         itemCount: 3,
         autoplay: true,
-        autoplayDelay: 1000,
+        autoplayDelay: 5000,
         scrollDirection: Axis.vertical,
         axisDirection: AxisDirection.down,
-        duration: 500,
+        duration: 1000,
       )
     );
   }

@@ -42,6 +42,7 @@ class ELSwhere extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => ELSProductProvider(_productService)),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         localizationsDelegates: const [
           GlobalCupertinoLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,

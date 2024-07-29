@@ -27,7 +27,7 @@ class ELSProductCard extends StatefulWidget {
 
 class _ELSProductCardState extends State<ELSProductCard> {
   bool isSelected = false;
-  final cardHeight = 125.0;
+  final cardHeight = 100.0;
 
   @override
   Widget build(BuildContext context) {
@@ -202,6 +202,8 @@ class _ELSProductCardState extends State<ELSProductCard> {
                                     fontSize: 16,
                                     color: AppColors.contentBlack,
                                   ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
                                 ),
                                 // const SizedBox(height: 8),
                                 SizedBox(
