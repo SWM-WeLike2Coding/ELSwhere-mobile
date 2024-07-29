@@ -14,8 +14,8 @@ class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 1;
 
   final List<Widget> _pages = [
-    ProductScreen(),
     HomeScreen(),
+    ProductScreen(),
     MyScreen(),
   ];
 
@@ -28,16 +28,6 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('ELSwhere'),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications),
-            onPressed: () {},
-          ),
-        ],
-      ),
       drawer: const DrawerWidget(),
       body: IndexedStack(
         index: _selectedIndex,
