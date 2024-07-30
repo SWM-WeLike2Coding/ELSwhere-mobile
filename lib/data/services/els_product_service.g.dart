@@ -62,7 +62,7 @@ class _ProductService implements ProductService {
     )
             .compose(
               _dio.options,
-              'others/issuer',
+              '/others/issuer',
               queryParameters: queryParameters,
               data: _data,
             )

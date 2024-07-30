@@ -4,7 +4,6 @@ import 'package:elswhere/ui/widgets/drawer_widget.dart';
 import 'package:flutter/material.dart';
 import '../widgets/bottom_navigation_bar_widget.dart';
 import 'home_screen.dart';
-import 'my_screen.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -17,7 +16,6 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _pages = [
     HomeScreen(),
     ProductScreen(),
-    // MyScreen(),
     MoreScreen(),
   ];
 

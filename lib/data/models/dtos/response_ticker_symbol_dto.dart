@@ -17,4 +17,7 @@ class ResponseTickerSymbolDto {
   factory ResponseTickerSymbolDto.fromJson(Map<String, dynamic> json) => _$ResponseTickerSymbolDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$ResponseTickerSymbolDtoToJson(this);
+
+  static List<ResponseTickerSymbolDto> fromJsonList(List<dynamic> jsonList) =>
+      jsonList.map((json) => ResponseTickerSymbolDto.fromJson(json)).toList();
 }
