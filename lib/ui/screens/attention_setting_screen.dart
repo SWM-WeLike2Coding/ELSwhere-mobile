@@ -42,6 +42,7 @@ class _AttentionSettingScreenState extends State<AttentionSettingScreen> {
                       Container(
                         width: 40,
                         height: 40,
+                        alignment: Alignment.center,
                         decoration: BoxDecoration(
                           color: Color(0xFFF5F6F6),
                           shape: BoxShape.circle,
@@ -63,6 +64,8 @@ class _AttentionSettingScreenState extends State<AttentionSettingScreen> {
                               )
                             );
                           },
+                          padding: EdgeInsets.zero,
+                          constraints: BoxConstraints(),
                         ),
                       ),
                       SizedBox(width: 24,),

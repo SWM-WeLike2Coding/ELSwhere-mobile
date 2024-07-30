@@ -1,5 +1,8 @@
-import 'package:elswhere/config/app_resource.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import '../../data/models/dtos/response_ticker_symbol_dto.dart';
+import '../../data/providers/ticker_symbol_provider.dart';
 
 
 class AlarmSettingModal extends StatefulWidget {
@@ -14,7 +17,73 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
   final TextEditingController _controllerKIB = TextEditingController();
   final TextEditingController _controllerCoupon = TextEditingController();
 
-  int _selectedTypeIndex = 0;
+  int _selectedTypeIndex = -1;
+  bool _isLoading = false;
+  List<ResponseTickerSymbolDto> _filteredTickers = [];
+  List<ResponseTickerSymbolDto> _selectedTickers = [];
+
+
+  void _addTickerToSelected(ResponseTickerSymbolDto ticker) {
+    setState(() {
+      _selectedTickers.add(ticker);
+      _controller.clear();  // Clear the text field after adding
+      _filteredTickers = [];  // Hide the list
+    });
+  }
+
+  void _removeTickerFromSelected(ResponseTickerSymbolDto ticker) {
+    setState(() {
+      _selectedTickers.remove(ticker);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(_onSearchTextChanged);
+    _fetchInitialData();
+  }
+
+  Future<void> _fetchInitialData() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final provider = Provider.of<TickerSymbolProvider>(context, listen: false);
+      await provider.fetchTickers();  // 데이터 가져오기
+      setState(() {
+        _filteredTickers = provider.tickers;  // 초기 데이터 설정
+      });
+    } catch (error) {
+      print('Error fetching tickers: $error');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  void _onSearchTextChanged() {
+    final query = _controller.text.toLowerCase();
+
+    final provider = Provider.of<TickerSymbolProvider>(context, listen: false);
+    final allTickers = provider.tickers;
+
+    setState(() {
+      _filteredTickers = allTickers.where((ticker) {
+        return ticker.equityName.toLowerCase().contains(query);
+      }).toList();
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.removeListener(_onSearchTextChanged);
+    _controller.dispose();  // 메모리 누수 방지를 위해 컨트롤러 해제
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +99,41 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                 children: [
                   SizedBox(height: 24,),
                   _buildSearchInput(),
+                  Padding(
+                    padding: EdgeInsets.only(left: 24, right: 24),
+                    child: Wrap(
+                      spacing: 8.0,
+                      runSpacing: 4.0,
+                      children: _selectedTickers.map((ticker) {
+                        return Padding(
+                          padding: EdgeInsets.only(left: 4),
+                          child: Chip(
+                            label: Text(
+                              ticker.equityName,
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFF838A8E),
+                              ),
+                            ),
+                            onDeleted: () {
+                              _removeTickerFromSelected(ticker);
+                            },
+                            deleteIcon: Icon(Icons.close),
+                            deleteIconColor: Color(0xFFACB2B5),
+                            backgroundColor: Color(0xFFF5F6F6),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(600),
+                              side: BorderSide(
+                                color: Color(0xFFF5F6F6),
+                                width: 0,
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
                   Container(
                     decoration: BoxDecoration(
                         border: Border(
@@ -61,9 +165,14 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                               Expanded(
                                 child: TextField(
                                   controller: _controllerKIB,
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly,
+                                    NumberRangeTextInputFormatter(min: 0, max: 100),
+                                  ],
                                   decoration: InputDecoration(
-                                    labelText: "최대 KI 낙인배리어",
-                                    labelStyle: TextStyle(
+                                    hintText: "최대 KI 낙인배리어",
+                                    hintStyle:  TextStyle(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 14,
                                       color: Color(0xFFACB2B5),
@@ -78,9 +187,14 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                               Expanded(
                                 child: TextField(
                                   controller: _controllerCoupon,
+                                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                                    NumberRangeTextInputFormatter(min: 0, max: 100),
+                                  ],
                                   decoration: InputDecoration(
-                                    labelText: "최수 수익률",
-                                    labelStyle: TextStyle(
+                                    hintText: "최소 수익률",
+                                    hintStyle: TextStyle(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 14,
                                       color: Color(0xFFACB2B5),
@@ -202,48 +316,112 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
 
   void _onButtonPressed(int index) {
     setState(() {
-      _selectedTypeIndex = index; // 선택된 버튼의 인덱스를 업데이트
+      // Toggle the selection state
+      if (_selectedTypeIndex == index) {
+        // If the currently selected button is clicked again, deselect it
+        _selectedTypeIndex = -1;
+      } else {
+        // Otherwise, select the new button
+        _selectedTypeIndex = index;
+      }
     });
   }
 
   Widget _buildSearchInput() {
-    return Row(
+    return Column(
       children: [
-        SizedBox(width: 8,),
-        IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+        Row(
+          children: [
+            SizedBox(width: 8),
+            IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            Expanded(
+              child: TextField(
+                controller: _controller,
+                decoration: InputDecoration(
+                  hintText: '기초자산명을 검색해보세요',
+                  hintStyle: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF838A8E),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  fillColor: Theme.of(context).scaffoldBackgroundColor,
+                ),
+              ),
+            ),
+            SizedBox(width: 8),
+          ],
         ),
-        Expanded(
-          child: TextField(
-            controller: _controller,
-            decoration: InputDecoration(
-              hintText: '기초자산명을 검색해보세요',
-              hintStyle: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: Color(0xFF838A8E),
-              ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide.none,
-              ),
-              filled: true,
-              fillColor: Theme.of(context).scaffoldBackgroundColor,
+        if (_controller.text.isNotEmpty && !_isLoading)
+          Container(
+            height: 200, // 결과 리스트의 높이
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(8)),
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 4,
+                  offset: Offset(0, 4),
+                ),
+              ],
+            ),
+            child: ListView.builder(
+              itemCount: _filteredTickers.length,
+              itemBuilder: (context, index) {
+                final ticker = _filteredTickers[index];
+                return ListTile(
+                  title: Text(ticker.equityName),
+                  onTap: () {
+                    // 선택된 값을 처리하는 로직 추가
+                    print('Selected: ${ticker.equityName}');
+                    // 선택된 항목을 _controller에 표시하고 리스트를 숨깁니다
+                    _controller.text = ticker.equityName;
+                    _filteredTickers = [];  // 리스트 숨기기
+                    setState(() {
+                      _addTickerToSelected(ticker);
+                    }); // 상태 업데이트
+                  },
+                );
+              },
             ),
           ),
-        ),
-        SizedBox(width: 8,),
-        // ElevatedButton(
-        //   onPressed: () {
-        //     _addChip();
-        //     print("hello");
-        //   },
-        //   child: Text('추가'),
-        // ),
       ],
     );
+  }
+}
+
+class NumberRangeTextInputFormatter extends TextInputFormatter {
+  final double min;
+  final double max;
+
+  NumberRangeTextInputFormatter({required this.min, required this.max});
+
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    if (newValue.text.isEmpty) {
+      return newValue;
+    }
+
+    final double? newDouble = double.tryParse(newValue.text);
+    if (newDouble == null) {
+      return oldValue;
+    }
+
+    if (newDouble < min || newDouble > max) {
+      return oldValue;
+    }
+
+    return newValue;
   }
 }
