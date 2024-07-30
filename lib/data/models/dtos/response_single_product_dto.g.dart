@@ -28,7 +28,7 @@ ResponseSingleProductDto _$ResponseSingleProductDtoFromJson(
           json['initialBasePriceEvaluationDate'] as String,
       type: json['type'] as String,
       productFullInfo: json['productFullInfo'] as String,
-      productInfo: json['productInfo'] as String,
+      productInfo: json['productInfo'] as String?,
       remarks: json['remarks'] as String,
       link: json['link'] as String,
       summaryInvestmentProspectusLink:

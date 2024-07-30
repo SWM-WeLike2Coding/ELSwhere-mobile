@@ -21,7 +21,7 @@ class ResponseSingleProductDto {
   final String initialBasePriceEvaluationDate;
   final String type;
   final String productFullInfo;
-  final String productInfo;
+  final String? productInfo;
   final String remarks;
   final String link;
   final String summaryInvestmentProspectusLink;
@@ -45,7 +45,7 @@ class ResponseSingleProductDto {
     required this.initialBasePriceEvaluationDate,
     required this.type,
     required this.productFullInfo,
-    required this.productInfo,
+    this.productInfo,
     required this.remarks,
     required this.link,
     required this.summaryInvestmentProspectusLink,
