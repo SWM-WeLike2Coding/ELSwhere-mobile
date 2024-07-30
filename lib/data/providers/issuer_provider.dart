@@ -14,13 +14,11 @@ class IssuerProvider extends ChangeNotifier {
 
   Future<void> fetchIssuers() async {
     _isLoading = true;
-    notifyListeners();
-
     try {
-       final response = await _productService.fetchIssuers();
-       _issuer = response;
+      final response = await _productService.fetchIssuers();
+      _issuer = response;
     } catch (error) {
-      print('Error fetching products: $error');
+      print('Issuer Error fetching products: $error');
       // 에러 처리 로직 추가
     } finally {
       _isLoading = false;

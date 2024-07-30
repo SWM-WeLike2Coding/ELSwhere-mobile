@@ -1,6 +1,7 @@
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/config.dart';
 import 'package:elswhere/data/services/auth_service.dart';
+import 'package:elswhere/ui/screens/initial_screen.dart';
 import 'package:elswhere/ui/screens/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -59,9 +60,10 @@ class LoginScreen extends StatelessWidget {
                           final response = await AuthService.authenticateUser(authUrl);
                           if (response != null) accessToken = response.accessToken;
 
-                          Navigator.push(
+                          Navigator.pushAndRemoveUntil(
                             context,
-                            MaterialPageRoute(builder: (context) => MainScreen()),
+                            MaterialPageRoute(builder: (context) => InitialScreen()),
+                            (route) => false,
                             // MaterialPageRoute(builder: (context) => AuthScreen(authUrl: authUrl)),
                           );
                         },

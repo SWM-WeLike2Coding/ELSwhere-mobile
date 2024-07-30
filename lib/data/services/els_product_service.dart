@@ -21,7 +21,7 @@ abstract class ProductService {
   @GET("/others/ticker")
   Future<List<ResponseTickerSymbolDto>> fetchTickers();
 
-  @GET("others/issuer")
+  @GET("/others/issuer")
   Future<List<ResponseIssuerDto>> fetchIssuers();
 
   @GET("/product/{status}-sale")

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 sealed class Assets {
   static const String fontFamilyPretendard = "Pretendard";
@@ -63,3 +64,5 @@ const edgeInsetsAll16 = EdgeInsets.all(16);
 const edgeInsetsAll24 = EdgeInsets.all(24);
 
 const borderRadiusCircular10 = BorderRadius.all(Radius.circular(10));
+
+late final SharedPreferences prefs;

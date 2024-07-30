@@ -15,7 +15,7 @@ class AuthService {
 
       final jsonResponse = Uri.parse(result).queryParameters;
       final response = ResponseLoginDto.fromJson(jsonResponse);
-
+      // print('${response.accessToken} \n ${response.refreshToken}}');
       return response;
     } catch (e) {
       if (e is PlatformException && e.code == 'CANCELED') {

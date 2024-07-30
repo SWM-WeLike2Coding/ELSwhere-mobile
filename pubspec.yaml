@@ -58,6 +58,8 @@ dependencies:
   url_launcher: ^6.3.0
   webview_flutter: ^4.8.0
   card_swiper: ^3.0.1
+  shared_preferences: ^2.2.3
+  yahoo_finance_data_reader: ^1.0.10
 
 dependency_overrides:
   fading_edge_scrollview: ^4.1.1
