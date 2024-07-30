@@ -193,7 +193,7 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                                     NumberRangeTextInputFormatter(min: 0, max: 100),
                                   ],
                                   decoration: InputDecoration(
-                                    hintText: "최수 수익률",
+                                    hintText: "최소 수익률",
                                     hintStyle: TextStyle(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 14,
