@@ -161,8 +161,8 @@ class _ELSProductCardState extends State<ELSProductCard> {
               ),
               AnimatedContainer(
                 curve: Curves.fastOutSlowIn,
-                duration: Duration(milliseconds: 500),
-                transform: Matrix4.translationValues(isSelected ? -190 : 0, 0, 0),
+                duration: const Duration(milliseconds: 500),
+                transform: Matrix4.translationValues(isSelected ? -200 : 0, 0, 0),
                 child: Container(
                   height: cardHeight,
                   padding: edgeInsetsAll16,
@@ -179,11 +179,11 @@ class _ELSProductCardState extends State<ELSProductCard> {
                       Column(
                         children: [
                           CircleAvatar(
+                            backgroundColor: const Color(0xFFF5F6F6),
                             child: Padding(
-                              padding: const EdgeInsets.all(4.0),
+                              padding: edgeInsetsAll4,
                               child: Image.asset(Assets.iconHana),
                             ),
-                            backgroundColor: const Color(0xFFF5F6F6),
                           ),
                         ],
                       ),

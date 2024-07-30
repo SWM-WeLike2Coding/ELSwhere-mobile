@@ -16,24 +16,29 @@ class InitialScreen extends StatelessWidget {
       future: Future.wait([
         Provider.of<IssuerProvider>(context, listen: false).fetchIssuers(),
         Provider.of<TickerSymbolProvider>(context, listen: false).fetchTickers(),
+        Provider.of<TickerSymbolProvider>(context, listen: false).fetchStockPrices(),
       ]),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
-            body: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const CircularProgressIndicator(
-                  color: AppColors.mainBlue,
-                ),
-                Text(
-                  '데이터 로딩중 입니다...',
-                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                    color: AppColors.contentBlack,
-                    fontSize: 12,
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const CircularProgressIndicator(
+                    color: AppColors.mainBlue,
                   ),
-                ),
-              ],
+                  const SizedBox(height: 16,),
+                  Text(
+                    '데이터 로딩중 입니다...',
+                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                      color: AppColors.contentBlack,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         } else if (snapshot.hasError) {
