@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:elswhere/config/config.dart';
 import 'package:elswhere/data/models/dtos/request_product_search_dto.dart';
+import 'package:elswhere/data/models/dtos/response_issuer_dto.dart';
+import 'package:elswhere/data/models/dtos/response_ticker_symbol_dto.dart';
 import 'package:elswhere/data/services/api_interceptor.dart';
 import 'package:retrofit/retrofit.dart';
 import '../models/dtos/response_page_summarized_product_dto.dart';
@@ -15,6 +17,12 @@ abstract class ProductService {
     dio.interceptors.add(ApiInterceptor());
     return _ProductService(dio, baseUrl: _baseUrl);
   }
+
+  @GET("/others/ticker")
+  Future<List<ResponseTickerSymbolDto>> fetchTickers();
+
+  @GET("others/issuer")
+  Future<List<ResponseIssuerDto>> fetchIssuers();
 
   @GET("/product/{status}-sale")
   Future<ResponsePageSummarizedProductDto> fetchProducts(
