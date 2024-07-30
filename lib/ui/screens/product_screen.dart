@@ -42,12 +42,12 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
   
   Future<void> typeChanged(BuildContext context, String? value) async {
     //TODO: ProductProvider에 따라서 on sale end sale 구분해서 refresh 해야함
-    // switch(_tabIndex) {
-      // case 0:
+    switch(_tabIndex) {
+      case 0:
         await Provider.of<ELSOnSaleProductsProvider>(context, listen: false).refreshProducts(value!);
-      // case 1:
+      case 1:
         await Provider.of<ELSEndSaleProductsProvider>(context, listen: false).refreshProducts(value!);
-    // }
+    }
     setState(() {
       selectedValue = value!;
       type = widget.itemsMap[value]!;
@@ -68,7 +68,7 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
           padding: edgeInsetsAll8,
           child: StockIndexCardSwiper(),
         ),
-        leadingWidth: 300,
+        leadingWidth: double.infinity,
         actions: [
           Padding(
             padding: edgeInsetsAll8,
@@ -80,15 +80,10 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: edgeInsetsAll8,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // const Text(
-            //   'ELS 상품',
-            //   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            // ),
-            // const SizedBox(height: 16),
             const Row(
               children: [
                 Expanded(
@@ -222,6 +217,7 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
                 child: FittedBox(
                   fit: BoxFit.fitHeight,
                   child: CircleAvatar(
+                    backgroundColor: AppColors.contentWhite,
                     child: Text(
                       '$_count',
                       style: Theme.of(context).textTheme.labelMedium?.copyWith(
@@ -230,7 +226,6 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    backgroundColor: AppColors.contentWhite,
                   ),
                 ),
               )

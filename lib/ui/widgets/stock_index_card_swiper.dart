@@ -1,70 +1,97 @@
-import 'package:elswhere/config/app_resource.dart';
-import 'package:flutter/material.dart';
 import 'package:card_swiper/card_swiper.dart';
+import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/data/providers/ticker_symbol_provider.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class StockIndexCardSwiper extends StatefulWidget {
-  final List<String> stockIndex = [
-    'KOSPI200', 'S&P500', 'EUROSTOXX50'
-  ];
-  final List<double> price = [
-    1457.3, 22345.4, 5656.7
-  ];
-  final List<double> rate = [
-    1.2, -3.4, 5.6
-  ];
-
-  StockIndexCardSwiper({super.key});
+  const StockIndexCardSwiper({super.key});
 
   @override
-  State<StockIndexCardSwiper> createState() => _StockIndexCardSwiperState();
+  State<StockIndexCardSwiper> createState() => StockIndexCardSwiperState();
 }
 
-class _StockIndexCardSwiperState extends State<StockIndexCardSwiper> {
+class StockIndexCardSwiperState extends State<StockIndexCardSwiper> {
   final NumberFormat priceFormat = NumberFormat.decimalPattern();
   final NumberFormat percentageFormat = NumberFormat.percentPattern();
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: edgeInsetsAll8,
-      child: Swiper(
-        itemBuilder: (context, index) {
-          return Row(
-            children: [
-              Text(
-                widget.stockIndex[index],
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  letterSpacing: -0.02,
-                ),
+    return Consumer<TickerSymbolProvider>(
+      builder: (context, tickerSymbolProvider, child) {
+        if (tickerSymbolProvider.isLoading && tickerSymbolProvider.stockIndex.isEmpty) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (tickerSymbolProvider.stockIndex.isEmpty) {
+          return const Center(child: Text('준비 중입니다.'));
+        } else {
+          return IgnorePointer(
+            child: Padding(
+              padding: edgeInsetsAll8,
+              child: Swiper(
+                itemBuilder: (context, index) {
+                  return Row(
+                    children: [
+                      Text(
+                        tickerSymbolProvider.stockIndex[index],
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .headlineSmall
+                            ?.copyWith(
+                          letterSpacing: -0.02,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        priceFormat.format(tickerSymbolProvider.price[index]),
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .headlineSmall
+                            ?.copyWith(
+                          color: tickerSymbolProvider.rate[index] > 0
+                              ? AppColors.contentRed
+                              : (tickerSymbolProvider.rate[index] != 0
+                              ? AppColors.mainBlue
+                              : Color(0xFF595E62)),
+                          letterSpacing: -0.02,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        // percentageFormat.format(tickerSymbolProvider.rate[index]),
+                        '${tickerSymbolProvider.rate[index] > 0
+                            ? '+'
+                            : ''}${tickerSymbolProvider.rate[index]
+                            .toStringAsPrecision(2)}%',
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .headlineSmall
+                            ?.copyWith(
+                          color: tickerSymbolProvider.rate[index] > 0
+                              ? AppColors.contentRed
+                              : (tickerSymbolProvider.rate[index] != 0
+                              ? AppColors.mainBlue
+                              : Color(0xFF595E62)),
+                          letterSpacing: -0.02,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+                itemCount: tickerSymbolProvider.length,
+                autoplay: true,
+                autoplayDelay: 4000,
+                scrollDirection: Axis.vertical,
+                axisDirection: AxisDirection.down,
+                duration: 1000,
               ),
-              const SizedBox(width: 8),
-              Text(
-                priceFormat.format(widget.price[index]),
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  color: widget.rate[index] > 0 ? AppColors.contentRed : AppColors.mainBlue,
-                  letterSpacing: -0.02,
-                ),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                // percentageFormat.format(widget.rate[index]),
-                '${widget.rate[index] > 0 ? '+' : ''}${widget.rate[index]}%',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  color: widget.rate[index] > 0 ? AppColors.contentRed : AppColors.mainBlue,
-                  letterSpacing: -0.02,
-                ),
-              ),
-            ],
+            ),
           );
-        },
-        itemCount: 3,
-        autoplay: true,
-        autoplayDelay: 5000,
-        scrollDirection: Axis.vertical,
-        axisDirection: AxisDirection.down,
-        duration: 1000,
-      )
+        }
+      },
     );
   }
 }
