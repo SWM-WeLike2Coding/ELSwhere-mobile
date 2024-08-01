@@ -1,7 +1,7 @@
 import 'package:elswhere/config/config.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/ui/screens/initial_screen.dart';
 import 'package:elswhere/ui/screens/login_screen.dart';
-import 'package:elswhere/ui/screens/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +31,7 @@ class SplashScreen extends StatelessWidget {
         } else {
           FlutterNativeSplash.remove();
           if (userProvider.checkAuthenticated) {
-            return MainScreen();
+            return const InitialScreen();
           } else {
             return const LoginScreen();
           }
