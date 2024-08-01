@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 sealed class Assets {
@@ -65,4 +66,4 @@ const edgeInsetsAll24 = EdgeInsets.all(24);
 
 const borderRadiusCircular10 = BorderRadius.all(Radius.circular(10));
 
-late final SharedPreferences prefs;
+late final FlutterSecureStorage storage;

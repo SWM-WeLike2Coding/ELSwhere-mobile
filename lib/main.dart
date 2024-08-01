@@ -5,13 +5,20 @@ import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/data/providers/els_products_provider.dart';
 import 'package:elswhere/data/providers/issuer_provider.dart';
 import 'package:elswhere/data/providers/ticker_symbol_provider.dart';
+import 'package:elswhere/data/providers/user_info_provider.dart';
 import 'package:elswhere/data/services/els_product_service.dart';
+import 'package:elswhere/data/services/user_service.dart';
 import 'package:elswhere/ui/screens/login_screen.dart';
+import 'package:elswhere/ui/screens/main_screen.dart';
+import 'package:elswhere/ui/screens/splash_screen.dart';
 import 'package:elswhere/utils/material_color_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   await initApp();
@@ -19,19 +26,30 @@ void main() async {
 }
 
 Future<void> initApp() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   await dotenv.load(fileName: ".env");
   baseUrl = dotenv.env['ELS_BASE_URL']!;
-  accessToken = dotenv.env['ACCESS_TOKEN']!;
   loginEndpoint = dotenv.env['ELS_LOGIN_ENDPOINT']!;
+
+  storage = const FlutterSecureStorage();
+  // await storage.deleteAll();
+  accessToken = await storage.read(key: 'ACCESS_TOKEN') ?? '';
+  refreshToken = await storage.read(key: 'REFRESH_TOKEN') ?? '';
+  print(accessToken);
+  print(refreshToken);
 }
 
 class ELSwhere extends StatelessWidget {
   final Dio _dio = Dio();
+  final Dio _userDio = DioClient.createDio();
   late final ProductService _productService;
+  late final UserService _userService;
 
   ELSwhere({super.key}) {
     _productService = ProductService(_dio);
+    _userService = UserService(_userDio);
   }
 
   @override
@@ -43,6 +61,7 @@ class ELSwhere extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => ELSProductProvider(_productService)),
         ChangeNotifierProvider(create: (context) => IssuerProvider(_productService)),
         ChangeNotifierProvider(create: (context) => TickerSymbolProvider(_productService)),
+        ChangeNotifierProvider(create: (context) => UserInfoProvider(_userService)),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -81,7 +100,7 @@ class ELSwhere extends StatelessWidget {
             thumbColor: WidgetStatePropertyAll(AppColors.contentWhite),
           )
         ),
-        home: const LoginScreen(),
+        home: SplashScreen(),
       ),
     );
   }
