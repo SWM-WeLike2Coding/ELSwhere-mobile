@@ -1,7 +1,12 @@
+import 'dart:convert';
+
+import 'package:elswhere/data/providers/user_info_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import '../../config/app_resource.dart';
+import '../../config/config.dart';
 
 class MemberQuitScreen extends StatefulWidget {
   const MemberQuitScreen({super.key});
@@ -11,8 +16,15 @@ class MemberQuitScreen extends StatefulWidget {
 }
 
 class _MemberQuitScreenState extends State<MemberQuitScreen> {
-  String _dummyMemberName = "증권사과장님";
   bool _isAgreeBtnChecked = false;
+
+  final _baseUrl = '$baseUrl/user-service';
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -61,12 +73,16 @@ class _MemberQuitScreenState extends State<MemberQuitScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 32,),
-                  Text(
-                    "${_dummyMemberName},\n탈퇴하기 전에 확인해주세요",
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  Consumer<UserInfoProvider>(
+                    builder: (context, userInfoProvider, child) {
+                      return Text(
+                        "${userInfoProvider.getNickname()}님",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 22,
+                        ),
+                      );
+                    },
                   ),
                   SizedBox(height: 32,),
                   Container(
@@ -77,9 +93,9 @@ class _MemberQuitScreenState extends State<MemberQuitScreen> {
                     child: Padding(
                       padding: edgeInsetsAll16,
                       child: UnorderedList([
-                        " 서비스에서 탈퇴되며 복구가 불가능합니다.",
-                        " 단, 일부 정보는 일정기간 보관 후 파기됩니다.",
-                        " 자세한 내용은 이용약관 및 개인정보와 연결정보를 확인해주세요."
+                        "서비스에서 탈퇴되며 복구가 불가능합니다.",
+                        "단, 일부 정보는 일정기간 보관 후 파기됩니다.",
+                        "자세한 내용은 이용약관 및 개인정보와 연결정보를 확인해주세요."
                       ])
                     ),
                   ),
@@ -218,7 +234,7 @@ class UnorderedListItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          "• ",
+          "•  ",
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
