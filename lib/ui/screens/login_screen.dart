@@ -5,6 +5,7 @@ import 'package:elswhere/ui/screens/initial_screen.dart';
 import 'package:elswhere/ui/screens/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -56,16 +57,17 @@ class LoginScreen extends StatelessWidget {
                           width: 24,
                         ),
                         onPressed: () async {
-                          final authUrl = baseUrl + loginEndpoint;
-                          final response = await AuthService.authenticateUser(authUrl);
-                          if (response != null) accessToken = response.accessToken;
+                          final result = await login();
 
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(builder: (context) => InitialScreen()),
-                            (route) => false,
-                            // MaterialPageRoute(builder: (context) => AuthScreen(authUrl: authUrl)),
-                          );
+                          if (result) {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(builder: (context) => InitialScreen()), (route) => false,
+                              // MaterialPageRoute(builder: (context) => AuthScreen(authUrl: authUrl)),
+                            );
+                          } else {
+                            Fluttertoast.showToast(msg: '로그인에 실패했습니다.', toastLength: Toast.LENGTH_SHORT);
+                          }
                         },
                         label: Text(
                           '구글로 계속하기',
@@ -86,5 +88,17 @@ class LoginScreen extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Future<bool> login() async {
+    final authUrl = baseUrl + loginEndpoint;
+    final response = await AuthService.authenticateUser(authUrl);
+    if (response != null) {
+      accessToken = response.accessToken;
+      storage.write(key: 'ACCESS_TOKEN', value: accessToken);
+      storage.write(key: 'REFRESH_TOKEN', value: refreshToken);
+      return true;
+    }
+    return false;
   }
 }
