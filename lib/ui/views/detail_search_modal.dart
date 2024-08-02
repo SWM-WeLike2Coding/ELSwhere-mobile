@@ -1,10 +1,16 @@
 import 'dart:convert';
 import 'package:elswhere/data/models/dtos/request_product_search_dto.dart';
+import 'package:elswhere/data/models/dtos/response_issuer_dto.dart';
 import 'package:elswhere/data/providers/els_products_provider.dart';
+import 'package:elswhere/data/providers/issuer_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
+
+import '../../data/models/dtos/response_ticker_symbol_dto.dart';
+import '../../data/providers/ticker_symbol_provider.dart';
 
 
 class DetailSearchModal extends StatefulWidget {
@@ -15,13 +21,17 @@ class DetailSearchModal extends StatefulWidget {
 }
 
 class _DetailSearchModalState extends State<DetailSearchModal> {
-  static final String _baseUrl = dotenv.env['ELS_BASE_URL']!;
   final TextEditingController _equityController = TextEditingController();
   final TextEditingController _KIController = TextEditingController();
   final TextEditingController _yieldController = TextEditingController();
   final TextEditingController _firstBarrierController = TextEditingController();
   final TextEditingController _lastBarrierController = TextEditingController();
   final List<String> _chips = [];
+  List<ResponseTickerSymbolDto> _selectedTickers = [];
+  List<ResponseTickerSymbolDto> _filteredTickers = [];
+  List<ResponseIssuerDto> _issuerDTOList = [];
+  List<String> _issuerList = ['발행회사'];
+  bool _isLoading = false;
 
   int? _equityCount;
   int? _maxKnockIn;
@@ -33,8 +43,10 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
   bool _isIndex = false;
   bool _isStock = false;
   int _selectedTypeIndex = -1;
+  String? _selectedIssuer;
   List<String> _buttonLabels = ["스텝다운형", "리자드형", "월지급형", "기타"];
-  Map<int, String> _selectedDates = {};
+  Map<int, String> _selectedDates = {0: "시작일", 1: "마감일"};
+  List<String> _initialDatePickerString = ["시작일", "마감일"];
 
   Future<void> _getFilteredData() async {
     String? equityType = null;
@@ -48,6 +60,10 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
       equityType = null;  // 이거 바꿔줘야함
     }
 
+    List<String> equityList = [];
+    for (int i = 0; i < _selectedTickers.length; i ++) {
+      equityList.add(_selectedTickers[i].equityName);
+    }
     List<String> typeList = ["STEP_DOWN", "LIZARD", "MONTHLY_PAYMENT", "ETC"];
     String? type;
     if (_selectedTypeIndex != -1) {
@@ -58,8 +74,9 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
 
     Map<String, dynamic> body = {};
 
-    if (_chips.isNotEmpty) body['equityNames'] = _chips;
+    if (equityList.isNotEmpty) body['equityNames'] = equityList;
     if (_equityCount != null) body['equityCount'] = _equityCount;
+    if (_selectedIssuer != null) body['issuer'] = _selectedIssuer;
     if (_maxKnockIn != null) body['maxKnockIn'] = _maxKnockIn;
     if (_minYield != null) body['minYieldIfConditionsMet'] = _minYield;
     if (_initialRedemptionBarrier != null) body['initialRedemptionBarrier'] = _initialRedemptionBarrier;
@@ -68,27 +85,27 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
     if (_redemptionInterval != null) body['redemptionInterval'] = _redemptionInterval;
     if (equityType != null) body['equityType'] = equityType;
     if (type != null) body['type'] = type;
-    if (subscriptionStartDate != null) body['subscriptionStartDate'] = subscriptionStartDate;
-    if (subscriptionEndDate != null) body['subscriptionEndDate'] = subscriptionEndDate;
+    if (subscriptionStartDate != '시작일') body['subscriptionStartDate'] = subscriptionStartDate;
+    if (subscriptionEndDate != '마감일') body['subscriptionEndDate'] = subscriptionEndDate;
 
-    // String jsonBody = jsonEncode(body);
+    print(body);
+
     final requestBody = RequestProductSearchDto.fromJson(body);
     await Provider.of<ELSOnSaleProductsProvider>(context, listen: false).fetchFilteredProducts(requestBody);
     await Provider.of<ELSEndSaleProductsProvider>(context, listen: false).fetchFilteredProducts(requestBody);
   }
 
-  void _addChip() {
-    if (_equityController.text.isNotEmpty) {
-      setState(() {
-        _chips.add(_equityController.text);
-        _equityController.clear();
-      });
-    }
+  void _addTickerToSelected(ResponseTickerSymbolDto ticker) {
+    setState(() {
+      _selectedTickers.add(ticker);
+      _equityController.clear();  // Clear the text field after adding
+      _filteredTickers = [];  // Hide the list
+    });
   }
 
-  void _deleteChip(String chip) {
+  void _removeTickerFromSelected(ResponseTickerSymbolDto ticker) {
     setState(() {
-      _chips.remove(chip);
+      _selectedTickers.remove(ticker);
     });
   }
 
@@ -144,18 +161,29 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
     }
   }
 
-  void _handleButtonTap(int index) {
-    setState(() {
-      _selectedTypeIndex = index;
-    });
-  }
-
   Future<void> _handleDateSelection(BuildContext context, int index) async {
-    DateTime? pickedDate = await showDatePicker(
+    final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Colors.blue, // 달력의 주 색상
+              onPrimary: Colors.white, // 선택된 날짜의 텍스트 색상
+              onSurface: Colors.black, // 달력의 텍스트 색상
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.black, // 버튼 텍스트 색상
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
     if (pickedDate != null) {
       setState(() {
@@ -165,59 +193,214 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
     }
   }
 
+  void _onButtonPressed(int index) {
+    setState(() {
+      // Toggle the selection state
+      if (_selectedTypeIndex == index) {
+        // If the currently selected button is clicked again, deselect it
+        _selectedTypeIndex = -1;
+      } else {
+        // Otherwise, select the new button
+        _selectedTypeIndex = index;
+      }
+    });
+  }
+
+  String _getButtonText(int index) {
+    switch (index) {
+      case 0:
+        return '스텝다운형';
+      case 1:
+        return '낙아웃형';
+      case 2:
+        return '월지급형';
+      case 3:
+        return '리자드형';
+      default:
+        return '';
+    }
+  }
+
+  void _onSearchTextChanged() {
+    final query = _equityController.text.toLowerCase();
+
+    final provider = Provider.of<TickerSymbolProvider>(context, listen: false);
+    final allTickers = provider.tickers;
+
+    setState(() {
+      _filteredTickers = allTickers.where((ticker) {
+        return ticker.equityName.toLowerCase().contains(query);
+      }).toList();
+    });
+  }
+
+  Future<void> _fetchInitialData() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final provider = Provider.of<TickerSymbolProvider>(context, listen: false);
+      await provider.fetchTickers();  // 데이터 가져오기
+      setState(() {
+        _filteredTickers = provider.tickers;  // 초기 데이터 설정
+      });
+    } catch (error) {
+      print('Error fetching tickers: $error');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+
+    try {
+      final issuerProvider = Provider.of<IssuerProvider>(context, listen: false);
+      await issuerProvider.fetchIssuers();  // 데이터 가져오기
+      setState(() {
+        _issuerDTOList = issuerProvider.issuer;  // 초기 데이터 설정
+      });
+    } catch (error) {
+      print('Error fetching tickers: $error');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+
+    for (int i = 0; i < _issuerDTOList.length; i ++) {
+      _issuerList.add(_issuerDTOList[i].issuer);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _equityController.addListener(_onSearchTextChanged);
+    _fetchInitialData();
+  }
+
+  @override
+  void dispose() {
+    _equityController.removeListener(_onSearchTextChanged);
+    _equityController.dispose();  // 메모리 누수 방지를 위해 컨트롤러 해제
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * .7,
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: SafeArea(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
               child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '조건등록',
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 16),
-                      Text(
-                        "기초자산명",
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      _buildSearchInput(),
-                      SizedBox(height: 8),
-                      Wrap(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 24,),
+                    _buildSearchInput(),
+                    Padding(
+                      padding: EdgeInsets.only(left: 24, right: 24),
+                      child: Wrap(
                         spacing: 8.0,
-                        children: _chips.map((chip) => InputChip(
-                          label: Text(chip),
-                          deleteIcon: Icon(Icons.close),
-                          onDeleted: () => _deleteChip(chip),
-                        )).toList(),
+                        runSpacing: 4.0,
+                        children: _selectedTickers.map((ticker) {
+                          return Padding(
+                            padding: EdgeInsets.only(left: 4),
+                            child: Chip(
+                              label: Text(
+                                ticker.equityName,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xFF838A8E),
+                                ),
+                              ),
+                              onDeleted: () {
+                                _removeTickerFromSelected(ticker);
+                              },
+                              deleteIcon: Icon(Icons.close),
+                              deleteIconColor: Color(0xFFACB2B5),
+                              backgroundColor: Color(0xFFF5F6F6),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(600),
+                                side: BorderSide(
+                                  color: Color(0xFFF5F6F6),
+                                  width: 0,
+                                ),
+                              ),
+                            ),
+                          );
+                        }).toList(),
                       ),
-                      SizedBox(height: 16),
-                      _buildDropDowns(),
-                      SizedBox(height: 16),
-                      _buildCheckboxes(),
-                      SizedBox(height: 16),
-                      _buildDateButtons(),
-                    ],
-                  ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                                color: Color(0xFFF5F6F6),
+                                width: 1,
+                              )
+                          )
+                      ),
+                    ),
+                    SizedBox(height: 16,),
+                    Padding(
+                      padding: EdgeInsets.only(left: 24, right: 24, top: 24),
+                      child: _buildDropDowns(),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 24, right: 24, top: 24),
+                      child: _buildCheckboxes(),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 24, right: 24, top: 24),
+                      child: _buildDateButtons(),
+                    ),
+                  ],
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: _buildConfirmButton(context),
-            ),
           ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        padding: EdgeInsets.all(16),
+        child: ElevatedButton(
+          onPressed: () {
+            if (_selectedDates[0] != "시작일" && _selectedDates[1] != "마감일") {
+              DateTime startDate = DateTime.parse(_selectedDates[0]!);
+              DateTime endDate = DateTime.parse(_selectedDates[1]!);
+              if (startDate.isAfter(endDate)) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('마감일이 시작일보다 빠를 수 없습니다.'),
+                  ),
+                );
+                return;
+              }
+            }
+
+            Navigator.pop(context);
+            _getFilteredData();
+          },
+          child: Text(
+            '상품 검색',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 16,
+              color: Color(0xFFFFFFFF),
+            ),
+          ),
+          style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            backgroundColor: Color(0xFF1C6BF9),
+          ),
         ),
       ),
     );
@@ -226,111 +409,191 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
   }
 
   Widget _buildSearchInput() {
-    return Row(
+    return Column(
       children: [
-        Expanded(
-          child: TextField(
-            controller: _equityController,
-            decoration: InputDecoration(
-              prefixIcon: Icon(Icons.search),
-              hintText: '키워드 입력',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide.none,
+        Row(
+          children: [
+            SizedBox(width: 8),
+            IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            Expanded(
+              child: TextField(
+                controller: _equityController,
+                decoration: InputDecoration(
+                  hintText: '기초자산명을 검색해보세요',
+                  hintStyle: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF838A8E),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  fillColor: Theme.of(context).scaffoldBackgroundColor,
+                ),
               ),
-              filled: true,
-              fillColor: Colors.grey[200],
+            ),
+            SizedBox(width: 8),
+          ],
+        ),
+        if (_equityController.text.isNotEmpty && !_isLoading)
+          Container(
+            height: 200, // 결과 리스트의 높이
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(8)),
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 4,
+                  offset: Offset(0, 4),
+                ),
+              ],
+            ),
+            child: ListView.builder(
+              itemCount: _filteredTickers.length,
+              itemBuilder: (context, index) {
+                final ticker = _filteredTickers[index];
+                return ListTile(
+                  title: Text(ticker.equityName),
+                  onTap: () {
+                    // 선택된 값을 처리하는 로직 추가
+                    print('Selected: ${ticker.equityName}');
+                    // 선택된 항목을 _controller에 표시하고 리스트를 숨깁니다
+                    _equityController.text = ticker.equityName;
+                    _filteredTickers = [];  // 리스트 숨기기
+                    setState(() {
+                      _addTickerToSelected(ticker);
+                    }); // 상태 업데이트
+                  },
+                );
+              },
             ),
           ),
-        ),
-        SizedBox(width: 8,),
-        ElevatedButton(
-          onPressed: () {
-            _addChip();
-          },
-          child: Text('추가'),
-        ),
       ],
     );
   }
 
   Widget _buildDropDowns() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Text(
+          "검색필터",
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFF595E62),
+          ),
+        ),
+        SizedBox(height: 12,),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
                 children: [
-                  Text(
-                    "기초자산수",
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      // Icon(Icons.search),
-                      // SizedBox(width: 8),
-                      Expanded(
-                        child: DropdownButton<String>(
-                          isExpanded: true,
-                          hint: _equityCount == null ? Text("선택") : Text("${_equityCount!}개"),
-                          items: ['1개', '2개', '3개'].map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                          onChanged: (newValue) {
-                            setState(() {
-                              _equityCount = int.parse(newValue!.split('개')[0]);
-                            });
-                          },
-                        ),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color(0xFFF5F6F6),
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                    ],
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        underline: Container(),
+                        hint: _equityCount == null ?
+                          Padding(
+                            padding: EdgeInsets.only(left: 8),
+                            child: Text("기초자산 수", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: Color(0xFFACB2B5)),)
+                          ) :
+                          Padding(
+                            padding: EdgeInsets.only(left: 8),
+                            child: Text(
+                              "${_equityCount!}개",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                color: Color(0xFF000000),
+                              ),
+                            ),
+                          ),
+                        items: ['기초자산 수', '1개', '2개', '3개'].map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          setState(() {
+                            if (newValue == '기초자산 수') {
+                              _equityCount = null;
+                              return;
+                            }
+                            _equityCount = int.parse(newValue!.split('개')[0]);
+                          });
+                        },
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
-            SizedBox(width: 40,),
+            SizedBox(width: 12,),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
                 children: [
-                  Text(
-                    "발행회사",
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      // Icon(Icons.search),
-                      // SizedBox(width: 8),
-                      Expanded(
-                        child: DropdownButton<String>(
-                          isExpanded: true,
-                          hint: Text("선택"),
-                          items: ['선택1', '선택2', '선택3'].map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                          onChanged: (newValue) {
-                            setState(() {
-
-                            });
-                          },
-                        ),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color(0xFFF5F6F6),
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                    ],
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        underline: Container(),
+                        hint: _selectedIssuer == null ?
+                          Padding(
+                            padding: EdgeInsets.only(left: 8),
+                            child: Text("발행회사", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: Color(0xFFACB2B5)),)
+                          ) :
+                          Padding(
+                            padding: EdgeInsets.only(left: 8),
+                            child: Text(
+                              _selectedIssuer!,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                color: Color(0xFF000000),
+                              ),
+                            ),
+                          ),
+                        items: _issuerList.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          setState(() {
+                            if (newValue == '발행회사') {
+                              _selectedIssuer = null;
+                              return;
+                            }
+                            _selectedIssuer = newValue;
+                            print(_selectedIssuer);
+                          });
+                        },
+                        menuMaxHeight: 5 * 48,
+                        itemHeight: 48,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -342,76 +605,100 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
                 children: [
-                  Text(
-                    "최대 KI(낙인 배리어)",
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _KIController,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            hintText: '입력',
-                            // contentPadding: EdgeInsets.only(bottom: 20),
-                            // focusedBorder: UnderlineInputBorder(
-                            //   borderSide: BorderSide(color: Colors.purpleAccent), // 포커스 시 밑줄 색상
-                            // ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey[300]!), // 기본 상태의 밑줄 색상
-                            ),
-                            // border: InputBorder.none, // InputDecorator에서 테두리를 설정했으므로, 내부 테두리는 제거
-                          ),
-                          // isDense: true,
-                          onChanged: _updateKIValue,
-                        ),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color(0xFFF5F6F6),
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                    ],
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        underline: Container(),
+                        hint: _subscriptionPeriod == null ?
+                          Padding(
+                            padding: EdgeInsets.only(left: 8),
+                              child: Text("상품가입기간", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: Color(0xFFACB2B5)),)
+                          ) :
+                          Padding(
+                            padding: EdgeInsets.only(left: 8),
+                            child: Text(
+                              "${_subscriptionPeriod!}년",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                color: Color(0xFF000000),
+                              ),
+                            ),
+                          ),
+                        items: ['상품가입기간', '1년', '2년', '3년'].map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          setState(() {
+                            if (newValue == '상품가입기간') {
+                              _subscriptionPeriod = null;
+                              return;
+                            }
+                            _subscriptionPeriod = int.parse(newValue!.split('년')[0]);
+                          });
+                        },
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
-            SizedBox(width: 40,),
+            SizedBox(width: 12,),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
                 children: [
-                  Text(
-                    "최소수익률",
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _yieldController,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            hintText: '입력',
-                            // contentPadding: EdgeInsets.only(bottom: 20),
-                            // focusedBorder: UnderlineInputBorder(
-                            //   borderSide: BorderSide(color: Colors.purpleAccent), // 포커스 시 밑줄 색상
-                            // ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey[300]!), // 기본 상태의 밑줄 색상
-                            ),
-                            // border: InputBorder.none, // InputDecorator에서 테두리를 설정했으므로, 내부 테두리는 제거
-                          ),
-                          // isDense: true,
-                          onChanged: _updateYieldValue,
-                        ),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color(0xFFF5F6F6),
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                    ],
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        underline: Container(),
+                        hint: _redemptionInterval == null ?
+                          Padding(
+                            padding: EdgeInsets.only(left: 8),
+                              child: Text("상환일간격", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: Color(0xFFACB2B5)),)
+                          ) :
+                          Padding(
+                            padding: EdgeInsets.only(left: 8),
+                            child: Text(
+                              "${_redemptionInterval!}개월",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                color: Color(0xFF000000),
+                              ),
+                            ),
+                          ),
+                        items: ['상환일간격', '3개월', '4개월', '6개월'].map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          setState(() {
+                            if (newValue == '상환일간격') {
+                              _redemptionInterval = null;
+                              return;
+                            }
+                            _redemptionInterval = int.parse(newValue!.split('개월')[0]);
+                          });
+                        },
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -423,78 +710,56 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "1차상환 배리어",
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
+              child: SizedBox(
+                child: TextField(
+                  controller: _KIController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    NumberRangeTextInputFormatter(min: 0, max: 100),
+                  ],
+                  decoration: InputDecoration(
+                    hintText: "최대 KI 낙인배리어",
+                    hintStyle:  TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                      color: Color(0xFFACB2B5),
                     ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide.none,
+                    ),
+                    filled: true,
+                    fillColor: Color(0xFFF5F6F6),
                   ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _firstBarrierController,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            hintText: '입력',
-                            // contentPadding: EdgeInsets.only(bottom: 20),
-                            // focusedBorder: UnderlineInputBorder(
-                            //   borderSide: BorderSide(color: Colors.purpleAccent), // 포커스 시 밑줄 색상
-                            // ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey[300]!), // 기본 상태의 밑줄 색상
-                            ),
-                            // border: InputBorder.none, // InputDecorator에서 테두리를 설정했으므로, 내부 테두리는 제거
-                          ),
-                          // isDense: true,
-                          onChanged: _updateFirstBarrier,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                  onChanged: _updateKIValue,
+                ),
               ),
             ),
-            SizedBox(width: 40,),
+            SizedBox(width: 12,),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "만기상환 배리어",
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _lastBarrierController,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            hintText: '입력',
-                            // contentPadding: EdgeInsets.only(bottom: 20),
-                            // focusedBorder: UnderlineInputBorder(
-                            //   borderSide: BorderSide(color: Colors.purpleAccent), // 포커스 시 밑줄 색상
-                            // ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey[300]!), // 기본 상태의 밑줄 색상
-                            ),
-                            // border: InputBorder.none, // InputDecorator에서 테두리를 설정했으므로, 내부 테두리는 제거
-                          ),
-                          // isDense: true,
-                          onChanged: _updateLastBarrier,
-                        ),
-                      ),
-                    ],
-                  ),
+              child: TextField(
+                controller: _yieldController,
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                  NumberRangeTextInputFormatter(min: 0, max: 100),
                 ],
+                decoration: InputDecoration(
+                  hintText: "최소 수익률",
+                  hintStyle: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                    color: Color(0xFFACB2B5),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  fillColor: Color(0xFFF5F6F6),
+                ),
+                onChanged: _updateYieldValue,
               ),
             ),
           ],
@@ -504,119 +769,63 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "상품가입기간",
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
+              child: SizedBox(
+                child: TextField(
+                  controller: _firstBarrierController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    NumberRangeTextInputFormatter(min: 0, max: 100),
+                  ],
+                  decoration: InputDecoration(
+                    hintText: "1차상환 배리어",
+                    hintStyle:  TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                      color: Color(0xFFACB2B5),
                     ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide.none,
+                    ),
+                    filled: true,
+                    fillColor: Color(0xFFF5F6F6),
                   ),
-                  Row(
-                    children: [
-                      // Icon(Icons.search),
-                      // SizedBox(width: 8),
-                      Expanded(
-                        child: DropdownButton<String>(
-                          isExpanded: true,
-                          hint: _subscriptionPeriod == null ? Text("선택") : Text("${_subscriptionPeriod!}년"),
-                          items: ['1년', '2년', '3년'].map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                          onChanged: (newValue) {
-                            setState(() {
-                              _subscriptionPeriod = int.parse(newValue!.split('년')[0]);
-                            });
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                  onChanged: _updateFirstBarrier,
+                ),
               ),
             ),
-            SizedBox(width: 40,),
+            SizedBox(width: 12,),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "상환일간격",
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
+              child: SizedBox(
+                child: TextField(
+                  controller: _lastBarrierController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    NumberRangeTextInputFormatter(min: 0, max: 100),
+                  ],
+                  decoration: InputDecoration(
+                    hintText: "만기상환 배리어",
+                    hintStyle:  TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                      color: Color(0xFFACB2B5),
                     ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide.none,
+                    ),
+                    filled: true,
+                    fillColor: Color(0xFFF5F6F6),
                   ),
-                  Row(
-                    children: [
-                      // Icon(Icons.search),
-                      // SizedBox(width: 8),
-                      Expanded(
-                        child: DropdownButton<String>(
-                          isExpanded: true,
-                          hint: _redemptionInterval == null ? Text("선택") : Text("${_redemptionInterval!}개월"),
-                          items: ['3개월', '4개월', '6개월'].map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                          onChanged: (newValue) {
-                            setState(() {
-                              _redemptionInterval = int.parse(newValue!.split('개월')[0]);
-                            });
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                  onChanged: _updateLastBarrier,
+                ),
               ),
             ),
           ],
         ),
       ],
-    );
-  }
-
-  Widget _buildDropdownWithIcon(String title, String hint) {
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "${title}",
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Row(
-            children: [
-              // Icon(Icons.search),
-              // SizedBox(width: 8),
-              Expanded(
-                child: DropdownButton<String>(
-                  isExpanded: true,
-                  hint: Text(hint),
-                  items: ['선택1', '선택2', '선택3'].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (_) {},
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
     );
   }
 
@@ -627,58 +836,56 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
         Text(
           "종목유형",
           style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFF595E62),
           ),
         ),
         Row(
           children: [
             Expanded(
-              child: Container(
-                margin: EdgeInsets.all(4),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    backgroundColor: _isIndex ? Colors.blue : Colors.grey[300],
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
                   ),
-                  onPressed: () {
-                    setState(() {
-                      _isIndex = !_isIndex;
-                    });
-                  },
-                  child: Text(
-                    "지수형",
-                    style: TextStyle(
-                      color: _isIndex ? Colors.white : Colors.black,
-                    ),
+                  backgroundColor: _isIndex ? Color(0xFF1C6BF9) : Color(0xFFF5F6F6),
+                ),
+                onPressed: () {
+                  setState(() {
+                    _isIndex = !_isIndex;
+                  });
+                },
+                child: Text(
+                  "지수형",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: _isIndex ? Color(0xFFFFFFFF) : Color(0xFFACB2B5)
                   ),
                 ),
               ),
             ),
+            SizedBox(width: 12,),
             Expanded(
-              child: Container(
-                margin: EdgeInsets.all(4),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    backgroundColor: _isStock ? Colors.blue : Colors.grey[300],
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
                   ),
-                  onPressed: () {
-                    setState(() {
-                      _isStock = !_isStock;
-                    });
-                  },
-                  child: Text(
-                    "종목형",
-                    style: TextStyle(
-                      color: _isStock ? Colors.white : Colors.black,
-                    ),
+                  backgroundColor: _isStock ? Color(0xFF1C6BF9) : Color(0xFFF5F6F6),
+                ),
+                onPressed: () {
+                  setState(() {
+                    _isStock = !_isStock;
+                  });
+                },
+                child: Text(
+                  "종목형",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: _isStock ? Color(0xFFFFFFFF) : Color(0xFFACB2B5)
                   ),
                 ),
               ),
@@ -689,78 +896,50 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
         Text(
           "상품종류",
           style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFF595E62),
           ),
         ),
-        Row(
-          children: [
-            _buildCheckboxButton(_buttonLabels[0], 0),
-            _buildCheckboxButton(_buttonLabels[1], 1),
-          ],
-        ),
-        Row(
-          children: [
-            _buildCheckboxButton(_buttonLabels[2], 2),
-            _buildCheckboxButton(_buttonLabels[3], 3),
-          ],
-        ),
+        SizedBox(
+          height: 86,
+          child: GridView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+              childAspectRatio: 5, // 버튼의 가로:세로 비율을 조정하세요
+            ),
+            itemCount: 4,
+            itemBuilder: (context, index) {
+              return ElevatedButton(
+                onPressed: () => _onButtonPressed(index),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  backgroundColor: _selectedTypeIndex == index ? Color(0xFF1C6BF9) : Color(0xFFF5F6F6),
+                ),
+                child: Text(
+                  _getButtonText(index),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: _selectedTypeIndex == index ? Color(0xFFFFFFFF) : Color(0xFFACB2B5)
+                  ),
+                ),
+              );
+            },
+          ),
+        )
       ],
     );
-  }
 
-  Widget _buildCheckboxButton(String label, int index) {
-    bool isChecked = _selectedTypeIndex == index;
-    return Expanded(
-      child: Container(
-        margin: EdgeInsets.all(4),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            padding: EdgeInsets.symmetric(vertical: 16),
-            backgroundColor: isChecked ? Colors.blue : Colors.grey[300],
-          ),
-          onPressed: () {
-            _handleButtonTap(index);
-          },
-          child: Text(
-            label,
-            style: TextStyle(
-              color: isChecked ? Colors.white : Colors.black,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 
-  // Widget _buildCheckboxButton(String label, {bool isChecked = false}) {
-  //   return Expanded(
-  //     child: Container(
-  //       margin: EdgeInsets.all(4),
-  //       child: ElevatedButton(
-  //         style: ElevatedButton.styleFrom(
-  //           shape: RoundedRectangleBorder(
-  //             borderRadius: BorderRadius.circular(20),
-  //           ),
-  //           padding: EdgeInsets.symmetric(vertical: 16),
-  //           backgroundColor: isChecked ? Colors.blue : Colors.grey[300],
-  //         ),
-  //         onPressed: () {
-  //           // 여기에 선택 로직을 구현하세요
-  //         },
-  //         child: Text(
-  //           label,
-  //           style: TextStyle(
-  //             color: isChecked ? Colors.white : Colors.black,
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
+  }
 
   Widget _buildDateButtons() {
     return Column(
@@ -769,14 +948,16 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
         Text(
           "발행일",
           style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFF595E62),
           ),
         ),
         Row(
           children: [
-            _buildDateButton(context, "시작일", 0),
-            _buildDateButton(context, "마감일", 1),
+            _buildDateButton(context, _initialDatePickerString[0], 0),
+            SizedBox(width: 12,),
+            _buildDateButton(context, _initialDatePickerString[1], 1),
           ],
         )
       ],
@@ -786,33 +967,54 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
   Widget _buildDateButton(BuildContext context, String label, int index) {
     String displayLabel = _selectedDates[index] ?? label;
     return Expanded(
-      child: Container(
-        margin: EdgeInsets.all(4),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.grey[300],
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            padding: EdgeInsets.symmetric(vertical: 16),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
           ),
-          onPressed: () => _handleDateSelection(context, index),
-          child: Text(displayLabel, style: TextStyle(color: Colors.black)),
+          backgroundColor: displayLabel != label ? Color(0xFF1C6BF9) : Color(0xFFF5F6F6),
+        ),
+        // onPressed: () {
+        //   if (displayLabel == label) {
+        //
+        //   }
+        // },
+        onPressed: () => _handleDateSelection(context, index),
+        child: Text(
+          displayLabel,
+          style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: displayLabel != label ? Color(0xFFFFFFFF) : Color(0xFFACB2B5)
+          ),
         ),
       ),
     );
   }
+}
 
-  Widget _buildConfirmButton(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () {
-          Navigator.pop(context);
-          _getFilteredData();
-        },
-        child: Text('확인'),
-      ),
-    );
+class NumberRangeTextInputFormatter extends TextInputFormatter {
+  final double min;
+  final double max;
+
+  NumberRangeTextInputFormatter({required this.min, required this.max});
+
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    if (newValue.text.isEmpty) {
+      return newValue;
+    }
+
+    final double? newDouble = double.tryParse(newValue.text);
+    if (newDouble == null) {
+      return oldValue;
+    }
+
+    if (newDouble < min || newDouble > max) {
+      return oldValue;
+    }
+
+    return newValue;
   }
 }
