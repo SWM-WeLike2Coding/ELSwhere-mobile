@@ -201,6 +201,7 @@ class ELSProductDetailView extends StatelessWidget {
                   const SizedBox(height: 24),
                   _buildRedirectText('간이투자설명서', product.summaryInvestmentProspectusLink),
                   _buildRedirectText('홈페이지', product.link),
+                  const SizedBox(height: 24),
                   _buildNoticeText(product.issuer),
                   const SizedBox(height: 8),
                 ],
