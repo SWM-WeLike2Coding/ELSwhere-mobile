@@ -13,91 +13,59 @@ class ELSProductDetailScreen extends StatefulWidget {
 
 class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
   bool isLiked = false;
-  bool isStared = false;
+  bool isBookmarked = false;
+
+  void changeLiked() => setState(() => isLiked = !isLiked);
+  void changeBookmarked() => setState(() => isBookmarked = !isBookmarked);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Text(
-          "상품 상세 정보",
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        centerTitle: false,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () {},
-          )
-        ],
-      ),
-      body: LayoutBuilder(builder: (context, constraints) {
-        return SingleChildScrollView(
-          child: Padding(
-            padding: edgeInsetsAll16,
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "상품 정보",
-                      style: GoogleFonts.inter(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            setState(() {
-                              isLiked = !isLiked;
-                            });
-                          },
-                          icon: isLiked
-                              ? const Icon(Icons.thumb_up_alt)
-                              : const Icon(Icons.thumb_up_alt_outlined),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            setState(() {
-                              isStared = !isStared;
-                            });
-                          },
-                          icon: isStared
-                              ? const Icon(Icons.star)
-                              : const Icon(Icons.star_border),
-                        ),
-                        OutlinedButton(
-                          onPressed: () {},
-                          style: OutlinedButton.styleFrom(
-                              // minimumSize: Size.zero,
-                              ),
-                          child: Text(
-                            "VS",
-                            style: GoogleFonts.inter(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                ELSProductDetailView(constraints: constraints),
-              ],
+      backgroundColor: AppColors.backgroundGray,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(72),
+        child: Padding(
+          padding: edgeInsetsAll8,
+          child: AppBar(
+            backgroundColor: AppColors.backgroundGray,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back_rounded),
+              onPressed: () => Navigator.pop(context),
             ),
+            actions: [
+              IconButton(
+                icon: CircleAvatar(
+                  backgroundColor: AppColors.contentWhite,
+                  child: isLiked
+                      ? const Icon(Icons.favorite, color: AppColors.contentRed)
+                      : const Icon(Icons.favorite_border_outlined),
+                ),
+                onPressed: changeLiked,
+              ),
+              IconButton(
+                icon: CircleAvatar(
+                  backgroundColor: AppColors.contentWhite,
+                  child: isBookmarked
+                      ? const Icon(Icons.bookmark, color: AppColors.contentYellow)
+                      : const Icon(Icons.bookmark_border_outlined),
+                ),
+                onPressed: changeBookmarked,
+              ),
+              IconButton(
+                icon: const CircleAvatar(
+                  backgroundColor: AppColors.contentWhite,
+                  child: const Icon(Icons.add),
+                ),
+                onPressed: () {},
+              ),
+
+            ],
           ),
-        );
-      }),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: ELSProductDetailView(),
+      ),
     );
   }
 

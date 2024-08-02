@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:elswhere/data/services/user_service.dart';
+import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/ui/screens/attention_setting_screen.dart';
 import 'package:elswhere/ui/screens/member_quit_screen.dart';
 import 'package:elswhere/ui/screens/service_agreement_screen.dart';
@@ -237,7 +238,7 @@ class _MoreScreenState extends State<MoreScreen> {
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
-                              color: Color(0xFF838A8E),
+                              color: AppColors.contentGray,
                             ),
                           ),
                           Consumer<UserInfoProvider>(

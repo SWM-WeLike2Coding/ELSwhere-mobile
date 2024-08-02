@@ -51,9 +51,9 @@ class TickerSymbolProvider extends ChangeNotifier {
         final day2ago = candlesData.first.close;
         _price[i] = day1ago;
         _rate[i] = (day1ago - day2ago) / day2ago * 100.0;
-        print(_tickerSymbol[i]);
-        print(_price[i]);
-        print(_rate[i]);
+        // print(_tickerSymbol[i]);
+        // print(_price[i]);
+        // print(_rate[i]);
       }
     }
   }

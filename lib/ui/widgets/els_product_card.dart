@@ -64,7 +64,7 @@ class _ELSProductCardState extends State<ELSProductCard> {
                             width: 75,
                             decoration: const BoxDecoration(
                               borderRadius: borderRadiusCircular10,
-                              color: Color(0xFFF5F6F6),
+                              color: AppColors.backgroundGray,
                             ),
                             child: Padding(
                               padding: edgeInsetsAll16,
@@ -72,11 +72,11 @@ class _ELSProductCardState extends State<ELSProductCard> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.arrow_right_alt, color: Color(0xFF595E62),),
+                                  Icon(Icons.arrow_right_alt, color: AppColors.textGray,),
                                   Text(
                                     '자세히',
                                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                      color: Color(0xFF595E62),
+                                      color: AppColors.textGray,
                                     ),
                                   ),
                                 ],
@@ -170,7 +170,7 @@ class _ELSProductCardState extends State<ELSProductCard> {
                     color: AppColors.contentWhite,
                     borderRadius: borderRadiusCircular10,
                     border: Border.all(
-                      color: isSelected ? Color(0xFFF5F6F6) : AppColors.contentWhite
+                      color: isSelected ? AppColors.backgroundGray : AppColors.contentWhite
                     )
                   ),
                   child: Row(
@@ -179,7 +179,7 @@ class _ELSProductCardState extends State<ELSProductCard> {
                       Column(
                         children: [
                           CircleAvatar(
-                            backgroundColor: const Color(0xFFF5F6F6),
+                            backgroundColor: AppColors.backgroundGray,
                             child: Padding(
                               padding: edgeInsetsAll4,
                               child: Image.asset(Assets.iconHana),
@@ -231,9 +231,8 @@ class _ELSProductCardState extends State<ELSProductCard> {
                                         crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                         startAfter: const Duration(seconds: 1),
+                                        blankSpace: 30,
                                         velocity: 30.0,
-                                        pauseAfterRound: const Duration(seconds: 1),
-                                        startPadding: 10.0,
                                         accelerationDuration: const Duration(seconds: 1),
                                         accelerationCurve: Curves.linear,
                                         fadingEdgeEndFraction: 0.7,
@@ -265,7 +264,7 @@ class _ELSProductCardState extends State<ELSProductCard> {
                             '연 ${widget.product.yieldIfConditionsMet}%',
                             style: Theme.of(context).textTheme.displayMedium?.copyWith(
                               fontWeight: FontWeight.w700,
-                              letterSpacing: -0.2,
+                              letterSpacing: -0.02,
                               fontSize: 18,
                               color: AppColors.contentRed,
                             ),
@@ -275,7 +274,7 @@ class _ELSProductCardState extends State<ELSProductCard> {
                             '${dayDifference.abs()}일 ${dayDifference < 0 ? '전' : '후'} 마감',
                             style: Theme.of(context).textTheme.displayMedium?.copyWith(
                               fontSize: 14,
-                              color: const Color(0xFF595E62),
+                              color: AppColors.textGray,
                             ),
                           )
                         ],

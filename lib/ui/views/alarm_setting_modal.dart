@@ -1,3 +1,4 @@
+import 'package:elswhere/config/app_resource.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -89,198 +90,188 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 24,),
-                    _buildSearchInput(),
-                    Padding(
-                      padding: EdgeInsets.only(left: 24, right: 24),
-                      child: Wrap(
-                        spacing: 8.0,
-                        runSpacing: 4.0,
-                        children: _selectedTickers.map((ticker) {
-                          return Padding(
-                            padding: EdgeInsets.only(left: 4),
-                            child: Chip(
-                              label: Text(
-                                ticker.equityName,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xFF838A8E),
-                                ),
-                              ),
-                              onDeleted: () {
-                                _removeTickerFromSelected(ticker);
-                              },
-                              deleteIcon: Icon(Icons.close),
-                              deleteIconColor: Color(0xFFACB2B5),
-                              backgroundColor: Color(0xFFF5F6F6),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(600),
-                                side: BorderSide(
-                                  color: Color(0xFFF5F6F6),
-                                  width: 0,
-                                ),
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 24,),
+                  _buildSearchInput(),
+                  Padding(
+                    padding: EdgeInsets.only(left: 24, right: 24),
+                    child: Wrap(
+                      spacing: 8.0,
+                      runSpacing: 4.0,
+                      children: _selectedTickers.map((ticker) {
+                        return Padding(
+                          padding: EdgeInsets.only(left: 4),
+                          child: Chip(
+                            label: Text(
+                              ticker.equityName,
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.contentGray,
                               ),
                             ),
-                          );
-                        }).toList(),
-                      ),
+                            onDeleted: () {
+                              _removeTickerFromSelected(ticker);
+                            },
+                            deleteIcon: Icon(Icons.close),
+                            deleteIconColor: Color(0xFFACB2B5),
+                            backgroundColor: AppColors.backgroundGray,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(600),
+                              side: BorderSide(
+                                color: AppColors.backgroundGray,
+                                width: 0,
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(
-                                color: Color(0xFFF5F6F6),
-                                width: 1,
-                              )
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        border: Border(
+                            bottom: BorderSide(
+                              color: AppColors.backgroundGray,
+                              width: 1,
+                            )
+                        )
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Padding(
+                    padding: EdgeInsets.only(left: 24, right: 24, top: 24),
+                    child: Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "검색필터",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.textGray,
+                            ),
+                          ),
+                          SizedBox(height: 12,),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: _controllerKIB,
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly,
+                                    NumberRangeTextInputFormatter(min: 0, max: 100),
+                                  ],
+                                  decoration: InputDecoration(
+                                    hintText: "최대 KI 낙인배리어",
+                                    hintStyle:  TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14,
+                                      color: Color(0xFFACB2B5),
+                                    ),
+                                    border: InputBorder.none,
+                                    filled: true,
+                                    fillColor: AppColors.backgroundGray,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 12,),
+                              Expanded(
+                                child: TextField(
+                                  controller: _controllerCoupon,
+                                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                                    NumberRangeTextInputFormatter(min: 0, max: 100),
+                                  ],
+                                  decoration: InputDecoration(
+                                    hintText: "최소 수익률",
+                                    hintStyle: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14,
+                                      color: Color(0xFFACB2B5),
+                                    ),
+                                    border: InputBorder.none,
+                                    filled: true,
+                                    fillColor: AppColors.backgroundGray,
+                                  ),
+                                ),
+                              ),
+                            ],
                           )
+                        ],
                       ),
                     ),
-                    SizedBox(height: 16),
-                    Padding(
-                      padding: EdgeInsets.only(left: 24, right: 24, top: 24),
-                      child: Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "검색필터",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFF595E62),
-                              ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 24, right: 24, top: 24),
+                    child: Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "상품종류",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.textGray,
                             ),
-                            SizedBox(height: 12,),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: SizedBox(
-                                    child: TextField(
-                                      controller: _controllerKIB,
-                                      keyboardType: TextInputType.number,
-                                      inputFormatters: [
-                                        FilteringTextInputFormatter.digitsOnly,
-                                        NumberRangeTextInputFormatter(min: 0, max: 100),
-                                      ],
-                                      decoration: InputDecoration(
-                                        hintText: "최대 KI 낙인배리어",
-                                        hintStyle:  TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 14,
-                                          color: Color(0xFFACB2B5),
-                                        ),
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(8),
-                                          borderSide: BorderSide.none,
-                                        ),
-                                        filled: true,
-                                        fillColor: Color(0xFFF5F6F6),
-                                      ),
+                          ),
+                          SizedBox(height: 12,),
+                          SizedBox(
+                            height: 86,
+                            child: GridView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 12,
+                                mainAxisSpacing: 12,
+                                childAspectRatio: 5, // 버튼의 가로:세로 비율을 조정하세요
+                              ),
+                              itemCount: 4,
+                              itemBuilder: (context, index) {
+                                return ElevatedButton(
+                                  onPressed: () => _onButtonPressed(index),
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
                                     ),
+                                    backgroundColor: _selectedTypeIndex == index ? Color(0xFF1C6BF9) : AppColors.backgroundGray,
                                   ),
-                                ),
-                                SizedBox(width: 12,),
-                                Expanded(
-                                  child: TextField(
-                                    controller: _controllerCoupon,
-                                    keyboardType: TextInputType.numberWithOptions(decimal: true),
-                                    inputFormatters: [
-                                      FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
-                                      NumberRangeTextInputFormatter(min: 0, max: 100),
-                                    ],
-                                    decoration: InputDecoration(
-                                      hintText: "최소 수익률",
-                                      hintStyle: TextStyle(
-                                        fontWeight: FontWeight.w500,
+                                  child: Text(
+                                    _getButtonText(index),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
                                         fontSize: 14,
-                                        color: Color(0xFFACB2B5),
-                                      ),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: BorderSide.none,
-                                      ),
-                                      filled: true,
-                                      fillColor: Color(0xFFF5F6F6),
+                                        fontWeight: FontWeight.w500,
+                                        color: _selectedTypeIndex == index ? Color(0xFFFFFFFF) : Color(0xFFACB2B5)
                                     ),
                                   ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 24, right: 24, top: 24),
-                      child: Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "상품종류",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFF595E62),
-                              ),
+                                );
+                              },
                             ),
-                            SizedBox(height: 12,),
-                            SizedBox(
-                              height: 86,
-                              child: GridView.builder(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  crossAxisSpacing: 12,
-                                  mainAxisSpacing: 12,
-                                  childAspectRatio: 5, // 버튼의 가로:세로 비율을 조정하세요
-                                ),
-                                itemCount: 4,
-                                itemBuilder: (context, index) {
-                                  return ElevatedButton(
-                                    onPressed: () => _onButtonPressed(index),
-                                    style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8.0),
-                                      ),
-                                      backgroundColor: _selectedTypeIndex == index ? Color(0xFF1C6BF9) : Color(0xFFF5F6F6),
-                                    ),
-                                    child: Text(
-                                      _getButtonText(index),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: _selectedTypeIndex == index ? Color(0xFFFFFFFF) : Color(0xFFACB2B5)
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            )
-                          ],
-                        ),
+                          )
+                        ],
                       ),
                     ),
-                    SizedBox(height: 16),
-                    SizedBox(height: 16),
-                    // _buildCheckboxes(),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 16),
+                  SizedBox(height: 16),
+                  // _buildCheckboxes(),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: Container(
@@ -357,7 +348,7 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                   hintStyle: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFF838A8E),
+                    color: AppColors.contentGray,
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),

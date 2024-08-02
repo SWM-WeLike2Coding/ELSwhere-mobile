@@ -1,3 +1,4 @@
+import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/ui/views/alarm_setting_modal.dart';
 import 'package:flutter/material.dart';
 
@@ -44,7 +45,7 @@ class _AttentionSettingScreenState extends State<AttentionSettingScreen> {
                         height: 40,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          color: Color(0xFFF5F6F6),
+                          color: AppColors.backgroundGray,
                           shape: BoxShape.circle,
                         ),
                         child: IconButton(
