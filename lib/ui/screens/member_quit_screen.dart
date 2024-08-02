@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/data/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -17,8 +19,6 @@ class MemberQuitScreen extends StatefulWidget {
 
 class _MemberQuitScreenState extends State<MemberQuitScreen> {
   bool _isAgreeBtnChecked = false;
-
-  final _baseUrl = '$baseUrl/user-service';
 
   @override
   void initState() {
@@ -146,7 +146,7 @@ class _MemberQuitScreenState extends State<MemberQuitScreen> {
                               )
                           ),
                           onPressed: _isAgreeBtnChecked? () {
-                            // 첫 번째 버튼 눌렀을 때 동작
+                            Navigator.pop(context);
                           } : null,
                           child: Text(
                             '취소',
@@ -174,8 +174,14 @@ class _MemberQuitScreenState extends State<MemberQuitScreen> {
                               borderRadius: BorderRadius.circular(8),
                             )
                           ),
-                          onPressed: _isAgreeBtnChecked? () {
-                            // 두 번째 버튼 눌렀을 때 동작
+                          onPressed: _isAgreeBtnChecked? () async {
+                            final userInfoProvider = Provider.of<UserInfoProvider>(context, listen: false);
+                            if (await userInfoProvider.quitService(context)) {
+                              print("회원 탈퇴 성공");
+                            } else {
+                              print("회원 탈퇴 실패");
+                            }
+
                           } : null,
                           child: Text(
                             '탈퇴하기',

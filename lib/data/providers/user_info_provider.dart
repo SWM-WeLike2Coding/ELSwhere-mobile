@@ -32,7 +32,6 @@ class UserInfoProvider with ChangeNotifier {
     final data = response.data;
     final userInfo = ResponseUserInfoDto.fromJson(data);
     _nickname = userInfo.nickname;
-    print("안녕!!${_nickname}");
     notifyListeners();
   }
 
@@ -96,5 +95,36 @@ class UserInfoProvider with ChangeNotifier {
     );
     print(_userInfo);
     print('로그아웃됨');
+  }
+
+  Future<bool> quitService(BuildContext context) async {
+    try {
+      final response = await _userService.deleteUser();
+      if (response.response.statusCode == 200) {
+        print('Service Quitted successfully');
+        _userInfo = null;
+        notifyListeners();
+        await storage.deleteAll();
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => LoginScreen()),
+        );
+        return true;
+      } else {
+        print('Failed to quit: ${response.response.statusCode}');
+        print('Response body: ${response.response.data}');
+        return false;
+      }
+    } on DioException catch (e) {
+      print('DioException: ${e.message}');
+      if (e.response != null) {
+        print('Status code: ${e.response?.statusCode}');
+        print('Response data: ${e.response?.data}');
+        return false;
+      }
+    } catch (e) {
+      print('Unexpected error: $e');
+      return false;
+    }
+    return false;
   }
 }
