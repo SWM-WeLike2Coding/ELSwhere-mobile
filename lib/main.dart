@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/config.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
@@ -6,10 +5,9 @@ import 'package:elswhere/data/providers/els_products_provider.dart';
 import 'package:elswhere/data/providers/issuer_provider.dart';
 import 'package:elswhere/data/providers/ticker_symbol_provider.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/data/services/dio_client.dart';
 import 'package:elswhere/data/services/els_product_service.dart';
 import 'package:elswhere/data/services/user_service.dart';
-import 'package:elswhere/ui/screens/login_screen.dart';
-import 'package:elswhere/ui/screens/main_screen.dart';
 import 'package:elswhere/ui/screens/splash_screen.dart';
 import 'package:elswhere/utils/material_color_builder.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +16,6 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   await initApp();
@@ -42,14 +39,13 @@ Future<void> initApp() async {
 }
 
 class ELSwhere extends StatelessWidget {
-  final Dio _dio = Dio();
-  final Dio _userDio = DioClient.createDio();
   late final ProductService _productService;
   late final UserService _userService;
 
   ELSwhere({super.key}) {
-    _productService = ProductService(_dio);
-    _userService = UserService(_userDio);
+    dio = DioClient.createDio();
+    _productService = ProductService(dio);
+    _userService = UserService(dio);
   }
 
   @override
