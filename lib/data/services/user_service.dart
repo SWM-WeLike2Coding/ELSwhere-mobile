@@ -17,6 +17,9 @@ abstract class UserService {
 
   @PATCH("/v1/user/change/nickname")
   Future<HttpResponse> changeNickname(@Body() Map<String, dynamic> body);
+
+  @DELETE("/v1/user")
+  Future<HttpResponse> deleteUser();
 }
 
 class DioClient {

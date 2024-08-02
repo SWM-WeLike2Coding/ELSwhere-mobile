@@ -97,6 +97,8 @@ class LoginScreen extends StatelessWidget {
       accessToken = response.accessToken;
       storage.write(key: 'ACCESS_TOKEN', value: accessToken);
       storage.write(key: 'REFRESH_TOKEN', value: refreshToken);
+      print(accessToken);
+      print(refreshToken);
       return true;
     }
     return false;
