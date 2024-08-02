@@ -2,7 +2,6 @@ import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/config.dart';
 import 'package:elswhere/data/services/auth_service.dart';
 import 'package:elswhere/ui/screens/initial_screen.dart';
-import 'package:elswhere/ui/screens/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -44,12 +43,11 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(
                       width: width - 32,
                       child: OutlinedButton.icon(
-                        style: const ButtonStyle(
-                          padding: WidgetStatePropertyAll(edgeInsetsAll12),
-                          shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                              borderRadius: borderRadiusCircular10)),
+                        style: OutlinedButton.styleFrom(
+                          padding: edgeInsetsAll12,
+                          shape: const RoundedRectangleBorder(borderRadius: borderRadiusCircular10),
                           backgroundColor:
-                              WidgetStatePropertyAll(AppColors.contentWhite),
+                              AppColors.contentWhite,
                         ),
                         icon: SvgPicture.asset(
                           googleIconPath,
@@ -95,10 +93,9 @@ class LoginScreen extends StatelessWidget {
     final response = await AuthService.authenticateUser(authUrl);
     if (response != null) {
       accessToken = response.accessToken;
+      refreshToken = response.refreshToken;
       storage.write(key: 'ACCESS_TOKEN', value: accessToken);
       storage.write(key: 'REFRESH_TOKEN', value: refreshToken);
-      print(accessToken);
-      print(refreshToken);
       return true;
     }
     return false;

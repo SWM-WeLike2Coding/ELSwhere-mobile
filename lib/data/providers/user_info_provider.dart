@@ -21,19 +21,7 @@ class UserInfoProvider with ChangeNotifier {
   String getNickname() => _nickname;
 
 
-  UserInfoProvider(this._userService) {
-    _initializeNickname();
-  }
-
-
-  Future<void> _initializeNickname() async {
-    final httpResponse = await _userService.checkUser();
-    final response = httpResponse.response;
-    final data = response.data;
-    final userInfo = ResponseUserInfoDto.fromJson(data);
-    _nickname = userInfo.nickname;
-    notifyListeners();
-  }
+  UserInfoProvider(this._userService);
 
   Future<bool> checkUser() async {
     try {
@@ -43,6 +31,7 @@ class UserInfoProvider with ChangeNotifier {
       final userInfo = ResponseUserInfoDto.fromJson(data);
 
       _userInfo = userInfo;
+      _nickname = _userInfo!.nickname;
       return true;
     } on DioException catch (e) {
       if (e.response?.statusCode == 404) {
