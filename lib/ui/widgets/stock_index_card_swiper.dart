@@ -54,7 +54,7 @@ class StockIndexCardSwiperState extends State<StockIndexCardSwiper> {
                               ? AppColors.contentRed
                               : (tickerSymbolProvider.rate[index] != 0
                               ? AppColors.mainBlue
-                              : Color(0xFF595E62)),
+                              : AppColors.textGray),
                           letterSpacing: -0.02,
                         ),
                       ),
@@ -74,7 +74,7 @@ class StockIndexCardSwiperState extends State<StockIndexCardSwiper> {
                               ? AppColors.contentRed
                               : (tickerSymbolProvider.rate[index] != 0
                               ? AppColors.mainBlue
-                              : Color(0xFF595E62)),
+                              : AppColors.textGray),
                           letterSpacing: -0.02,
                         ),
                       ),

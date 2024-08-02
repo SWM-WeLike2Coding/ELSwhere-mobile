@@ -35,7 +35,7 @@ class _MemberQuitScreenState extends State<MemberQuitScreen> {
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
-                color: Color(0xFFF5F6F6),
+                color: AppColors.backgroundGray,
                 width: 1,
               )
             )
@@ -87,7 +87,7 @@ class _MemberQuitScreenState extends State<MemberQuitScreen> {
                   SizedBox(height: 32,),
                   Container(
                     decoration: BoxDecoration(
-                      color: Color(0xFFF5F6F6),
+                      color: AppColors.backgroundGray,
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     child: Padding(

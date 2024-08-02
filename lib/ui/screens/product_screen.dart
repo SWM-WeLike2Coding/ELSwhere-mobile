@@ -157,7 +157,7 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
                         '투자 성향 반영',
                         style: Theme.of(context).textTheme.displaySmall?.copyWith(
                           fontSize: 14,
-                          color: const Color(0xFF838A8E),
+                          color: AppColors.contentGray,
                         )
                       ),
                       const SizedBox(width: 8),
@@ -237,8 +237,8 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
             _count++;
           });
         },
-        style: const ButtonStyle(
-          backgroundColor: const WidgetStatePropertyAll(Color(0xFF434648)),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xFF434648),
         ),
       ),
     );

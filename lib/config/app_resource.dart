@@ -19,7 +19,8 @@ sealed class Assets {
 
 sealed class AppColors {
   static const Color contentRed = Color(0xFFEE5648);
-  static const Color contentGray = Color(0xFFBABABA);
+  static const Color contentYellow = Color(0xFFF3972C);
+  static const Color contentGray = Color(0xFF838A8E);
   static const Color contentBlack = Color(0xFF000000);
   static const Color contentWhite = Color(0xFFFFFFFF);
   static const Color textFieldWhite = Color(0xFFF3F3F3);
@@ -37,24 +38,29 @@ sealed class AppColors {
   static const Color blues5 = Color(0xFF77AAFF); // 열 번째 색상
 
   static const Color mainBlue = Color(0xFF1C6BF9); // 메인 색상
+
+  static const Color backgroundGray = Color(0xFFF5F6F6);
+  static const Color iconGray = Color(0xFFCFD2D3);
+  static const Color textGray = Color(0xFF595E62);
+  static const Color titleGray = Color(0xFF4C4F53);
 }
 
 const textTheme = TextTheme(
-  bodyLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard),
-  bodyMedium: TextStyle(fontFamily: Assets.fontFamilyPretendard),
-  bodySmall: TextStyle(fontFamily: Assets.fontFamilyPretendard),
-  displayLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard, fontSize: 24, fontWeight: FontWeight.w700),
-  displayMedium: TextStyle(fontFamily: Assets.fontFamilyPretendard, fontSize: 18),
-  displaySmall: TextStyle(fontFamily: Assets.fontFamilyPretendard),
-  headlineLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard, fontWeight: FontWeight.w700),
-  headlineMedium: TextStyle(fontFamily: Assets.fontFamilyPretendard),
-  headlineSmall: TextStyle(fontFamily: Assets.fontFamilyPretendard, fontSize: 16, fontWeight: FontWeight.w500),
-  labelLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard),
-  labelMedium: TextStyle(fontFamily: Assets.fontFamilyPretendard),
-  labelSmall: TextStyle(fontFamily: Assets.fontFamilyPretendard),
-  titleLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard, fontWeight: FontWeight.w600),
-  titleMedium: TextStyle(fontFamily: Assets.fontFamilyPretendard),
-  titleSmall: TextStyle(fontFamily: Assets.fontFamilyPretendard),
+  bodyLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.02),
+  bodyMedium: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.02),
+  bodySmall: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.02),
+  displayLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.02, fontSize: 24, fontWeight: FontWeight.w700),
+  displayMedium: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.02, fontSize: 18),
+  displaySmall: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.02, fontSize: 12),
+  headlineLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.02, fontWeight: FontWeight.w700),
+  headlineMedium: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.02),
+  headlineSmall: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.02, fontSize: 16, fontWeight: FontWeight.w500),
+  labelLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.02, fontSize: 24, color: AppColors.contentBlack, fontWeight: FontWeight.w600),
+  labelMedium: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.02, fontSize: 17, fontWeight: FontWeight.w500),
+  labelSmall: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.02, fontSize: 12, fontWeight: FontWeight.w500),
+  titleLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.02, fontWeight: FontWeight.w600),
+  titleMedium: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.02),
+  titleSmall: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.02),
 );
 
 const edgeInsetsZero = EdgeInsets.zero;
