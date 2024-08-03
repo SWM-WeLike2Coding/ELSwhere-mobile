@@ -99,6 +99,11 @@ flutter:
     - .env
     - assets/icons/icon_google.svg
     - assets/icons/icon_hana.png
+    - assets/icons/icon_temp_logo.svg
+    - assets/icons/icon_profile.svg
+    - assets/icons/icon_hot.svg
+    - assets/icons/icon_attention.svg
+    - assets/icons/icon_man.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
