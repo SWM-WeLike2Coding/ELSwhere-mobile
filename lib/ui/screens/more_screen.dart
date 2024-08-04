@@ -4,11 +4,11 @@ import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:elswhere/data/services/user_service.dart';
-import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/ui/screens/attention_setting_screen.dart';
 import 'package:elswhere/ui/screens/member_quit_screen.dart';
 import 'package:elswhere/ui/screens/service_agreement_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import '../../config/config.dart';
 import '../../data/models/dtos/response_user_info_dto.dart';
@@ -183,6 +183,8 @@ class _MoreScreenState extends State<MoreScreen> {
 
   @override
   Widget build(BuildContext context) {
+    const String manIcon = "assets/icons/icon_man.svg";
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -223,9 +225,14 @@ class _MoreScreenState extends State<MoreScreen> {
                           color: Color(0xFFD1E0FB),
                           shape: BoxShape.circle,
                         ),
-                        child: Icon(
-                          Icons.ac_unit_rounded,
-                          size: 27,
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: SvgPicture.asset(
+                            manIcon,
+                            width: 27,
+                            height: 23.16,
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ),
                       SizedBox(width: 16,),
@@ -238,7 +245,7 @@ class _MoreScreenState extends State<MoreScreen> {
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
-                              color: AppColors.contentGray,
+                              color: Color(0xFF838A8E),
                             ),
                           ),
                           Consumer<UserInfoProvider>(
