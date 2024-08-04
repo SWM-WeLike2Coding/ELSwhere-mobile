@@ -1,4 +1,5 @@
  import 'package:elswhere/ui/screens/attention_products_screen.dart';
+import 'package:elswhere/ui/screens/attention_subscription_schedule_screen.dart';
 import 'package:elswhere/ui/screens/holding_products_screen.dart';
 import 'package:elswhere/ui/screens/investment_propensity_screen.dart';
 import 'package:elswhere/ui/screens/notification_screen.dart';
@@ -30,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 _buildInvestmentTasteTestWidget(context),
                 _buildHoldingProductAssetWidget(context),
                 _buildHotAndAttentionProductWidget(context),
-                _buildAttentionScheduleWidget(),
+                _buildAttentionScheduleWidget(context),
                 _buildIndexWidget(),
                 SizedBox(height: 32,),
               ],
@@ -323,51 +324,61 @@ Widget _buildAttentionProductButton(BuildContext context) {
   );
 }
 
-Widget _buildAttentionScheduleWidget() {
+Widget _buildAttentionScheduleWidget(BuildContext context) {
   return Padding(
     padding: EdgeInsets.only(top: 16, left: 24, right: 24),
-    child: Container(
-      decoration: BoxDecoration(
-          color: Color(0xFFFFFFFF),
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Color.fromRGBO(0, 0, 0, 0.04), // 그림자 색상
-              spreadRadius: 0, // 확산 반경
-              blurRadius: 16, // 블러 반경
-              offset: Offset(0, 0), // 그림자의 x, y 오프셋
-            ),
-          ]
-      ),
-      width: double.infinity,
-      child: Padding(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "관심 청약 일정",
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                height: 1.18,
-                letterSpacing: -0.32,
-                color: Color(0xFF000000),
+    child: GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AttentionSubscriptionScheduleScreen(),
+          ),
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+            color: Color(0xFFFFFFFF),
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromRGBO(0, 0, 0, 0.04), // 그림자 색상
+                spreadRadius: 0, // 확산 반경
+                blurRadius: 16, // 블러 반경
+                offset: Offset(0, 0), // 그림자의 x, y 오프셋
               ),
-            ),
-            SizedBox(height: 8,),
-            Text(
-              "곧 다가오는 청약 상품 일정이에요.",
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                height: 1.18,
-                letterSpacing: -0.24,
-                color: Color(0xFF838A8E),
+            ]
+        ),
+        width: double.infinity,
+        child: Padding(
+          padding: EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "관심 청약 일정",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  height: 1.18,
+                  letterSpacing: -0.32,
+                  color: Color(0xFF000000),
+                ),
               ),
-            ),
-            SizedBox(height: 150,),
-          ],
+              SizedBox(height: 8,),
+              Text(
+                "곧 다가오는 청약 상품 일정이에요.",
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  height: 1.18,
+                  letterSpacing: -0.24,
+                  color: Color(0xFF838A8E),
+                ),
+              ),
+              SizedBox(height: 150,),
+            ],
+          ),
         ),
       ),
     ),
