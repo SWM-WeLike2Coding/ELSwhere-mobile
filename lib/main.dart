@@ -54,7 +54,7 @@ class ELSwhere extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => ELSOnSaleProductsProvider(_productService)),
         ChangeNotifierProvider(create: (context) => ELSEndSaleProductsProvider(_productService)),
-        ChangeNotifierProvider(create: (context) => ELSProductProvider(_productService)),
+        ChangeNotifierProvider(create: (context) => ELSProductProvider(_productService, _userService)),
         ChangeNotifierProvider(create: (context) => IssuerProvider(_productService)),
         ChangeNotifierProvider(create: (context) => TickerSymbolProvider(_productService)),
         ChangeNotifierProvider(create: (context) => UserInfoProvider(_userService)),

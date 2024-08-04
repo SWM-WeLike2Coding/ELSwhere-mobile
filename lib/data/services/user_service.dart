@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:elswhere/config/config.dart';
+import 'package:elswhere/data/models/dtos/response_interesting_product_dto.dart';
 import 'package:elswhere/data/services/api_interceptor.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -20,4 +21,10 @@ abstract class UserService {
 
   @DELETE("/v1/user")
   Future<HttpResponse> deleteUser();
+
+  @GET("/v1/interest")
+  Future<List<ResponseInterestingProductDto>> getInterestedProducts();
+
+  @POST("/v1/interest")
+  Future<HttpResponse> registerInterestedProduct(@Body() Map<String, dynamic> body);
 }
