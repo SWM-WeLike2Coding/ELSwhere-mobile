@@ -104,6 +104,7 @@ flutter:
     - assets/icons/icon_hot.svg
     - assets/icons/icon_attention.svg
     - assets/icons/icon_man.svg
+    - assets/icons/icon_girl_with_coin.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
