@@ -32,7 +32,7 @@ class _AttentionSettingScreenState extends State<AttentionSettingScreen> {
                       ),
                       SizedBox(width: 8,),
                       Text(
-                        "관심 상품",
+                        "관심 상품 알림 설정",
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 18,

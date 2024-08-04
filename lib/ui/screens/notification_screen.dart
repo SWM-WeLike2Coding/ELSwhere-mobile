@@ -1,20 +1,15 @@
-import 'package:elswhere/config/app_resource.dart';
-import 'package:elswhere/ui/widgets/holding_product_card.dart';
 import 'package:flutter/material.dart';
 
-import '../../data/providers/els_products_provider.dart';
-import '../views/els_product_list_view.dart';
+import '../../config/app_resource.dart';
 
-class HoldingProductsScreen extends StatefulWidget {
-  const HoldingProductsScreen({super.key});
+class NotificationScreen extends StatefulWidget {
+  const NotificationScreen({super.key});
 
   @override
-  State<HoldingProductsScreen> createState() => _HoldingProductsScreenState();
+  State<NotificationScreen> createState() => _NotificationScreenState();
 }
 
-class _HoldingProductsScreenState extends State<HoldingProductsScreen> {
-  String type = 'latest';
-
+class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +38,7 @@ class _HoldingProductsScreenState extends State<HoldingProductsScreen> {
               ),
             ),
             title: Text(
-              "보유 상품",
+              "알림",
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 18,
@@ -53,32 +48,18 @@ class _HoldingProductsScreenState extends State<HoldingProductsScreen> {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          _buildHoldingProductsString(),
-          ELSProductListView<ELSOnSaleProductsProvider>(type: type),
-        ],
+      body: Center(
+        child: Text(
+          "알림이 없어요",
+          style: TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 16,
+            height: 1.18,
+            letterSpacing: -0.32,
+            color: Color(0xFF686F74),
+          ),
+        ),
       ),
     );
   }
 }
-
-Widget _buildHoldingProductsString() {
-  return Padding(
-    padding: EdgeInsets.only(top: 24, left: 24, right: 24, bottom: 16),
-    child: Container(
-      width: double.infinity,
-      child: Text(
-        "투자 중인 상품",
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
-          height: 1.18,
-          letterSpacing: -0.32,
-          color: Color(0xFF131415),
-        ),
-      ),
-    ),
-  );
-}
-
