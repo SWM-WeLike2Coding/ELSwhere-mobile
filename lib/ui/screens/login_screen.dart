@@ -1,6 +1,7 @@
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/config.dart';
 import 'package:elswhere/data/services/auth_service.dart';
+import 'package:elswhere/ui/screens/auth_screen.dart';
 import 'package:elswhere/ui/screens/initial_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -55,7 +56,7 @@ class LoginScreen extends StatelessWidget {
                           width: 24,
                         ),
                         onPressed: () async {
-                          final result = await login();
+                          final bool result = await login(context);
 
                           if (result) {
                             Navigator.pushAndRemoveUntil(
@@ -88,12 +89,18 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Future<bool> login() async {
+  Future<bool> login(BuildContext context) async {
     final authUrl = baseUrl + loginEndpoint;
-    final response = await AuthService.authenticateUser(authUrl);
+    // final response = await AuthService.authenticateUser(authUrl);
+
+    final Map<String, String>? response = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AuthScreen(authUrl: baseUrl + loginEndpoint,)),
+    );
+
     if (response != null) {
-      accessToken = response.accessToken;
-      refreshToken = response.refreshToken;
+      accessToken = response['accessToken']!;
+      refreshToken = response['refreshToken']!;
       storage.write(key: 'ACCESS_TOKEN', value: accessToken);
       storage.write(key: 'REFRESH_TOKEN', value: refreshToken);
       return true;
