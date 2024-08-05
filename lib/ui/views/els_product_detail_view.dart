@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ELSProductDetailView extends StatelessWidget {
-  late final ResponseSingleProductDto product;
+  ResponseSingleProductDto? product;
 
   ELSProductDetailView({super.key});
 
@@ -45,14 +45,14 @@ class ELSProductDetailView extends StatelessWidget {
                       _buildIssuerIcon(),
                       const SizedBox(height: 16),
                       _buildText(
-                        text: product.name,
+                        text: product!.name,
                         height: 30,
                         maxWidth: width - 48,
                         style: textTheme.labelLarge!.copyWith(),
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        product.issuer,
+                        product!.issuer,
                         style: textTheme.labelMedium?.copyWith(
                           fontSize: 18,
                           color: AppColors.contentGray,
@@ -86,7 +86,7 @@ class ELSProductDetailView extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                        '연 최대 ${product.yieldIfConditionsMet}%',
+                                        '연 최대 ${product!.yieldIfConditionsMet}%',
                                         style: textTheme.labelLarge?.copyWith(
                                           fontSize: 20,
                                           color: AppColors.contentRed,
@@ -129,10 +129,10 @@ class ELSProductDetailView extends StatelessWidget {
                                 ),
                                 LayoutBuilder(
                                   builder: (context, constraints) {
-                                    final equities = product.equities.split('/');
+                                    final equities = product!.equities.split('/');
                                     return Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: product.equities.split('/').map((e) {
+                                      children: product!.equities.split('/').map((e) {
                                         final String equity = e.trim();
 
                                         return Column(
@@ -143,7 +143,7 @@ class ELSProductDetailView extends StatelessWidget {
                                               maxWidth: constraints.maxWidth,
                                               style: textTheme.labelMedium!.copyWith(),
                                             ),
-                                            if (e != product.equities.split('/').last) const SizedBox(height: 8,),
+                                            if (e != product!.equities.split('/').last) const SizedBox(height: 8,),
                                           ],
                                         );
                                       }).toList(),
@@ -199,10 +199,10 @@ class ELSProductDetailView extends StatelessWidget {
                   const SizedBox(height: 48),
                   const Divider(height: 1, color: const Color(0xFFE6E7E8),),
                   const SizedBox(height: 24),
-                  _buildRedirectText('간이투자설명서', product.summaryInvestmentProspectusLink),
-                  _buildRedirectText('홈페이지', product.link),
+                  _buildRedirectText('간이투자설명서', product!.summaryInvestmentProspectusLink),
+                  _buildRedirectText('홈페이지', product!.link),
                   const SizedBox(height: 24),
-                  _buildNoticeText(product.issuer),
+                  _buildNoticeText(product!.issuer),
                   const SizedBox(height: 8),
                 ],
               ),
@@ -296,7 +296,7 @@ class ELSProductDetailView extends StatelessWidget {
                     )
                 ),
                 Text(
-                    '${DateTime.parse(product.subscriptionEndDate)
+                    '${DateTime.parse(product!.subscriptionEndDate)
                         .difference(DateTime.now())
                         .inDays
                     }일 뒤 마감',
@@ -308,7 +308,7 @@ class ELSProductDetailView extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Text(
-              '${product.subscriptionStartDate} ~ ${product.subscriptionEndDate}',
+              '${product!.subscriptionStartDate} ~ ${product!.subscriptionEndDate}',
               style: textTheme.labelMedium,
             ),
             const SizedBox(height: 16),
@@ -320,7 +320,7 @@ class ELSProductDetailView extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Text(
-              '${product.issuedDate} ~ ${product.maturityDate}',
+              '${product!.issuedDate} ~ ${product!.maturityDate}',
               style: textTheme.labelMedium,
             ),
           ],
@@ -350,19 +350,19 @@ class ELSProductDetailView extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '${productType[product.type]!}형',
+                  '${productType[product!.type]!}형',
                   style: textTheme.labelMedium!.copyWith(),
                 ),
               ],
             ),
             const SizedBox(height: 8),
             Text(
-              'KI ${product.knockIn ?? '없음'}',
+              'KI ${product!.knockIn ?? '없음'}',
               style: textTheme.labelMedium!.copyWith()
             ),
             const SizedBox(height: 8),
             Text(
-              '${product.productInfo}',
+              '${product!.productInfo}',
               style: textTheme.labelMedium!.copyWith()
             ),
           ],
@@ -389,7 +389,7 @@ class ELSProductDetailView extends StatelessWidget {
               ),
             ),
             Text(
-              '${product.remarks}형',
+              '${product!.remarks}형',
               style: textTheme.labelMedium!.copyWith(),
             ),
           ],
@@ -403,7 +403,7 @@ class ELSProductDetailView extends StatelessWidget {
   }
 
   Widget _buildEvaluationDatesList() {
-    final List<String> rows = product.earlyRepaymentEvaluationDates.split(',');
+    final List<String> rows = product!.earlyRepaymentEvaluationDates.split(',');
     final List<List<String>> evaluationDates = rows.map((row) => row.trim().split(':')).toList();
     return Column(
       children: [
@@ -439,7 +439,7 @@ class ELSProductDetailView extends StatelessWidget {
               ),
             ),
             Text(
-              DateFormat().addPattern('yyyy년 MM월 dd일').format(DateTime.parse(product.maturityDate)),
+              DateFormat().addPattern('yyyy년 MM월 dd일').format(DateTime.parse(product!.maturityDate)),
               style: textTheme.labelMedium
             ),
           ],

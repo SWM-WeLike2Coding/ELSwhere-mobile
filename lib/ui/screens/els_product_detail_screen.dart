@@ -1,7 +1,11 @@
 import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/ui/views/els_product_detail_view.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+
+import '../../data/models/dtos/response_single_product_dto.dart';
 
 
 class ELSProductDetailScreen extends StatefulWidget {
@@ -16,57 +20,123 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
   bool isBookmarked = false;
 
   void changeLiked() => setState(() => isLiked = !isLiked);
-  void changeBookmarked() => setState(() => isBookmarked = !isBookmarked);
+  // void changeBookmarked() => setState(() => isBookmarked = !isBookmarked);
+  void changeBookmarked() {
+    final productProvider = Provider.of<ELSProductProvider>(context, listen: false);
+    ResponseSingleProductDto? product = productProvider.product;
+    int? id = product?.id;
+    print(id);
+    productProvider.registerInterested(product!.id);
+    setState(() {
+      isBookmarked = productProvider.isBookmarked;
+      // isBookmarked = !isBookmarked;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundGray,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(72),
-        child: Padding(
-          padding: edgeInsetsAll8,
-          child: AppBar(
-            backgroundColor: AppColors.backgroundGray,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back_rounded),
-              onPressed: () => Navigator.pop(context),
-            ),
-            actions: [
-              IconButton(
-                icon: CircleAvatar(
-                  backgroundColor: AppColors.contentWhite,
-                  child: isLiked
-                      ? const Icon(Icons.favorite, color: AppColors.contentRed)
-                      : const Icon(Icons.favorite_border_outlined),
-                ),
-                onPressed: changeLiked,
-              ),
-              IconButton(
-                icon: CircleAvatar(
-                  backgroundColor: AppColors.contentWhite,
-                  child: isBookmarked
-                      ? const Icon(Icons.bookmark, color: AppColors.contentYellow)
-                      : const Icon(Icons.bookmark_border_outlined),
-                ),
-                onPressed: changeBookmarked,
-              ),
-              IconButton(
-                icon: const CircleAvatar(
-                  backgroundColor: AppColors.contentWhite,
-                  child: const Icon(Icons.add),
-                ),
-                onPressed: () {},
-              ),
+    return Consumer<ELSProductProvider>(
+      builder: (context, productProvider, child) {
+        final isBookmarked = productProvider.isBookmarked;
 
-            ],
+        return Scaffold(
+          backgroundColor: AppColors.backgroundGray,
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(72),
+            child: Padding(
+              padding: edgeInsetsAll8,
+              child: AppBar(
+                backgroundColor: AppColors.backgroundGray,
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back_rounded),
+                  onPressed: () => Navigator.pop(context),
+                ),
+                actions: [
+                  IconButton(
+                    icon: CircleAvatar(
+                      backgroundColor: AppColors.contentWhite,
+                      child: isLiked
+                          ? const Icon(Icons.favorite, color: AppColors.contentRed)
+                          : const Icon(Icons.favorite_border_outlined),
+                    ),
+                    onPressed: changeLiked,
+                  ),
+                  IconButton(
+                    icon: CircleAvatar(
+                      backgroundColor: AppColors.contentWhite,
+                      child: isBookmarked
+                          ? const Icon(Icons.bookmark, color: AppColors.contentYellow)
+                          : const Icon(Icons.bookmark_border_outlined),
+                    ),
+                    onPressed: changeBookmarked,
+                  ),
+                  IconButton(
+                    icon: const CircleAvatar(
+                      backgroundColor: AppColors.contentWhite,
+                      child: const Icon(Icons.add),
+                    ),
+                    onPressed: () {},
+                  ),
+
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: ELSProductDetailView(),
-      ),
+          body: SingleChildScrollView(
+            child: ELSProductDetailView(),
+          ),
+        );
+      },
     );
+
+    // return Scaffold(
+    //   backgroundColor: AppColors.backgroundGray,
+    //   appBar: PreferredSize(
+    //     preferredSize: const Size.fromHeight(72),
+    //     child: Padding(
+    //       padding: edgeInsetsAll8,
+    //       child: AppBar(
+    //         backgroundColor: AppColors.backgroundGray,
+    //         leading: IconButton(
+    //           icon: const Icon(Icons.arrow_back_rounded),
+    //           onPressed: () => Navigator.pop(context),
+    //         ),
+    //         actions: [
+    //           IconButton(
+    //             icon: CircleAvatar(
+    //               backgroundColor: AppColors.contentWhite,
+    //               child: isLiked
+    //                   ? const Icon(Icons.favorite, color: AppColors.contentRed)
+    //                   : const Icon(Icons.favorite_border_outlined),
+    //             ),
+    //             onPressed: changeLiked,
+    //           ),
+    //           IconButton(
+    //             icon: CircleAvatar(
+    //               backgroundColor: AppColors.contentWhite,
+    //               child: isBookmarked
+    //                   ? const Icon(Icons.bookmark, color: AppColors.contentYellow)
+    //                   : const Icon(Icons.bookmark_border_outlined),
+    //             ),
+    //             onPressed: changeBookmarked,
+    //           ),
+    //           IconButton(
+    //             icon: const CircleAvatar(
+    //               backgroundColor: AppColors.contentWhite,
+    //               child: const Icon(Icons.add),
+    //             ),
+    //             onPressed: () {},
+    //           ),
+    //
+    //         ],
+    //       ),
+    //     ),
+    //   ),
+    //   body: SingleChildScrollView(
+    //     child: ELSProductDetailView(),
+    //   ),
+    // );
   }
 
   Widget _buildCompanyCard(BoxConstraints constraints) {
