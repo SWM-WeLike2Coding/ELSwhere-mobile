@@ -162,7 +162,7 @@ class ELSProductDetailView extends StatelessWidget {
                   const SizedBox(height: 8),
                   _buildProductTypeCard(),
                   const SizedBox(height: 8),
-                  _buildRemarksCard(),
+                  _buildRemarksCard(context),
                   const SizedBox(height: 48),
                   _buildTitleText('기초자산 주가'),
                   const SizedBox(height: 24),
@@ -371,7 +371,8 @@ class ELSProductDetailView extends StatelessWidget {
     );
   }
 
-  Widget _buildRemarksCard() {
+  Widget _buildRemarksCard(BuildContext context) {
+
     return Container(
       decoration: const BoxDecoration(
         color: AppColors.contentWhite,
@@ -379,8 +380,8 @@ class ELSProductDetailView extends StatelessWidget {
       ),
       child: Padding(
         padding: edgeInsetsAll16,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               '비고',
@@ -388,10 +389,11 @@ class ELSProductDetailView extends StatelessWidget {
                 color: AppColors.textGray,
               ),
             ),
+            const SizedBox(height: 10,),
             Text(
               '${product!.remarks}형',
               style: textTheme.labelMedium!.copyWith(),
-            ),
+            )
           ],
         ),
       ),
