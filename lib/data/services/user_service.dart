@@ -27,4 +27,7 @@ abstract class UserService {
 
   @POST("/v1/interest")
   Future<HttpResponse> registerInterestedProduct(@Body() Map<String, dynamic> body);
+
+  @DELETE("/v1/interest/{id}")
+  Future<HttpResponse> deleteInterestedProduct(@Path("id") int id);
 }

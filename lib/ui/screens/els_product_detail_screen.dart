@@ -17,16 +17,23 @@ class ELSProductDetailScreen extends StatefulWidget {
 
 class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
   bool isLiked = false;
-  bool isBookmarked = false;
 
   void changeLiked() => setState(() => isLiked = !isLiked);
   // void changeBookmarked() => setState(() => isBookmarked = !isBookmarked);
   void changeBookmarked() {
     final productProvider = Provider.of<ELSProductProvider>(context, listen: false);
     ResponseSingleProductDto? product = productProvider.product;
-    int? id = product?.id;
-    print(id);
-    productProvider.registerInterested(product!.id);
+    int? interestedId = productProvider.interestedId;
+    bool isBookmarked = productProvider.isBookmarked;
+    // print(interestedId);
+    if (isBookmarked == false) {
+      print("관심 등록합니다.");
+      productProvider.registerInterested(product!.id);
+    } else {
+      print("관심 해지합니다.");
+      productProvider.deleteFromInterested();
+    }
+
     setState(() {
       isBookmarked = productProvider.isBookmarked;
       // isBookmarked = !isBookmarked;
