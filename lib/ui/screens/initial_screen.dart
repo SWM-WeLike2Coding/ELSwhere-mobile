@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/data/providers/issuer_provider.dart';
 import 'package:elswhere/data/providers/ticker_symbol_provider.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
@@ -19,6 +20,7 @@ class InitialScreen extends StatelessWidget {
         Provider.of<TickerSymbolProvider>(context, listen: false).fetchTickers(),
         Provider.of<TickerSymbolProvider>(context, listen: false).fetchStockPrices(),
         Provider.of<UserInfoProvider>(context, listen: false).checkUser(),
+        Provider.of<ELSProductProvider>(context, listen: false).fetchInterested(),
       ]),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
