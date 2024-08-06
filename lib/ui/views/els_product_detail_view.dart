@@ -5,6 +5,7 @@ import 'package:elswhere/data/models/dtos/response_single_product_dto.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/ui/views/stock_price_graph_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
@@ -225,14 +226,24 @@ class ELSProductDetailView extends StatelessWidget {
 
   Widget _buildIssuerIcon() {
     return SizedBox(
-      width: 75,
-      height: 75,
-      child: Padding(
-        padding: edgeInsetsAll8,
-        child: CircleAvatar(
-          child: Padding(
-            padding: edgeInsetsAll4,
-            child: Image.asset(Assets.iconHana),
+      width: 65,
+      height: 65,
+      child: CircleAvatar(
+        child: Padding(
+          padding: edgeInsetsAll8,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SizedBox(
+                width: constraints.maxWidth,
+                height: constraints.maxHeight,
+                child: FittedBox(
+                  fit: BoxFit.fill,
+                  child: Assets.issuerIconMap[product?.issuer] != null
+                      ? SvgPicture.asset(Assets.issuerIconMap[product?.issuer]!)
+                      : const Icon(Icons.question_mark, color: AppColors.contentBlack),
+                ),
+              );
+            }
           ),
         ),
       ),
