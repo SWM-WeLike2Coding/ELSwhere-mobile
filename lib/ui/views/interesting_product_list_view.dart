@@ -1,9 +1,10 @@
-import 'package:elswhere/data/models/dtos/response_interesting_product_dto.dart';
+
 import 'package:elswhere/data/models/dtos/summarized_product_dto.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../data/models/dtos/response_interesting_product_dto.dart';
 import '../widgets/els_product_card.dart';
 
 class InterestingProductListView extends StatelessWidget {
@@ -21,8 +22,8 @@ class InterestingProductListView extends StatelessWidget {
       productType: interestingProduct.productType,
       equities: interestingProduct.equities,
       yieldIfConditionsMet: interestingProduct.yieldIfConditionsMet,
-      subscriptionStartDate: DateTime.parse(interestingProduct.subscriptionStartDate),
-      subscriptionEndDate: DateTime.parse(interestingProduct.subscriptionEndDate),
+      subscriptionStartDate: interestingProduct.subscriptionStartDate,
+      subscriptionEndDate: interestingProduct.subscriptionEndDate,
     );
   }
 

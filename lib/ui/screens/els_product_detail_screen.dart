@@ -28,6 +28,7 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
     // print(interestedId);
     if (isBookmarked == false) {
       print("관심 등록합니다.");
+      // print(product!.id);
       productProvider.registerInterested(product!.id);
     } else {
       print("관심 해지합니다.");

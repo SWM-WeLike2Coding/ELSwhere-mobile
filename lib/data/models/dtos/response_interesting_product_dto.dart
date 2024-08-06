@@ -12,8 +12,8 @@ class ResponseInterestingProductDto {
   final String equities;
   final double yieldIfConditionsMet;
   final int? knockIn;
-  final String subscriptionStartDate;
-  final String subscriptionEndDate;
+  final DateTime subscriptionStartDate;
+  final DateTime subscriptionEndDate;
 
 
 

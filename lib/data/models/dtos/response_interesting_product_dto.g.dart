@@ -17,8 +17,10 @@ ResponseInterestingProductDto _$ResponseInterestingProductDtoFromJson(
       equities: json['equities'] as String,
       yieldIfConditionsMet: (json['yieldIfConditionsMet'] as num).toDouble(),
       knockIn: (json['knockIn'] as num?)?.toInt(),
-      subscriptionStartDate: json['subscriptionStartDate'] as String,
-      subscriptionEndDate: json['subscriptionEndDate'] as String,
+      subscriptionStartDate:
+          DateTime.parse(json['subscriptionStartDate'] as String),
+      subscriptionEndDate:
+          DateTime.parse(json['subscriptionEndDate'] as String),
     );
 
 Map<String, dynamic> _$ResponseInterestingProductDtoToJson(
@@ -32,6 +34,6 @@ Map<String, dynamic> _$ResponseInterestingProductDtoToJson(
       'equities': instance.equities,
       'yieldIfConditionsMet': instance.yieldIfConditionsMet,
       'knockIn': instance.knockIn,
-      'subscriptionStartDate': instance.subscriptionStartDate,
-      'subscriptionEndDate': instance.subscriptionEndDate,
+      'subscriptionStartDate': instance.subscriptionStartDate.toIso8601String(),
+      'subscriptionEndDate': instance.subscriptionEndDate.toIso8601String(),
     };

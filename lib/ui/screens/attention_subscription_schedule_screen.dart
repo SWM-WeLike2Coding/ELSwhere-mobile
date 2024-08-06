@@ -1,10 +1,16 @@
- import 'package:elswhere/ui/screens/redemption_schedule_screen.dart';
+import 'package:elswhere/data/models/dtos/els_product_for_schedule_dto.dart';
+import 'package:elswhere/data/models/dtos/response_interesting_product_dto.dart';
+import 'package:elswhere/data/providers/els_product_provider.dart';
+import 'package:elswhere/ui/screens/redemption_schedule_screen.dart';
 import 'package:elswhere/ui/screens/subscription_end_schedule_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../config/app_resource.dart';
+import '../../data/models/dtos/summarized_product_dto.dart';
+import '../widgets/els_product_card.dart';
 
 class AttentionSubscriptionScheduleScreen extends StatefulWidget {
   const AttentionSubscriptionScheduleScreen({super.key});
@@ -18,8 +24,59 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
+  ElsProductForScheduleDto convertInterestingProductToProductForSchedule(ResponseInterestingProductDto interestingProduct) {
+    return ElsProductForScheduleDto(
+      isHolding: false,
+      productId: interestingProduct.productId,
+      issuer: interestingProduct.issuer,
+      name: interestingProduct.name,
+      productType: interestingProduct.productType,
+      equities: interestingProduct.equities,
+      yieldIfConditionsMet: interestingProduct.yieldIfConditionsMet,
+      subscriptionStartDate: interestingProduct.subscriptionStartDate,
+      subscriptionEndDate: interestingProduct.subscriptionEndDate,
+    );
+  }
+
+  SummarizedProductDto convertProductForScheduleToSummarized(ElsProductForScheduleDto product) {
+    return SummarizedProductDto(
+      id: product.productId,
+      issuer: product.issuer,
+      name: product.name,
+      productType: product.productType,
+      equities: product.equities,
+      yieldIfConditionsMet: product.yieldIfConditionsMet,
+      subscriptionStartDate: product.subscriptionStartDate,
+      subscriptionEndDate: product.subscriptionEndDate,
+    );
+  }
+
+  bool isTodayOrFuture(DateTime date) {
+    DateTime now = DateTime.now();
+    DateTime today = DateTime(now.year, now.month, now.day);
+    DateTime targetDate = DateTime(date.year, date.month, date.day);
+    return targetDate.isAfter(today) || targetDate.isAtSameMomentAs(today);
+  }
+
   @override
   Widget build(BuildContext context) {
+    var interestingProducts = Provider.of<ELSProductProvider>(context, listen: false).interestingProducts;
+    Map<DateTime, List<ElsProductForScheduleDto>> tempScheduleMap = {};
+
+    for (int i = 0; i < interestingProducts.length; i++) {
+      print(interestingProducts[i].subscriptionEndDate);
+      if (tempScheduleMap.containsKey(interestingProducts[i].subscriptionEndDate)) {
+        tempScheduleMap[interestingProducts[i].subscriptionEndDate]!.add(convertInterestingProductToProductForSchedule(interestingProducts[i]));
+      } else {
+        tempScheduleMap[interestingProducts[i].subscriptionEndDate] = [convertInterestingProductToProductForSchedule(interestingProducts[i])];
+      }
+    }
+
+    // 나중에 여기에 보유 상품 관련 정보들도 DTO 변환해서 tempScheduleMap에 넣어줘야함!!!
+
+    List<DateTime> sortedDates = tempScheduleMap.keys.toList()..sort();
+    Map<DateTime, List<ElsProductForScheduleDto>> scheduleMap = { for (var key in sortedDates) key : tempScheduleMap[key]! };
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(72),
@@ -56,12 +113,15 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
           ),
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildTwoGreyCards(context),
-          _buildScheduleCalendar(),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildTwoGreyCards(context),
+            _buildScheduleCalendar(),
+            _buildSchedules(scheduleMap),
+          ],
+        ),
       ),
     );
   }
@@ -204,6 +264,7 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
           ),
           todayDecoration: BoxDecoration(
             color: Colors.white,
+            shape: BoxShape.circle,
           ),
           markerDecoration: BoxDecoration(
             color: Colors.blueAccent,
@@ -239,6 +300,79 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
         ),
         locale: 'ko_KR',
       ),
+    );
+  }
+
+  Widget _buildSchedules(Map<DateTime, List<ElsProductForScheduleDto>> scheduleMap) {
+    DateTime now = DateTime.now();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      // children: scheduleMap.entries.where((entry) => entry.key.isAfter(now)).map((entry){
+      children: scheduleMap.entries.where((entry) => isTodayOrFuture(entry.key)).map((entry){
+      // children: scheduleMap.entries.map((entry){
+        DateTime date = entry.key;
+        List<ElsProductForScheduleDto> wholeProducts = entry.value;
+        List<ElsProductForScheduleDto> interestedProducts = [];
+        List<ElsProductForScheduleDto> holdingProducts = [];
+        bool isThereInterested = false;
+        bool isThereHolding = false;
+        DateTime now = DateTime.now();
+
+        for (int i = 0; i < wholeProducts.length; i++) {
+          if (wholeProducts[i].isHolding == false) {
+            // 관심 등록 상품 처리 로직
+            interestedProducts.add(wholeProducts[i]);
+            isThereInterested = true;
+          } else {
+            holdingProducts.add(wholeProducts[i]);
+            isThereHolding = true;
+          }
+        }
+
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: 24, left: 24, right: 24),
+              child: Text(
+                "${date.month}월 ${date.day}일",
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  height: 16.52 / 14,
+                  letterSpacing: -0.02,
+                  color: Color(0xFF838A8E),
+                ),
+              ),
+            ),
+            if (isThereInterested)
+              Padding(
+                padding: EdgeInsets.only(top: 16, bottom:16, left: 24, right: 24),
+                child: Text(
+                  "청약 마감",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    height: 18.88 / 16,
+                    letterSpacing:  -0.02,
+                    color: Color(0xFF131415),
+                  ),
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: interestedProducts.asMap().entries.map((entry) {
+                  int index = entry.key;
+                  ElsProductForScheduleDto product = entry.value;
+                  return ELSProductCard(product: convertProductForScheduleToSummarized(product), index: index);
+                }).toList(),
+              ),
+
+          ],
+        );
+      }).toList(),
     );
   }
 }
