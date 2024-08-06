@@ -13,7 +13,7 @@ part 'els_product_service.g.dart';
 @RestApi(baseUrl: '')
 abstract class ProductService {
   factory ProductService(Dio dio) {
-    final _baseUrl = '$baseUrl/product-service';
+    final _baseUrl = '$baseUrl/product-service/v1';
     dio.interceptors.add(ApiInterceptor());
     return _ProductService(dio, baseUrl: _baseUrl);
   }
