@@ -8,7 +8,7 @@ class ELSProductsProvider extends ChangeNotifier {
   bool _isLoading = false;
   bool _hasNext = true;
   int _page = 0;
-  final int _size = 20;
+  final int _size = 1000;
   final String status;
 
   final ProductService _productService;
@@ -73,6 +73,27 @@ class ELSProductsProvider extends ChangeNotifier {
     } finally {
       _isLoading = false;
       notifyListeners();
+    }
+  }
+
+  void sortProducts(String type) {
+    switch (type) {
+      case '최신순':
+        products.sort((a, b) => b.id.compareTo(a.id));
+      case '낙인순':
+        products.sort((a, b) {
+          final x = a.knockIn ?? 999;
+          final y = b.knockIn ?? 999;
+          final result = x.compareTo(y);
+          if (result == 0) return b.id.compareTo(a.id);
+          return result;
+        });
+      case '수익률순':
+        products.sort((a, b) {
+          final result = b.yieldIfConditionsMet.compareTo(a.yieldIfConditionsMet);
+          if (result == 0) return b.id.compareTo(a.id);
+          return result;
+        });
     }
   }
 
