@@ -251,7 +251,7 @@ class _MoreScreenState extends State<MoreScreen> {
                           Consumer<UserInfoProvider>(
                             builder: (context, userInfoProvider, child) {
                               return Text(
-                                userInfoProvider.getNickname(), // 여기에서 닉네임을 받아옵니다.
+                                userInfoProvider.getNickname() + '님', // 여기에서 닉네임을 받아옵니다.
                                 style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 16,

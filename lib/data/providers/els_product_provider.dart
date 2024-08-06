@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:retrofit/dio.dart';
 import '../models/dtos/response_interesting_product_dto.dart';
@@ -53,6 +54,7 @@ class ELSProductProvider with ChangeNotifier {
   }
 
   Future<void> fetchInterested() async {
+    print("관심 상품 가져옵니다.");
     _isLoading = true;
     try {
       final response = await _userService.getInterestedProducts();
@@ -75,6 +77,9 @@ class ELSProductProvider with ChangeNotifier {
       _interestId = response.data['id'];
       _interestingProducts = await _userService.getInterestedProducts();
     } catch (error) {
+      if (error is DioError && error.response != null) {
+        print('Error details: ${error.response?.data}');
+      }
       print('Error regiter interested product: $error');
       _isBookmarked = false;
     } finally {

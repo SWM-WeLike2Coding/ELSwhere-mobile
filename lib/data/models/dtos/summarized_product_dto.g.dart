@@ -31,6 +31,7 @@ Map<String, dynamic> _$SummarizedProductDtoToJson(
       'productType': instance.productType,
       'equities': instance.equities,
       'yieldIfConditionsMet': instance.yieldIfConditionsMet,
+      'knockIn': instance.knockIn,
       'subscriptionStartDate': instance.subscriptionStartDate.toIso8601String(),
       'subscriptionEndDate': instance.subscriptionEndDate.toIso8601String(),
     };
