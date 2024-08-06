@@ -492,10 +492,7 @@ class ELSProductDetailView extends StatelessWidget {
   Widget _buildNoticeText(String issuer) {
     return Text(
       '''본 상품은 $issuer에서 광고하는 상품으로
-엘스웨어는 상품 내용 및 판매에 관여하지 않습니다.
-
-한국금융투자협회 심사필 제23-00000호
-(2024-07-07~2025-07-07)''',
+엘스웨어는 상품 내용 및 판매에 관여하지 않습니다.''',
       style: textTheme.displaySmall!.copyWith(
         color: const Color(0xFFACB2B5),
       ),

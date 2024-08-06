@@ -42,15 +42,17 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
   
   Future<void> typeChanged(BuildContext context, String? value) async {
     //TODO: ProductProvider에 따라서 on sale end sale 구분해서 refresh 해야함
-    switch(_tabIndex) {
-      case 0:
-        await Provider.of<ELSOnSaleProductsProvider>(context, listen: false).refreshProducts(value!);
-      case 1:
-        await Provider.of<ELSEndSaleProductsProvider>(context, listen: false).refreshProducts(value!);
-    }
+    // switch(_tabIndex) {
+    //   case 0:
+    //     await Provider.of<ELSOnSaleProductsProvider>(context, listen: false).refreshProducts(value!);
+    //   case 1:
+    //     await Provider.of<ELSEndSaleProductsProvider>(context, listen: false).refreshProducts(value!);
+    // }
     setState(() {
       selectedValue = value!;
       type = widget.itemsMap[value]!;
+      Provider.of<ELSOnSaleProductsProvider>(context, listen: false).sortProducts(value);
+      Provider.of<ELSEndSaleProductsProvider>(context, listen: false).sortProducts(value);
     });
   }
 
@@ -125,7 +127,7 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
                     child: DropdownButton2<String>(
                       isExpanded: true,
                       hint: Text(
-                        'Select Item',
+                        '정렬 기준을 선택해주세요.',
                         style: TextStyle(
                           fontSize: 14,
                           color: Theme.of(context).hintColor,

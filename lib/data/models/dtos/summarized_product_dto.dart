@@ -10,6 +10,7 @@ class SummarizedProductDto {
   final String productType;
   final String equities;
   final double yieldIfConditionsMet;
+  final int? knockIn;
   final DateTime subscriptionStartDate;
   final DateTime subscriptionEndDate;
 
@@ -20,6 +21,7 @@ class SummarizedProductDto {
     required this.productType,
     required this.equities,
     required this.yieldIfConditionsMet,
+    this.knockIn,
     required this.subscriptionStartDate,
     required this.subscriptionEndDate,
   });

@@ -15,6 +15,7 @@ SummarizedProductDto _$SummarizedProductDtoFromJson(
       productType: json['productType'] as String,
       equities: json['equities'] as String,
       yieldIfConditionsMet: (json['yieldIfConditionsMet'] as num).toDouble(),
+      knockIn: (json['knockIn'] as num?)?.toInt(),
       subscriptionStartDate:
           DateTime.parse(json['subscriptionStartDate'] as String),
       subscriptionEndDate:
