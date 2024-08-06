@@ -164,35 +164,35 @@ class ELSProductDetailView extends StatelessWidget {
                   _buildProductTypeCard(),
                   const SizedBox(height: 8),
                   _buildRemarksCard(context),
-                  const SizedBox(height: 48),
-                  _buildTitleText('기초자산 주가'),
-                  const SizedBox(height: 24),
-                  StockPriceGraphView(),
-                  const SizedBox(height: 48),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _buildTitleText('엘스웨어 분석 결과'),
-                      SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: GestureDetector(
-                          onTap: () {},
-                          child: CircleAvatar(
-                            backgroundColor: const Color(0xFFE6E7E8),
-                            child: Text(
-                              '?',
-                              style: textTheme.labelSmall!.copyWith(
-                                fontWeight: FontWeight.w700,
-                              )
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 32),
-                  _buildRepaymentRatesList(),
+                  // const SizedBox(height: 48),
+                  // _buildTitleText('기초자산 주가'),
+                  // const SizedBox(height: 24),
+                  // StockPriceGraphView(),
+                  // const SizedBox(height: 48),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     _buildTitleText('엘스웨어 분석 결과'),
+                  //     SizedBox(
+                  //       width: 24,
+                  //       height: 24,
+                  //       child: GestureDetector(
+                  //         onTap: () {},
+                  //         child: CircleAvatar(
+                  //           backgroundColor: const Color(0xFFE6E7E8),
+                  //           child: Text(
+                  //             '?',
+                  //             style: textTheme.labelSmall!.copyWith(
+                  //               fontWeight: FontWeight.w700,
+                  //             )
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     )
+                  //   ],
+                  // ),
+                  // const SizedBox(height: 32),
+                  // _buildRepaymentRatesList(),
                   const SizedBox(height: 48),
                   _buildTitleText('조기•만기상환 평가 일정'),
                   const SizedBox(height: 32),
@@ -287,6 +287,8 @@ class ELSProductDetailView extends StatelessWidget {
   }
 
   Widget _buildDateCard() {
+    final dayDifference = DateTime.parse(product!.subscriptionEndDate).difference(DateTime.now()).inDays;
+
     return Container(
       decoration: const BoxDecoration(
         color: AppColors.contentWhite,
@@ -307,10 +309,7 @@ class ELSProductDetailView extends StatelessWidget {
                     )
                 ),
                 Text(
-                    '${DateTime.parse(product!.subscriptionEndDate)
-                        .difference(DateTime.now())
-                        .inDays
-                    }일 뒤 마감',
+                    '${dayDifference.abs()}일 ${dayDifference < 0 ? '전' : '후'} 마감',
                     style: textTheme.labelMedium!.copyWith(
                       color: AppColors.mainBlue,
                     )
@@ -383,29 +382,31 @@ class ELSProductDetailView extends StatelessWidget {
   }
 
   Widget _buildRemarksCard(BuildContext context) {
-
     return Container(
       decoration: const BoxDecoration(
         color: AppColors.contentWhite,
         borderRadius: borderRadiusCircular10,
       ),
-      child: Padding(
-        padding: edgeInsetsAll16,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '비고',
-              style: textTheme.labelMedium!.copyWith(
-                color: AppColors.textGray,
+      child: SizedBox(
+        width: double.infinity,
+        child: Padding(
+          padding: edgeInsetsAll16,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '비고',
+                style: textTheme.labelMedium!.copyWith(
+                  color: AppColors.textGray,
+                ),
               ),
-            ),
-            const SizedBox(height: 10,),
-            Text(
-              '${product!.remarks}형',
-              style: textTheme.labelMedium!.copyWith(),
-            )
-          ],
+              const SizedBox(height: 10,),
+              Text(
+                '${product!.remarks}형',
+                style: textTheme.labelMedium!.copyWith(),
+              )
+            ],
+          ),
         ),
       ),
     );
