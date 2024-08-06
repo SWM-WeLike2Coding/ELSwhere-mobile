@@ -7,6 +7,7 @@ import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/ui/screens/els_product_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
@@ -134,25 +135,26 @@ class _ELSProductCardState extends State<ELSProductCard> {
                             ),
                           ),
                           onTap: () async {
-                            showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (BuildContext context) {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              },
-                            );
-
-                            await productProvider.fetchProduct(widget.product.id);
-
-                            // 로딩 다이얼로그 닫기
-                            Navigator.of(context).pop();
-
-                            if (productProvider.product != null) {
-                              // ELSDetailDialog.show(context, productProvider.product!);
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => ELSProductDetailScreen()));
-                            }
+                            Fluttertoast.showToast(msg: '추후 업데이트를 통해 제공될 예정입니다.', toastLength: Toast.LENGTH_SHORT);
+                            // showDialog(
+                            //   context: context,
+                            //   barrierDismissible: false,
+                            //   builder: (BuildContext context) {
+                            //     return const Center(
+                            //       child: CircularProgressIndicator(),
+                            //     );
+                            //   },
+                            // );
+                            //
+                            // await productProvider.fetchProduct(widget.product.id);
+                            //
+                            // // 로딩 다이얼로그 닫기
+                            // Navigator.of(context).pop();
+                            //
+                            // if (productProvider.product != null) {
+                            //   // ELSDetailDialog.show(context, productProvider.product!);
+                            //   Navigator.push(context, MaterialPageRoute(builder: (context) => ELSProductDetailScreen()));
+                            // }
                           },
                         ),
                       ),

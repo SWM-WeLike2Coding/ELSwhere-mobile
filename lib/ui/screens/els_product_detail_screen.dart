@@ -2,6 +2,7 @@ import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/ui/views/els_product_detail_view.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -84,7 +85,9 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
                       backgroundColor: AppColors.contentWhite,
                       child: const Icon(Icons.add),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Fluttertoast.showToast(msg: '추후 업데이트를 통해 제공될 예정입니다.', toastLength: Toast.LENGTH_SHORT);
+                    },
                   ),
 
                 ],

@@ -6,6 +6,7 @@ import 'package:elswhere/ui/screens/initial_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -24,21 +25,46 @@ class LoginScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                  child: Row(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Icon(Icons.ac_unit_rounded),
-                      const SizedBox(width: 15),
+                      SvgPicture.asset(Assets.iconELSwhere),
+                      const SizedBox(height: 4,),
                       Text(
                         'ELSwhere',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleLarge
-                            ?.copyWith(fontSize: 30),
+                        style: GoogleFonts.bebasNeue(
+                          fontSize: 32,
+                          fontWeight: FontWeight.w700,
+                        )
+                      ),
+                      const SizedBox(height: 4,),
+                      Text(
+                        'ELSwhere in Everywhere',
+                        style: textTheme.bodySmall!.copyWith(
+                          fontSize: 14,
+                          color: const Color(0xFF838A8E),
+                        )
                       ),
                     ],
-                  ),
+                  )
                 ),
+                // Expanded(
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     children: [
+                //       const Icon(Icons.ac_unit_rounded),
+                //       const SizedBox(width: 15),
+                //       Text(
+                //         'ELSwhere',
+                //         style: Theme.of(context)
+                //             .textTheme
+                //             .titleLarge
+                //             ?.copyWith(fontSize: 30),
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 Column(
                   children: [
                     SizedBox(
@@ -47,8 +73,8 @@ class LoginScreen extends StatelessWidget {
                         style: OutlinedButton.styleFrom(
                           padding: edgeInsetsAll12,
                           shape: const RoundedRectangleBorder(borderRadius: borderRadiusCircular10),
-                          backgroundColor:
-                              AppColors.contentWhite,
+                          backgroundColor: AppColors.contentWhite,
+                          side: const BorderSide(color: AppColors.iconGray),
                         ),
                         icon: SvgPicture.asset(
                           googleIconPath,

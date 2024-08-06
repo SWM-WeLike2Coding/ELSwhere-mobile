@@ -1,6 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/data/providers/els_products_provider.dart';
+import 'package:elswhere/ui/screens/notification_screen.dart';
 import 'package:elswhere/ui/widgets/stock_index_card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -76,7 +77,12 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
             padding: edgeInsetsAll8,
             child: IconButton(
               icon: const Icon(Icons.notifications_none_rounded, size: 30,),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => NotificationScreen(),)
+                );
+              },
             ),
           ),
         ],
@@ -151,33 +157,33 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
                     ),
                   ),
                 ),
-                Padding(
-                  padding: edgeInsetsAll8,
-                  child: Row(
-                    children: [
-                      Text(
-                        '투자 성향 반영',
-                        style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                          fontSize: 14,
-                          color: AppColors.contentGray,
-                        )
-                      ),
-                      const SizedBox(width: 8),
-                      SizedBox(
-                        height: 32,
-                        child: FittedBox(
-                          fit: BoxFit.fitHeight,
-                          child: Switch(
-                            value: applyTendency,
-                            onChanged: (value) => _changeTendency(value),
-                            inactiveTrackColor: AppColors.contentGray,
-                            trackOutlineWidth: const WidgetStatePropertyAll(0),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
+                // Padding(
+                //   padding: edgeInsetsAll8,
+                //   child: Row(
+                //     children: [
+                //       Text(
+                //         '투자 성향 반영',
+                //         style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                //           fontSize: 14,
+                //           color: AppColors.contentGray,
+                //         )
+                //       ),
+                //       const SizedBox(width: 8),
+                //       SizedBox(
+                //         height: 32,
+                //         child: FittedBox(
+                //           fit: BoxFit.fitHeight,
+                //           child: Switch(
+                //             value: applyTendency,
+                //             onChanged: (value) => _changeTendency(value),
+                //             inactiveTrackColor: AppColors.contentGray,
+                //             trackOutlineWidth: const WidgetStatePropertyAll(0),
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // )
               ],
             ),
             Expanded(
@@ -200,49 +206,49 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
           ],
         ),
       ),
-      floatingActionButton: ElevatedButton.icon(
-        label: FittedBox(
-          fit: BoxFit.fitWidth,
-          child: Row(
-            children: [
-              Text(
-                '상품 비교',
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: AppColors.contentWhite,
-                  fontSize: 15,
-                  letterSpacing: -0.7
-                ),
-              ),
-              const SizedBox(width: 10),
-              SizedBox(
-                height: 20,
-                child: FittedBox(
-                  fit: BoxFit.fitHeight,
-                  child: CircleAvatar(
-                    backgroundColor: AppColors.contentWhite,
-                    child: Text(
-                      '$_count',
-                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        color: Color(0xFF434648),
-                        fontSize: 30,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-        onPressed: () {
-          setState(() {
-            _count++;
-          });
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF434648),
-        ),
-      ),
+      // floatingActionButton: ElevatedButton.icon(
+      //   label: FittedBox(
+      //     fit: BoxFit.fitWidth,
+      //     child: Row(
+      //       children: [
+      //         Text(
+      //           '상품 비교',
+      //           style: Theme.of(context).textTheme.labelMedium?.copyWith(
+      //             color: AppColors.contentWhite,
+      //             fontSize: 15,
+      //             letterSpacing: -0.7
+      //           ),
+      //         ),
+      //         const SizedBox(width: 10),
+      //         SizedBox(
+      //           height: 20,
+      //           child: FittedBox(
+      //             fit: BoxFit.fitHeight,
+      //             child: CircleAvatar(
+      //               backgroundColor: AppColors.contentWhite,
+      //               child: Text(
+      //                 '$_count',
+      //                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
+      //                   color: Color(0xFF434648),
+      //                   fontSize: 30,
+      //                   fontWeight: FontWeight.w700,
+      //                 ),
+      //               ),
+      //             ),
+      //           ),
+      //         )
+      //       ],
+      //     ),
+      //   ),
+      //   onPressed: () {
+      //     setState(() {
+      //       _count++;
+      //     });
+      //   },
+      //   style: ElevatedButton.styleFrom(
+      //     backgroundColor: const Color(0xFF434648),
+      //   ),
+      // ),
     );
   }
 
