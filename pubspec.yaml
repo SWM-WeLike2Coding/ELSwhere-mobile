@@ -98,13 +98,69 @@ flutter:
   assets:
     - .env
     - assets/icons/icon_google.svg
-    - assets/icons/icon_hana.png
     - assets/icons/icon_temp_logo.svg
     - assets/icons/icon_profile.svg
     - assets/icons/icon_hot.svg
     - assets/icons/icon_attention.svg
     - assets/icons/icon_man.svg
     - assets/icons/icon_girl_with_coin.svg
+    - assets/icons/company/bnk.svg
+    - assets/icons/company/교보.svg
+    - assets/icons/company/국민.svg
+    - assets/icons/company/ibk.svg
+    - assets/icons/company/nh.svg
+    - assets/icons/company/유니온.svg
+    - assets/icons/company/유안타.svg
+    - assets/icons/company/유진.svg
+    - assets/icons/company/이베스트.svg
+    - assets/icons/company/저축.svg
+    - assets/icons/company/다이너스.svg
+    - assets/icons/company/대구.svg
+    - assets/icons/company/대신.svg
+    - assets/icons/company/도이치.svg
+    - assets/icons/company/db.svg
+    - assets/icons/company/디스커버.svg
+    - assets/icons/company/전북광주.svg
+    - assets/icons/company/중국건설.svg
+    - assets/icons/company/중국공산.svg
+    - assets/icons/company/kakao.svg
+    - assets/icons/company/kbank.svg
+    - assets/icons/company/케이프.svg
+    - assets/icons/company/롯데.svg
+    - assets/icons/company/메리츠.svg
+    - assets/icons/company/미래에셋.svg
+    - assets/icons/company/boa.svg
+    - assets/icons/company/부국.svg
+    - assets/icons/company/산림조합중앙회.svg
+    - assets/icons/company/키움.svg
+    - assets/icons/company/토스.svg
+    - assets/icons/company/페이코.svg
+    - assets/icons/company/하나.svg
+    - assets/icons/company/한국투자.svg
+    - assets/icons/company/한국포스.svg
+    - assets/icons/company/산업.svg
+    - assets/icons/company/삼성.svg
+    - assets/icons/company/새마을금고.svg
+    - assets/icons/company/sh.svg
+    - assets/icons/company/한화.svg
+    - assets/icons/company/현대차.svg
+    - assets/icons/company/현대카드.svg
+    - assets/icons/company/bc.svg
+    - assets/icons/company/bnp파리바.svg
+    - assets/icons/company/hsbc.svg
+    - assets/icons/company/시티.svg
+    - assets/icons/company/신영.svg
+    - assets/icons/company/신한.svg
+    - assets/icons/company/신협.svg
+    - assets/icons/company/아멕스.svg
+    - assets/icons/company/우리.svg
+    - assets/icons/company/jcb.svg
+    - assets/icons/company/jp모간체이스.svg
+    - assets/icons/company/ktb.svg
+    - assets/icons/company/마스터.svg
+    - assets/icons/company/sc제일.svg
+    - assets/icons/company/sk.svg
+    - assets/icons/company/visa.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

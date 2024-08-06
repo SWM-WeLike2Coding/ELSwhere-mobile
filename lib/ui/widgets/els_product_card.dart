@@ -6,6 +6,7 @@ import 'package:elswhere/data/models/dtos/summarized_product_dto.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/ui/screens/els_product_detail_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
@@ -182,7 +183,9 @@ class _ELSProductCardState extends State<ELSProductCard> {
                             backgroundColor: AppColors.backgroundGray,
                             child: Padding(
                               padding: edgeInsetsAll4,
-                              child: Image.asset(Assets.iconHana),
+                              child: Assets.issuerIconMap[widget.product.issuer] != null
+                                  ? SvgPicture.asset(Assets.issuerIconMap[widget.product.issuer]!)
+                                  : const Icon(Icons.question_mark, color: AppColors.contentBlack),
                             ),
                           ),
                         ],
