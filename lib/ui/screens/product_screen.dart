@@ -66,7 +66,7 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Padding(
+        leading: const Padding(
           padding: edgeInsetsAll8,
           child: StockIndexCardSwiper(),
         ),
