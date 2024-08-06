@@ -371,10 +371,11 @@ class ELSProductDetailView extends StatelessWidget {
               style: textTheme.labelMedium!.copyWith()
             ),
             const SizedBox(height: 8),
-            Text(
-              '${product!.productInfo}',
-              style: textTheme.labelMedium!.copyWith()
-            ),
+            if (product!.productInfo != null)
+              Text(
+                '${product!.productInfo}',
+                style: textTheme.labelMedium!.copyWith()
+              ),
           ],
         ),
       ),
