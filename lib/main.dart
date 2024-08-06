@@ -89,6 +89,7 @@ class ELSwhere extends StatelessWidget {
           bottomNavigationBarTheme: const BottomNavigationBarThemeData(
             selectedItemColor: AppColors.mainBlue,
             backgroundColor: AppColors.contentWhite,
+            landscapeLayout: BottomNavigationBarLandscapeLayout.linear
           ),
           switchTheme: const SwitchThemeData(
             trackColor: WidgetStatePropertyAll(AppColors.mainBlue),

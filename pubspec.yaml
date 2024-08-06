@@ -62,6 +62,7 @@ dependencies:
   yahoo_finance_data_reader: ^1.0.10
   flutter_secure_storage: ^4.2.1
   flutter_native_splash: ^2.4.1
+  flutter_launcher_icons: ^0.13.1
 
 dependency_overrides:
   fading_edge_scrollview: ^4.1.1
@@ -98,6 +99,16 @@ flutter:
   assets:
     - .env
     - assets/icons/icon_google.svg
+    - assets/icons/icon_elswhere.svg
+    - assets/icons/icon_elswhere_4x.png
+    - assets/icons/icon_elswhere_4x_white.png
+    - assets/icons/icon_elswhere_splash.svg
+    - assets/icons/icon_elswhere_splash.png
+    - assets/icons/icon_elswhere_splash_960.png
+    - assets/icons/icon_elswhere_splash_1152.png
+    - assets/icons/icon_elswhere_splash_0.5x.png
+    - assets/icons/icon_elswhere_splash_4x.png
+    - assets/icons/icon_elswhere_splash_8x.png
     - assets/icons/icon_temp_logo.svg
     - assets/icons/icon_profile.svg
     - assets/icons/icon_hot.svg
