@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../config/app_resource.dart';
+import '../../data/models/dtos/els_product_for_schedule_dto.dart';
 
 class RedemptionScheduleScreen extends StatefulWidget {
   const RedemptionScheduleScreen({super.key});
@@ -38,7 +39,7 @@ class _RedemptionScheduleScreenState extends State<RedemptionScheduleScreen> {
               ),
             ),
             title: Text(
-              "가입 상품 중 상환 일정",
+              "관심 등록 상품 중 청약 마감",
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 18,
@@ -49,7 +50,9 @@ class _RedemptionScheduleScreenState extends State<RedemptionScheduleScreen> {
         ),
       ),
       body: Center(
-        child: Text("일정이 없어요"),
+        child: Text(
+            "일정이 없어요"
+        ),
       ),
     );
   }

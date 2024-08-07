@@ -60,73 +60,75 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
 
   @override
   Widget build(BuildContext context) {
-    var interestingProducts = Provider.of<ELSProductProvider>(context, listen: false).interestingProducts;
-    Map<DateTime, List<ElsProductForScheduleDto>> tempScheduleMap = {};
+    return Consumer<ELSProductProvider> (
+      builder: (context, elsProductProvider, child) {
+        var interestingProducts = Provider.of<ELSProductProvider>(context, listen: false).interestingProducts;
+        Map<DateTime, List<ElsProductForScheduleDto>> tempScheduleMap = {};
 
-    for (int i = 0; i < interestingProducts.length; i++) {
-      print(interestingProducts[i].subscriptionEndDate);
-      if (tempScheduleMap.containsKey(interestingProducts[i].subscriptionEndDate)) {
-        tempScheduleMap[interestingProducts[i].subscriptionEndDate]!.add(convertInterestingProductToProductForSchedule(interestingProducts[i]));
-      } else {
-        tempScheduleMap[interestingProducts[i].subscriptionEndDate] = [convertInterestingProductToProductForSchedule(interestingProducts[i])];
-      }
-    }
+        for (int i = 0; i < interestingProducts.length; i++) {
+          if (tempScheduleMap.containsKey(interestingProducts[i].subscriptionEndDate)) {
+            tempScheduleMap[interestingProducts[i].subscriptionEndDate]!.add(convertInterestingProductToProductForSchedule(interestingProducts[i]));
+          } else {
+            tempScheduleMap[interestingProducts[i].subscriptionEndDate] = [convertInterestingProductToProductForSchedule(interestingProducts[i])];
+          }
+        }
 
-    // 나중에 여기에 보유 상품 관련 정보들도 DTO 변환해서 tempScheduleMap에 넣어줘야함!!!
+        // 나중에 여기에 보유 상품 관련 정보들도 DTO 변환해서 tempScheduleMap에 넣어줘야함!!!
 
-    List<DateTime> sortedDates = tempScheduleMap.keys.toList()..sort();
-    Map<DateTime, List<ElsProductForScheduleDto>> scheduleMap = { for (var key in sortedDates) key : tempScheduleMap[key]! };
-
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(72),
-        child: Container(
-          decoration: BoxDecoration(
-              border: Border(
-                  bottom: BorderSide(
-                    color: AppColors.backgroundGray,
-                    width: 1,
+        List<DateTime> sortedDates = tempScheduleMap.keys.toList()..sort();
+        Map<DateTime, List<ElsProductForScheduleDto>> scheduleMap = { for (var key in sortedDates) key : tempScheduleMap[key]! };
+        return Scaffold(
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(72),
+            child: Container(
+              decoration: BoxDecoration(
+                  border: Border(
+                      bottom: BorderSide(
+                        color: AppColors.backgroundGray,
+                        width: 1,
+                      )
                   )
-              )
-          ),
-          child: AppBar(
-            leading: Padding(
-              padding: const EdgeInsets.only(left: 24.0), // 좌측 패딩을 추가
-              child: Align(
-                alignment: Alignment.center, // 아이콘을 수직 가운데 정렬
-                child: IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+              ),
+              child: AppBar(
+                leading: Padding(
+                  padding: const EdgeInsets.only(left: 24.0), // 좌측 패딩을 추가
+                  child: Align(
+                    alignment: Alignment.center, // 아이콘을 수직 가운데 정렬
+                    child: IconButton(
+                      icon: Icon(Icons.arrow_back),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
                 ),
+                title: Text(
+                  "관심 청약 일정",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                  ),
+                ),
+                centerTitle: false,
               ),
             ),
-            title: Text(
-              "관심 청약 일정",
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 18,
-              ),
-            ),
-            centerTitle: false,
           ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildTwoGreyCards(context),
-            _buildScheduleCalendar(),
-            _buildSchedules(scheduleMap),
-          ],
-        ),
-      ),
+          body: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildTwoGreyCards(context, scheduleMap),
+                _buildScheduleCalendar(scheduleMap),
+                _buildSchedules(scheduleMap),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
   
-  Widget _buildGreyCard(BuildContext context, String text, int numItems) {
+  Widget _buildGreyCard(BuildContext context, String text, int numItems, Map<DateTime, List<ElsProductForScheduleDto>> schedulMap) {
     return GestureDetector(
       onTap: () {
         if (text == "가입 상품 중 상환 일정") {
@@ -193,21 +195,46 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
     );
   }
 
-  Widget _buildTwoGreyCards(BuildContext context) {
+  Widget _buildTwoGreyCards(BuildContext context, Map<DateTime, List<ElsProductForScheduleDto>> scheduleMap) {
+    Map<DateTime, List<ElsProductForScheduleDto>> subscriptionEndSchedule = {};
+    Map<DateTime, List<ElsProductForScheduleDto>> redemptionSchedule = {};
+    List<DateTime> dates = scheduleMap.keys.toList();
+    int numAttentionProducts = 0;
+    int numHoldingProducts = 0;
+
+    for (int i = 0; i < dates.length; i ++) {
+      var tempList = scheduleMap[dates[i]];
+      for (int j = 0; j < tempList!.length; j ++) {
+        if (tempList[j].isHolding == false && isTodayOrFuture(tempList[j].subscriptionEndDate)) {
+          if (subscriptionEndSchedule[dates[i]] == null) {
+            subscriptionEndSchedule[dates[i]] = [];
+          }
+          subscriptionEndSchedule[dates[i]]!.add(tempList[j]);
+          numAttentionProducts += 1;
+        } else {
+          if (redemptionSchedule[dates[i]] == null) {
+            redemptionSchedule[dates[i]] = [];
+          }
+          redemptionSchedule[dates[i]]!.add(tempList[j]);
+          numHoldingProducts += 1;
+        }
+      }
+    }
+
     return Padding(
       padding: EdgeInsets.all(24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildGreyCard(context, "가입 상품 중 상환 일정", 2),
+          _buildGreyCard(context, "가입 상품 중 상환 일정", numHoldingProducts, redemptionSchedule),
           SizedBox(height: 8,),
-          _buildGreyCard(context, "관심 등록 상품 중 청약 마감", 3),
+          _buildGreyCard(context, "관심 등록 상품 중 청약 마감", numAttentionProducts, subscriptionEndSchedule),
         ],
       ),
     );
   }
 
-  Widget _buildScheduleCalendar() {
+  Widget _buildScheduleCalendar(Map<DateTime, List<ElsProductForScheduleDto>> scheduleMap) {
     TextStyle calendarTextStyle = TextStyle(
       color: Color(0xFF000000),
       fontSize: 14,
@@ -215,6 +242,16 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
       height: 1.18,
       letterSpacing: -0.28,
     );
+
+    List<DateTime> importantDays = scheduleMap.keys.toList();
+
+    bool isImportantDay(DateTime date, List<DateTime> importantDays) {
+      return importantDays.any((importantDay) =>
+      importantDay.year == date.year &&
+          importantDay.month == date.month &&
+          importantDay.day == date.day
+      );
+    }
 
     return Padding(
       padding: EdgeInsets.only(top: 24, bottom: 16, left: 16, right: 16),
@@ -299,6 +336,34 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
           headerPadding: EdgeInsets.only(left: 8),
         ),
         locale: 'ko_KR',
+        calendarBuilders: CalendarBuilders(
+          // Builder for all days to add a default marker
+          defaultBuilder: (context, date, _) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 4,
+                  height: 4,
+                  decoration: isImportantDay(date, importantDays)
+                    ? BoxDecoration(
+                      color: Colors.red, // Ellipse color
+                      shape: BoxShape.circle,
+                    )
+                    : BoxDecoration(
+                    color: Colors.white, // Ellipse color
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                SizedBox(height: 3.5,),
+                Text(
+                  '${date.day}',
+                  style: calendarTextStyle,
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -308,9 +373,7 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      // children: scheduleMap.entries.where((entry) => entry.key.isAfter(now)).map((entry){
       children: scheduleMap.entries.where((entry) => isTodayOrFuture(entry.key)).map((entry){
-      // children: scheduleMap.entries.map((entry){
         DateTime date = entry.key;
         List<ElsProductForScheduleDto> wholeProducts = entry.value;
         List<ElsProductForScheduleDto> interestedProducts = [];
