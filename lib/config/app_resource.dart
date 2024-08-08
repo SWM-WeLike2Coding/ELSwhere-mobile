@@ -16,6 +16,8 @@ sealed class Assets {
 
   static const String iconELSwhere = "assets/icons/icon_elswhere.svg";
 
+  static const String iconGoogle = "assets/icons/icon_google.svg";
+
   static const String iconBNK = "assets/icons/company/bnk.svg";
   static const String iconKyoBo = "assets/icons/company/교보.svg";
   static const String iconKookMin = "assets/icons/company/국민.svg";
