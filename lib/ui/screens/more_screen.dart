@@ -194,6 +194,7 @@ class _MoreScreenState extends State<MoreScreen> {
   Widget build(BuildContext context) {
     const String manIcon = "assets/icons/icon_man.svg";
 
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -249,13 +250,21 @@ class _MoreScreenState extends State<MoreScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
-                            "32일동안 함께한",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xFF838A8E),
-                            ),
+                          Consumer<UserInfoProvider>(
+                            builder: (context, provider, child) {
+                              DateTime? createdTime = Provider.of<UserInfoProvider>(context, listen: false).userInfo?.createdAt;
+                              DateTime now = DateTime.now();
+                              Duration difference = now.difference(createdTime!);
+
+                              return Text(
+                                "${difference.inDays + 1}일동안 함께한",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xFF838A8E),
+                                ),
+                              );
+                            },
                           ),
                           Consumer<UserInfoProvider>(
                             builder: (context, userInfoProvider, child) {
