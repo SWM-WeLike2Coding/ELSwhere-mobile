@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../config/config.dart';
 import '../../data/models/dtos/response_user_info_dto.dart';
 import '../../data/providers/user_info_provider.dart';
@@ -193,6 +194,7 @@ class _MoreScreenState extends State<MoreScreen> {
   @override
   Widget build(BuildContext context) {
     const String manIcon = "assets/icons/icon_man.svg";
+    final String googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdTf1hcZYurHxd_IV62SUSWqDX44Nm4toFMYOFZYaEeYYOYsw/viewform?usp=sf_link";
 
 
     return Scaffold(
@@ -464,8 +466,12 @@ class _MoreScreenState extends State<MoreScreen> {
                   _buildLittleListTile(
                       context: context,
                       title: "문의 및 신고",
-                      onTap: () {
-
+                      onTap: () async {
+                        if (await canLaunch(googleFormUrl)) {
+                          await launch(googleFormUrl);
+                        } else {
+                          throw 'Could not launch $googleFormUrl';
+                        }
                       }
                   ),
 
