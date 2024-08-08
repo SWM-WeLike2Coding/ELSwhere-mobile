@@ -77,12 +77,12 @@ class LoginScreen extends StatelessWidget {
                           side: const BorderSide(color: AppColors.iconGray),
                         ),
                         icon: SvgPicture.asset(
-                          googleIconPath,
+                          Assets.iconGoogle,
                           height: 24,
                           width: 24,
                         ),
                         onPressed: () async {
-                          final bool result = await login(context);
+                          final bool result = await login();
 
                           if (result) {
                             Navigator.pushAndRemoveUntil(
@@ -115,18 +115,13 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Future<bool> login(BuildContext context) async {
+  Future<bool> login() async {
     final authUrl = baseUrl + loginEndpoint;
-    // final response = await AuthService.authenticateUser(authUrl);
-
-    final Map<String, String>? response = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => AuthScreen(authUrl: baseUrl + loginEndpoint,)),
-    );
+    final response = await AuthService.authenticateUser(authUrl);
 
     if (response != null) {
-      accessToken = response['accessToken']!;
-      refreshToken = response['refreshToken']!;
+      accessToken = response.accessToken;
+      refreshToken = response.refreshToken;
       storage.write(key: 'ACCESS_TOKEN', value: accessToken);
       storage.write(key: 'REFRESH_TOKEN', value: refreshToken);
       return true;

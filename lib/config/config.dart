@@ -3,10 +3,12 @@ import 'package:dio/dio.dart';
 const String appName = "ELSwhere";
 const String errorMessage = "문제가 발생했습니다.";
 const String callbackUrlScheme = "elswhere";
-const String googleIconPath = "assets/icons/icon_google.svg";
+
 late final Dio dio;
+
 late final String baseUrl;
 late final String loginEndpoint;
+
 late String accessToken;
 late String refreshToken;
 const Map<String, String> productType = {
