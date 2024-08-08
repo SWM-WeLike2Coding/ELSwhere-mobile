@@ -115,6 +115,7 @@ flutter:
     - assets/icons/icon_attention.svg
     - assets/icons/icon_man.svg
     - assets/icons/icon_girl_with_coin.svg
+    - assets/icons/icon_remove_all.svg
     - assets/icons/company/bnk.svg
     - assets/icons/company/교보.svg
     - assets/icons/company/국민.svg

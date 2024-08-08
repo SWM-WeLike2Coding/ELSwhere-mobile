@@ -8,12 +8,12 @@ part of 'response_login_dto.dart';
 
 ResponseLoginDto _$ResponseLoginDtoFromJson(Map<String, dynamic> json) =>
     ResponseLoginDto(
-      accessToken: json['access_token'] as String,
-      refreshToken: json['refresh_token'] as String,
+      accessToken: json['accessToken'] as String,
+      refreshToken: json['refreshToken'] as String,
     );
 
 Map<String, dynamic> _$ResponseLoginDtoToJson(ResponseLoginDto instance) =>
     <String, dynamic>{
-      'access_token': instance.accessToken,
-      'refresh_token': instance.refreshToken,
+      'accessToken': instance.accessToken,
+      'refreshToken': instance.refreshToken,
     };

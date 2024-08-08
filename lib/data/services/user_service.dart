@@ -33,4 +33,7 @@ abstract class UserService {
 
   @DELETE("/v1/interest/{id}")
   Future<HttpResponse> deleteInterestedProduct(@Path("id") int id);
+
+  @POST("/v1/user/check/nickname")
+  Future<HttpResponse> checkNicknamePossible(@Body() Map<String, dynamic> body);
 }

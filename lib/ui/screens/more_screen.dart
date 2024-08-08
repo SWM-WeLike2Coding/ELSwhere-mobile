@@ -5,12 +5,11 @@ import 'dart:ui';
 import 'package:dio/dio.dart';
 import 'package:elswhere/data/services/user_service.dart';
 import 'package:elswhere/ui/screens/attention_setting_screen.dart';
-import 'package:elswhere/ui/screens/login_screen.dart';
+import 'package:elswhere/ui/screens/change_nickname_screen.dart';
 import 'package:elswhere/ui/screens/member_quit_screen.dart';
 import 'package:elswhere/ui/screens/service_agreement_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import '../../config/config.dart';
 import '../../data/models/dtos/response_user_info_dto.dart';
@@ -152,17 +151,10 @@ class _MoreScreenState extends State<MoreScreen> {
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          onPressed: () async {
+                          onPressed: () {
                             final userInfoProvider = Provider.of<UserInfoProvider>(context, listen: false);
-                            final result = await userInfoProvider.logout(context);
-                            Fluttertoast.showToast(msg: result ? '로그아웃 되었습니다.' : '로그아웃에 실패했습니다.', toastLength: Toast.LENGTH_SHORT);
+                            userInfoProvider.logout(context);
                             Navigator.of(context).pop(); // 다이얼로그 닫기
-                            if (result) {
-                              print('로그아웃');
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(builder: (context) => LoginScreen()),
-                              );
-                            }
                           },
                           child: Text(
                             '로그아웃',
@@ -274,12 +266,17 @@ class _MoreScreenState extends State<MoreScreen> {
                       Spacer(),
                       IconButton(
                         icon: Icon(
-                          Icons.create_rounded,
+                          Icons.arrow_forward_ios,
                           size: 18,
                           color: Color(0xFFACB2B5),
                         ),
                         onPressed: () {
-                          _showEditNicknameDialog(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChangeNicknameScreen(),
+                            ),
+                          );
                         },
                       ),
                       SizedBox(width: 8,),
