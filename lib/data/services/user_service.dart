@@ -22,6 +22,9 @@ abstract class UserService {
   @DELETE("/v1/user")
   Future<HttpResponse> deleteUser();
 
+  @GET("/v1/user/logout")
+  Future<HttpResponse> logout();
+
   @GET("/v1/interest")
   Future<List<ResponseInterestingProductDto>> getInterestedProducts();
 
