@@ -9,6 +9,7 @@ class ResponseUserInfoDto {
   final String name;
   final String nickname;
   final bool admin;
+  final DateTime createdAt;
 
   ResponseUserInfoDto({
     required this.socialType,
@@ -16,6 +17,7 @@ class ResponseUserInfoDto {
     required this.name,
     required this.nickname,
     required this.admin,
+    required this.createdAt,
   });
 
   factory ResponseUserInfoDto.fromJson(Map<String, dynamic> json) => _$ResponseUserInfoDtoFromJson(json);

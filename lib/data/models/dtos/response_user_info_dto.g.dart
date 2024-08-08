@@ -13,6 +13,7 @@ ResponseUserInfoDto _$ResponseUserInfoDtoFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String,
       nickname: json['nickname'] as String,
       admin: json['admin'] as bool,
+      createdAt: DateTime.parse(json['createdAt'] as String),
     );
 
 Map<String, dynamic> _$ResponseUserInfoDtoToJson(
@@ -23,4 +24,5 @@ Map<String, dynamic> _$ResponseUserInfoDtoToJson(
       'name': instance.name,
       'nickname': instance.nickname,
       'admin': instance.admin,
+      'createdAt': instance.createdAt.toIso8601String(),
     };
