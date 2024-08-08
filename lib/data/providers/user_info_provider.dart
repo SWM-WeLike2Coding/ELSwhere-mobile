@@ -73,17 +73,27 @@ class UserInfoProvider with ChangeNotifier {
     return false;
   }
 
-  Future<void> logout(BuildContext context) async {
+  Future<bool> logout(BuildContext context) async {
     print(_userInfo);
-    _userInfo = null;
-    notifyListeners();
-    // await storage.delete(key: 'ACCESS_TOKEN');
-    await storage.deleteAll();
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => LoginScreen()),
-    );
-    print(_userInfo);
-    print('로그아웃됨');
+
+    try {
+      final response = await _userService.logout();
+      if (response.response.statusCode == 200) {
+        _userInfo = null;
+        notifyListeners();
+        await storage.deleteAll();
+
+        print(_userInfo);
+        print('로그아웃됨');
+        return true;
+      } else {
+        print('로그아웃에 실패했습니다.');
+        return false;
+      }
+    } catch (e) {
+      print('오류가 발생했습니다. : $e');
+      return false;
+    }
   }
 
   Future<bool> quitService(BuildContext context) async {
