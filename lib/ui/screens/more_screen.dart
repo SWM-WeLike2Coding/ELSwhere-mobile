@@ -6,10 +6,12 @@ import 'package:dio/dio.dart';
 import 'package:elswhere/data/services/user_service.dart';
 import 'package:elswhere/ui/screens/attention_setting_screen.dart';
 import 'package:elswhere/ui/screens/change_nickname_screen.dart';
+import 'package:elswhere/ui/screens/login_screen.dart';
 import 'package:elswhere/ui/screens/member_quit_screen.dart';
 import 'package:elswhere/ui/screens/service_agreement_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import '../../config/config.dart';
 import '../../data/models/dtos/response_user_info_dto.dart';
@@ -151,10 +153,16 @@ class _MoreScreenState extends State<MoreScreen> {
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          onPressed: () {
+                          onPressed: () async {
                             final userInfoProvider = Provider.of<UserInfoProvider>(context, listen: false);
-                            userInfoProvider.logout(context);
+                            final result = await userInfoProvider.logout(context);
                             Navigator.of(context).pop(); // 다이얼로그 닫기
+                            Fluttertoast.showToast(msg: result ? '로그아웃 되었습니다.' : '로그아웃에 실패했습니다.', toastLength: Toast.LENGTH_SHORT);
+                            if (result) {
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(builder: (context) => LoginScreen()), (route) => false,);
+                            }
                           },
                           child: Text(
                             '로그아웃',
