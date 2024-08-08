@@ -73,6 +73,32 @@ class UserInfoProvider with ChangeNotifier {
     return false;
   }
 
+  Future<bool> checkNicknamePossible(String nickname) async {
+    try {
+      final response = await _userService.checkNicknamePossible({'nickname': nickname});
+      if (response.response.statusCode == 200) {
+        print('Nickname can be used');
+        notifyListeners();
+        return true;
+      } else {
+        print('Failed to check nickname: ${response.response.statusCode}');
+        print('Response body: ${response.response.data}');
+        return false;
+      }
+    } on DioException catch (e) {
+      print('DioException: ${e.message}');
+      if (e.response != null) {
+        print('Status code: ${e.response?.statusCode}');
+        print('Response data: ${e.response?.data}');
+        return false;
+      }
+    } catch (e) {
+      print('Unexpected error: $e');
+      return false;
+    }
+    return false;
+  }
+
   Future<bool> logout(BuildContext context) async {
     print(_userInfo);
 
