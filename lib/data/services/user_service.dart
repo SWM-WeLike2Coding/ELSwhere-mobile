@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:elswhere/config/config.dart';
 import 'package:elswhere/data/models/dtos/response_interesting_product_dto.dart';
+import 'package:elswhere/data/models/dtos/response_investment_type_dto.dart';
 import 'package:elswhere/data/services/api_interceptor.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -36,4 +37,10 @@ abstract class UserService {
 
   @POST("/v1/user/check/nickname")
   Future<HttpResponse> checkNicknamePossible(@Body() Map<String, dynamic> body);
+
+  @GET("/v1/propensity/survey")
+  Future<ResponseInvestmentTypeDto> getMyInvestmentType();
+
+  @POST("/v1/propensity/survey")
+  Future<HttpResponse> sendNewInvestmentType(@Body() Map<String, dynamic> body);
 }

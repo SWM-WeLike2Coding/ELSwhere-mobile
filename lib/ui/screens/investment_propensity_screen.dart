@@ -1,4 +1,7 @@
+import 'package:elswhere/data/providers/user_info_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 
 import '../../config/app_resource.dart';
 
@@ -15,6 +18,14 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
   int riskTakingType = -1;             // 0이 위험 감수형, 1은 안전추구형
 
   bool _isAgreeBtnChecked = false;
+
+  bool _isAllConditionSatisfied() {
+    if (_isAgreeBtnChecked && doesUserHaveExperience != -1 && riskTakingType != -1 && preferredInvestmentType != -1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   void _handleExperienceButtonPress(String text) {
     setState(() {
@@ -80,6 +91,31 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
     setState(() {
       _isAgreeBtnChecked = !_isAgreeBtnChecked;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    var interestingProducts = Provider.of<UserInfoProvider>(context, listen: false).investmentTypeInfo;
+    if (interestingProducts!.riskTakingAbility == 'RISK_TAKING_TYPE') {
+      riskTakingType = 0;
+    } else if (interestingProducts!.riskTakingAbility == 'STABILITY_SEEKING_TYPE') {
+      riskTakingType = 1;
+    }
+
+    if (interestingProducts!.investmentPreferredPeriod == 'LESS_THAN_A_YEAR') {
+      preferredInvestmentType = 0;
+    } else if (interestingProducts!.investmentPreferredPeriod == 'A_YEAR_OR_TWO') {
+      preferredInvestmentType = 1;
+    } else if (interestingProducts!.investmentPreferredPeriod == 'MORE_THAN_THREE_YEARS') {
+      preferredInvestmentType = 2;
+    }
+
+    if (interestingProducts!.investmentExperience == 'YES') {
+      doesUserHaveExperience = 1;
+    } else if (interestingProducts!.investmentExperience == 'NO') {
+      doesUserHaveExperience = 0;
+    }
   }
 
   @override
@@ -292,6 +328,8 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
   }
 
   Widget _buildBottomButton() {
+    final userInfoProvider = Provider.of<UserInfoProvider>(context, listen: false);
+
     return Container(
       height: 100,
       child: Padding(
@@ -303,7 +341,7 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
               child: SizedBox(
                 height: double.infinity,
                 child: Opacity(
-                  opacity: _isAgreeBtnChecked ? 1.0 : 0.4,
+                  opacity: _isAllConditionSatisfied() ? 1.0 : 0.4,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFFE6E7E8),
@@ -332,7 +370,7 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
               child: SizedBox(
                 height: double.infinity,
                 child: Opacity(
-                  opacity: _isAgreeBtnChecked ? 1.0 : 0.4,
+                  opacity: _isAllConditionSatisfied() ? 1.0 : 0.4,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF1C6BF9),
@@ -341,9 +379,16 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
                           borderRadius: BorderRadius.circular(8),
                         )
                     ),
-                    onPressed: () {
-
-                    },
+                    onPressed: _isAllConditionSatisfied() ? () async {
+                      if (await userInfoProvider.changeInvestmentType(doesUserHaveExperience, preferredInvestmentType, riskTakingType)) {
+                        print("투자 타입 정보 저장 성공");
+                        Fluttertoast.showToast(msg: "성공적으로 저장되었습니다");
+                      } else {
+                        print("투자 타입 정보 저장 실패");
+                        Fluttertoast.showToast(msg: "투자 성형 정보 저장에 실패했습니다");
+                      }
+                      Navigator.of(context).pop();
+                    } : null,
                     child: Text(
                       '저장하기',
                       style: TextStyle(

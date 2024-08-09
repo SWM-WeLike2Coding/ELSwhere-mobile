@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/data/models/dtos/response_investment_type_dto.dart';
 import 'package:elswhere/data/models/dtos/response_user_info_dto.dart';
 import 'package:elswhere/data/services/user_service.dart';
 import 'package:elswhere/ui/screens/login_screen.dart';
@@ -11,10 +12,12 @@ class UserInfoProvider with ChangeNotifier {
   final UserService _userService;
   ResponseUserInfoDto? _userInfo;
   bool _isLoading = false;
+  ResponseInvestmentTypeDto? _investmentTypeInfo;
 
   ResponseUserInfoDto? get userInfo => _userInfo;
   bool get isLoading => _isLoading;
   bool get checkAuthenticated => _userInfo != null;
+  ResponseInvestmentTypeDto? get investmentTypeInfo => _investmentTypeInfo;
 
   String _nickname = "";
 
@@ -22,6 +25,24 @@ class UserInfoProvider with ChangeNotifier {
 
 
   UserInfoProvider(this._userService);
+
+  Future<bool> checkMyInvestmentType() async {
+    try {
+      _investmentTypeInfo = await _userService.getMyInvestmentType();
+
+      return true;
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        print('Error fetching Investment Type');
+      } else {
+        print('Error fetching Investment Type: ${e.message}');
+      }
+      return false;
+    } catch (e) {
+      print('Unexpected error: $e');
+      return false;
+    }
+  }
 
   Future<bool> checkUser() async {
     try {
@@ -65,6 +86,62 @@ class UserInfoProvider with ChangeNotifier {
         print('Status code: ${e.response?.statusCode}');
         print('Response data: ${e.response?.data}');
       return false;
+      }
+    } catch (e) {
+      print('Unexpected error: $e');
+      return false;
+    }
+    return false;
+  }
+
+  Future<bool> changeInvestmentType(int investmentExperience, int investmentPreferredPeriod, int riskTakingAbility) async {
+    try {
+      String investmentExperienceStr = '';
+      String investmentPreferredPeriodStr = '';
+      String riskTakingAbilityStr = '';
+
+      if (investmentExperience == 1) {
+        investmentExperienceStr = "YES";
+      } else {
+        investmentExperienceStr = "NO";
+      }
+
+      if (investmentPreferredPeriod == 0) {
+        investmentPreferredPeriodStr = "LESS_THAN_A_YEAR";
+      } else if (investmentPreferredPeriod == 1) {
+        investmentPreferredPeriodStr = "A_YEAR_OR_TWO";
+      } else {
+        investmentPreferredPeriodStr = "MORE_THAN_THREE_YEARS";
+      }
+
+      if (riskTakingAbility == 0) {
+        riskTakingAbilityStr = 'RISK_TAKING_TYPE';
+      } else {
+        riskTakingAbilityStr = 'STABILITY_SEEKING_TYPE';
+      }
+
+
+      final response = await _userService.sendNewInvestmentType({
+        'investmentExperience': investmentExperienceStr,
+        'investmentPreferredPeriod': investmentPreferredPeriodStr,
+        'riskTakingAbility': riskTakingAbilityStr,
+      });
+      if (response.response.statusCode == 200) {
+        print('Investment Type changed successfully');
+        _investmentTypeInfo = ResponseInvestmentTypeDto(investmentExperience: investmentExperienceStr, investmentPreferredPeriod: investmentPreferredPeriodStr, riskTakingAbility: riskTakingAbilityStr);
+        notifyListeners();
+        return true;
+      } else {
+        print('Failed to change Investment Type : ${response.response.statusCode}');
+        print('Response body: ${response.response.data}');
+        return false;
+      }
+    } on DioException catch (e) {
+      print('DioException: ${e.message}');
+      if (e.response != null) {
+        print('Status code: ${e.response?.statusCode}');
+        print('Response data: ${e.response?.data}');
+        return false;
       }
     } catch (e) {
       print('Unexpected error: $e');
