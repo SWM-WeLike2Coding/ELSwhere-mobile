@@ -20,6 +20,7 @@ class InitialScreen extends StatelessWidget {
         Provider.of<TickerSymbolProvider>(context, listen: false).fetchTickers(),
         Provider.of<TickerSymbolProvider>(context, listen: false).fetchStockPrices(),
         Provider.of<UserInfoProvider>(context, listen: false).checkUser(),
+        Provider.of<UserInfoProvider>(context, listen: false).checkMyInvestmentType(),
         Provider.of<ELSProductProvider>(context, listen: false).fetchInterested(),
       ]),
       builder: (context, snapshot) {
