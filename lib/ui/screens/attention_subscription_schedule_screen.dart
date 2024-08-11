@@ -23,6 +23,7 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
+  Map<DateTime, List<ElsProductForScheduleDto>>? _scheduleMap;
 
   ElsProductForScheduleDto convertInterestingProductToProductForSchedule(ResponseInterestingProductDto interestingProduct) {
     return ElsProductForScheduleDto(
@@ -58,12 +59,21 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
     return targetDate.isAfter(today) || targetDate.isAtSameMomentAs(today);
   }
 
+  void _updateScheduleMap(DateTime selectDate) {
+    setState(() {
+      print(selectDate);
+      // print(_scheduleMap!.values.toString());
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return Consumer<ELSProductProvider> (
       builder: (context, elsProductProvider, child) {
         var interestingProducts = Provider.of<ELSProductProvider>(context, listen: false).interestingProducts;
         Map<DateTime, List<ElsProductForScheduleDto>> tempScheduleMap = {};
+        Map<DateTime, List<ElsProductForScheduleDto>> filteredScheduleMap = {};
 
         for (int i = 0; i < interestingProducts.length; i++) {
           if (tempScheduleMap.containsKey(interestingProducts[i].subscriptionEndDate)) {
@@ -76,7 +86,19 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
         // 나중에 여기에 보유 상품 관련 정보들도 DTO 변환해서 tempScheduleMap에 넣어줘야함!!!
 
         List<DateTime> sortedDates = tempScheduleMap.keys.toList()..sort();
-        Map<DateTime, List<ElsProductForScheduleDto>> scheduleMap = { for (var key in sortedDates) key : tempScheduleMap[key]! };
+        Map<DateTime, List<ElsProductForScheduleDto>> _scheduleMap = { for (var key in sortedDates) key : tempScheduleMap[key]! };
+
+        if (_selectedDay != null) {
+          DateTime selectedDayOnlyDate = DateTime(_selectedDay!.year, _selectedDay!.month, _selectedDay!.day);
+          if (_scheduleMap.containsKey(selectedDayOnlyDate)) {
+            filteredScheduleMap[selectedDayOnlyDate] = _scheduleMap[selectedDayOnlyDate]!;
+          }
+        }
+
+        Map<DateTime, List<ElsProductForScheduleDto>> finalScheduleMap = _selectedDay == null ? _scheduleMap : filteredScheduleMap;
+        print(finalScheduleMap.values.toString());
+
+
         return Scaffold(
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(72),
@@ -117,9 +139,9 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildTwoGreyCards(context, scheduleMap),
-                _buildScheduleCalendar(scheduleMap),
-                _buildSchedules(scheduleMap),
+                _buildTwoGreyCards(context, _scheduleMap),
+                _buildScheduleCalendar(_scheduleMap),
+                _buildSchedules(finalScheduleMap),
               ],
             ),
           ),
@@ -265,10 +287,13 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
           return isSameDay(_selectedDay, day);
         },
         onDaySelected: (selectedDay, focusedDay) {
-          setState(() {
-            _selectedDay = selectedDay;
-            _focusedDay = focusedDay;
-          });
+          if (isImportantDay(selectedDay, importantDays)) {
+            setState(() {
+              _selectedDay = selectedDay;
+              _focusedDay = focusedDay;
+              _updateScheduleMap(selectedDay);
+            });
+          }
         },
         onFormatChanged: (format) {
           if (_calendarFormat != format) {
@@ -295,9 +320,25 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
             height: 1.18,
             letterSpacing: -0.28,
           ),
+          selectedTextStyle: TextStyle(
+            color: Color(0xFF000000),
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            height: 1.18,
+            letterSpacing: -0.28,
+          ),
           selectedDecoration: BoxDecoration(
-            color: Colors.blue,
-            shape: BoxShape.circle,
+            color: Colors.white,
+            // shape: BoxShape.circle,
+            borderRadius: BorderRadius.circular(8),
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromRGBO(0, 0, 0, 0.15), // 그림자 색상
+                spreadRadius: 0, // 확산 반경
+                blurRadius: 16, // 블러 반경
+                offset: Offset(0, 0), // 그림자의 x, y 오프셋
+              ),
+            ]
           ),
           todayDecoration: BoxDecoration(
             color: Colors.white,
@@ -310,7 +351,7 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
           cellAlignment: Alignment.center, // 셀 안의 날짜 가운데 정렬
         ),
         daysOfWeekHeight: 31,
-        rowHeight: 56,
+        rowHeight: 70,
         headerStyle: HeaderStyle(
           titleTextFormatter: (date, locale) =>
               DateFormat.yMMMM('ko').format(date), // 헤더 텍스트 한글로 포맷

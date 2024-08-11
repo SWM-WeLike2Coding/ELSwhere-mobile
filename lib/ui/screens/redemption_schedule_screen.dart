@@ -39,7 +39,7 @@ class _RedemptionScheduleScreenState extends State<RedemptionScheduleScreen> {
               ),
             ),
             title: Text(
-              "관심 등록 상품 중 청약 마감",
+              "가입 상품 중 상환 일정",
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 18,
