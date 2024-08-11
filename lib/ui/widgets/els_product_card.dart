@@ -4,6 +4,8 @@ import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/config.dart';
 import 'package:elswhere/data/models/dtos/summarized_product_dto.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
+import 'package:elswhere/data/providers/els_products_provider.dart';
+import 'package:elswhere/ui/screens/compare_product_screen.dart';
 import 'package:elswhere/ui/screens/els_product_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -12,14 +14,16 @@ import 'package:intl/intl.dart';
 import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
 
-class ELSProductCard extends StatefulWidget {
-  final SummarizedProductDto product;
+class ELSProductCard<T extends SummarizedProductDto> extends StatefulWidget {
+  final T product;
   final int index;
+  void Function(bool, int)? checkCompare;
 
-  const ELSProductCard({
+  ELSProductCard({
     super.key,
     required this.product,
     required this.index,
+    this.checkCompare,
   });
 
 
@@ -29,12 +33,14 @@ class ELSProductCard extends StatefulWidget {
 
 class _ELSProductCardState extends State<ELSProductCard> {
   bool isSelected = false;
+  bool nowComparing = false;
   final cardHeight = 105.0;
 
   @override
   Widget build(BuildContext context) {
-    final productProvider =
-        Provider.of<ELSProductProvider>(context, listen: false);
+    final productProvider = Provider.of<ELSProductProvider>(context, listen: false);
+    final productsProvider = Provider.of<ELSOnSaleProductsProvider>(context, listen: false);
+    final isOnSale = widget.product.subscriptionEndDate.difference(DateTime.now()).inDays < 0;
     final format = DateFormat('yyyy년 MM월 dd일');
     final dayDifference = widget.product.subscriptionEndDate.difference(DateTime.now()).inDays;
 
@@ -135,26 +141,21 @@ class _ELSProductCardState extends State<ELSProductCard> {
                             ),
                           ),
                           onTap: () async {
-                            Fluttertoast.showToast(msg: '추후 업데이트를 통해 제공될 예정입니다.', toastLength: Toast.LENGTH_SHORT);
-                            // showDialog(
-                            //   context: context,
-                            //   barrierDismissible: false,
-                            //   builder: (BuildContext context) {
-                            //     return const Center(
-                            //       child: CircularProgressIndicator(),
-                            //     );
-                            //   },
-                            // );
-                            //
-                            // await productProvider.fetchProduct(widget.product.id);
-                            //
-                            // // 로딩 다이얼로그 닫기
-                            // Navigator.of(context).pop();
-                            //
-                            // if (productProvider.product != null) {
-                            //   // ELSDetailDialog.show(context, productProvider.product!);
-                            //   Navigator.push(context, MaterialPageRoute(builder: (context) => ELSProductDetailScreen()));
-                            // }
+                            setState(() {
+                              nowComparing = !nowComparing;
+                              if (widget.checkCompare != null) {
+                                widget.checkCompare!(nowComparing, widget.index);
+                              }
+                            });
+                            productProvider.compareId.add(widget.product.id);
+                            if (productProvider.compareId.length == 2) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => CompareProductScreen()),
+                              );
+                            } else {
+                              await productsProvider.fetchSimilarProducts(widget.product.id);
+                            }
                           },
                         ),
                       ),

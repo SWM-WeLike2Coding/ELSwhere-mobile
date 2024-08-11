@@ -1,10 +1,13 @@
 import 'package:elswhere/data/models/dtos/request_product_search_dto.dart';
+import 'package:elswhere/data/models/dtos/response_product_comparison_main_dto.dart';
+import 'package:elswhere/data/models/dtos/response_product_comparison_target_dto.dart';
 import 'package:flutter/material.dart';
 import '../models/dtos/summarized_product_dto.dart';
 import '../services/els_product_service.dart';
 
 class ELSProductsProvider extends ChangeNotifier {
   List<SummarizedProductDto> _products = [];
+  ResponseProductComparisonMainDto? _similarProducts;
   bool _isLoading = false;
   bool _hasNext = true;
   int _page = 0;
@@ -16,6 +19,7 @@ class ELSProductsProvider extends ChangeNotifier {
   ELSProductsProvider(this._productService, this.status);
 
   List<SummarizedProductDto> get products => _products;
+  ResponseProductComparisonMainDto? get similarProducts => _similarProducts;
   bool get isLoading => _isLoading;
   bool get hasNext => _hasNext;
 
@@ -80,6 +84,7 @@ class ELSProductsProvider extends ChangeNotifier {
     switch (type) {
       case '최신순':
         products.sort((a, b) => b.id.compareTo(a.id));
+        if (similarProducts?.results != null) similarProducts!.results.sort((a, b) => b.id.compareTo(a.id));
       case '낙인순':
         products.sort((a, b) {
           final x = a.knockIn ?? 999;
@@ -88,13 +93,57 @@ class ELSProductsProvider extends ChangeNotifier {
           if (result == 0) return b.id.compareTo(a.id);
           return result;
         });
+        if (similarProducts?.results != null) {
+          similarProducts!.results.sort((a, b) {
+            final x = a.knockIn ?? 999;
+            final y = b.knockIn ?? 999;
+            final result = x.compareTo(y);
+            if (result == 0) return b.id.compareTo(a.id);
+            return result;
+          });
+        }
       case '수익률순':
         products.sort((a, b) {
           final result = b.yieldIfConditionsMet.compareTo(a.yieldIfConditionsMet);
           if (result == 0) return b.id.compareTo(a.id);
           return result;
         });
+        if (similarProducts?.results != null) {
+          similarProducts!.results.sort((a, b) {
+            final result = b.yieldIfConditionsMet.compareTo(a.yieldIfConditionsMet);
+            if (result == 0) return b.id.compareTo(a.id);
+            return result;
+          });
+        }
     }
+  }
+
+  Future<bool> fetchSimilarProducts(int id) async {
+    bool isSuccessful = false;
+    _similarProducts = null;
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      final httpResponse = await _productService.fetchSimilarProducts(id);
+      final response = httpResponse.response;
+      final int statusCode = response.statusCode!;
+      final ResponseProductComparisonMainDto body = ResponseProductComparisonMainDto.fromJson(response.data);
+
+      if (statusCode == 200) {
+        _similarProducts = body;
+        isSuccessful = true;
+      } else {
+        throw Exception;
+      }
+
+    } catch (e) {
+      print('비슷한 상품 불러오기 오류 : $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+    return isSuccessful == true;
   }
 
   void resetProducts() {

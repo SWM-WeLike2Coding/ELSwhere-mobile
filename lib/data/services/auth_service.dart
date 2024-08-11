@@ -11,10 +11,6 @@ class AuthService {
       final result = await FlutterWebAuth2.authenticate(
         url: loginUrl.toString(),
         callbackUrlScheme: callbackUrlScheme,
-        options: const FlutterWebAuth2Options(
-          preferEphemeral: true,
-          intentFlags: ephemeralIntentFlags,
-        ),
       );
 
       final jsonResponse = Uri.parse(result).queryParameters;

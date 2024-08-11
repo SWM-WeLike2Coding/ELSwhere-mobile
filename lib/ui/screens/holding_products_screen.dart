@@ -56,7 +56,7 @@ class _HoldingProductsScreenState extends State<HoldingProductsScreen> {
       body: Column(
         children: [
           _buildHoldingProductsString(),
-          ELSProductListView<ELSOnSaleProductsProvider>(type: type),
+          ELSProductListView<ELSOnSaleProductsProvider>(type: type, nowComparing: false,),
         ],
       ),
     );
