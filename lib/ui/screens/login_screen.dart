@@ -85,6 +85,8 @@ class LoginScreen extends StatelessWidget {
                           final bool result = await login();
 
                           if (result) {
+                            print(accessToken);
+                            print(refreshToken);
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(builder: (context) => InitialScreen()), (route) => false,

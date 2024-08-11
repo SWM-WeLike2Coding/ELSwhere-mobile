@@ -89,14 +89,11 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
                       Fluttertoast.showToast(msg: '추후 업데이트를 통해 제공될 예정입니다.', toastLength: Toast.LENGTH_SHORT);
                     },
                   ),
-
                 ],
               ),
             ),
           ),
-          body: SingleChildScrollView(
-            child: ELSProductDetailView(),
-          ),
+          body: ELSProductDetailView(),
         );
       },
     );

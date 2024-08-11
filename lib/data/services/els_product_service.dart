@@ -13,18 +13,18 @@ part 'els_product_service.g.dart';
 @RestApi(baseUrl: '')
 abstract class ProductService {
   factory ProductService(Dio dio) {
-    final _baseUrl = '$baseUrl/product-service/v1';
+    final _baseUrl = '$baseUrl/product-service';
     dio.interceptors.add(ApiInterceptor());
     return _ProductService(dio, baseUrl: _baseUrl);
   }
 
-  @GET("/others/ticker")
+  @GET("/v1/others/ticker")
   Future<List<ResponseTickerSymbolDto>> fetchTickers();
 
-  @GET("/others/issuer")
+  @GET("/v1/others/issuer")
   Future<List<ResponseIssuerDto>> fetchIssuers();
 
-  @GET("/product/{status}-sale")
+  @GET("/v1/product/{status}-sale")
   Future<ResponsePageSummarizedProductDto> fetchProducts(
       @Path("status") String status,
       @Query("type") String type,
@@ -32,9 +32,12 @@ abstract class ProductService {
       @Query("size") int size,
   );
 
-  @GET("/product/{id}")
+  @GET("/v1/product/{id}")
   Future<ResponseSingleProductDto> fetchProduct(@Path("id") int id);
 
-  @POST("/product/search")
+  @POST("/v1/product/search")
   Future<ResponsePageSummarizedProductDto> fetchFilteredProducts(@Body() RequestProductSearchDto data);
+
+  @GET("/v1/product/similar/{id}")
+  Future<HttpResponse> fetchSimilarProducts(@Path("id") int id);
 }

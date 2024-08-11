@@ -4,9 +4,11 @@ import 'package:provider/provider.dart';
 import '../widgets/els_product_card.dart';
 
 class ELSProductListView<T extends ELSProductsProvider> extends StatelessWidget {
-  const ELSProductListView({super.key, required this.type});
-
   final String type;
+  bool nowComparing;
+  void Function(bool, int)? checkCompare;
+
+  ELSProductListView({super.key, this.checkCompare, required this.type, required this.nowComparing});
 
   void _refreshList(BuildContext context) {
     Provider.of<T>(context, listen: false).refreshProducts(type);
@@ -26,36 +28,56 @@ class ELSProductListView<T extends ELSProductsProvider> extends StatelessWidget 
           } else {
             return Consumer<T>(
               builder: (context, productsProvider, child) {
-                if (productsProvider.isLoading && productsProvider.products.isEmpty) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (productsProvider.products.isEmpty) {
-                  return const Center(child: Text('상품이 존재하지 않습니다.'));
-                } else {
-                  return NotificationListener<ScrollNotification>(
-                    onNotification: (ScrollNotification scrollInfo) {
-                      if (!productsProvider.isLoading &&
-                          productsProvider.hasNext &&
-                          scrollInfo.metrics.pixels ==
-                              scrollInfo.metrics.maxScrollExtent) {
-                        productsProvider.fetchProducts(type);
-                      }
-                      return false;
-                    },
-                    child: RefreshIndicator(
-                      onRefresh: () async {
-                        _refreshList(context);
+                if (!nowComparing) {
+                  if (productsProvider.isLoading && productsProvider.products.isEmpty) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (productsProvider.products.isEmpty) {
+                    return const Center(child: Text('상품이 존재하지 않습니다.'));
+                  } else {
+                    return NotificationListener<ScrollNotification>(
+                      onNotification: (ScrollNotification scrollInfo) {
+                        if (!productsProvider.isLoading &&
+                            productsProvider.hasNext &&
+                            scrollInfo.metrics.pixels ==
+                                scrollInfo.metrics.maxScrollExtent) {
+                          productsProvider.fetchProducts(type);
+                        }
+                        return false;
                       },
-                      child: ListView.builder(
-                        itemCount: productsProvider.products.length,
-                        itemBuilder: (context, index) {
-                          return ELSProductCard(
-                            product: productsProvider.products[index],
-                            index: index,
-                          );
+                      child: RefreshIndicator(
+                        onRefresh: () async {
+                          _refreshList(context);
                         },
+                        child: ListView.builder(
+                          itemCount: productsProvider.products.length,
+                          itemBuilder: (context, index) {
+                            return ELSProductCard(
+                              product: productsProvider.products[index],
+                              index: index,
+                              checkCompare: checkCompare,
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                  );
+                    );
+                  }
+                } else {
+                  if (productsProvider.isLoading && productsProvider.similarProducts == null) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (productsProvider.similarProducts!.results.isEmpty) {
+                    return const Center(child: Text('상품이 존재하지 않습니다.'));
+                  } else {
+                    return ListView.builder(
+                      itemCount: productsProvider.similarProducts!.results.length,
+                      itemBuilder: (context, index) {
+                        return ELSProductCard(
+                          product: productsProvider.similarProducts!.results[index],
+                          index: index,
+                          checkCompare: checkCompare,
+                        );
+                      },
+                    );
+                  }
                 }
               },
             );

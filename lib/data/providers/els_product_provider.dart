@@ -17,12 +17,16 @@ class ELSProductProvider with ChangeNotifier {
   bool _isBookmarked = false;
   int? _interestId;
   List<ResponseInterestingProductDto> _interestingProducts = [];
+  List<int> _compareId = [];
+  List<ResponseSingleProductDto> _compareProducts = [];
 
   ResponseSingleProductDto? get product => _product;
   bool get isLoading => _isLoading;
   bool get isBookmarked => _isBookmarked;
   int? get interestedId => _interestId;
   List<ResponseInterestingProductDto> get interestingProducts => _interestingProducts;
+  List<int> get compareId => _compareId;
+  List<ResponseSingleProductDto> get compareProducts => _compareProducts;
 
   Future<void> fetchProduct(int id) async {
     _isLoading = true;
@@ -77,7 +81,7 @@ class ELSProductProvider with ChangeNotifier {
       _interestId = response.data['id'];
       _interestingProducts = await _userService.getInterestedProducts();
     } catch (error) {
-      if (error is DioError && error.response != null) {
+      if (error is DioException && error.response != null) {
         print('Error details: ${error.response?.data}');
       }
       print('Error regiter interested product: $error');
@@ -99,6 +103,19 @@ class ELSProductProvider with ChangeNotifier {
       _isBookmarked = true;
     } finally {
       notifyListeners();
+    }
+  }
+
+  Future<void> fetchCompareProduct(int id1, int id2) async {
+    _isLoading = true;
+    try {
+      _compareProducts.add(await _productService.fetchProduct(id1));
+      _compareProducts.add(await _productService.fetchProduct(id2));
+    } catch (error) {
+      print('Error fetching product: $error');
+      _compareProducts = [];
+    } finally {
+      _isLoading = false;
     }
   }
 }

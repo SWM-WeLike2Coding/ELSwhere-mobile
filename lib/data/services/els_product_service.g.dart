@@ -32,7 +32,7 @@ class _ProductService implements ProductService {
     )
             .compose(
               _dio.options,
-              '/others/ticker',
+              '/v1/others/ticker',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -62,7 +62,7 @@ class _ProductService implements ProductService {
     )
             .compose(
               _dio.options,
-              '/others/issuer',
+              '/v1/others/issuer',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -101,7 +101,7 @@ class _ProductService implements ProductService {
     )
             .compose(
               _dio.options,
-              '/product/${status}-sale',
+              '/v1/product/${status}-sale',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -128,7 +128,7 @@ class _ProductService implements ProductService {
     )
             .compose(
               _dio.options,
-              '/product/${id}',
+              '/v1/product/${id}',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -157,7 +157,7 @@ class _ProductService implements ProductService {
     )
             .compose(
               _dio.options,
-              '/product/search',
+              '/v1/product/search',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -168,6 +168,34 @@ class _ProductService implements ProductService {
             ))));
     final _value = ResponsePageSummarizedProductDto.fromJson(_result.data!);
     return _value;
+  }
+
+  @override
+  Future<HttpResponse<dynamic>> fetchSimilarProducts(int id) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result =
+        await _dio.fetch(_setStreamType<HttpResponse<dynamic>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/v1/product/similar/${id}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = _result.data;
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

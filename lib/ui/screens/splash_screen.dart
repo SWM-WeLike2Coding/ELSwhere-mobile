@@ -1,5 +1,6 @@
 import 'package:elswhere/config/config.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/ui/screens/compare_product_screen.dart';
 import 'package:elswhere/ui/screens/initial_screen.dart';
 import 'package:elswhere/ui/screens/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,7 @@ class SplashScreen extends StatelessWidget {
           FlutterNativeSplash.remove();
           if (userProvider.checkAuthenticated) {
             return const InitialScreen();
+            // return CompareProductScreen();
           } else {
             return const LoginScreen();
           }
