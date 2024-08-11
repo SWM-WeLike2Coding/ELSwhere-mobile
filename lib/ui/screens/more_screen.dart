@@ -4,8 +4,10 @@ import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:elswhere/data/services/user_service.dart';
+import 'package:elswhere/ui/screens/announcement_screen.dart';
 import 'package:elswhere/ui/screens/attention_setting_screen.dart';
 import 'package:elswhere/ui/screens/change_nickname_screen.dart';
+import 'package:elswhere/ui/screens/investment_guide_screen.dart';
 import 'package:elswhere/ui/screens/login_screen.dart';
 import 'package:elswhere/ui/screens/member_quit_screen.dart';
 import 'package:elswhere/ui/screens/service_agreement_screen.dart';
@@ -453,14 +455,24 @@ class _MoreScreenState extends State<MoreScreen> {
                       context: context,
                       title: "공지사항",
                       onTap: () {
-
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AnnouncementScreen(),
+                          ),
+                        );
                       }
                   ),
                   _buildLittleListTile(
                       context: context,
                       title: "투자가이드",
                       onTap: () {
-
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => InvestmentGuideScreen(),
+                          ),
+                        );
                       }
                   ),
                   _buildLittleListTile(
