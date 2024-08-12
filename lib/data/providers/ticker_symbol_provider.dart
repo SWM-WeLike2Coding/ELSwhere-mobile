@@ -40,11 +40,11 @@ class TickerSymbolProvider extends ChangeNotifier {
   }
 
   Future<void> fetchStockPrices() async {
-    try {
-      for (int i = 0; i < _length; i++) {
-        final String stock = _tickerSymbol[i];
-        final now = DateTime.now();
-        final twoDaysAgo = now.subtract(const Duration(days: 2));
+    for (int i = 0; i < _length; i++) {
+      final String stock = _tickerSymbol[i];
+      final now = DateTime.now();
+      final twoDaysAgo = now.subtract(const Duration(days: 2));
+      try {
         final response = await _yfinanceReader.getDailyDTOs('^$stock', startDate: twoDaysAgo);
         print('${_tickerSymbol[i]}: ${response.candlesData}');
         final candlesData = response.candlesData;
@@ -57,9 +57,9 @@ class TickerSymbolProvider extends ChangeNotifier {
           // print(_price[i]);
           // print(_rate[i]);
         }
+      } catch (e) {
+        print('가져오는 데 오류가 발생했습니다. : $e');
       }
-    } catch (e) {
-      print('가져오는 데 오류가 발생했습니다. : $e');
     }
   }
 }
