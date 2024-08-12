@@ -65,10 +65,10 @@ class _HomeScreenState extends State<HomeScreen> {
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Color(0xFFF5F6F6),
+          appBar: _buildAppBar(context),
           body: SingleChildScrollView(
             child: Column(
               children: [
-                _buildAppBar(context),
                 _buildInvestmentTasteTestWidget(context),
                 _buildHoldingProductAssetWidget(context),
                 _buildHotAndAttentionProductWidget(context),
@@ -107,34 +107,37 @@ class _HomeScreenState extends State<HomeScreen> {
     return selectedProducts;
   }
 
-  Widget _buildAppBar(BuildContext context) {
-    const String tempIcon = "assets/icons/icon_temp_logo.svg";
+  PreferredSize _buildAppBar(BuildContext context) {
+    const String tempIcon = "assets/icons/icon_elswhere_home.svg";
 
-    return Padding(
-      padding: EdgeInsets.only(left: 24, right: 24),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          SvgPicture.asset(
-            tempIcon,
-            width: 24,
-            height: 24,
-          ),
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => NotificationScreen(),
-                  )
-              );
-            },
-            icon: Icon(
-              Icons.notifications_none,
-              size: 24,
+    return PreferredSize(
+      preferredSize: Size.fromHeight(56),
+      child: Padding(
+        padding: EdgeInsets.only(left: 24, right: 24),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SvgPicture.asset(
+              tempIcon,
+              width: 24,
+              height: 24,
             ),
-          ),
-        ],
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => NotificationScreen(),
+                    )
+                );
+              },
+              icon: Icon(
+                Icons.notifications_none,
+                size: 24,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
