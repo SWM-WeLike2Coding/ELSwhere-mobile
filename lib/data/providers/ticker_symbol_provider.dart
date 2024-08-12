@@ -40,21 +40,26 @@ class TickerSymbolProvider extends ChangeNotifier {
   }
 
   Future<void> fetchStockPrices() async {
-    for(int i = 0; i < _length ; i++) {
-      final String stock = _tickerSymbol[i];
-      final now = DateTime.now();
-      final twoDaysAgo = now.subtract(const Duration(days: 2));
-      final response = await _yfinanceReader.getDailyDTOs('^$stock', startDate: twoDaysAgo);
-      final candlesData = response.candlesData;
-      if (candlesData.isNotEmpty) {
-        final day1ago = candlesData.last.close;
-        final day2ago = candlesData.first.close;
-        _price[i] = day1ago;
-        _rate[i] = (day1ago - day2ago) / day2ago * 100.0;
-        // print(_tickerSymbol[i]);
-        // print(_price[i]);
-        // print(_rate[i]);
+    try {
+      for (int i = 0; i < _length; i++) {
+        final String stock = _tickerSymbol[i];
+        final now = DateTime.now();
+        final twoDaysAgo = now.subtract(const Duration(days: 2));
+        final response = await _yfinanceReader.getDailyDTOs('^$stock', startDate: twoDaysAgo);
+        print('${_tickerSymbol[i]}: ${response.candlesData}');
+        final candlesData = response.candlesData;
+        if (candlesData.isNotEmpty) {
+          final day1ago = candlesData.last.close;
+          final day2ago = candlesData.first.close;
+          _price[i] = day1ago;
+          _rate[i] = (day1ago - day2ago) / day2ago * 100.0;
+          // print(_tickerSymbol[i]);
+          // print(_price[i]);
+          // print(_rate[i]);
+        }
       }
+    } catch (e) {
+      print('가져오는 데 오류가 발생했습니다. : $e');
     }
   }
 }
