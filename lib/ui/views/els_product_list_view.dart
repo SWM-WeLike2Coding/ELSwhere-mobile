@@ -32,7 +32,16 @@ class ELSProductListView<T extends ELSProductsProvider> extends StatelessWidget 
                   if (productsProvider.isLoading && productsProvider.products.isEmpty) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (productsProvider.products.isEmpty) {
-                    return const Center(child: Text('상품이 존재하지 않습니다.'));
+                    return RefreshIndicator(
+                      onRefresh: () async {
+                        _refreshList(context);
+                      },
+                      child: ListView(
+                        children: const [
+                          Expanded(child: Center(child: Text('상품이 존재하지 않습니다.'))),
+                        ],
+                      ),
+                    );
                   } else {
                     return NotificationListener<ScrollNotification>(
                       onNotification: (ScrollNotification scrollInfo) {
@@ -65,7 +74,16 @@ class ELSProductListView<T extends ELSProductsProvider> extends StatelessWidget 
                   if (productsProvider.isLoading && productsProvider.similarProducts == null) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (productsProvider.similarProducts!.results.isEmpty) {
-                    return const Center(child: Text('상품이 존재하지 않습니다.'));
+                    return RefreshIndicator(
+                      onRefresh: () async {
+                        _refreshList(context);
+                      },
+                      child: ListView(
+                        children: const [
+                          Expanded(child: Center(child: Text('상품이 존재하지 않습니다.'))),
+                        ],
+                      ),
+                    );
                   } else {
                     return ListView.builder(
                       itemCount: productsProvider.similarProducts!.results.length,

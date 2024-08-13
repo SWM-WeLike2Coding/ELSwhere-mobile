@@ -196,7 +196,7 @@ class _MoreScreenState extends State<MoreScreen> {
   @override
   Widget build(BuildContext context) {
     const String manIcon = "assets/icons/icon_man.svg";
-    final String googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdTf1hcZYurHxd_IV62SUSWqDX44Nm4toFMYOFZYaEeYYOYsw/viewform?usp=sf_link";
+    final String googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLScZr3KWFVD82FepPi2KPUsEF3sKV2YApyTMv75ku35-KvsZ1A/viewform?usp=sf_link";
 
 
     return Scaffold(

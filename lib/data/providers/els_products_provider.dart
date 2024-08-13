@@ -68,7 +68,9 @@ class ELSProductsProvider extends ChangeNotifier {
     notifyListeners();
     try {
       final responsePage = await _productService.fetchFilteredProducts(body);
-      _products += responsePage.content;
+      _products += responsePage.content.where((e) => status == 'on'
+          ? e.subscriptionEndDate.compareTo(DateTime.now()) >= 0
+          : e.subscriptionEndDate.compareTo(DateTime.now()) < 0).toList();
       _hasNext = responsePage.hasNext;
       _page++;
     } catch (error) {
