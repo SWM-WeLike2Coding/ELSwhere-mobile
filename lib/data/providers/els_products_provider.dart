@@ -63,14 +63,15 @@ class ELSProductsProvider extends ChangeNotifier {
 
   // 07-22 상품 검색 구현하면서 try 함수
   Future<void> fetchFilteredProducts(RequestProductSearchDto body) async {
+    final now = DateTime.now().copyWith(hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0);
     resetProducts();
     _isLoading = true;
     notifyListeners();
     try {
       final responsePage = await _productService.fetchFilteredProducts(body);
       _products += responsePage.content.where((e) => status == 'on'
-          ? e.subscriptionEndDate.compareTo(DateTime.now()) >= 0
-          : e.subscriptionEndDate.compareTo(DateTime.now()) < 0).toList();
+          ? e.subscriptionEndDate.compareTo(now) >= 0
+          : e.subscriptionEndDate.compareTo(now) < 0).toList();
       _hasNext = responsePage.hasNext;
       _page++;
     } catch (error) {
