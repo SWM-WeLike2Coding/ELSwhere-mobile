@@ -15,6 +15,7 @@ sealed class Assets {
   static const String pretendardBlack = "assets/fonts/pretendard/Pretendard-Black.ttf";
 
   static const String iconELSwhere = "assets/icons/icon_elswhere.svg";
+  static const String logoELSwhere = "assets/icons/logo_elswhere.svg";
 
   static const String iconGoogle = "assets/icons/icon_google.svg";
 
