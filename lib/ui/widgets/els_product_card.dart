@@ -154,7 +154,10 @@ class _ELSProductCardState extends State<ELSProductCard> {
                                 MaterialPageRoute(builder: (context) => CompareProductScreen()),
                               );
                             } else {
-                              await productsProvider.fetchSimilarProducts(widget.product.id);
+                              final result = await productsProvider.fetchSimilarProducts(widget.product.id);
+                              if (!result) {
+                                Fluttertoast.showToast(msg: '제품을 불러오는데 실패했습니다.', toastLength: Toast.LENGTH_SHORT);
+                              }
                             }
                           },
                         ),

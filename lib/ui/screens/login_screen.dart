@@ -29,14 +29,9 @@ class LoginScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SvgPicture.asset(Assets.iconELSwhere),
-                      const SizedBox(height: 4,),
-                      Text(
-                        'ELSwhere',
-                        style: GoogleFonts.bebasNeue(
-                          fontSize: 32,
-                          fontWeight: FontWeight.w700,
-                        )
+                      Padding(
+                        padding: const EdgeInsets.only(left: 96, right: 96),
+                        child: SvgPicture.asset(Assets.logoELSwhere),
                       ),
                       const SizedBox(height: 4,),
                       Text(

@@ -4,7 +4,7 @@ dev_dependencies:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path_android: "assets/icons/icon_elswhere_4x.png"
-  image_path_ios: "assets/icons/icon_elswhere_4x_white.png"
+  image_path_android: "assets/icons/logo_elswhere_white.png"
+  image_path_ios: "assets/icons/logo_elswhere_white.png"
   remove_alpha_ios: true
   background_color: "#ffffff"
