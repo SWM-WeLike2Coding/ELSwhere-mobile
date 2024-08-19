@@ -107,39 +107,66 @@ class _HomeScreenState extends State<HomeScreen> {
     return selectedProducts;
   }
 
-  PreferredSize _buildAppBar(BuildContext context) {
+  AppBar _buildAppBar(BuildContext context) {
     const String tempIcon = "assets/icons/icon_elswhere_home.svg";
 
-    return PreferredSize(
-      preferredSize: Size.fromHeight(56),
-      child: Padding(
-        padding: EdgeInsets.only(left: 24, right: 24),
+    return AppBar(
+      backgroundColor: const Color(0xFFF5F6F6),
+      leading: Padding(
+        padding: const EdgeInsets.only(left: 24),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SvgPicture.asset(
-              tempIcon,
-              width: 24,
-              height: 24,
-            ),
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => NotificationScreen(),
-                    )
-                );
-              },
-              icon: Icon(
-                Icons.notifications_none,
-                size: 24,
-              ),
-            ),
+            SvgPicture.asset(tempIcon, height: 30,),
           ],
         ),
       ),
+      leadingWidth: double.infinity,
+      actions: [
+        Padding(
+          padding: edgeInsetsAll8,
+          child: IconButton(
+            icon: const Icon(Icons.notifications_none_rounded, size: 30,),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => NotificationScreen(),)
+              );
+            },
+          ),
+        ),
+      ],
     );
+
+    // return PreferredSize(
+    //   preferredSize: Size.fromHeight(56),
+    //   child: Padding(
+    //     padding: EdgeInsets.only(left: 24, right: 24),
+    //     child: Row(
+    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //       children: [
+    //         SvgPicture.asset(
+    //           tempIcon,
+    //           width: 24,
+    //           height: 24,
+    //         ),
+    //         IconButton(
+    //           onPressed: () {
+    //             Navigator.push(
+    //                 context,
+    //                 MaterialPageRoute(
+    //                   builder: (context) => NotificationScreen(),
+    //                 )
+    //             );
+    //           },
+    //           icon: Icon(
+    //             Icons.notifications_none,
+    //             size: 24,
+    //           ),
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 
   Widget _buildInvestmentTasteTestWidget(BuildContext context) {
