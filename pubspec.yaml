@@ -59,10 +59,11 @@ dependencies:
   webview_flutter: ^4.8.0
   card_swiper: ^3.0.1
   shared_preferences: ^2.2.3
-  yahoo_finance_data_reader: ^1.0.10
+  yahoo_finance_data_reader: ^1.0.11
   flutter_secure_storage: ^4.2.1
   flutter_native_splash: ^2.4.1
   flutter_launcher_icons: ^0.13.1
+  fl_chart: ^0.68.0
 
 dependency_overrides:
   fading_edge_scrollview: ^4.1.1

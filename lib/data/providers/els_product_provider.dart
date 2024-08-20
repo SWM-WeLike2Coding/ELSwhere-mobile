@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:elswhere/data/services/yfinance_service.dart';
 import 'package:flutter/material.dart';
 import 'package:retrofit/dio.dart';
+import 'package:yahoo_finance_data_reader/yahoo_finance_data_reader.dart';
 import '../models/dtos/response_interesting_product_dto.dart';
 import '../models/dtos/response_single_product_dto.dart';
 import '../services/els_product_service.dart';
@@ -9,8 +11,9 @@ import '../services/user_service.dart';
 class ELSProductProvider with ChangeNotifier {
   final ProductService _productService;
   final UserService _userService;
+  final YFinanceService _yFinanceService;
 
-  ELSProductProvider(this._productService, this._userService);
+  ELSProductProvider(this._productService, this._userService, this._yFinanceService);
 
   ResponseSingleProductDto? _product;
   bool _isLoading = false;
@@ -19,6 +22,7 @@ class ELSProductProvider with ChangeNotifier {
   List<ResponseInterestingProductDto> _interestingProducts = [];
   List<int> _compareId = [];
   List<ResponseSingleProductDto> _compareProducts = [];
+  Map<String, YahooFinanceResponse>? _stockPrices;
 
   ResponseSingleProductDto? get product => _product;
   bool get isLoading => _isLoading;
@@ -27,6 +31,7 @@ class ELSProductProvider with ChangeNotifier {
   List<ResponseInterestingProductDto> get interestingProducts => _interestingProducts;
   List<int> get compareId => _compareId;
   List<ResponseSingleProductDto> get compareProducts => _compareProducts;
+  Map<String, YahooFinanceResponse>? get stockPrices => _stockPrices;
 
   Future<void> fetchProduct(int id) async {
     _isLoading = true;
@@ -114,6 +119,17 @@ class ELSProductProvider with ChangeNotifier {
     } catch (error) {
       print('Error fetching product: $error');
       _compareProducts = [];
+    } finally {
+      _isLoading = false;
+    }
+  }
+
+  Future<void> fetchStockPrices() async { // fetchProduct로 _product가 있어야만 해당 상품에서 조회가 가능
+    _isLoading = true;
+    try {
+      _stockPrices = await _yFinanceService.fetchStockPrices(_product!.equityTickerSymbols);
+    } catch (e) {
+      print('주가 가져오기 실패: $e');
     } finally {
       _isLoading = false;
     }

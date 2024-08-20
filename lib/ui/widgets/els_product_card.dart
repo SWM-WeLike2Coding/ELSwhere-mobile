@@ -58,114 +58,7 @@ class _ELSProductCardState extends State<ELSProductCard> {
           onTap: () => _onItemTapped(),
           child: Stack(
             children: [
-              Positioned(
-                right: 0,
-                child: Container(
-                  height: cardHeight,
-                  width: 190,
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: edgeInsetsAll8,
-                        child: GestureDetector(
-                          child: Container(
-                            width: 75,
-                            decoration: const BoxDecoration(
-                              borderRadius: borderRadiusCircular10,
-                              color: AppColors.backgroundGray,
-                            ),
-                            child: Padding(
-                              padding: edgeInsetsAll16,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.arrow_right_alt, color: AppColors.textGray,),
-                                  Text(
-                                    '자세히',
-                                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                      color: AppColors.textGray,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          onTap: () async {
-                            showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (BuildContext context) {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              },
-                            );
-
-                            await productProvider.fetchProduct(widget.product.id);
-
-                            // 로딩 다이얼로그 닫기
-                            Navigator.of(context).pop();
-
-                            if (productProvider.product != null) {
-                              // ELSDetailDialog.show(context, productProvider.product!);
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => ELSProductDetailScreen()));
-                            }
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: edgeInsetsAll8,
-                        child: GestureDetector(
-                          child: Container(
-                            width: 75,
-                            decoration: const BoxDecoration(
-                              borderRadius: borderRadiusCircular10,
-                              color: Color(0xFF434648),
-                            ),
-                            child: Padding(
-                              padding: edgeInsetsAll16,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.add, color: AppColors.contentWhite,),
-                                  Text(
-                                    '비교',
-                                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                      color: AppColors.contentWhite,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          onTap: () async {
-                            setState(() {
-                              nowComparing = !nowComparing;
-                              if (widget.checkCompare != null) {
-                                widget.checkCompare!(nowComparing, widget.index);
-                              }
-                            });
-                            productProvider.compareId.add(widget.product.id);
-                            if (productProvider.compareId.length == 2) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => CompareProductScreen()),
-                              );
-                            } else {
-                              final result = await productsProvider.fetchSimilarProducts(widget.product.id);
-                              if (!result) {
-                                Fluttertoast.showToast(msg: '제품을 불러오는데 실패했습니다.', toastLength: Toast.LENGTH_SHORT);
-                              }
-                            }
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              _buildHiddenButtons(context, productProvider, productsProvider),
               AnimatedContainer(
                 curve: Curves.fastOutSlowIn,
                 duration: const Duration(milliseconds: 500),
@@ -279,7 +172,7 @@ class _ELSProductCardState extends State<ELSProductCard> {
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            '${dayDifference.abs()}일 ${dayDifference < 0 ? '전' : '후'} 마감',
+                            '${dayDifference != 0 ? '${dayDifference.abs()}일 ${dayDifference < 0 ? '전' : '후'}' : '오늘'} 마감',
                             style: Theme.of(context).textTheme.displayMedium?.copyWith(
                               fontSize: 14,
                               color: AppColors.textGray,
@@ -295,6 +188,118 @@ class _ELSProductCardState extends State<ELSProductCard> {
           ),
         );
       }
+    );
+  }
+
+  Widget _buildHiddenButtons(BuildContext context, ELSProductProvider productProvider, ELSProductsProvider productsProvider) {
+    return Positioned(
+      right: 0,
+      child: Container(
+        height: cardHeight,
+        width: 190,
+        child: Row(
+          children: [
+            Padding(
+              padding: edgeInsetsAll8,
+              child: GestureDetector(
+                child: Container(
+                  width: 75,
+                  decoration: const BoxDecoration(
+                    borderRadius: borderRadiusCircular10,
+                    color: AppColors.backgroundGray,
+                  ),
+                  child: Padding(
+                    padding: edgeInsetsAll16,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(Icons.arrow_right_alt, color: AppColors.textGray,),
+                        Text(
+                          '자세히',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: AppColors.textGray,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                onTap: () async {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                  );
+
+                  await productProvider.fetchProduct(widget.product.id);
+                  await productProvider.fetchStockPrices();
+
+                  // 로딩 다이얼로그 닫기
+                  Navigator.of(context).pop();
+
+                  if (productProvider.product != null) {
+                    // ELSDetailDialog.show(context, productProvider.product!);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ELSProductDetailScreen()));
+                  }
+                },
+              ),
+            ),
+            Padding(
+              padding: edgeInsetsAll8,
+              child: GestureDetector(
+                child: Container(
+                  width: 75,
+                  decoration: const BoxDecoration(
+                    borderRadius: borderRadiusCircular10,
+                    color: Color(0xFF434648),
+                  ),
+                  child: Padding(
+                    padding: edgeInsetsAll16,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(Icons.add, color: AppColors.contentWhite,),
+                        Text(
+                          '비교',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: AppColors.contentWhite,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                onTap: () async {
+                  setState(() {
+                    nowComparing = !nowComparing;
+                    if (widget.checkCompare != null) {
+                      widget.checkCompare!(nowComparing, widget.index);
+                    }
+                  });
+                  productProvider.compareId.add(widget.product.id);
+                  if (productProvider.compareId.length == 2) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CompareProductScreen()),
+                    );
+                  } else {
+                    final result = await productsProvider.fetchSimilarProducts(widget.product.id);
+                    if (!result) {
+                      Fluttertoast.showToast(msg: '제품을 불러오는데 실패했습니다.', toastLength: Toast.LENGTH_SHORT);
+                    }
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

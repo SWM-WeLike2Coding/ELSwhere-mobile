@@ -78,27 +78,7 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: const Padding(
-          padding: edgeInsetsAll8,
-          child: StockIndexCardSwiper(),
-        ),
-        leadingWidth: double.infinity,
-        actions: [
-          Padding(
-            padding: edgeInsetsAll8,
-            child: IconButton(
-              icon: const Icon(Icons.notifications_none_rounded, size: 30,),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => NotificationScreen(),)
-                );
-              },
-            ),
-          ),
-        ],
-      ),
+      appBar: _buildAppBar(),
       body: Padding(
         padding: edgeInsetsAll8,
         child: Column(
@@ -205,6 +185,30 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
       floatingActionButton: nowComparing
         ? _buildFloatingButton(context)
         : null,
+    );
+  }
+
+  AppBar _buildAppBar() {
+    return AppBar(
+      leading: const Padding(
+        padding: edgeInsetsAll8,
+        child: StockIndexCardSwiper(),
+      ),
+      leadingWidth: double.infinity,
+      actions: [
+        Padding(
+          padding: edgeInsetsAll8,
+          child: IconButton(
+            icon: const Icon(Icons.notifications_none_rounded, size: 30,),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => NotificationScreen(),)
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 

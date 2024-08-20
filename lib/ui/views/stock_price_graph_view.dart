@@ -32,7 +32,7 @@ class _StockPriceGraphViewState extends State<StockPriceGraphView> with SingleTi
         const SizedBox(height: 24),
         IndexedStack(
           index: _selectedIndex,
-          children: const [
+          children: [
             StockPriceGraph(0),
             StockPriceGraph(1),
             StockPriceGraph(2),

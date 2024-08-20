@@ -62,10 +62,10 @@ class ELSProductDetailView extends StatelessWidget {
                       _buildProductTypeCard(),
                       const SizedBox(height: 8),
                       _buildRemarksCard(context),
-                      // const SizedBox(height: 48),
-                      // _buildTitleText('기초자산 주가'),
-                      // const SizedBox(height: 24),
-                      // StockPriceGraphView(),
+                      const SizedBox(height: 48),
+                      _buildTitleText('기초자산 주가'),
+                      const SizedBox(height: 24),
+                      StockPriceGraphView(),
                       // const SizedBox(height: 48),
                       // Row(
                       //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -335,7 +335,7 @@ class ELSProductDetailView extends StatelessWidget {
                     )
                 ),
                 Text(
-                    '${dayDifference.abs()}일 ${dayDifference < 0 ? '전' : '후'} 마감',
+                    '${dayDifference != 0 ? '${dayDifference.abs()}일 ${dayDifference < 0 ? '전' : '후'}' : '오늘'} 마감',
                     style: textTheme.labelMedium!.copyWith(
                       color: AppColors.mainBlue,
                     )
