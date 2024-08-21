@@ -17,6 +17,7 @@ import 'package:provider/provider.dart';
 class ELSProductCard<T extends SummarizedProductDto> extends StatefulWidget {
   final T product;
   final int index;
+  bool isOnSale = false;
   void Function(bool, int)? checkCompare;
 
   ELSProductCard({
@@ -24,6 +25,7 @@ class ELSProductCard<T extends SummarizedProductDto> extends StatefulWidget {
     required this.product,
     required this.index,
     this.checkCompare,
+    this.isOnSale = false
   });
 
 
@@ -35,12 +37,20 @@ class _ELSProductCardState extends State<ELSProductCard> {
   bool isSelected = false;
   bool nowComparing = false;
   final cardHeight = 105.0;
+  bool isOnSale = false;
+
+  @override
+  void initState() {
+    super.initState();
+    isOnSale = widget.isOnSale!;
+    print(isOnSale);
+  }
 
   @override
   Widget build(BuildContext context) {
     final productProvider = Provider.of<ELSProductProvider>(context, listen: false);
     final productsProvider = Provider.of<ELSOnSaleProductsProvider>(context, listen: false);
-    final isOnSale = widget.product.subscriptionEndDate.difference(DateTime.now()).inDays < 0;
+    // final isOnSale = widget.product.subscriptionEndDate.difference(DateTime.now()).inDays < 0;
     final format = DateFormat('yyyy년 MM월 dd일');
     final dayDifference = widget.product.subscriptionEndDate.difference(DateTime.now()).inDays;
 
@@ -52,8 +62,7 @@ class _ELSProductCardState extends State<ELSProductCard> {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final width = constraints.maxWidth;
-        print('$width');
+        // final width = constraints.maxWidth;
         return GestureDetector(
           onTap: () => _onItemTapped(),
           child: Stack(
@@ -62,7 +71,7 @@ class _ELSProductCardState extends State<ELSProductCard> {
               AnimatedContainer(
                 curve: Curves.fastOutSlowIn,
                 duration: const Duration(milliseconds: 500),
-                transform: Matrix4.translationValues(isSelected ? -200 : 0, 0, 0),
+                transform: Matrix4.translationValues(isSelected ? (isOnSale ? -200 : -100) : 0, 0, 0),
                 child: Container(
                   height: cardHeight,
                   padding: edgeInsetsAll16,
@@ -196,7 +205,7 @@ class _ELSProductCardState extends State<ELSProductCard> {
       right: 0,
       child: Container(
         height: cardHeight,
-        width: 190,
+        width: 190 - (isOnSale ? 0 : 91),
         child: Row(
           children: [
             Padding(
@@ -249,7 +258,7 @@ class _ELSProductCardState extends State<ELSProductCard> {
                 },
               ),
             ),
-            Padding(
+            if (isOnSale) Padding(
               padding: edgeInsetsAll8,
               child: GestureDetector(
                 child: Container(

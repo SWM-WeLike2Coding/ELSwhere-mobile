@@ -22,6 +22,7 @@ class InterestingProductListView extends StatelessWidget {
       productType: interestingProduct.productType,
       equities: interestingProduct.equities,
       yieldIfConditionsMet: interestingProduct.yieldIfConditionsMet,
+      knockIn: interestingProduct.knockIn,
       subscriptionStartDate: interestingProduct.subscriptionStartDate,
       subscriptionEndDate: interestingProduct.subscriptionEndDate,
     );

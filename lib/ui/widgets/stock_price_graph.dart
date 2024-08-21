@@ -83,11 +83,9 @@ class _StockPriceGraphState extends State<StockPriceGraph> {
   List<FlSpot> convertStockDataToRelativeFlSpots(List<StockPrice> stockData) {
     final double startPrice = stockData.first.price;
     final DateTime startDate = stockData.first.date;
-    print(startDate);
     int cnt = 0;
 
     return stockData.map((data) {
-      print('data: ${data.date}');
       final double x = (data.date.difference(startDate).inDays.toDouble());
       final double y = cnt++ == 0 ? 100 : (data.price / startPrice) * 100; // 시작 값을 100%로 설정
       return FlSpot(x, y);
