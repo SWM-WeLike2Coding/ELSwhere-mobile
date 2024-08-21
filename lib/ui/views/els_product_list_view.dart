@@ -64,6 +64,7 @@ class ELSProductListView<T extends ELSProductsProvider> extends StatelessWidget 
                               product: productsProvider.products[index],
                               index: index,
                               checkCompare: checkCompare,
+                              isOnSale: T is ELSOnSaleProductsProvider,
                             );
                           },
                         ),
@@ -92,6 +93,7 @@ class ELSProductListView<T extends ELSProductsProvider> extends StatelessWidget 
                           product: productsProvider.similarProducts!.results[index],
                           index: index,
                           checkCompare: checkCompare,
+                          isOnSale: T is ELSOnSaleProductsProvider,
                         );
                       },
                     );
