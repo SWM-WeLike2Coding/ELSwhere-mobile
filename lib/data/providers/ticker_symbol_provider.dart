@@ -30,6 +30,7 @@ class TickerSymbolProvider extends ChangeNotifier {
     try {
       final response = await _productService.fetchTickers();
       _tickers = response;
+      _tickers.sort((a, b) => a.equityName.compareTo(b.equityName));
     } catch (error) {
       print('Error fetching products: $error');
       // 에러 처리 로직 추가

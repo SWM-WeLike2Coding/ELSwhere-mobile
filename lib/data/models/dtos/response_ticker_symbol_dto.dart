@@ -20,4 +20,6 @@ class ResponseTickerSymbolDto {
 
   static List<ResponseTickerSymbolDto> fromJsonList(List<dynamic> jsonList) =>
       jsonList.map((json) => ResponseTickerSymbolDto.fromJson(json)).toList();
+
+
 }

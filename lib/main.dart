@@ -8,6 +8,7 @@ import 'package:elswhere/data/providers/user_info_provider.dart';
 import 'package:elswhere/data/services/dio_client.dart';
 import 'package:elswhere/data/services/els_product_service.dart';
 import 'package:elswhere/data/services/user_service.dart';
+import 'package:elswhere/data/services/yfinance_service.dart';
 import 'package:elswhere/ui/screens/splash_screen.dart';
 import 'package:elswhere/utils/material_color_builder.dart';
 import 'package:flutter/material.dart';
@@ -41,11 +42,13 @@ Future<void> initApp() async {
 class ELSwhere extends StatelessWidget {
   late final ProductService _productService;
   late final UserService _userService;
+  late final YFinanceService _yFinanceService;
 
   ELSwhere({super.key}) {
     dio = DioClient.createDio();
     _productService = ProductService(dio);
     _userService = UserService(dio);
+    _yFinanceService = YFinanceService.getInstance();
   }
 
   @override
@@ -54,7 +57,7 @@ class ELSwhere extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => ELSOnSaleProductsProvider(_productService)),
         ChangeNotifierProvider(create: (context) => ELSEndSaleProductsProvider(_productService)),
-        ChangeNotifierProvider(create: (context) => ELSProductProvider(_productService, _userService)),
+        ChangeNotifierProvider(create: (context) => ELSProductProvider(_productService, _userService, _yFinanceService)),
         ChangeNotifierProvider(create: (context) => IssuerProvider(_productService)),
         ChangeNotifierProvider(create: (context) => TickerSymbolProvider(_productService)),
         ChangeNotifierProvider(create: (context) => UserInfoProvider(_userService)),
