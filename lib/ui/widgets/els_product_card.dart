@@ -33,7 +33,9 @@ class ELSProductCard<T extends SummarizedProductDto> extends StatefulWidget {
   State<ELSProductCard> createState() => _ELSProductCardState();
 }
 
-class _ELSProductCardState extends State<ELSProductCard> {
+class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
   bool isSelected = false;
   bool nowComparing = false;
   final cardHeight = 105.0;
@@ -42,29 +44,27 @@ class _ELSProductCardState extends State<ELSProductCard> {
   @override
   void initState() {
     super.initState();
-    isOnSale = widget.isOnSale!;
-    print(isOnSale);
+    isOnSale = widget.isOnSale;
+  }
+
+  void onItemTapped() {
+    setState(() {
+      isSelected = !isSelected;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final productProvider = Provider.of<ELSProductProvider>(context, listen: false);
     final productsProvider = Provider.of<ELSOnSaleProductsProvider>(context, listen: false);
-    // final isOnSale = widget.product.subscriptionEndDate.difference(DateTime.now()).inDays < 0;
-    final format = DateFormat('yyyy년 MM월 dd일');
     final dayDifference = widget.product.subscriptionEndDate.difference(DateTime.now()).inDays;
-
-    void _onItemTapped() {
-      setState(() {
-        isSelected = !isSelected;
-      });
-    }
 
     return LayoutBuilder(
       builder: (context, constraints) {
         // final width = constraints.maxWidth;
         return GestureDetector(
-          onTap: () => _onItemTapped(),
+          onTap: () => onItemTapped(),
           child: Stack(
             children: [
               _buildHiddenButtons(context, productProvider, productsProvider),
@@ -255,6 +255,7 @@ class _ELSProductCardState extends State<ELSProductCard> {
                     // ELSDetailDialog.show(context, productProvider.product!);
                     Navigator.push(context, MaterialPageRoute(builder: (context) => ELSProductDetailScreen()));
                   }
+                  onItemTapped();
                 },
               ),
             ),

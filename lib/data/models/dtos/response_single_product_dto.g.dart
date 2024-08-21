@@ -17,7 +17,7 @@ ResponseSingleProductDto _$ResponseSingleProductDtoFromJson(
       knockIn: (json['knockIn'] as num?)?.toInt(),
       volatilites: json['volatilites'] as String,
       earlyRepaymentEvaluationDates:
-          json['earlyRepaymentEvaluationDates'] as String,
+          json['earlyRepaymentEvaluationDates'] as String?,
       issuedDate: json['issuedDate'] as String,
       maturityDate: json['maturityDate'] as String,
       yieldIfConditionsMet: (json['yieldIfConditionsMet'] as num).toDouble(),
