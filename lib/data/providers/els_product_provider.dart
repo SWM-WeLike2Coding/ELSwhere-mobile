@@ -77,7 +77,7 @@ class ELSProductProvider with ChangeNotifier {
     }
   }
 
-  Future<void> registerInterested(int id) async {
+  Future<bool> registerInterested(int id) async {
     _isBookmarked = true;
     notifyListeners();
 
@@ -91,12 +91,14 @@ class ELSProductProvider with ChangeNotifier {
       }
       print('Error regiter interested product: $error');
       _isBookmarked = false;
+      return false;
     } finally {
       notifyListeners();
     }
+    return true;
   }
 
-  Future<void> deleteFromInterested() async {
+  Future<bool> deleteFromInterested() async {
     _isBookmarked = false;
     notifyListeners();
 
@@ -106,9 +108,11 @@ class ELSProductProvider with ChangeNotifier {
     } catch (error) {
       print('Error delete interested product: $error');
       _isBookmarked = true;
+      return false;
     } finally {
       notifyListeners();
     }
+    return true;
   }
 
   Future<void> fetchCompareProduct(int id1, int id2) async {

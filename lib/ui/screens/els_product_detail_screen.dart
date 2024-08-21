@@ -21,25 +21,31 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
 
   void changeLiked() => setState(() => isLiked = !isLiked);
   // void changeBookmarked() => setState(() => isBookmarked = !isBookmarked);
-  void changeBookmarked() {
+  void changeBookmarked() async {
     final productProvider = Provider.of<ELSProductProvider>(context, listen: false);
     ResponseSingleProductDto? product = productProvider.product;
     int? interestedId = productProvider.interestedId;
     bool isBookmarked = productProvider.isBookmarked;
+    bool result;
     // print(interestedId);
     if (isBookmarked == false) {
       print("관심 등록합니다.");
       // print(product!.id);
-      productProvider.registerInterested(product!.id);
+      result = await productProvider.registerInterested(product!.id);
     } else {
       print("관심 해지합니다.");
-      productProvider.deleteFromInterested();
+      result = await productProvider.deleteFromInterested();
     }
 
     setState(() {
       isBookmarked = productProvider.isBookmarked;
       // isBookmarked = !isBookmarked;
     });
+    if (result) {
+      Fluttertoast.showToast(msg: isBookmarked ? '관심 상품에 등록했습니다.' : '관심 상품에서 제거했습니다.', toastLength: Toast.LENGTH_SHORT);
+    } else {
+      Fluttertoast.showToast(msg: '관심 설정에 실패했습니다. 다시 시도해주세요.', toastLength: Toast.LENGTH_SHORT);
+    }
   }
 
 
