@@ -11,7 +11,7 @@ class ResponseSingleProductDto {
   final int equityCount;
   final int? knockIn;
   final String volatilites;
-  final String earlyRepaymentEvaluationDates;
+  final String? earlyRepaymentEvaluationDates;
   final String issuedDate;
   final String maturityDate;
   final double yieldIfConditionsMet;
@@ -35,7 +35,7 @@ class ResponseSingleProductDto {
     required this.equityCount,
     this.knockIn,
     required this.volatilites,
-    required this.earlyRepaymentEvaluationDates,
+    this.earlyRepaymentEvaluationDates,
     required this.issuedDate,
     required this.maturityDate,
     required this.yieldIfConditionsMet,

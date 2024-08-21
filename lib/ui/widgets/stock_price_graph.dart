@@ -10,7 +10,7 @@ import 'package:fl_chart/fl_chart.dart';
 class StockPriceGraph extends StatefulWidget {
   int period;
 
-  StockPriceGraph(this.period);
+  StockPriceGraph(this.period, {super.key});
 
   @override
   _StockPriceGraphState createState() => _StockPriceGraphState();
@@ -101,7 +101,6 @@ class _StockPriceGraphState extends State<StockPriceGraph> {
         .expand((data) => data)
         .map((data) => data.y)
         .reduce((a, b) => a < b ? a : b);
-    print('min: $result');
     return result;
   }
 
@@ -110,7 +109,6 @@ class _StockPriceGraphState extends State<StockPriceGraph> {
         .expand((data) => data)
         .map((data) => data.y)
         .reduce((a, b) => a > b ? a : b);
-    print('max: $result');
     return result;
   }
 
@@ -124,14 +122,13 @@ class _StockPriceGraphState extends State<StockPriceGraph> {
         color: colors[index++],
         barWidth: 3,
         belowBarData: BarAreaData(show: false),
-        dotData: FlDotData(show: false,), // 점 표시
+        dotData: const FlDotData(show: false,), // 점 표시
       );
     }).toList();
 
     double minY = findMinY(stockData);
     double maxY = findMaxY(stockData);
     double padding = (maxY - minY) * 0.2; // 20% 여유를 둠
-    print(maxY);
 
     return LineChartData(
       minY: minY - padding,
@@ -200,7 +197,7 @@ class _StockPriceGraphState extends State<StockPriceGraph> {
                 const TextStyle(),
                 children: [
                   if (!isFirst) TextSpan(
-                    text: format.format(touchedDate),
+                    text: '${format.format(touchedDate)}\n',
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,

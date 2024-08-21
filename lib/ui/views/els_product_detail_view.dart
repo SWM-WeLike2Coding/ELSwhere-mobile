@@ -444,7 +444,7 @@ class ELSProductDetailView extends StatelessWidget {
   }
 
   Widget _buildEvaluationDatesList() {
-    final List<String> rows = product!.earlyRepaymentEvaluationDates.split(',');
+    final List<String> rows = product!.earlyRepaymentEvaluationDates?.split(',') ?? [];
     final List<List<String>> evaluationDates = rows.map((row) => row.trim().split(':')).toList();
     return Column(
       children: [

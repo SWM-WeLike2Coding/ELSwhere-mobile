@@ -61,6 +61,7 @@ class ELSProductListView<T extends ELSProductsProvider> extends StatelessWidget 
                           itemCount: productsProvider.products.length,
                           itemBuilder: (context, index) {
                             return ELSProductCard(
+                              key: ValueKey(productsProvider.products[index].id),
                               product: productsProvider.products[index],
                               index: index,
                               checkCompare: checkCompare,
@@ -90,6 +91,7 @@ class ELSProductListView<T extends ELSProductsProvider> extends StatelessWidget 
                       itemCount: productsProvider.similarProducts!.results.length,
                       itemBuilder: (context, index) {
                         return ELSProductCard(
+                          key: ValueKey(productsProvider.similarProducts!.results[index].id),
                           product: productsProvider.similarProducts!.results[index],
                           index: index,
                           checkCompare: checkCompare,
