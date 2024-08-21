@@ -1,3 +1,4 @@
+import 'package:elswhere/data/models/dtos/response_investment_type_dto.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -96,25 +97,28 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
   @override
   void initState() {
     super.initState();
-    var interestingProducts = Provider.of<UserInfoProvider>(context, listen: false).investmentTypeInfo;
-    if (interestingProducts!.riskTakingAbility == 'RISK_TAKING_TYPE') {
-      riskTakingType = 0;
-    } else if (interestingProducts!.riskTakingAbility == 'STABILITY_SEEKING_TYPE') {
-      riskTakingType = 1;
-    }
+    ResponseInvestmentTypeDto? interestingProducts = Provider.of<UserInfoProvider>(context, listen: false).investmentTypeInfo;
 
-    if (interestingProducts!.investmentPreferredPeriod == 'LESS_THAN_A_YEAR') {
-      preferredInvestmentType = 0;
-    } else if (interestingProducts!.investmentPreferredPeriod == 'A_YEAR_OR_TWO') {
-      preferredInvestmentType = 1;
-    } else if (interestingProducts!.investmentPreferredPeriod == 'MORE_THAN_THREE_YEARS') {
-      preferredInvestmentType = 2;
-    }
+    if (interestingProducts != null) {
+      if (interestingProducts.riskTakingAbility == 'RISK_TAKING_TYPE') {
+        riskTakingType = 0;
+      } else if (interestingProducts.riskTakingAbility == 'STABILITY_SEEKING_TYPE') {
+        riskTakingType = 1;
+      }
 
-    if (interestingProducts!.investmentExperience == 'YES') {
-      doesUserHaveExperience = 1;
-    } else if (interestingProducts!.investmentExperience == 'NO') {
-      doesUserHaveExperience = 0;
+      if (interestingProducts.investmentPreferredPeriod == 'LESS_THAN_A_YEAR') {
+        preferredInvestmentType = 0;
+      } else if (interestingProducts.investmentPreferredPeriod == 'A_YEAR_OR_TWO') {
+        preferredInvestmentType = 1;
+      } else if (interestingProducts.investmentPreferredPeriod == 'MORE_THAN_THREE_YEARS') {
+        preferredInvestmentType = 2;
+      }
+
+      if (interestingProducts.investmentExperience == 'YES') {
+        doesUserHaveExperience = 1;
+      } else if (interestingProducts.investmentExperience == 'NO') {
+        doesUserHaveExperience = 0;
+      }
     }
   }
 
