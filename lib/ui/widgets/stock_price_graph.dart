@@ -75,7 +75,7 @@ class _StockPriceGraphState extends State<StockPriceGraph> {
     }
 
     stockData = prices!.values.map((prices) {
-      return convertStockDataToRelativeFlSpots(prices.reversed.toList());
+      return convertStockDataToRelativeFlSpots(prices.toList());
     }).toList();
   }
 
@@ -83,10 +83,12 @@ class _StockPriceGraphState extends State<StockPriceGraph> {
   List<FlSpot> convertStockDataToRelativeFlSpots(List<StockPrice> stockData) {
     final double startPrice = stockData.first.price;
     final DateTime startDate = stockData.first.date;
+    print(startDate);
     int cnt = 0;
 
     return stockData.map((data) {
-      final double x = -(data.date.difference(startDate).inDays.toDouble());
+      print('data: ${data.date}');
+      final double x = (data.date.difference(startDate).inDays.toDouble());
       final double y = cnt++ == 0 ? 100 : (data.price / startPrice) * 100; // 시작 값을 100%로 설정
       return FlSpot(x, y);
     }).toList();
@@ -149,13 +151,16 @@ class _StockPriceGraphState extends State<StockPriceGraph> {
             showTitles: true,
             getTitlesWidget: (value, meta) {
               DateTime date = stockDataMap.values.first.first.date.add(Duration(days: value.toInt()));
-              return RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  children: [
-                    TextSpan(text: '${DateFormat().addPattern('yyyy년').format(date)}\n', style: textTheme.labelSmall!.copyWith(color: Colors.black),),
-                    TextSpan(text: '${DateFormat().addPattern('MM월 dd일').format(date)}', style: textTheme.labelSmall!.copyWith(color: Colors.black),),
-                  ],
+              return Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    children: [
+                      TextSpan(text: '${DateFormat().addPattern('yyyy년').format(date)}\n', style: textTheme.labelSmall!.copyWith(color: Colors.black),),
+                      TextSpan(text: DateFormat().addPattern('MM월 dd일').format(date), style: textTheme.labelSmall!.copyWith(color: Colors.black),),
+                    ],
+                  ),
                 ),
               );
             },
@@ -163,14 +168,25 @@ class _StockPriceGraphState extends State<StockPriceGraph> {
         ),
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
-            reservedSize: 40,
+            reservedSize: 50,
             interval: (maxY - minY) / 3,
             showTitles: true,
+            getTitlesWidget: (value, meta) {
+              return Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: Text(
+                  '${value.toStringAsFixed(1)}%',
+                  style: textTheme.labelSmall,
+                ),
+              );
+            }
           ),
         ),
       ),
       lineTouchData: LineTouchData(
         touchTooltipData: LineTouchTooltipData(
+          fitInsideHorizontally: true,
+          fitInsideVertically: true,
           getTooltipItems: (touchedSpots) {
             final DateTime startDate = stockDataMap.values.first.first.date;
             bool isFirst = false;
@@ -183,7 +199,7 @@ class _StockPriceGraphState extends State<StockPriceGraph> {
 
               final item = LineTooltipItem(
                 '',
-                TextStyle(),
+                const TextStyle(),
                 children: [
                   if (!isFirst) TextSpan(
                     text: format.format(touchedDate),
