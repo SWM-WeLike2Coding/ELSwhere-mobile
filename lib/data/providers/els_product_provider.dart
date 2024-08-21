@@ -130,12 +130,14 @@ class ELSProductProvider with ChangeNotifier {
 
   Future<void> fetchStockPrices() async { // fetchProduct로 _product가 있어야만 해당 상품에서 조회가 가능
     _isLoading = true;
+    notifyListeners();
     try {
       _stockPrices = await _yFinanceService.fetchStockPrices(_product!.equityTickerSymbols);
     } catch (e) {
       print('주가 가져오기 실패: $e');
     } finally {
       _isLoading = false;
+      notifyListeners();
     }
   }
 }

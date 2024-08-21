@@ -247,7 +247,16 @@ class _StockPriceGraphState extends State<StockPriceGraph> {
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height / 3.5,
                   child: stockData.isEmpty
-                      ? const Center(child: CircularProgressIndicator())
+                      ? const Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.warning_amber),
+                            SizedBox(width: 8),
+                            Text('주가를 불러오는데 실패했습니다.'),
+                          ],
+                        ),
+                      )
                       : LineChart(getMultiLineChartData(prices!)),
                 ),
               ),
