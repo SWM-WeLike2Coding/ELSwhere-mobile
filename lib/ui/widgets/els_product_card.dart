@@ -2,6 +2,8 @@ import 'dart:ui' as ui;
 
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/config.dart';
+import 'package:elswhere/data/models/dtos/response_product_comparison_target_dto.dart';
+import 'package:elswhere/data/models/dtos/response_single_product_dto.dart';
 import 'package:elswhere/data/models/dtos/summarized_product_dto.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/data/providers/els_products_provider.dart';
@@ -18,7 +20,7 @@ class ELSProductCard<T extends SummarizedProductDto> extends StatefulWidget {
   final T product;
   final int index;
   bool isOnSale = false;
-  void Function(bool, int)? checkCompare;
+  void Function(bool, SummarizedProductDto)? checkCompare;
 
   ELSProductCard({
     super.key,
@@ -289,7 +291,7 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
                   setState(() {
                     nowComparing = !nowComparing;
                     if (widget.checkCompare != null) {
-                      widget.checkCompare!(nowComparing, widget.index);
+                      widget.checkCompare!(nowComparing, widget.product);
                     }
                   });
                   productProvider.compareId.add(widget.product.id);

@@ -1,5 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/data/models/dtos/response_single_product_dto.dart';
 import 'package:elswhere/data/models/dtos/summarized_product_dto.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/data/providers/els_products_provider.dart';
@@ -36,7 +37,7 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
   bool applyTendency = false;
   int _tabIndex = 0;
   bool nowComparing = false;
-  int selectedIndex = -1;
+  SummarizedProductDto? selectedProduct;
   int _count = 0;
 
   late final TabController tabController = TabController(
@@ -46,10 +47,10 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
     animationDuration: const Duration(milliseconds: 300),
   );
 
-  void checkComparing(bool isCompare, int index) {
+  void checkComparing(bool isCompare, SummarizedProductDto? product) {
     setState(() {
       nowComparing = isCompare;
-      selectedIndex = index;
+      selectedProduct = product;
     });
   }
   
@@ -77,6 +78,7 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
 
   @override
   Widget build(BuildContext context) {
+    print('비교중?: $nowComparing');
     return Scaffold(
       appBar: _buildAppBar(),
       body: Padding(
@@ -98,7 +100,7 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
                   )
                 ),
               ),
-              ELSProductCard<SummarizedProductDto>(product: Provider.of<ELSOnSaleProductsProvider>(context, listen: false).products[selectedIndex], index: selectedIndex),
+              ELSProductCard<SummarizedProductDto>(product: selectedProduct!, index: 1),
             ],
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -142,7 +144,7 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
                         style: Theme.of(context).textTheme.displaySmall?.copyWith(
                           fontSize: 14,
                           color: AppColors.contentGray,
-                        )
+                        ),
                       ),
                       const SizedBox(width: 8),
                       SizedBox(
@@ -287,7 +289,7 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
         ),
       ),
       onPressed: () {
-        checkComparing(!nowComparing, -1);
+        checkComparing(!nowComparing, null);
         Provider.of<ELSProductProvider>(context, listen: false).compareId.clear();
         Provider.of<ELSProductProvider>(context, listen: false).compareProducts.clear();
       },

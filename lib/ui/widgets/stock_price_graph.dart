@@ -142,7 +142,7 @@ class _StockPriceGraphState extends State<StockPriceGraph> {
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             reservedSize: 35,
-            interval: <double>[10, 31, 63, 125, 365][selectedPeriod],
+            interval: <double>[10.5, 31, 63, 365/3, 365][selectedPeriod],
             showTitles: true,
             getTitlesWidget: (value, meta) {
               DateTime date = stockDataMap.values.first.first.date.add(Duration(days: value.toInt()));
@@ -164,7 +164,7 @@ class _StockPriceGraphState extends State<StockPriceGraph> {
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
             reservedSize: 50,
-            interval: (maxY - minY) / 3,
+            interval: (maxY - minY + padding * 2) / 3,
             showTitles: true,
             getTitlesWidget: (value, meta) {
               return Padding(

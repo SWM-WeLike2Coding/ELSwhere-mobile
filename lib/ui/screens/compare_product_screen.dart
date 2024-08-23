@@ -4,13 +4,6 @@ import 'dart:ui' as ui;
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/config.dart';
 import 'package:elswhere/data/models/dtos/response_single_product_dto.dart';
-import 'package:elswhere/data/models/dtos/response_single_product_dto.dart';
-import 'package:elswhere/data/models/dtos/response_single_product_dto.dart';
-import 'package:elswhere/data/models/dtos/response_single_product_dto.dart';
-import 'package:elswhere/data/models/dtos/response_single_product_dto.dart';
-import 'package:elswhere/data/models/dtos/response_single_product_dto.dart';
-import 'package:elswhere/data/models/dtos/response_single_product_dto.dart';
-import 'package:elswhere/data/models/dtos/response_single_product_dto.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/data/providers/els_products_provider.dart';
 import 'package:flutter/material.dart';
@@ -101,6 +94,8 @@ class CompareProductScreen extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
+                Provider.of<ELSProductProvider>(context, listen: false).compareId.removeLast();
+                Provider.of<ELSProductProvider>(context, listen: false).compareProducts.removeLast();
                 Navigator.pop(context);
               },
             ),
