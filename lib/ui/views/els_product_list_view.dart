@@ -1,3 +1,5 @@
+import 'package:elswhere/data/models/dtos/response_single_product_dto.dart';
+import 'package:elswhere/data/models/dtos/summarized_product_dto.dart';
 import 'package:elswhere/data/providers/els_products_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -6,7 +8,7 @@ import '../widgets/els_product_card.dart';
 class ELSProductListView<T extends ELSProductsProvider> extends StatelessWidget {
   final String type;
   bool nowComparing;
-  void Function(bool, int)? checkCompare;
+  void Function(bool, SummarizedProductDto)? checkCompare;
 
   ELSProductListView({super.key, this.checkCompare, required this.type, required this.nowComparing});
 
@@ -65,7 +67,7 @@ class ELSProductListView<T extends ELSProductsProvider> extends StatelessWidget 
                               product: productsProvider.products[index],
                               index: index,
                               checkCompare: checkCompare,
-                              isOnSale: T is ELSOnSaleProductsProvider,
+                              isOnSale: productsProvider.runtimeType == ELSOnSaleProductsProvider,
                             );
                           },
                         ),
@@ -95,7 +97,7 @@ class ELSProductListView<T extends ELSProductsProvider> extends StatelessWidget 
                           product: productsProvider.similarProducts!.results[index],
                           index: index,
                           checkCompare: checkCompare,
-                          isOnSale: T is ELSOnSaleProductsProvider,
+                          isOnSale: productsProvider.runtimeType == ELSOnSaleProductsProvider,
                         );
                       },
                     );
