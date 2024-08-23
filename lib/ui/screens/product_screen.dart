@@ -50,7 +50,7 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
   void checkComparing(bool isCompare, SummarizedProductDto? product) {
     setState(() {
       nowComparing = isCompare;
-      selectedProduct = product;
+      if (selectedProduct == null || product == null) selectedProduct = product;
     });
   }
   
@@ -91,14 +91,18 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
               _buildTabBar(),
             ],
             if (nowComparing) ...[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  '선택한 상품',
-                  style: textTheme.displayMedium!.copyWith(
-                    fontWeight: FontWeight.w600,
-                  )
-                ),
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      '선택한 상품',
+                      style: textTheme.displayMedium!.copyWith(
+                        fontWeight: FontWeight.w600,
+                      )
+                    ),
+                  ),
+                ],
               ),
               ELSProductCard<SummarizedProductDto>(product: selectedProduct!, index: 1),
             ],
@@ -215,15 +219,9 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
   }
 
   Widget _buildSearchTextField() {
-    return const Row(
-      children: [
-        Expanded(
-          child: Padding(
-            padding: edgeInsetsAll8,
-            child: SearchTextField(),
-          ),
-        ),
-      ],
+    return Padding(
+      padding: edgeInsetsAll8,
+      child: SearchTextField(),
     );
   }
 
