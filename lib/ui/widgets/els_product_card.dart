@@ -276,7 +276,7 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Icon(Icons.add, color: AppColors.contentWhite,),
+                        const Icon(Icons.add, color: AppColors.contentWhite,),
                         Text(
                           '비교',
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -288,12 +288,6 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
                   ),
                 ),
                 onTap: () async {
-                  setState(() {
-                    nowComparing = !nowComparing;
-                    if (widget.checkCompare != null) {
-                      widget.checkCompare!(nowComparing, widget.product);
-                    }
-                  });
                   productProvider.compareId.add(widget.product.id);
                   if (productProvider.compareId.length == 2) {
                     Navigator.push(
@@ -301,6 +295,12 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
                       MaterialPageRoute(builder: (context) => CompareProductScreen()),
                     );
                   } else {
+                    setState(() {
+                      nowComparing = !nowComparing;
+                      if (widget.checkCompare != null) {
+                        widget.checkCompare!(nowComparing, widget.product);
+                      }
+                    });
                     final result = await productsProvider.fetchSimilarProducts(widget.product.id);
                     if (!result) {
                       Fluttertoast.showToast(msg: '제품을 불러오는데 실패했습니다.', toastLength: Toast.LENGTH_SHORT);

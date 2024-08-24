@@ -77,7 +77,7 @@ class ELSProductListView<T extends ELSProductsProvider> extends StatelessWidget 
                 } else {
                   if (productsProvider.isLoading && productsProvider.similarProducts == null) {
                     return const Center(child: CircularProgressIndicator());
-                  } else if (productsProvider.similarProducts!.results.isEmpty) {
+                  } else if (productsProvider.similarProducts == null || productsProvider.similarProducts!.results.isEmpty) {
                     return RefreshIndicator(
                       onRefresh: () async {
                         _refreshList(context);

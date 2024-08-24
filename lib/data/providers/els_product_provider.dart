@@ -118,6 +118,7 @@ class ELSProductProvider with ChangeNotifier {
   Future<void> fetchCompareProduct(int id1, int id2) async {
     _isLoading = true;
     try {
+      _compareProducts.clear();
       _compareProducts.add(await _productService.fetchProduct(id1));
       _compareProducts.add(await _productService.fetchProduct(id2));
     } catch (error) {

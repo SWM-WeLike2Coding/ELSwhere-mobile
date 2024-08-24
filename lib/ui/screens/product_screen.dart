@@ -35,10 +35,8 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
   String type = 'latest';
   String selectedValue = '최신순';
   bool applyTendency = false;
-  int _tabIndex = 0;
   bool nowComparing = false;
   SummarizedProductDto? selectedProduct;
-  int _count = 0;
 
   late final TabController tabController = TabController(
     length: 2,
@@ -209,7 +207,7 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
             onPressed: () {
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => NotificationScreen(),)
+                  MaterialPageRoute(builder: (context) => const NotificationScreen(),)
               );
             },
           ),
@@ -219,7 +217,7 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
   }
 
   Widget _buildSearchTextField() {
-    return Padding(
+    return const Padding(
       padding: edgeInsetsAll8,
       child: SearchTextField(),
     );
@@ -266,30 +264,14 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
                   letterSpacing: -0.7
               ),
             ),
-            // SizedBox(
-            //   height: 20,
-            //   child: FittedBox(
-            //     fit: BoxFit.fitHeight,
-            //     child: CircleAvatar(
-            //       backgroundColor: AppColors.contentWhite,
-            //       child: Text(
-            //         '$_count',
-            //         style: Theme.of(context).textTheme.labelMedium?.copyWith(
-            //           color: Color(0xFF434648),
-            //           fontSize: 30,
-            //           fontWeight: FontWeight.w700,
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // )
           ],
         ),
       ),
       onPressed: () {
+        final provider = Provider.of<ELSProductProvider>(context, listen: false);
         checkComparing(!nowComparing, null);
-        Provider.of<ELSProductProvider>(context, listen: false).compareId.clear();
-        Provider.of<ELSProductProvider>(context, listen: false).compareProducts.clear();
+        provider.compareId.clear();
+        provider.compareProducts.clear();
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color(0xFF434648),

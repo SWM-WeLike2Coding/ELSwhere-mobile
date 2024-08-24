@@ -21,12 +21,13 @@ class CompareProductScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    final provider = Provider.of<ELSProductProvider>(context, listen: false);
     statusBarHeight = MediaQuery.of(context).padding.top;
     height = size.height;
     width = size.width;
 
     return Scaffold(
-      appBar: _buildAppBar(context),
+      appBar: _buildAppBar(context, provider),
       body: Consumer<ELSOnSaleProductsProvider>(
         builder: (context, productsProvider, child) {
           if (productsProvider.isLoading) {
@@ -34,8 +35,6 @@ class CompareProductScreen extends StatelessWidget {
           } else if (!productsProvider.isLoading && productsProvider.products.isEmpty) {
             return const Center(child: Text('상품이 없습니다.'));
           } else {
-            final products = productsProvider.products;
-            final provider = Provider.of<ELSProductProvider>(context, listen: false);
             return FutureBuilder(
               future: provider.fetchCompareProduct(provider.compareId[0], provider.compareId[1]),
               builder: (context, snapshot) {
@@ -83,7 +82,7 @@ class CompareProductScreen extends StatelessWidget {
 
   // ======================================================================================================
 
-  PreferredSize _buildAppBar(BuildContext context) {
+  PreferredSize _buildAppBar(BuildContext context, ELSProductProvider provider) {
     return PreferredSize(
       preferredSize: Size(width, 48+statusBarHeight),
       child: Padding(
@@ -94,8 +93,10 @@ class CompareProductScreen extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
-                Provider.of<ELSProductProvider>(context, listen: false).compareId.removeLast();
-                Provider.of<ELSProductProvider>(context, listen: false).compareProducts.removeLast();
+                provider.compareId.removeLast();
+                provider.compareProducts.clear();
+                print(provider.compareId);
+                print(provider.compareProducts);
                 Navigator.pop(context);
               },
             ),
@@ -248,7 +249,7 @@ class CompareProductScreen extends StatelessWidget {
         Expanded(
           flex: 2,
           child: Text(
-            '연 ${product1.yieldIfConditionsMet.toStringAsPrecision(2)}%',
+            '연 ${product1.yieldIfConditionsMet}%',
             style: textTheme.labelSmall!.copyWith(
               color: Colors.black,
               fontSize: 14,
@@ -260,7 +261,7 @@ class CompareProductScreen extends StatelessWidget {
         Expanded(
           flex: 2,
           child: Text(
-            '연 ${product2.yieldIfConditionsMet.toStringAsPrecision(2)}%',
+            '연 ${product2.yieldIfConditionsMet}%',
             style: textTheme.labelSmall!.copyWith(
               color: Colors.black,
               fontSize: 14,
