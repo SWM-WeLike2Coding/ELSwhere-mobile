@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/data/models/stock_price.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
@@ -184,7 +186,7 @@ class _StockPriceGraphState extends State<StockPriceGraph> {
           fitInsideVertically: true,
           getTooltipItems: (touchedSpots) {
             final DateTime startDate = stockDataMap.values.first.first.date;
-            bool isFirst = false;
+            int stockIndex = 0;
 
             return touchedSpots.map((touchedSpot) {
               final DateTime touchedDate = startDate.add(Duration(days: touchedSpot.x.toInt()));
@@ -196,7 +198,7 @@ class _StockPriceGraphState extends State<StockPriceGraph> {
                 '',
                 const TextStyle(),
                 children: [
-                  if (!isFirst) TextSpan(
+                  if (stockIndex == 0) TextSpan(
                     text: '${format.format(touchedDate)}\n',
                     style: const TextStyle(
                       color: Colors.white,
@@ -205,7 +207,7 @@ class _StockPriceGraphState extends State<StockPriceGraph> {
                     ),
                   ),
                   TextSpan(
-                    text: '$equity: ${touchedSpot.y.toStringAsFixed(2)}%',
+                    text: '$equity:\n${lineBarsData[stockIndex].spots[min(touchedSpot.spotIndex, lineBarsData[stockIndex].spots.length-1)].y.toStringAsFixed(2)}%',
                     style: TextStyle(
                       color: color,
                       fontWeight: FontWeight.bold,
@@ -214,7 +216,7 @@ class _StockPriceGraphState extends State<StockPriceGraph> {
                   ),
                 ],
               );
-              isFirst = true;
+              stockIndex++;
               return item;
             }).toList();
           },
