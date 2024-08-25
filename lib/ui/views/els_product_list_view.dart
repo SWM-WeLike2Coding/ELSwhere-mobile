@@ -82,17 +82,11 @@ class ELSProductListView<T extends ELSProductsProvider> extends StatelessWidget 
                   if (productsProvider.isLoading && productsProvider.similarProducts == null) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (productsProvider.similarProducts == null || productsProvider.similarProducts!.results.isEmpty) {
-                    return RefreshIndicator(
-                      color: AppColors.mainBlue,
-                      onRefresh: () async {
-                        _refreshList(context);
-                      },
-                      child: Stack(
-                        children: [
-                          ListView(),
-                          const Expanded(child: Center(child: Text('상품이 존재하지 않습니다.'))),
-                        ]
-                      ),
+                    return Stack(
+                      children: [
+                        ListView(),
+                        const Expanded(child: Center(child: Text('상품이 존재하지 않습니다.'))),
+                      ]
                     );
                   } else {
                     return ListView.builder(

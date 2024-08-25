@@ -1,6 +1,5 @@
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/ui/screens/attention_setting_screen.dart';
-import 'package:elswhere/ui/screens/product_screen.dart';
 import 'package:elswhere/ui/views/interesting_product_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -61,22 +60,22 @@ class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
           ),
           centerTitle: false,
           actions: [
-            IconButton(
-              icon: const CircleAvatar(
-                backgroundColor: Color(0xFFF5F6F6),
-                child: Icon(
-                  Icons.add,
-                  size: 24,
-                  color: Color(0xFF595E62),
-                ),
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProductScreen()),
-                );
-              },
-            ),
+            // IconButton(
+            //   icon: const CircleAvatar(
+            //     backgroundColor: Color(0xFFF5F6F6),
+            //     child: Icon(
+            //       Icons.add,
+            //       size: 24,
+            //       color: Color(0xFF595E62),
+            //     ),
+            //   ),
+            //   onPressed: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(builder: (context) => ProductScreen()),
+            //     );
+            //   },
+            // ),
             IconButton(
               icon: const CircleAvatar(
                 backgroundColor: Color(0xFFF5F6F6),
