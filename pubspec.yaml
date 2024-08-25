@@ -104,6 +104,7 @@ flutter:
     - assets/icons/flags/1x1/
     - assets/icons/flags/4x3/
     - assets/icons/company/
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

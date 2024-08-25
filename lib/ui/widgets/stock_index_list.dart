@@ -51,13 +51,14 @@ class _StockIndexListItemState extends State<StockIndexList> {
 
                 return Column(
                   children: [
-                    SizedBox(height: 8,),
+                    const SizedBox(height: 8,),
                     Row(
                       children: [
                         SizedBox(
-                          height: 16,
+                          width: 20,
+                          height: 15,
                           child: FittedBox(
-                            fit: BoxFit.fitHeight,
+                            fit: BoxFit.fill,
                             child: SvgPicture.asset(
                               Assets.indicesFlagIconMap[stockIndex]!,
                             ),
@@ -66,7 +67,7 @@ class _StockIndexListItemState extends State<StockIndexList> {
                         const SizedBox(width: 8,),
                         Text(
                           stockIndex,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             height: 1.18,
@@ -101,11 +102,11 @@ class _StockIndexListItemState extends State<StockIndexList> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 8,),
-                    if (index != stockIndexList.length - 1) SizedBox(height: 16,),
+                    const SizedBox(height: 8,),
+                    if (index != stockIndexList.length - 1) const SizedBox(height: 16,),
                   ],
                 );
-              }).toList(),
+              }),
             ],
           );
         }

@@ -34,7 +34,8 @@ class StockIndexCardSwiperState extends State<StockIndexCardSwiper> {
                   return Row(
                     children: [
                       SizedBox(
-                        height: 14,
+                        width: 20,
+                        height: 15,
                         child: FittedBox(
                           fit: BoxFit.fitHeight,
                           child: SvgPicture.asset(

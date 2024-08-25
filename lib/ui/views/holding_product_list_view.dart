@@ -1,3 +1,4 @@
+import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/data/providers/els_products_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,16 +22,15 @@ class HoldingProductListView extends StatelessWidget {
           } else {
             return Consumer<ELSProductsProvider>(
               builder: (context, productsProvider, child) {
-                Widget body;
                 if (productsProvider.isLoading &&
                     productsProvider.products.isEmpty) {
-                  body = const Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
                 else if (productsProvider.products.isEmpty) {
-                  body = const Center(child: Text('상품이 존재하지 않습니다.'));
+                  return const Center(child: Text('상품이 존재하지 않습니다.'));
                 }
                 else {
-                  body = NotificationListener<ScrollNotification>(
+                  return NotificationListener<ScrollNotification>(
                     onNotification: (ScrollNotification scrollInfo) {
                       if (!productsProvider.isLoading &&
                           productsProvider.hasNext &&
@@ -40,23 +40,23 @@ class HoldingProductListView extends StatelessWidget {
                       }
                       return false;
                     },
-                    child: ListView.builder(
-                      itemCount: productsProvider.products.length,
-                      itemBuilder: (context, index) {
-                        return ELSProductCard(
-                          product: productsProvider.products[index],
-                          index: index,
-                        );
+                    child: RefreshIndicator(
+                      color: AppColors.mainBlue,
+                      onRefresh: () async {
+                        productsProvider.refreshProducts(type);
                       },
+                      child: ListView.builder(
+                        itemCount: productsProvider.products.length,
+                        itemBuilder: (context, index) {
+                          return ELSProductCard(
+                            product: productsProvider.products[index],
+                            index: index,
+                          );
+                        },
+                      ),
                     ),
                   );
                 }
-                return RefreshIndicator(
-                  onRefresh: () async {
-                    productsProvider.refreshProducts(type);
-                  },
-                  child: body,
-                );
               },
             );
           }

@@ -18,6 +18,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildTopContent(),
+          _buildAnnouncementList(),
         ],
       ),
     );
@@ -100,5 +101,9 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
         ],
       ),
     );
+  }
+
+  Widget _buildAnnouncementList() {
+    return const Expanded(child: Center(child: Text('공지사항이 없습니다.')));
   }
 }
