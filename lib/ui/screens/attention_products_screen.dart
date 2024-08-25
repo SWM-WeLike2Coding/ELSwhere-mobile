@@ -122,7 +122,7 @@ class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
           width: double.infinity,
           child: Row(
             children: [
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(left: 24, top: 29, bottom: 29),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,9 +151,9 @@ class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
                   ],
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               Padding(
-                padding: EdgeInsets.only(top: 10, right: 10),
+                padding: const EdgeInsets.only(top: 10, right: 10),
                 child: SvgPicture.asset(
                   girlIcon,
                   width: 96,
@@ -168,9 +168,9 @@ class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
   }
 
   Widget _buildMyAttentionProductString() {
-    return Padding(
+    return const Padding(
       padding: EdgeInsets.only(top: 40, left: 24, right: 24, bottom: 16),
-      child: Container(
+      child: SizedBox(
         width: double.infinity,
         child: Text(
           "내 관심 상품",
@@ -186,7 +186,4 @@ class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
     );
   }
 }
-
-
-
 

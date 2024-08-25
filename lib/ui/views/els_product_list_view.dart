@@ -1,3 +1,4 @@
+import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/data/models/dtos/response_single_product_dto.dart';
 import 'package:elswhere/data/models/dtos/summarized_product_dto.dart';
 import 'package:elswhere/data/providers/els_products_provider.dart';
@@ -35,13 +36,15 @@ class ELSProductListView<T extends ELSProductsProvider> extends StatelessWidget 
                     return const Center(child: CircularProgressIndicator());
                   } else if (productsProvider.products.isEmpty) {
                     return RefreshIndicator(
+                      color: AppColors.mainBlue,
                       onRefresh: () async {
                         _refreshList(context);
                       },
-                      child: ListView(
-                        children: const [
-                          Expanded(child: Center(child: Text('상품이 존재하지 않습니다.'))),
-                        ],
+                      child: Stack(
+                        children: [
+                          ListView(),
+                          const Expanded(child: Center(child: Text('상품이 존재하지 않습니다.'))),
+                        ]
                       ),
                     );
                   } else {
@@ -56,6 +59,7 @@ class ELSProductListView<T extends ELSProductsProvider> extends StatelessWidget 
                         return false;
                       },
                       child: RefreshIndicator(
+                        color: AppColors.mainBlue,
                         onRefresh: () async {
                           _refreshList(context);
                         },
@@ -79,13 +83,15 @@ class ELSProductListView<T extends ELSProductsProvider> extends StatelessWidget 
                     return const Center(child: CircularProgressIndicator());
                   } else if (productsProvider.similarProducts == null || productsProvider.similarProducts!.results.isEmpty) {
                     return RefreshIndicator(
+                      color: AppColors.mainBlue,
                       onRefresh: () async {
                         _refreshList(context);
                       },
-                      child: ListView(
-                        children: const [
-                          Expanded(child: Center(child: Text('상품이 존재하지 않습니다.'))),
-                        ],
+                      child: Stack(
+                        children: [
+                          ListView(),
+                          const Expanded(child: Center(child: Text('상품이 존재하지 않습니다.'))),
+                        ]
                       ),
                     );
                   } else {

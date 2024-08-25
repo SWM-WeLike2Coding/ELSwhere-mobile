@@ -1,4 +1,5 @@
 
+import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/data/models/dtos/summarized_product_dto.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +57,7 @@ class InterestingProductListView extends StatelessWidget {
                       return false;
                     },
                     child: RefreshIndicator(
+                      color: AppColors.mainBlue,
                       onRefresh: () async {
                         _refreshList(context);
                       },

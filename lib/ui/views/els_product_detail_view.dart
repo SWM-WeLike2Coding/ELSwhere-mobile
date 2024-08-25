@@ -34,78 +34,75 @@ class ELSProductDetailView extends StatelessWidget {
         return LayoutBuilder(
           builder: (context, constraints) {
             final width = constraints.maxWidth;
+            final height = constraints.maxHeight;
+            final length = (width - 56) / 2;
 
             return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: constraints.maxHeight,
-                ),
-                child: Padding(
-                  padding: edgeInsetsAll24,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildProductTitle(width),
-                      const SizedBox(height: 48),
-                      Row(
-                        // crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          _buildYieldRateCard(),
-                          const SizedBox(width: 8),
-                          _buildEquitiesCard(),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      _buildDateCard(),
-                      const SizedBox(height: 8),
-                      _buildProductTypeCard(),
-                      const SizedBox(height: 8),
-                      _buildRemarksCard(context),
-                      const SizedBox(height: 48),
-                      _buildTitleText('기초자산 주가'),
-                      const SizedBox(height: 24),
-                      StockPriceGraphView(),
-                      // const SizedBox(height: 48),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     _buildTitleText('엘스웨어 분석 결과'),
-                      //     SizedBox(
-                      //       width: 24,
-                      //       height: 24,
-                      //       child: GestureDetector(
-                      //         onTap: () {},
-                      //         child: CircleAvatar(
-                      //           backgroundColor: const Color(0xFFE6E7E8),
-                      //           child: Text(
-                      //             '?',
-                      //             style: textTheme.labelSmall!.copyWith(
-                      //               fontWeight: FontWeight.w700,
-                      //             )
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     )
-                      //   ],
-                      // ),
-                      // const SizedBox(height: 32),
-                      // _buildRepaymentRatesList(),
-                      const SizedBox(height: 48),
-                      _buildTitleText('조기•만기상환 평가 일정'),
-                      const SizedBox(height: 32),
-                      _buildEvaluationDatesList(),
-                      const SizedBox(height: 48),
-                      const Divider(height: 1, color: const Color(0xFFE6E7E8),),
-                      const SizedBox(height: 24),
-                      _buildRedirectText('간이투자설명서', product!.summaryInvestmentProspectusLink),
-                      _buildRedirectText('홈페이지', product!.link),
-                      const SizedBox(height: 24),
-                      _buildNoticeText(product!.issuer),
-                      const SizedBox(height: 8),
-                    ],
-                  )
-                ),
+              child: Padding(
+                padding: edgeInsetsAll24,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildProductTitle(width),
+                    const SizedBox(height: 48),
+                    Row(
+                      // crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        _buildYieldRateCard((width - 56) / 2),
+                        const SizedBox(width: 8),
+                        _buildEquitiesCard((width - 56) / 2),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    _buildDateCard(),
+                    const SizedBox(height: 8),
+                    _buildProductTypeCard(),
+                    const SizedBox(height: 8),
+                    _buildRemarksCard(context),
+                    const SizedBox(height: 48),
+                    _buildTitleText('기초자산 주가'),
+                    const SizedBox(height: 24),
+                    StockPriceGraphView(),
+                    // const SizedBox(height: 48),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     _buildTitleText('엘스웨어 분석 결과'),
+                    //     SizedBox(
+                    //       width: 24,
+                    //       height: 24,
+                    //       child: GestureDetector(
+                    //         onTap: () {},
+                    //         child: CircleAvatar(
+                    //           backgroundColor: const Color(0xFFE6E7E8),
+                    //           child: Text(
+                    //             '?',
+                    //             style: textTheme.labelSmall!.copyWith(
+                    //               fontWeight: FontWeight.w700,
+                    //             )
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     )
+                    //   ],
+                    // ),
+                    // const SizedBox(height: 32),
+                    // _buildRepaymentRatesList(),
+                    const SizedBox(height: 48),
+                    _buildTitleText('조기•만기상환 평가 일정'),
+                    const SizedBox(height: 32),
+                    _buildEvaluationDatesList(),
+                    const SizedBox(height: 48),
+                    const Divider(height: 1, color: const Color(0xFFE6E7E8),),
+                    const SizedBox(height: 24),
+                    _buildRedirectText('간이투자설명서', product!.summaryInvestmentProspectusLink),
+                    _buildRedirectText('홈페이지', product!.link),
+                    const SizedBox(height: 24),
+                    _buildNoticeText(product!.issuer),
+                    const SizedBox(height: 8),
+                  ],
+                )
               ),
             );
           },
@@ -210,104 +207,106 @@ class ELSProductDetailView extends StatelessWidget {
     );
   }
 
-  Widget _buildYieldRateCard() {
-    return Expanded(
-      child: Container(
-        padding: edgeInsetsAll16,
-        decoration: BoxDecoration(
-          color: AppColors.contentWhite,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              children: [
-                Text(
-                    '수익률',
-                    style: textTheme.labelMedium?.copyWith(
-                      color: AppColors.contentGray,
-                    )
-                ),
-                const SizedBox(height: 18),
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                    '연 최대 ${product!.yieldIfConditionsMet}%',
-                    style: textTheme.labelLarge?.copyWith(
-                      fontSize: 20,
-                      color: AppColors.contentRed,
-                    )
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  '조건 충족시',
-                  style: textTheme.labelSmall?.copyWith(
-                    fontSize: 14,
+  Widget _buildYieldRateCard(double length) {
+    final equities = product!.equities.split('/');
+    return Container(
+      width: length,
+      height: 115 + equities.length * 20,
+      padding: edgeInsetsAll16,
+      decoration: BoxDecoration(
+        color: AppColors.contentWhite,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            children: [
+              Text(
+                  '수익률',
+                  style: textTheme.labelMedium?.copyWith(
                     color: AppColors.contentGray,
-                  ),
+                  )
+              ),
+              const SizedBox(height: 18),
+            ],
+          ),
+          const Spacer(),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                  '연 ${product!.yieldIfConditionsMet}%',
+                  style: textTheme.labelLarge?.copyWith(
+                    fontSize: 24,
+                    color: AppColors.contentRed,
+                  )
+              ),
+              const SizedBox(height: 4),
+              Text(
+                '조건 충족시',
+                style: textTheme.labelSmall?.copyWith(
+                  fontSize: 14,
+                  color: AppColors.contentGray,
                 ),
-              ],
-            )
-          ],
-        ),
+              ),
+            ],
+          )
+        ],
       ),
     );
   }
 
-  Widget _buildEquitiesCard() {
-    return Expanded(
-      child: Container(
-        padding: edgeInsetsAll16,
-        decoration: BoxDecoration(
-          color: AppColors.contentWhite,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              children: [
-                Text(
-                    '기초자산',
-                    style: textTheme.labelMedium?.copyWith(
-                      color: AppColors.contentGray,
-                    )
-                ),
-                const SizedBox(height: 18),
-              ],
-            ),
-            LayoutBuilder(
-              builder: (context, constraints) {
-                final equities = product!.equities.split('/');
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: equities.map((e) {
-                    final String equity = e.trim();
+  Widget _buildEquitiesCard(double length) {
+    final equities = product!.equities.split('/');
+    return Container(
+      width: length,
+      height: 115 + equities.length * 20,
+      padding: edgeInsetsAll16,
+      decoration: BoxDecoration(
+        color: AppColors.contentWhite,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            children: [
+              Text(
+                  '기초자산',
+                  style: textTheme.labelMedium?.copyWith(
+                    color: AppColors.contentGray,
+                  )
+              ),
+              const SizedBox(height: 18),
+            ],
+          ),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: equities.map((e) {
+                  final String equity = e.trim();
 
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        _buildText(
-                          text: equity,
-                          height: 20,
-                          maxWidth: constraints.maxWidth,
-                          style: textTheme.labelMedium!.copyWith(),
-                        ),
-                        if (e != product!.equities.split('/').last) const SizedBox(height: 8,),
-                      ],
-                    );
-                  }).toList(),
-                );
-              }
-            )
-          ],
-        ),
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _buildText(
+                        text: equity,
+                        height: 20,
+                        maxWidth: constraints.maxWidth,
+                        style: textTheme.labelMedium!.copyWith(),
+                      ),
+                      if (e != product!.equities.split('/').last) const SizedBox(height: 8,),
+                    ],
+                  );
+                }).toList(),
+              );
+            }
+          )
+        ],
       ),
     );
   }
