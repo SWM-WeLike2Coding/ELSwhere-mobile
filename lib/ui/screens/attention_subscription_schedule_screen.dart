@@ -89,6 +89,7 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
         Map<DateTime, List<ElsProductForScheduleDto>> _scheduleMap = { for (var key in sortedDates) key : tempScheduleMap[key]! };
 
         if (_selectedDay != null) {
+          print(_selectedDay);
           DateTime selectedDayOnlyDate = DateTime(_selectedDay!.year, _selectedDay!.month, _selectedDay!.day);
           if (_scheduleMap.containsKey(selectedDayOnlyDate)) {
             filteredScheduleMap[selectedDayOnlyDate] = _scheduleMap[selectedDayOnlyDate]!;
@@ -141,7 +142,10 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
               children: [
                 _buildTwoGreyCards(context, _scheduleMap),
                 _buildScheduleCalendar(_scheduleMap),
-                _buildSchedules(finalScheduleMap),
+                if (_selectedDay == null)
+                  _buildSchedules(finalScheduleMap, false),
+                if (_selectedDay != null)
+                  _buildSchedules(finalScheduleMap, true),
               ],
             ),
           ),
@@ -227,7 +231,10 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
     for (int i = 0; i < dates.length; i ++) {
       var tempList = scheduleMap[dates[i]];
       for (int j = 0; j < tempList!.length; j ++) {
-        if (tempList[j].isHolding == false && isTodayOrFuture(tempList[j].subscriptionEndDate)) {
+        if (!isTodayOrFuture(tempList[j].subscriptionEndDate)) {
+          continue;
+        }
+        if (tempList[j].isHolding == false) {
           if (subscriptionEndSchedule[dates[i]] == null) {
             subscriptionEndSchedule[dates[i]] = [];
           }
@@ -379,6 +386,37 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
         locale: 'ko_KR',
         calendarBuilders: CalendarBuilders(
           // Builder for all days to add a default marker
+          todayBuilder: (context, date, _) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 4,
+                  height: 4,
+                  decoration: isImportantDay(date, importantDays)
+                      ? BoxDecoration(
+                    color: Colors.red, // Ellipse color
+                    shape: BoxShape.circle,
+                  )
+                      : BoxDecoration(
+                    color: Colors.white, // Ellipse color
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                SizedBox(height: 3.5,),
+                Text(
+                  '${date.day}',
+                  style: TextStyle(
+                    color: Color(0xFF1C6BF9),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    height: 1.18,
+                    letterSpacing: -0.28,
+                  ),
+                ),
+              ],
+            );
+          },
           defaultBuilder: (context, date, _) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -409,12 +447,13 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
     );
   }
 
-  Widget _buildSchedules(Map<DateTime, List<ElsProductForScheduleDto>> scheduleMap) {
+  Widget _buildSchedules(Map<DateTime, List<ElsProductForScheduleDto>> scheduleMap, bool isDaySelected) {
     DateTime now = DateTime.now();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: scheduleMap.entries.where((entry) => isTodayOrFuture(entry.key)).map((entry){
+      // children: scheduleMap.entries.where((entry) => isTodayOrFuture(entry.key)).map((entry){
+      children: scheduleMap.entries.map((entry){
         DateTime date = entry.key;
         List<ElsProductForScheduleDto> wholeProducts = entry.value;
         List<ElsProductForScheduleDto> interestedProducts = [];
@@ -432,6 +471,10 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
             holdingProducts.add(wholeProducts[i]);
             isThereHolding = true;
           }
+        }
+
+        if (!isDaySelected && !isTodayOrFuture(date)) {
+          return SizedBox.shrink();
         }
 
 
@@ -473,7 +516,6 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
                   return ELSProductCard(product: convertProductForScheduleToSummarized(product), index: index);
                 }).toList(),
               ),
-
           ],
         );
       }).toList(),
