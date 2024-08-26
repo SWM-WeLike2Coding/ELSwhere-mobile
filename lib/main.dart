@@ -15,8 +15,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() async {
   await initApp();
@@ -26,6 +29,9 @@ void main() async {
 Future<void> initApp() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   await dotenv.load(fileName: ".env");
   baseUrl = dotenv.env['ELS_BASE_URL']!;
@@ -33,8 +39,14 @@ Future<void> initApp() async {
 
   storage = const FlutterSecureStorage();
   // await storage.deleteAll();
-  accessToken = await storage.read(key: 'ACCESS_TOKEN') ?? '';
-  refreshToken = await storage.read(key: 'REFRESH_TOKEN') ?? '';
+  try {
+    accessToken = await storage.read(key: 'ACCESS_TOKEN') ?? '';
+    refreshToken = await storage.read(key: 'REFRESH_TOKEN') ?? '';
+  } catch (e) {
+    await storage.deleteAll();
+    accessToken = refreshToken = '';
+    Fluttertoast.showToast(msg: '데이터가 손상되었습니다. 다시 로그인 해주세요.', toastLength: Toast.LENGTH_SHORT);
+  }
   print(accessToken);
   print(refreshToken);
 }
