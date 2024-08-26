@@ -15,74 +15,86 @@ class CompareProductScreen extends StatelessWidget {
   late final double statusBarHeight;
   late final double height;
   late final double width;
+  late final ELSProductProvider? provider;
 
   CompareProductScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    final provider = Provider.of<ELSProductProvider>(context, listen: false);
+    provider = Provider.of<ELSProductProvider>(context, listen: false);
     statusBarHeight = MediaQuery.of(context).padding.top;
     height = size.height;
     width = size.width;
 
-    return Scaffold(
-      appBar: _buildAppBar(context, provider),
-      body: Consumer<ELSOnSaleProductsProvider>(
-        builder: (context, productsProvider, child) {
-          if (productsProvider.isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (!productsProvider.isLoading && productsProvider.products.isEmpty) {
-            return const Center(child: Text('상품이 없습니다.'));
-          } else {
-            return FutureBuilder(
-              future: provider.fetchCompareProduct(provider.compareId[0], provider.compareId[1]),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return const Center(child: Text('An error occurred!'));
-                } else {
-                  final compareProducts = provider.compareProducts;
-                  return Column(
-                    children: [
-                      const Divider(height: 1, color: const Color(0xFFF5F6F6)),
-                      Padding(
-                        padding: edgeInsetsAll24,
-                        child: Column(
-                          children: [
-                            _buildProductName(compareProducts[0], compareProducts[1]),
-                            const SizedBox(height: 32,),
-                            _buildProductIssuer(compareProducts[0], compareProducts[1]),
-                            const SizedBox(height: 32,),
-                            _buildProductYield(compareProducts[0], compareProducts[1]),
-                            const SizedBox(height: 32,),
-                            _buildProductEquities(compareProducts[0], compareProducts[1]),
-                            const SizedBox(height: 32,),
-                            _buildProductType(compareProducts[0], compareProducts[1]),
-                            const SizedBox(height: 32,),
-                            _buildProductKnockin(compareProducts[0], compareProducts[1]),
-                            const SizedBox(height: 32,),
-                            _buildProductLossRate(compareProducts[0], compareProducts[1]),
-                            const SizedBox(height: 32,),
-                            _buildProductSubscriptionEndDate(compareProducts[0], compareProducts[1]),
-                          ],
-                        ),
-                      ),
-                    ],
-                  );
-                }
-              }
-            );
+    return PopScope(
+      canPop: true,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) {
+          print('팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝');
+          if (provider != null) {
+            provider!.compareId.removeLast();
+            provider!.compareProducts.clear();
           }
-        },
-      )
+        }
+      },
+      child: Scaffold(
+        appBar: _buildAppBar(context),
+        body: Consumer<ELSOnSaleProductsProvider>(
+          builder: (context, productsProvider, child) {
+            if (productsProvider.isLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (!productsProvider.isLoading && productsProvider.products.isEmpty) {
+              return const Center(child: Text('상품이 없습니다.'));
+            } else {
+              return FutureBuilder(
+                future: provider!.fetchCompareProduct(provider!.compareId[0], provider!.compareId[1]),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return const Center(child: Text('An error occurred!'));
+                  } else {
+                    final compareProducts = provider!.compareProducts;
+                    return Column(
+                      children: [
+                        const Divider(height: 1, color: const Color(0xFFF5F6F6)),
+                        Padding(
+                          padding: edgeInsetsAll24,
+                          child: Column(
+                            children: [
+                              _buildProductName(compareProducts[0], compareProducts[1]),
+                              const SizedBox(height: 32,),
+                              _buildProductIssuer(compareProducts[0], compareProducts[1]),
+                              const SizedBox(height: 32,),
+                              _buildProductYield(compareProducts[0], compareProducts[1]),
+                              const SizedBox(height: 32,),
+                              _buildProductEquities(compareProducts[0], compareProducts[1]),
+                              const SizedBox(height: 32,),
+                              _buildProductType(compareProducts[0], compareProducts[1]),
+                              const SizedBox(height: 32,),
+                              _buildProductKnockin(compareProducts[0], compareProducts[1]),
+                              const SizedBox(height: 32,),
+                              _buildProductLossRate(compareProducts[0], compareProducts[1]),
+                              const SizedBox(height: 32,),
+                              _buildProductSubscriptionEndDate(compareProducts[0], compareProducts[1]),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                }
+              );
+            }
+          },
+        )
+      ),
     );
   }
 
   // ======================================================================================================
-
-  PreferredSize _buildAppBar(BuildContext context, ELSProductProvider provider) {
+  PreferredSize _buildAppBar(BuildContext context) {
     return PreferredSize(
       preferredSize: Size(width, 48+statusBarHeight),
       child: Padding(
@@ -93,10 +105,10 @@ class CompareProductScreen extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
-                provider.compareId.removeLast();
-                provider.compareProducts.clear();
-                print(provider.compareId);
-                print(provider.compareProducts);
+                provider!.compareId.removeLast();
+                provider!.compareProducts.clear();
+                print(provider!.compareId);
+                print(provider!.compareProducts);
                 Navigator.pop(context);
               },
             ),
