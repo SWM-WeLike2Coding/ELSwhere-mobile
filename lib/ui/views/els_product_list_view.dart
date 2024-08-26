@@ -43,7 +43,7 @@ class ELSProductListView<T extends ELSProductsProvider> extends StatelessWidget 
                       child: Stack(
                         children: [
                           ListView(),
-                          const Expanded(child: Center(child: Text('상품이 존재하지 않습니다.'))),
+                          const Center(child: Text('상품이 존재하지 않습니다.')),
                         ]
                       ),
                     );
@@ -82,12 +82,7 @@ class ELSProductListView<T extends ELSProductsProvider> extends StatelessWidget 
                   if (productsProvider.isLoading && productsProvider.similarProducts == null) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (productsProvider.similarProducts == null || productsProvider.similarProducts!.results.isEmpty) {
-                    return Stack(
-                      children: [
-                        ListView(),
-                        const Expanded(child: Center(child: Text('상품이 존재하지 않습니다.'))),
-                      ]
-                    );
+                    return const Center(child: Text('상품이 존재하지 않습니다.'));
                   } else {
                     return ListView.builder(
                       itemCount: productsProvider.similarProducts!.results.length,
