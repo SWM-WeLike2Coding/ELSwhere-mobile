@@ -167,21 +167,27 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
               ],
             ),
             Expanded(
-              child: TabBarView(
-                controller: tabController,
-                children: [
-                  Column(
+              child: nowComparing
+                ? Column(
                     children: [
                       ELSProductListView<ELSOnSaleProductsProvider>(type: type, nowComparing: nowComparing, checkCompare: checkComparing,),
                     ],
-                  ),
-                  Column(
+                  )
+                : TabBarView(
+                    controller: tabController,
                     children: [
-                      ELSProductListView<ELSEndSaleProductsProvider>(type: type, nowComparing: nowComparing, checkCompare: checkComparing,),
+                      Column(
+                        children: [
+                          ELSProductListView<ELSOnSaleProductsProvider>(type: type, nowComparing: nowComparing, checkCompare: checkComparing,),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          ELSProductListView<ELSEndSaleProductsProvider>(type: type, nowComparing: nowComparing, checkCompare: checkComparing,),
+                        ],
+                      ),
                     ],
                   ),
-                ],
-              ),
             ),
           ],
         ),
