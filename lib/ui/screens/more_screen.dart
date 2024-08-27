@@ -3,6 +3,7 @@
 import 'dart:ui';
 
 import 'package:dio/dio.dart';
+import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/data/services/user_service.dart';
 import 'package:elswhere/ui/screens/announcement_screen.dart';
 import 'package:elswhere/ui/screens/attention_setting_screen.dart';
@@ -33,7 +34,7 @@ class _MoreScreenState extends State<MoreScreen> {
   bool _isDdayAlarmOn = false;
 
   void _showSaveConfirmation(BuildContext context) {
-    final snackBar = SnackBar(
+    const snackBar = SnackBar(
       content: Text('저장되었습니다'),
       duration: Duration(seconds: 2),
       behavior: SnackBarBehavior.floating,
@@ -49,10 +50,10 @@ class _MoreScreenState extends State<MoreScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('닉네임 수정'),
+          title: const Text('닉네임 수정'),
           content: TextField(
             controller: _nicknameController,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: '새 닉네임 입력',
             ),
           ),
@@ -61,7 +62,7 @@ class _MoreScreenState extends State<MoreScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text(
+              child: const Text(
                 '취소',
                 style: TextStyle(
                   color: Colors.black,
@@ -80,7 +81,7 @@ class _MoreScreenState extends State<MoreScreen> {
                 Navigator.of(context).pop();
                 _showSaveConfirmation(context);
               },
-              child: Text(
+              child: const Text(
                 '저장',
                 style: TextStyle(
                   color: Colors.black,
@@ -104,13 +105,13 @@ class _MoreScreenState extends State<MoreScreen> {
           child: Container(
             width: MediaQuery.of(context).size.width * 1,
             height: MediaQuery.of(context).size.height * 0.165,
-            padding: EdgeInsets.all(16),
+            padding: edgeInsetsAll16,
             alignment: Alignment.center,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   '로그아웃 하시겠어요?',
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
@@ -118,7 +119,7 @@ class _MoreScreenState extends State<MoreScreen> {
                     color: Color(0xFF000000),
                   ),
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 Row(
                   children: [
                     Expanded(
@@ -134,7 +135,7 @@ class _MoreScreenState extends State<MoreScreen> {
                           onPressed: () {
                             Navigator.of(context).pop(); // 다이얼로그 닫기
                           },
-                          child: Text(
+                          child: const Text(
                             '취소',
                             style: TextStyle(
                               fontSize: 16,
@@ -145,13 +146,13 @@ class _MoreScreenState extends State<MoreScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 8), // 버튼 사이 간격
+                    const SizedBox(width: 8), // 버튼 사이 간격
                     Expanded(
                       child: SizedBox(
                         height: 48, // 버튼 높이 조정 가능
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFF1C6BF9),
+                            backgroundColor: const Color(0xFF1C6BF9),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
@@ -164,10 +165,10 @@ class _MoreScreenState extends State<MoreScreen> {
                             if (result) {
                               Navigator.pushAndRemoveUntil(
                                 context,
-                                MaterialPageRoute(builder: (context) => LoginScreen()), (route) => false,);
+                                MaterialPageRoute(builder: (context) => const LoginScreen()), (route) => false,);
                             }
                           },
-                          child: Text(
+                          child: const Text(
                             '로그아웃',
                             style: TextStyle(
                               fontSize: 16,
@@ -196,7 +197,7 @@ class _MoreScreenState extends State<MoreScreen> {
   @override
   Widget build(BuildContext context) {
     const String manIcon = "assets/icons/icon_man.svg";
-    final String googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLScZr3KWFVD82FepPi2KPUsEF3sKV2YApyTMv75ku35-KvsZ1A/viewform?usp=sf_link";
+    const String googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLScZr3KWFVD82FepPi2KPUsEF3sKV2YApyTMv75ku35-KvsZ1A/viewform?usp=sf_link";
 
 
     return Scaffold(
@@ -207,9 +208,9 @@ class _MoreScreenState extends State<MoreScreen> {
             children: [
               Container(
                 height: 70,
-                padding: EdgeInsets.only(left: 24.0), // 왼쪽 패딩 추가
+                padding: const EdgeInsets.only(left: 24.0), // 왼쪽 패딩 추가
                 alignment: Alignment.centerLeft, // 왼쪽 정렬
-                child: Text(
+                child: const Text(
                   '더보기',
                   style: TextStyle(
                     fontSize: 18,
@@ -219,23 +220,23 @@ class _MoreScreenState extends State<MoreScreen> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 24, right: 24),
+                padding: const EdgeInsets.only(left: 24, right: 24),
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: Color(0xFFE6E7E8),
+                      color: const Color(0xFFE6E7E8),
                       width: 1.0,
                     )
                   ),
                   height: 70,
                   child: Row(
                     children: [
-                      SizedBox(width: 16,),
+                      const SizedBox(width: 16,),
                       Container(
                         width: 36,
                         height: 36,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Color(0xFFD1E0FB),
                           shape: BoxShape.circle,
                         ),
@@ -249,7 +250,7 @@ class _MoreScreenState extends State<MoreScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 16,),
+                      const SizedBox(width: 16,),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
@@ -262,7 +263,7 @@ class _MoreScreenState extends State<MoreScreen> {
 
                               return Text(
                                 "${difference.inDays + 1}일동안 함께한",
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
                                   color: Color(0xFF838A8E),
@@ -274,7 +275,7 @@ class _MoreScreenState extends State<MoreScreen> {
                             builder: (context, userInfoProvider, child) {
                               return Text(
                                 userInfoProvider.getNickname() + '님', // 여기에서 닉네임을 받아옵니다.
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 16,
                                   color: Color(0xFF000000),
@@ -284,9 +285,9 @@ class _MoreScreenState extends State<MoreScreen> {
                           )
                         ],
                       ),
-                      Spacer(),
+                      const Spacer(),
                       IconButton(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.arrow_forward_ios,
                           size: 18,
                           color: Color(0xFFACB2B5),
@@ -295,12 +296,12 @@ class _MoreScreenState extends State<MoreScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ChangeNicknameScreen(),
+                              builder: (context) => const ChangeNicknameScreen(),
                             ),
                           );
                         },
                       ),
-                      SizedBox(width: 8,),
+                      const SizedBox(width: 8,),
                     ],
                   ),
                 ),
@@ -313,11 +314,11 @@ class _MoreScreenState extends State<MoreScreen> {
                   Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(left: 16),
-                        child: Container(
+                        padding: const EdgeInsets.only(left: 16),
+                        child: SizedBox(
                           height: 60,
                           child: ListTile(
-                            title: Text(
+                            title: const Text(
                               "공지사항 알림",
                               style: TextStyle(
                                 fontSize: 16,
@@ -325,7 +326,7 @@ class _MoreScreenState extends State<MoreScreen> {
                               ),
                             ),
                             trailing: Padding(
-                              padding: EdgeInsets.only(right: 8),
+                              padding: const EdgeInsets.only(right: 8),
                               child: SizedBox(
                                 width: 38,
                                 height: 22,
@@ -338,11 +339,11 @@ class _MoreScreenState extends State<MoreScreen> {
                                         _isNoticeAlarmOn = value;
                                       });
                                     },
-                                    activeColor: Color(0xFFFFFFFF),
-                                    inactiveThumbColor: Color(0xFFFFFFFF),
-                                    inactiveTrackColor: Color(0xFFE6E7E8),
-                                    activeTrackColor: Color(0xFF1C6BF9),
-                                    trackOutlineColor: WidgetStatePropertyAll(Color(0xFFE6E7E8)),
+                                    activeColor: const Color(0xFFFFFFFF),
+                                    inactiveThumbColor: const Color(0xFFFFFFFF),
+                                    inactiveTrackColor: const Color(0xFFE6E7E8),
+                                    activeTrackColor: const Color(0xFF1C6BF9),
+                                    trackOutlineColor: const WidgetStatePropertyAll(Color(0xFFE6E7E8)),
                                   ),
                                 ),
                               ),
@@ -355,11 +356,11 @@ class _MoreScreenState extends State<MoreScreen> {
                   Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(left: 16),
-                        child: Container(
+                        padding: const EdgeInsets.only(left: 16),
+                        child: SizedBox(
                           height: 60,
                           child: ListTile(
-                            title: Text(
+                            title: const Text(
                               "내가 가입한 상품 상환 알림",
                               style: TextStyle(
                                 fontSize: 16,
@@ -367,7 +368,7 @@ class _MoreScreenState extends State<MoreScreen> {
                               ),
                             ),
                             trailing: Padding(
-                              padding: EdgeInsets.only(right: 8),
+                              padding: const EdgeInsets.only(right: 8),
                               child: SizedBox(
                                 width: 38,
                                 height: 22,
@@ -380,11 +381,11 @@ class _MoreScreenState extends State<MoreScreen> {
                                         _isRedemptionAlarmOn = value;
                                       });
                                     },
-                                    activeColor: Color(0xFFFFFFFF),
-                                    inactiveThumbColor: Color(0xFFFFFFFF),
-                                    inactiveTrackColor: Color(0xFFE6E7E8),
-                                    activeTrackColor: Color(0xFF1C6BF9),
-                                    trackOutlineColor: WidgetStatePropertyAll(Color(0xFFE6E7E8)),
+                                    activeColor: const Color(0xFFFFFFFF),
+                                    inactiveThumbColor: const Color(0xFFFFFFFF),
+                                    inactiveTrackColor: const Color(0xFFE6E7E8),
+                                    activeTrackColor: const Color(0xFF1C6BF9),
+                                    trackOutlineColor: const WidgetStatePropertyAll(Color(0xFFE6E7E8)),
                                   ),
                                 ),
                               ),
@@ -397,11 +398,11 @@ class _MoreScreenState extends State<MoreScreen> {
                   Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(left: 16),
-                        child: Container(
+                        padding: const EdgeInsets.only(left: 16),
+                        child: SizedBox(
                           height: 60,
                           child: ListTile(
-                            title: Text(
+                            title: const Text(
                               "관심 상품 청약 마감 D-1 알림",
                               style: TextStyle(
                                 fontSize: 16,
@@ -409,7 +410,7 @@ class _MoreScreenState extends State<MoreScreen> {
                               ),
                             ),
                             trailing: Padding(
-                              padding: EdgeInsets.only(right: 8),
+                              padding: const EdgeInsets.only(right: 8),
                               child: SizedBox(
                                 width: 38,
                                 height: 22,
@@ -422,11 +423,11 @@ class _MoreScreenState extends State<MoreScreen> {
                                         _isDdayAlarmOn = value;
                                       });
                                     },
-                                    activeColor: Color(0xFFFFFFFF),
-                                    inactiveThumbColor: Color(0xFFFFFFFF),
-                                    inactiveTrackColor: Color(0xFFE6E7E8),
-                                    activeTrackColor: Color(0xFF1C6BF9),
-                                    trackOutlineColor: WidgetStatePropertyAll(Color(0xFFE6E7E8)),
+                                    activeColor: const Color(0xFFFFFFFF),
+                                    inactiveThumbColor: const Color(0xFFFFFFFF),
+                                    inactiveTrackColor: const Color(0xFFE6E7E8),
+                                    activeTrackColor: const Color(0xFF1C6BF9),
+                                    trackOutlineColor: const WidgetStatePropertyAll(Color(0xFFE6E7E8)),
                                   ),
                                 ),
                               ),
@@ -444,7 +445,7 @@ class _MoreScreenState extends State<MoreScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => AttentionSettingScreen(),
+                            builder: (context) => const AttentionSettingScreen(),
                           )
                       );
                     }
@@ -458,7 +459,7 @@ class _MoreScreenState extends State<MoreScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => AnnouncementScreen(),
+                            builder: (context) => const AnnouncementScreen(),
                           ),
                         );
                       }
@@ -470,7 +471,7 @@ class _MoreScreenState extends State<MoreScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => InvestmentGuideScreen(),
+                            builder: (context) => const InvestmentGuideScreen(),
                           ),
                         );
                       }
@@ -495,7 +496,7 @@ class _MoreScreenState extends State<MoreScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ServiceAgreementScreen(typeIndex: 0,),
+                              builder: (context) => const ServiceAgreementScreen(typeIndex: 0,),
                             )
                         );
                       }
@@ -507,7 +508,7 @@ class _MoreScreenState extends State<MoreScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ServiceAgreementScreen(typeIndex: 1,),
+                              builder: (context) => const ServiceAgreementScreen(typeIndex: 1,),
                             )
                         );
                       }
@@ -526,7 +527,7 @@ class _MoreScreenState extends State<MoreScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => MemberQuitScreen(),
+                            builder: (context) => const MemberQuitScreen(),
                           )
                         );
                       },
@@ -546,13 +547,13 @@ class _MoreScreenState extends State<MoreScreen> {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.only(top: 24, left: 16),
-          child: Container(
+          padding: const EdgeInsets.only(top: 24, left: 16),
+          child: SizedBox(
             height: 60,
             child: ListTile(
               title: Text(
                 title,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: Color(0xFF131415),
@@ -573,11 +574,11 @@ class _MoreScreenState extends State<MoreScreen> {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.only(left: 16),
+          padding: const EdgeInsets.only(left: 16),
           child: InkWell(
             onTap: onTap,
             splashColor: Colors.grey.withOpacity(0.1),
-            child: Container(
+            child: SizedBox(
               height: 60,
               child: ListTile(
                 title: Text(
@@ -585,10 +586,10 @@ class _MoreScreenState extends State<MoreScreen> {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    color: title == "회원탈퇴" ? Color(0xFFEE5648) : Color(0xFF3B3D3F),
+                    color: title == "회원탈퇴" ? const Color(0xFFEE5648) : const Color(0xFF3B3D3F),
                   ),
                 ),
-                trailing: Padding(
+                trailing: const Padding(
                   padding: EdgeInsets.only(right: 8),
                   child: Icon(Icons.arrow_forward_ios, size: 16)),
               ),

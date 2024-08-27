@@ -31,7 +31,6 @@ class CompareProductScreen extends StatelessWidget {
       canPop: true,
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) {
-          print('팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝팝');
           if (provider != null) {
             provider!.compareId.removeLast();
             provider!.compareProducts.clear();
@@ -105,11 +104,9 @@ class CompareProductScreen extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
-                provider!.compareId.removeLast();
-                provider!.compareProducts.clear();
+                Navigator.pop(context);
                 print(provider!.compareId);
                 print(provider!.compareProducts);
-                Navigator.pop(context);
               },
             ),
             const SizedBox(width: 8),
