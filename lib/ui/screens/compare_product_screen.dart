@@ -384,7 +384,7 @@ class CompareProductScreen extends StatelessWidget {
         Expanded(
           flex: 2,
           child: Text(
-            '${productType[product1.type]}형\n${product1.productInfo}',
+            '${productType[product1.type]}형\n${product1.productInfo ?? ''}',
             style: textTheme.labelSmall!.copyWith(
               color: Colors.black,
               fontSize: 14,
@@ -396,7 +396,7 @@ class CompareProductScreen extends StatelessWidget {
         Expanded(
           flex: 2,
           child: Text(
-            '${productType[product2.type]}형\n${product2.productInfo}',
+            '${productType[product2.type]}형\n${product2.productInfo ?? ''}',
             style: textTheme.labelSmall!.copyWith(
               color: Colors.black,
               fontSize: 14,
