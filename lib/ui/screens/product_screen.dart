@@ -137,33 +137,33 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
                     ),
                   ),
                 ),
-                Padding(
-                  padding: edgeInsetsAll8,
-                  child: Row(
-                    children: [
-                      Text(
-                        '투자 성향 반영',
-                        style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                          fontSize: 14,
-                          color: AppColors.contentGray,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      SizedBox(
-                        height: 32,
-                        child: FittedBox(
-                          fit: BoxFit.fitHeight,
-                          child: Switch(
-                            value: applyTendency,
-                            onChanged: (value) => _changeTendency(value),
-                            inactiveTrackColor: AppColors.contentGray,
-                            trackOutlineWidth: const WidgetStatePropertyAll(0),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
+                // Padding(
+                //   padding: edgeInsetsAll8,
+                //   child: Row(
+                //     children: [
+                //       Text(
+                //         '투자 성향 반영',
+                //         style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                //           fontSize: 14,
+                //           color: AppColors.contentGray,
+                //         ),
+                //       ),
+                //       const SizedBox(width: 8),
+                //       SizedBox(
+                //         height: 32,
+                //         child: FittedBox(
+                //           fit: BoxFit.fitHeight,
+                //           child: Switch(
+                //             value: applyTendency,
+                //             onChanged: (value) => _changeTendency(value),
+                //             inactiveTrackColor: AppColors.contentGray,
+                //             trackOutlineWidth: const WidgetStatePropertyAll(0),
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // )
               ],
             ),
             Expanded(
@@ -284,5 +284,4 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
       ),
     );
   }
-
 }
