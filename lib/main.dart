@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/config.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
@@ -11,7 +13,9 @@ import 'package:elswhere/data/services/user_service.dart';
 import 'package:elswhere/data/services/yfinance_service.dart';
 import 'package:elswhere/ui/screens/splash_screen.dart';
 import 'package:elswhere/utils/material_color_builder.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -20,11 +24,14 @@ import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:firebase_in_app_messaging/firebase_in_app_messaging.dart';
 
 void main() async {
   await initApp();
   runApp(ELSwhere());
 }
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 Future<void> initApp() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +39,18 @@ Future<void> initApp() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  final fcmToken = await FirebaseMessaging.instance.getToken();
+  // FirebaseMessaging.instance.onTokenRefresh
+  //   .listen((fcmToken) {
+  //
+  //   })
+  //   .onError((err) {
+  //
+  //   });
+  print(fcmToken);
+
+  await initPermissionSettings();
+  await setPermissionGranted();
 
   await dotenv.load(fileName: ".env");
   baseUrl = dotenv.env['ELS_BASE_URL']!;
@@ -49,6 +68,45 @@ Future<void> initApp() async {
   }
   print(accessToken);
   print(refreshToken);
+}
+
+Future<void> initPermissionSettings() async {
+  // Android 초기화 설정
+  const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+
+  // iOS 초기화 설정
+  const DarwinInitializationSettings initializationSettingsDarwin = DarwinInitializationSettings();
+
+  // 초기화 설정 통합
+  const InitializationSettings initializationSettings = InitializationSettings(
+    android: initializationSettingsAndroid,
+    iOS: initializationSettingsDarwin,
+  );
+
+  // 플러그인 초기화
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+}
+
+Future<void> setPermissionGranted() async {
+  // Android
+  final bool? grantedAndroid = await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+      ?.requestNotificationsPermission();
+
+  // iOS
+  final bool? grantedIOS = await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
+      ?.requestPermissions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
+  if (Platform.isIOS) {
+
+  } else if (Platform.isAndroid) {
+
+  }
 }
 
 class ELSwhere extends StatelessWidget {
