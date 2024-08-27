@@ -65,4 +65,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'elswhere-adaf5.appspot.com',
     iosBundleId: 'com.welike2coding.elswhere',
   );
+
 }

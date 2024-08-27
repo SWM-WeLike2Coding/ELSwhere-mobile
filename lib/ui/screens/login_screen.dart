@@ -1,7 +1,6 @@
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/config.dart';
 import 'package:elswhere/data/services/auth_service.dart';
-import 'package:elswhere/ui/screens/auth_screen.dart';
 import 'package:elswhere/ui/screens/initial_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -85,7 +84,6 @@ class LoginScreen extends StatelessWidget {
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(builder: (context) => InitialScreen()), (route) => false,
-                              // MaterialPageRoute(builder: (context) => AuthScreen(authUrl: authUrl)),
                             );
                           } else {
                             Fluttertoast.showToast(msg: '로그인에 실패했습니다.', toastLength: Toast.LENGTH_SHORT);
