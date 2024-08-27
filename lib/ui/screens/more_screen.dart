@@ -308,148 +308,148 @@ class _MoreScreenState extends State<MoreScreen> {
               ),
               Column(
                 children: [
-                  _buildMiddleListTile(
-                    title: "알림",
-                  ),
-                  Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16),
-                        child: SizedBox(
-                          height: 60,
-                          child: ListTile(
-                            title: const Text(
-                              "공지사항 알림",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            trailing: Padding(
-                              padding: const EdgeInsets.only(right: 8),
-                              child: SizedBox(
-                                width: 38,
-                                height: 22,
-                                child: Transform.scale(
-                                  scale: 0.9,
-                                  child: Switch(
-                                    value: _isNoticeAlarmOn,
-                                    onChanged: (bool value) {
-                                      setState(() {
-                                        _isNoticeAlarmOn = value;
-                                      });
-                                    },
-                                    activeColor: const Color(0xFFFFFFFF),
-                                    inactiveThumbColor: const Color(0xFFFFFFFF),
-                                    inactiveTrackColor: const Color(0xFFE6E7E8),
-                                    activeTrackColor: const Color(0xFF1C6BF9),
-                                    trackOutlineColor: const WidgetStatePropertyAll(Color(0xFFE6E7E8)),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16),
-                        child: SizedBox(
-                          height: 60,
-                          child: ListTile(
-                            title: const Text(
-                              "내가 가입한 상품 상환 알림",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            trailing: Padding(
-                              padding: const EdgeInsets.only(right: 8),
-                              child: SizedBox(
-                                width: 38,
-                                height: 22,
-                                child: Transform.scale(
-                                  scale: 0.9,
-                                  child: Switch(
-                                    value: _isRedemptionAlarmOn,
-                                    onChanged: (bool value) {
-                                      setState(() {
-                                        _isRedemptionAlarmOn = value;
-                                      });
-                                    },
-                                    activeColor: const Color(0xFFFFFFFF),
-                                    inactiveThumbColor: const Color(0xFFFFFFFF),
-                                    inactiveTrackColor: const Color(0xFFE6E7E8),
-                                    activeTrackColor: const Color(0xFF1C6BF9),
-                                    trackOutlineColor: const WidgetStatePropertyAll(Color(0xFFE6E7E8)),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16),
-                        child: SizedBox(
-                          height: 60,
-                          child: ListTile(
-                            title: const Text(
-                              "관심 상품 청약 마감 D-1 알림",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            trailing: Padding(
-                              padding: const EdgeInsets.only(right: 8),
-                              child: SizedBox(
-                                width: 38,
-                                height: 22,
-                                child: Transform.scale(
-                                  scale: 0.9,
-                                  child: Switch(
-                                    value: _isDdayAlarmOn,
-                                    onChanged: (bool value) {
-                                      setState(() {
-                                        _isDdayAlarmOn = value;
-                                      });
-                                    },
-                                    activeColor: const Color(0xFFFFFFFF),
-                                    inactiveThumbColor: const Color(0xFFFFFFFF),
-                                    inactiveTrackColor: const Color(0xFFE6E7E8),
-                                    activeTrackColor: const Color(0xFF1C6BF9),
-                                    trackOutlineColor: const WidgetStatePropertyAll(Color(0xFFE6E7E8)),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  _buildLittleListTile(
-                    context: context,
-                    title: "관심 상품 알림 설정",
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const AttentionSettingScreen(),
-                          )
-                      );
-                    }
-                  ),
+                  // _buildMiddleListTile(
+                  //   title: "알림",
+                  // ),
+                  // Column(
+                  //   children: [
+                  //     Padding(
+                  //       padding: const EdgeInsets.only(left: 16),
+                  //       child: SizedBox(
+                  //         height: 60,
+                  //         child: ListTile(
+                  //           title: const Text(
+                  //             "공지사항 알림",
+                  //             style: TextStyle(
+                  //               fontSize: 16,
+                  //               fontWeight: FontWeight.w500,
+                  //             ),
+                  //           ),
+                  //           trailing: Padding(
+                  //             padding: const EdgeInsets.only(right: 8),
+                  //             child: SizedBox(
+                  //               width: 38,
+                  //               height: 22,
+                  //               child: Transform.scale(
+                  //                 scale: 0.9,
+                  //                 child: Switch(
+                  //                   value: _isNoticeAlarmOn,
+                  //                   onChanged: (bool value) {
+                  //                     setState(() {
+                  //                       _isNoticeAlarmOn = value;
+                  //                     });
+                  //                   },
+                  //                   activeColor: const Color(0xFFFFFFFF),
+                  //                   inactiveThumbColor: const Color(0xFFFFFFFF),
+                  //                   inactiveTrackColor: const Color(0xFFE6E7E8),
+                  //                   activeTrackColor: const Color(0xFF1C6BF9),
+                  //                   trackOutlineColor: const WidgetStatePropertyAll(Color(0xFFE6E7E8)),
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                  // Column(
+                  //   children: [
+                  //     Padding(
+                  //       padding: const EdgeInsets.only(left: 16),
+                  //       child: SizedBox(
+                  //         height: 60,
+                  //         child: ListTile(
+                  //           title: const Text(
+                  //             "내가 가입한 상품 상환 알림",
+                  //             style: TextStyle(
+                  //               fontSize: 16,
+                  //               fontWeight: FontWeight.w500,
+                  //             ),
+                  //           ),
+                  //           trailing: Padding(
+                  //             padding: const EdgeInsets.only(right: 8),
+                  //             child: SizedBox(
+                  //               width: 38,
+                  //               height: 22,
+                  //               child: Transform.scale(
+                  //                 scale: 0.9,
+                  //                 child: Switch(
+                  //                   value: _isRedemptionAlarmOn,
+                  //                   onChanged: (bool value) {
+                  //                     setState(() {
+                  //                       _isRedemptionAlarmOn = value;
+                  //                     });
+                  //                   },
+                  //                   activeColor: const Color(0xFFFFFFFF),
+                  //                   inactiveThumbColor: const Color(0xFFFFFFFF),
+                  //                   inactiveTrackColor: const Color(0xFFE6E7E8),
+                  //                   activeTrackColor: const Color(0xFF1C6BF9),
+                  //                   trackOutlineColor: const WidgetStatePropertyAll(Color(0xFFE6E7E8)),
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                  // Column(
+                  //   children: [
+                  //     Padding(
+                  //       padding: const EdgeInsets.only(left: 16),
+                  //       child: SizedBox(
+                  //         height: 60,
+                  //         child: ListTile(
+                  //           title: const Text(
+                  //             "관심 상품 청약 마감 D-1 알림",
+                  //             style: TextStyle(
+                  //               fontSize: 16,
+                  //               fontWeight: FontWeight.w500,
+                  //             ),
+                  //           ),
+                  //           trailing: Padding(
+                  //             padding: const EdgeInsets.only(right: 8),
+                  //             child: SizedBox(
+                  //               width: 38,
+                  //               height: 22,
+                  //               child: Transform.scale(
+                  //                 scale: 0.9,
+                  //                 child: Switch(
+                  //                   value: _isDdayAlarmOn,
+                  //                   onChanged: (bool value) {
+                  //                     setState(() {
+                  //                       _isDdayAlarmOn = value;
+                  //                     });
+                  //                   },
+                  //                   activeColor: const Color(0xFFFFFFFF),
+                  //                   inactiveThumbColor: const Color(0xFFFFFFFF),
+                  //                   inactiveTrackColor: const Color(0xFFE6E7E8),
+                  //                   activeTrackColor: const Color(0xFF1C6BF9),
+                  //                   trackOutlineColor: const WidgetStatePropertyAll(Color(0xFFE6E7E8)),
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                  //
+                  // _buildLittleListTile(
+                  //   context: context,
+                  //   title: "관심 상품 알림 설정",
+                  //   onTap: () {
+                  //     Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //           builder: (context) => const AttentionSettingScreen(),
+                  //         )
+                  //     );
+                  //   }
+                  // ),
 
                   _buildMiddleListTile(title: "안내 및 지원"),
                   _buildLittleListTile(
