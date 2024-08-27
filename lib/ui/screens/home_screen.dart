@@ -4,7 +4,6 @@ import 'package:elswhere/ui/screens/holding_products_screen.dart';
 import 'package:elswhere/ui/screens/investment_propensity_screen.dart';
 import 'package:elswhere/ui/screens/notification_screen.dart';
 import 'package:elswhere/ui/widgets/stock_index_list.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -62,10 +61,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xFFF5F6F6),
+      color: const Color(0xFFF5F6F6),
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: Color(0xFFF5F6F6),
+          backgroundColor: const Color(0xFFF5F6F6),
           appBar: _buildAppBar(context),
           body: SingleChildScrollView(
             child: Column(
@@ -75,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 _buildHotAndAttentionProductWidget(context),
                 _buildAttentionScheduleWidget(context),
                 _buildIndexWidget(),
-                SizedBox(height: 32,),
+                const SizedBox(height: 32,),
               ],
             ),
           ),
@@ -130,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: () {
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => NotificationScreen(),)
+                  MaterialPageRoute(builder: (context) => const NotificationScreen(),)
               );
             },
           ),
@@ -142,21 +141,21 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildInvestmentTasteTestWidget(BuildContext context) {
     const String profileIcon = "assets/icons/icon_profile.svg";
     return Padding(
-      padding: EdgeInsets.only(left: 24, right: 24, top: 24),
+      padding: const EdgeInsets.only(left: 24, right: 24, top: 24),
       child: GestureDetector(
         onTap: () {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => InvestmentPropensityScreen(),
+                builder: (context) => const InvestmentPropensityScreen(),
               )
           );
         },
         child: Container(
           decoration: BoxDecoration(
-              color: Color(0xFFFFFFFF),
+              color: const Color(0xFFFFFFFF),
               borderRadius: BorderRadius.circular(12),
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   color: Color.fromRGBO(0, 0, 0, 0.04), // 그림자 색상
                   spreadRadius: 0, // 확산 반경
@@ -169,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(left: 24, top: 16, bottom: 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -194,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(right: 24),
+                padding: const EdgeInsets.only(right: 24),
                 child: SvgPicture.asset(
                   profileIcon,
                   height: 36,
@@ -210,21 +209,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildHoldingProductAssetWidget(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 24, right: 24, top: 16),
+      padding: const EdgeInsets.only(left: 24, right: 24, top: 16),
       child: GestureDetector(
         onTap: () {
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => HoldingProductsScreen(),
-              )
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HoldingProductsScreen(),
+            )
           );
         },
         child: Container(
           decoration: BoxDecoration(
-              color: Color(0xFFFFFFFF),
+              color: const Color(0xFFFFFFFF),
               borderRadius: BorderRadius.circular(12),
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   color: Color.fromRGBO(0, 0, 0, 0.04), // 그림자 색상
                   spreadRadius: 0, // 확산 반경
@@ -234,8 +233,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ]
           ),
           width: double.infinity,
-          child: Padding(
-            padding: const EdgeInsets.all(20),
+          child: const Padding(
+            padding: EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -281,11 +280,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildHotAndAttentionProductWidget(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 16, left: 24, right: 24),
+      padding: const EdgeInsets.only(top: 16, left: 24, right: 24),
       child: Row(
         children: [
           Expanded(child: _buildHotProductButton()),
-          SizedBox(width: 8,),
+          const SizedBox(width: 8,),
           Expanded(child: _buildAttentionProductButton(context)),
         ],
       ),
@@ -299,9 +298,9 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Container(
         height: 100,
         decoration: BoxDecoration(
-          color: Color(0xFFFFFFFF),
+          color: const Color(0xFFFFFFFF),
           borderRadius: BorderRadius.circular(12),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Color.fromRGBO(0, 0, 0, 0.04), // 그림자 색상
               spreadRadius: 0, // 확산 반경
@@ -311,7 +310,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -322,7 +321,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: 17.86,
               ),
               // SizedBox(height: 19,),
-              Text(
+              const Text(
                 "가장 핫한 상품",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
@@ -345,16 +344,16 @@ class _HomeScreenState extends State<HomeScreen> {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AttentionProductsScreen(),
+              builder: (context) => const AttentionProductsScreen(),
             )
         );
       },
       child: Container(
         height: 100,
         decoration: BoxDecoration(
-          color: Color(0xFFFFFFFF),
+          color: const Color(0xFFFFFFFF),
           borderRadius: BorderRadius.circular(12),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Color.fromRGBO(0, 0, 0, 0.04), // 그림자 색상
               spreadRadius: 0, // 확산 반경
@@ -364,7 +363,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -375,7 +374,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: 32,
               ),
               // SizedBox(height: 19,),
-              Text(
+              const Text(
                 "내 관심 상품",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
@@ -392,7 +391,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildOneScheduleCard(BuildContext context, ElsProductForScheduleDto? product) {
-    int _calculateDDay(DateTime? subscriptionEndDate) {
+    int calculateDDay(DateTime? subscriptionEndDate) {
       if (subscriptionEndDate == null) {
         return 0;
       }
@@ -401,26 +400,26 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     if (product == null) {
-      return Container(
+      return SizedBox(
         width: double.infinity,
         height: 52,
         child: Row(
           children: [
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 color: Color(0xFFF5F6F6),
               ),
               width: 36,
               height: 36,
-              child: Icon(
+              child: const Icon(
                 Icons.more_horiz,
                 size: 20,
                 color: Color(0xFF595E62),
               ),
             ),
-            SizedBox(width: 12,),
-            Text(
+            const SizedBox(width: 12,),
+            const Text(
               "나의 일정 보기",
               style: TextStyle(
                 fontWeight: FontWeight.w500,
@@ -436,13 +435,13 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       return Column(
         children: [
-          Container(
+          SizedBox(
             width: double.infinity,
             height: 52,
             child: Row(
               children: [
                 Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Color(0xFFF5F6F6),
                     shape: BoxShape.circle,
                   ),
@@ -453,16 +452,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       ? SvgPicture.asset(Assets.issuerIconMap[product.issuer]!)
                       : const Icon(Icons.question_mark, color: AppColors.contentBlack),
                 ),
-                SizedBox(width: 12,),
-                Container(
+                const SizedBox(width: 12,),
+                SizedBox(
                   width: MediaQuery.of(context).size.width * 0.5,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "${product.name}",
-                        style: TextStyle(
+                        product.name,
+                        style: const TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 14,
                           height: 16.52 / 14,
@@ -472,10 +471,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                       ),
-                      SizedBox(height: 2,),
+                      const SizedBox(height: 2,),
                       Text(
-                        "${product.equities.replaceAll('/', '·')}",
-                        style: TextStyle(
+                        product.equities.replaceAll('/', '·'),
+                        style: const TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 12,
                           height: 14.16 / 12,
@@ -492,13 +491,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
-                    color: Color(0x1AEE5648),
+                    color: const Color(0x1AEE5648),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.only(left: 8, right: 8, top: 2, bottom: 2),
+                    padding: const EdgeInsets.only(left: 8, right: 8, top: 2, bottom: 2),
                     child: Text(
-                      "D-${_calculateDDay(product.subscriptionEndDate)}",
-                      style: TextStyle(
+                      "D-${calculateDDay(product.subscriptionEndDate)}",
+                      style: const TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w600,
                         height: 11.8 / 10,
@@ -511,7 +510,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          SizedBox(height: 16,),
+          const SizedBox(height: 16,),
         ],
       );
     }
@@ -548,21 +547,21 @@ class _HomeScreenState extends State<HomeScreen> {
         Map<DateTime, List<ElsProductForScheduleDto>> scheduleMap = { for (var key in sortedDates) key : tempScheduleMap[key]! };
 
         return Padding(
-          padding: EdgeInsets.only(top: 16, left: 24, right: 24),
+          padding: const EdgeInsets.only(top: 16, left: 24, right: 24),
           child: GestureDetector(
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AttentionSubscriptionScheduleScreen(),
+                  builder: (context) => const AttentionSubscriptionScheduleScreen(),
                 ),
               );
             },
             child: Container(
               decoration: BoxDecoration(
-                  color: Color(0xFFFFFFFF),
+                  color: const Color(0xFFFFFFFF),
                   borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: Color.fromRGBO(0, 0, 0, 0.04), // 그림자 색상
                       spreadRadius: 0, // 확산 반경
@@ -573,11 +572,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               width: double.infinity,
               child: Padding(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "관심 청약 일정",
                       style: TextStyle(
                         fontSize: 16,
@@ -587,8 +586,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Color(0xFF000000),
                       ),
                     ),
-                    SizedBox(height: 8,),
-                    Text(
+                    const SizedBox(height: 8,),
+                    const Text(
                       "곧 다가오는 청약 상품 일정이에요.",
                       style: TextStyle(
                         fontSize: 12,
@@ -598,7 +597,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Color(0xFF838A8E),
                       ),
                     ),
-                    SizedBox(height: 16,),
+                    const SizedBox(height: 16,),
                     _buildScheduleCards(context, scheduleMap),
                     _buildOneScheduleCard(context, null),
                   ],
@@ -613,12 +612,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildIndexWidget() {
     return Padding(
-      padding: EdgeInsets.only(top: 16, left: 24, right: 24),
+      padding: const EdgeInsets.only(top: 16, left: 24, right: 24),
       child: Container(
         decoration: BoxDecoration(
-            color: Color(0xFFFFFFFF),
+            color: const Color(0xFFFFFFFF),
             borderRadius: BorderRadius.circular(12),
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                 color: Color.fromRGBO(0, 0, 0, 0.04), // 그림자 색상
                 spreadRadius: 0, // 확산 반경
@@ -628,7 +627,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ]
         ),
         width: double.infinity,
-        child: Padding(
+        child: const Padding(
           padding: EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
