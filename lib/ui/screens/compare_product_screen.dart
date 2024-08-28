@@ -6,8 +6,10 @@ import 'package:elswhere/config/config.dart';
 import 'package:elswhere/data/models/dtos/response_single_product_dto.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/data/providers/els_products_provider.dart';
+import 'package:elswhere/ui/screens/els_product_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
 
@@ -77,6 +79,8 @@ class CompareProductScreen extends StatelessWidget {
                               _buildProductLossRate(compareProducts[0], compareProducts[1]),
                               const SizedBox(height: 32,),
                               _buildProductSubscriptionEndDate(compareProducts[0], compareProducts[1]),
+                              const SizedBox(height: 16,),
+                              _buildProductDetailScreeenButton(context, compareProducts[0], compareProducts[1]),
                             ],
                           ),
                         ),
@@ -147,6 +151,7 @@ class CompareProductScreen extends StatelessWidget {
             ),
           ),
         ),
+        const SizedBox(width: 8),
         Expanded(
           flex: 2,
           child: Text(
@@ -207,6 +212,7 @@ class CompareProductScreen extends StatelessWidget {
             ],
           ),
         ),
+        const SizedBox(width: 8),
         Expanded(
           flex: 2,
           child: Column(
@@ -267,6 +273,7 @@ class CompareProductScreen extends StatelessWidget {
             ),
           ),
         ),
+        const SizedBox(width: 8),
         Expanded(
           flex: 2,
           child: Text(
@@ -330,6 +337,7 @@ class CompareProductScreen extends StatelessWidget {
             }
           )
         ),
+        const SizedBox(width: 8),
         Expanded(
           flex: 2,
           child: LayoutBuilder(
@@ -393,6 +401,7 @@ class CompareProductScreen extends StatelessWidget {
             ),
           ),
         ),
+        const SizedBox(width: 8),
         Expanded(
           flex: 2,
           child: Text(
@@ -437,6 +446,7 @@ class CompareProductScreen extends StatelessWidget {
             ),
           ),
         ),
+        const SizedBox(width: 8),
         Expanded(
           flex: 2,
           child: Text(
@@ -481,6 +491,7 @@ class CompareProductScreen extends StatelessWidget {
             ),
           ),
         ),
+        const SizedBox(width: 8),
         Expanded(
           flex: 2,
           child: Text(
@@ -528,6 +539,7 @@ class CompareProductScreen extends StatelessWidget {
             ),
           ),
         ),
+        const SizedBox(width: 8),
         Expanded(
           flex: 2,
           child: Text(
@@ -537,6 +549,121 @@ class CompareProductScreen extends StatelessWidget {
               fontSize: 14,
               fontWeight: FontWeight.w500,
               letterSpacing: -0.28,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildProductDetailScreeenButton(BuildContext context, ResponseSingleProductDto compareProduct1, ResponseSingleProductDto compareProduct2) {
+    final provider = Provider.of<ELSProductProvider>(context, listen: false);
+    return Row(
+      children: [
+        Expanded(
+          flex: 1,
+          child: Container(),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                elevation: 0,
+                backgroundColor: AppColors.backgroundGray,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              onPressed: () async {
+                try {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                  );
+
+                  await provider.fetchProduct(compareProduct1.id);
+
+
+                  // 로딩 다이얼로그 닫기
+                  Navigator.of(context).pop();
+
+                  if (provider.product == null) throw Exception;
+
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ELSProductDetailScreen(),)
+                  );
+                } catch (e) {
+                  Fluttertoast.showToast(msg: '상품 불러오기에 실패했습니다. 다시 시도해주세요.', toastLength: Toast.LENGTH_SHORT);
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16,),
+                child: Text(
+                  '자세히',
+                  style: textTheme.labelSmall!.copyWith(
+                    fontSize: 14,
+                    color: AppColors.contentBlack,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                elevation: 0,
+                backgroundColor: AppColors.backgroundGray,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              onPressed: () async {
+                try {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                  );
+
+                  await provider.fetchProduct(compareProduct2.id);
+
+                  // 로딩 다이얼로그 닫기
+                  Navigator.of(context).pop();
+
+                  if (provider.product == null) throw Exception;
+
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ELSProductDetailScreen(),)
+                  );
+                } catch (e) {
+                  Fluttertoast.showToast(msg: '상품 불러오기에 실패했습니다. 다시 시도해주세요.', toastLength: Toast.LENGTH_SHORT);
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16,),
+                child: Text(
+                  '자세히',
+                  style: textTheme.labelSmall!.copyWith(
+                    fontSize: 14,
+                    color: AppColors.contentBlack,
+                  ),
+                ),
+              ),
             ),
           ),
         ),
