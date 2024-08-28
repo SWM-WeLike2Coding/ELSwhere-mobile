@@ -498,8 +498,8 @@ class CompareProductScreen extends StatelessWidget {
   }
 
   Widget _buildProductSubscriptionEndDate(ResponseSingleProductDto product1, ResponseSingleProductDto product2) {
-    final dayDifference1 = DateTime.parse(product1!.subscriptionEndDate).difference(DateTime.now()).inDays;
-    final dayDifference2 = DateTime.parse(product2!.subscriptionEndDate).difference(DateTime.now()).inDays;
+    final dayDifference1 = DateTime.parse(product1.subscriptionEndDate).difference(DateTime.now()).inDays;
+    final dayDifference2 = DateTime.parse(product2.subscriptionEndDate).difference(DateTime.now()).inDays;
 
     return Row(
       children: [
@@ -519,7 +519,7 @@ class CompareProductScreen extends StatelessWidget {
         Expanded(
           flex: 2,
           child: Text(
-            '$dayDifference1일 후',
+            dayDifference1 != 0 ? '$dayDifference1일 후' : '오늘',
             style: textTheme.labelSmall!.copyWith(
               color: Colors.black,
               fontSize: 14,
@@ -531,7 +531,7 @@ class CompareProductScreen extends StatelessWidget {
         Expanded(
           flex: 2,
           child: Text(
-            '$dayDifference2일 후',
+            dayDifference2 != 0 ? '$dayDifference2일 후' : '오늘',
             style: textTheme.labelSmall!.copyWith(
               color: Colors.black,
               fontSize: 14,
