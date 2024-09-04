@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:elswhere/config/config.dart';
+import 'package:elswhere/data/models/dtos/request_create_holding_dto.dart';
 import 'package:elswhere/data/models/dtos/response_interesting_product_dto.dart';
 import 'package:elswhere/data/models/dtos/response_investment_type_dto.dart';
+import 'package:elswhere/data/models/dtos/summarized_user_holding_dto.dart';
 import 'package:elswhere/data/services/api_interceptor.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -43,4 +45,19 @@ abstract class UserService {
 
   @POST("/v1/propensity/survey")
   Future<HttpResponse> sendNewInvestmentType(@Body() Map<String, dynamic> body);
+
+  @GET("/v1/holding")
+  Future<HttpResponse<List<SummarizedUserHoldingDto>>> fetchHoldingProducts();
+
+  @POST("/v1/holding")
+  Future<HttpResponse> addHoldingProduct(@Body() RequestCreateHoldingDto body);
+
+  @DELETE("/v1/holding/{id}")
+  Future<HttpResponse> deleteHoldingProduct(@Path("id") int id);
+
+  @PATCH("/v1/holding/{id}")
+  Future<HttpResponse> updateHoldingProduct(
+    @Path("id") int id,
+    @Query("price") int price,
+  );
 }

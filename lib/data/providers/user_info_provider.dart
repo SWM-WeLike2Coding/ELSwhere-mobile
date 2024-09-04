@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/data/models/dtos/request_create_holding_dto.dart';
 import 'package:elswhere/data/models/dtos/response_investment_type_dto.dart';
 import 'package:elswhere/data/models/dtos/response_user_info_dto.dart';
+import 'package:elswhere/data/models/dtos/summarized_user_holding_dto.dart';
 import 'package:elswhere/data/services/user_service.dart';
 import 'package:elswhere/ui/screens/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -13,16 +15,21 @@ class UserInfoProvider with ChangeNotifier {
   ResponseUserInfoDto? _userInfo;
   bool _isLoading = false;
   ResponseInvestmentTypeDto? _investmentTypeInfo;
+  List<SummarizedUserHoldingDto>? _holdingProducts;
+  int _totalHoldingPrice = 0;
+  int _profitAndLossPrice = 0;
 
   ResponseUserInfoDto? get userInfo => _userInfo;
   bool get isLoading => _isLoading;
   bool get checkAuthenticated => _userInfo != null;
   ResponseInvestmentTypeDto? get investmentTypeInfo => _investmentTypeInfo;
+  List<SummarizedUserHoldingDto>? get holdingProducts => _holdingProducts ?? [];
+  int get totalHoldingPrice => _totalHoldingPrice;
+  int get profitAndLossPrice => _profitAndLossPrice;
 
   String _nickname = "";
 
   String getNickname() => _nickname;
-
 
   UserInfoProvider(this._userService);
 
@@ -85,7 +92,7 @@ class UserInfoProvider with ChangeNotifier {
       if (e.response != null) {
         print('Status code: ${e.response?.statusCode}');
         print('Response data: ${e.response?.data}');
-      return false;
+        return false;
       }
     } catch (e) {
       print('Unexpected error: $e');
@@ -120,7 +127,6 @@ class UserInfoProvider with ChangeNotifier {
         riskTakingAbilityStr = 'STABILITY_SEEKING_TYPE';
       }
 
-
       final response = await _userService.sendNewInvestmentType({
         'investmentExperience': investmentExperienceStr,
         'investmentPreferredPeriod': investmentPreferredPeriodStr,
@@ -128,7 +134,8 @@ class UserInfoProvider with ChangeNotifier {
       });
       if (response.response.statusCode == 200) {
         print('Investment Type changed successfully');
-        _investmentTypeInfo = ResponseInvestmentTypeDto(investmentExperience: investmentExperienceStr, investmentPreferredPeriod: investmentPreferredPeriodStr, riskTakingAbility: riskTakingAbilityStr);
+        _investmentTypeInfo =
+            ResponseInvestmentTypeDto(investmentExperience: investmentExperienceStr, investmentPreferredPeriod: investmentPreferredPeriodStr, riskTakingAbility: riskTakingAbilityStr);
         notifyListeners();
         return true;
       } else {
@@ -208,7 +215,7 @@ class UserInfoProvider with ChangeNotifier {
         notifyListeners();
         await storage.deleteAll();
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => LoginScreen()),
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
         );
         return true;
       } else {
@@ -228,5 +235,93 @@ class UserInfoProvider with ChangeNotifier {
       return false;
     }
     return false;
+  }
+
+  Future<bool> fetchHoldingProducts() async {
+    _isLoading = true;
+    _totalHoldingPrice = _profitAndLossPrice = 0;
+    _holdingProducts = null;
+
+    try {
+      final httpResponse = await _userService.fetchHoldingProducts();
+      final response = httpResponse.response;
+      if (response.statusCode == 200) {
+        _holdingProducts = httpResponse.data;
+        for (var product in _holdingProducts!) {
+          _totalHoldingPrice += product.price.toInt();
+          _profitAndLossPrice += (product.price * product.yieldIfConditionsMet / 100).toInt();
+        }
+      } else {
+        throw Exception('Error Code: ${response.statusCode}, ${response.statusMessage}');
+      }
+    } catch (e) {
+      print("보유 상품 가져오기 실패: $e");
+      _holdingProducts = null;
+    } finally {
+      _isLoading = false;
+    }
+    return _holdingProducts != null;
+  }
+
+  Future<bool> addHoldingProduct(RequestCreateHoldingDto data) async {
+    _isLoading = true;
+    bool success = true;
+    notifyListeners();
+
+    try {
+      final httpResponse = await _userService.addHoldingProduct(data);
+      final response = httpResponse.response;
+      print('성공');
+      if (response.statusCode != 200 || !await fetchHoldingProducts()) {
+        throw Exception('Error Code: ${response.statusCode}, ${response.statusMessage}');
+      }
+      print('진짜 성공?');
+    } catch (e) {
+      success = false;
+      print("보유 상품 추가 실패: $e");
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+    return success;
+  }
+
+  Future<bool> deleteHoldingProduct(int id) async {
+    bool success = true;
+    _isLoading = true;
+
+    try {
+      final httpResponse = await _userService.deleteHoldingProduct(id);
+      final response = httpResponse.response;
+      if (response.statusCode != 200 || !await fetchHoldingProducts()) {
+        throw Exception('Error Code: ${response.statusCode}, ${response.statusMessage}');
+      }
+    } catch (e) {
+      print("보유 상품 삭제 실패: $e");
+      success = false;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+    return success;
+  }
+
+  Future<bool> updateHoldindProduct(int id, int price) async {
+    _isLoading = true;
+
+    try {
+      final httpResponse = await _userService.updateHoldingProduct(id, price);
+      final response = httpResponse.response;
+      if (response.statusCode == 200) {
+        _isLoading = false;
+        return true;
+      } else {
+        throw Exception('Error Code: ${response.statusCode}, ${response.statusMessage}');
+      }
+    } catch (e) {
+      print("보유 상품 갱신 실패: $e");
+      _isLoading = false;
+      return false;
+    }
   }
 }

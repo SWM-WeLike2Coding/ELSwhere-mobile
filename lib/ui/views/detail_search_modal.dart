@@ -170,7 +170,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(
+            colorScheme: const ColorScheme.light(
               primary: Colors.blue, // 달력의 주 색상
               onPrimary: Colors.white, // 선택된 날짜의 텍스트 색상
               onSurface: Colors.black, // 달력의 텍스트 색상
@@ -299,20 +299,20 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 24,),
+                    const SizedBox(height: 24,),
                     _buildSearchInput(),
                     Padding(
-                      padding: EdgeInsets.only(left: 24, right: 24),
+                      padding: const EdgeInsets.only(left: 24, right: 24),
                       child: Wrap(
                         spacing: 8.0,
                         runSpacing: 4.0,
                         children: _selectedTickers.map((ticker) {
                           return Padding(
-                            padding: EdgeInsets.only(left: 4),
+                            padding: const EdgeInsets.only(left: 4),
                             child: Chip(
                               label: Text(
                                 ticker.equityName,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,
                                   color: Color(0xFF838A8E),
@@ -321,12 +321,12 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                               onDeleted: () {
                                 _removeTickerFromSelected(ticker);
                               },
-                              deleteIcon: Icon(Icons.close),
-                              deleteIconColor: Color(0xFFACB2B5),
-                              backgroundColor: Color(0xFFF5F6F6),
+                              deleteIcon: const Icon(Icons.close),
+                              deleteIconColor: const Color(0xFFACB2B5),
+                              backgroundColor: const Color(0xFFF5F6F6),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(600),
-                                side: BorderSide(
+                                side: const BorderSide(
                                   color: Color(0xFFF5F6F6),
                                   width: 0,
                                 ),
@@ -337,7 +337,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                       ),
                     ),
                     Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           border: Border(
                               bottom: BorderSide(
                                 color: Color(0xFFF5F6F6),
@@ -346,17 +346,17 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                           )
                       ),
                     ),
-                    SizedBox(height: 16,),
+                    const SizedBox(height: 16,),
                     Padding(
-                      padding: EdgeInsets.only(left: 24, right: 24, top: 24),
+                      padding: const EdgeInsets.only(left: 24, right: 24, top: 24),
                       child: _buildDropDowns(),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 24, right: 24, top: 24),
+                      padding: const EdgeInsets.only(left: 24, right: 24, top: 24),
                       child: _buildCheckboxes(),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 24, right: 24, top: 24),
+                      padding: const EdgeInsets.only(left: 24, right: 24, top: 24),
                       child: _buildDateButtons(),
                     ),
                   ],
@@ -367,7 +367,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
         ),
       ),
       bottomNavigationBar: Container(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: ElevatedButton(
           onPressed: () {
             if (_selectedDates[0] != "시작일" && _selectedDates[1] != "마감일") {
@@ -375,7 +375,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
               DateTime endDate = DateTime.parse(_selectedDates[1]!);
               if (startDate.isAfter(endDate)) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
+                  const SnackBar(
                     content: Text('마감일이 시작일보다 빠를 수 없습니다.'),
                   ),
                 );
@@ -386,7 +386,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
             Navigator.pop(context);
             _getFilteredData();
           },
-          child: Text(
+          child: const Text(
             '상품 검색',
             style: TextStyle(
               fontWeight: FontWeight.w600,
@@ -395,11 +395,11 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
             ),
           ),
           style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.symmetric(vertical: 16),
+            padding: const EdgeInsets.symmetric(vertical: 16),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
-            backgroundColor: Color(0xFF1C6BF9),
+            backgroundColor: const Color(0xFF1C6BF9),
           ),
         ),
       ),
@@ -413,9 +413,9 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
       children: [
         Row(
           children: [
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -425,7 +425,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                 controller: _equityController,
                 decoration: InputDecoration(
                   hintText: '기초자산명을 검색해보세요',
-                  hintStyle: TextStyle(
+                  hintStyle: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                     color: Color(0xFF838A8E),
@@ -439,13 +439,13 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                 ),
               ),
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
           ],
         ),
         if (_equityController.text.isNotEmpty && !_isLoading)
           Container(
             height: 200, // 결과 리스트의 높이
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               borderRadius: BorderRadius.vertical(bottom: Radius.circular(8)),
               color: Colors.white,
               boxShadow: [
@@ -484,7 +484,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           "검색필터",
           style: TextStyle(
             fontSize: 14,
@@ -492,7 +492,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
             color: Color(0xFF595E62),
           ),
         ),
-        SizedBox(height: 12,),
+        const SizedBox(height: 12,),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -502,22 +502,22 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Color(0xFFF5F6F6),
+                        color: const Color(0xFFF5F6F6),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: DropdownButton<String>(
                         isExpanded: true,
                         underline: Container(),
                         hint: _equityCount == null ?
-                          Padding(
+                          const Padding(
                             padding: EdgeInsets.only(left: 8),
                             child: Text("기초자산 수", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: Color(0xFFACB2B5)),)
                           ) :
                           Padding(
-                            padding: EdgeInsets.only(left: 8),
+                            padding: const EdgeInsets.only(left: 8),
                             child: Text(
                               "${_equityCount!}개",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14,
                                 color: Color(0xFF000000),
@@ -545,29 +545,29 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                 ],
               ),
             ),
-            SizedBox(width: 12,),
+            const SizedBox(width: 12,),
             Expanded(
               child: Row(
                 children: [
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Color(0xFFF5F6F6),
+                        color: const Color(0xFFF5F6F6),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: DropdownButton<String>(
                         isExpanded: true,
                         underline: Container(),
                         hint: _selectedIssuer == null ?
-                          Padding(
+                          const Padding(
                             padding: EdgeInsets.only(left: 8),
                             child: Text("발행회사", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: Color(0xFFACB2B5)),)
                           ) :
                           Padding(
-                            padding: EdgeInsets.only(left: 8),
+                            padding: const EdgeInsets.only(left: 8),
                             child: Text(
                               _selectedIssuer!,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14,
                                 color: Color(0xFF000000),
@@ -600,7 +600,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
             ),
           ],
         ),
-        SizedBox(height: 6,),
+        const SizedBox(height: 6,),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -610,22 +610,22 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Color(0xFFF5F6F6),
+                        color: const Color(0xFFF5F6F6),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: DropdownButton<String>(
                         isExpanded: true,
                         underline: Container(),
                         hint: _subscriptionPeriod == null ?
-                          Padding(
+                          const Padding(
                             padding: EdgeInsets.only(left: 8),
                               child: Text("상품가입기간", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: Color(0xFFACB2B5)),)
                           ) :
                           Padding(
-                            padding: EdgeInsets.only(left: 8),
+                            padding: const EdgeInsets.only(left: 8),
                             child: Text(
                               "${_subscriptionPeriod!}년",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14,
                                 color: Color(0xFF000000),
@@ -653,29 +653,29 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                 ],
               ),
             ),
-            SizedBox(width: 12,),
+            const SizedBox(width: 12,),
             Expanded(
               child: Row(
                 children: [
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Color(0xFFF5F6F6),
+                        color: const Color(0xFFF5F6F6),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: DropdownButton<String>(
                         isExpanded: true,
                         underline: Container(),
                         hint: _redemptionInterval == null ?
-                          Padding(
+                          const Padding(
                             padding: EdgeInsets.only(left: 8),
                               child: Text("상환일간격", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: Color(0xFFACB2B5)),)
                           ) :
                           Padding(
-                            padding: EdgeInsets.only(left: 8),
+                            padding: const EdgeInsets.only(left: 8),
                             child: Text(
                               "${_redemptionInterval!}개월",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14,
                                 color: Color(0xFF000000),
@@ -705,7 +705,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
             ),
           ],
         ),
-        SizedBox(height: 6,),
+        const SizedBox(height: 6,),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -720,7 +720,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                   ],
                   decoration: InputDecoration(
                     hintText: "최대 KI 낙인배리어",
-                    hintStyle:  TextStyle(
+                    hintStyle:  const TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
                       color: Color(0xFFACB2B5),
@@ -730,24 +730,24 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                       borderSide: BorderSide.none,
                     ),
                     filled: true,
-                    fillColor: Color(0xFFF5F6F6),
+                    fillColor: const Color(0xFFF5F6F6),
                   ),
                   onChanged: _updateKIValue,
                 ),
               ),
             ),
-            SizedBox(width: 12,),
+            const SizedBox(width: 12,),
             Expanded(
               child: TextField(
                 controller: _yieldController,
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
                   NumberRangeTextInputFormatter(min: 0, max: 100),
                 ],
                 decoration: InputDecoration(
                   hintText: "최소 수익률",
-                  hintStyle: TextStyle(
+                  hintStyle: const TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 14,
                     color: Color(0xFFACB2B5),
@@ -757,14 +757,14 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                     borderSide: BorderSide.none,
                   ),
                   filled: true,
-                  fillColor: Color(0xFFF5F6F6),
+                  fillColor: const Color(0xFFF5F6F6),
                 ),
                 onChanged: _updateYieldValue,
               ),
             ),
           ],
         ),
-        SizedBox(height: 6,),
+        const SizedBox(height: 6,),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -779,7 +779,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                   ],
                   decoration: InputDecoration(
                     hintText: "1차상환 배리어",
-                    hintStyle:  TextStyle(
+                    hintStyle:  const TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
                       color: Color(0xFFACB2B5),
@@ -789,13 +789,13 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                       borderSide: BorderSide.none,
                     ),
                     filled: true,
-                    fillColor: Color(0xFFF5F6F6),
+                    fillColor: const Color(0xFFF5F6F6),
                   ),
                   onChanged: _updateFirstBarrier,
                 ),
               ),
             ),
-            SizedBox(width: 12,),
+            const SizedBox(width: 12,),
             Expanded(
               child: SizedBox(
                 child: TextField(
@@ -807,7 +807,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                   ],
                   decoration: InputDecoration(
                     hintText: "만기상환 배리어",
-                    hintStyle:  TextStyle(
+                    hintStyle:  const TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
                       color: Color(0xFFACB2B5),
@@ -817,7 +817,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                       borderSide: BorderSide.none,
                     ),
                     filled: true,
-                    fillColor: Color(0xFFF5F6F6),
+                    fillColor: const Color(0xFFF5F6F6),
                   ),
                   onChanged: _updateLastBarrier,
                 ),
@@ -833,7 +833,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           "종목유형",
           style: TextStyle(
             fontSize: 14,
@@ -849,7 +849,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
-                  backgroundColor: _isIndex ? Color(0xFF1C6BF9) : Color(0xFFF5F6F6),
+                  backgroundColor: _isIndex ? const Color(0xFF1C6BF9) : const Color(0xFFF5F6F6),
                 ),
                 onPressed: () {
                   setState(() {
@@ -861,19 +861,19 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                   style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
-                      color: _isIndex ? Color(0xFFFFFFFF) : Color(0xFFACB2B5)
+                      color: _isIndex ? const Color(0xFFFFFFFF) : const Color(0xFFACB2B5)
                   ),
                 ),
               ),
             ),
-            SizedBox(width: 12,),
+            const SizedBox(width: 12,),
             Expanded(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
-                  backgroundColor: _isStock ? Color(0xFF1C6BF9) : Color(0xFFF5F6F6),
+                  backgroundColor: _isStock ? const Color(0xFF1C6BF9) : const Color(0xFFF5F6F6),
                 ),
                 onPressed: () {
                   setState(() {
@@ -885,15 +885,15 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                   style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
-                      color: _isStock ? Color(0xFFFFFFFF) : Color(0xFFACB2B5)
+                      color: _isStock ? const Color(0xFFFFFFFF) : const Color(0xFFACB2B5)
                   ),
                 ),
               ),
             )
           ],
         ),
-        SizedBox(height: 6,),
-        Text(
+        const SizedBox(height: 6,),
+        const Text(
           "상품종류",
           style: TextStyle(
             fontSize: 14,
@@ -905,8 +905,8 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
           height: 86,
           child: GridView.builder(
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
@@ -920,7 +920,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
-                  backgroundColor: _selectedTypeIndex == index ? Color(0xFF1C6BF9) : Color(0xFFF5F6F6),
+                  backgroundColor: _selectedTypeIndex == index ? const Color(0xFF1C6BF9) : const Color(0xFFF5F6F6),
                 ),
                 child: Text(
                   _getButtonText(index),
@@ -928,7 +928,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                   style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
-                      color: _selectedTypeIndex == index ? Color(0xFFFFFFFF) : Color(0xFFACB2B5)
+                      color: _selectedTypeIndex == index ? const Color(0xFFFFFFFF) : const Color(0xFFACB2B5)
                   ),
                 ),
               );
@@ -945,7 +945,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           "발행일",
           style: TextStyle(
             fontSize: 14,
@@ -956,7 +956,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
         Row(
           children: [
             _buildDateButton(context, _initialDatePickerString[0], 0),
-            SizedBox(width: 12,),
+            const SizedBox(width: 12,),
             _buildDateButton(context, _initialDatePickerString[1], 1),
           ],
         )
@@ -972,7 +972,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),
-          backgroundColor: displayLabel != label ? Color(0xFF1C6BF9) : Color(0xFFF5F6F6),
+          backgroundColor: displayLabel != label ? const Color(0xFF1C6BF9) : const Color(0xFFF5F6F6),
         ),
         // onPressed: () {
         //   if (displayLabel == label) {
@@ -985,7 +985,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
           style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w500,
-              color: displayLabel != label ? Color(0xFFFFFFFF) : Color(0xFFACB2B5)
+              color: displayLabel != label ? const Color(0xFFFFFFFF) : const Color(0xFFACB2B5)
           ),
         ),
       ),

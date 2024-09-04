@@ -1,4 +1,5 @@
- import 'package:elswhere/ui/screens/attention_products_screen.dart';
+import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/ui/screens/attention_products_screen.dart';
 import 'package:elswhere/ui/screens/attention_subscription_schedule_screen.dart';
 import 'package:elswhere/ui/screens/holding_products_screen.dart';
 import 'package:elswhere/ui/screens/investment_propensity_screen.dart';
@@ -7,6 +8,7 @@ import 'package:elswhere/ui/widgets/stock_index_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../config/app_resource.dart';
@@ -57,29 +59,41 @@ class _HomeScreenState extends State<HomeScreen> {
     return targetDate.isAfter(today) || targetDate.isAtSameMomentAs(today);
   }
 
+  final decimalFormat = NumberFormat.decimalPattern('ko');
+  late final UserInfoProvider userProvider;
+
+  @override
+  void initState() {
+    userProvider = Provider.of<UserInfoProvider>(context, listen: false);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: const Color(0xFFF5F6F6),
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: const Color(0xFFF5F6F6),
-          appBar: _buildAppBar(context),
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                _buildInvestmentTasteTestWidget(context),
-                _buildHoldingProductAssetWidget(context),
-                _buildHotAndAttentionProductWidget(context),
-                _buildAttentionScheduleWidget(context),
-                _buildIndexWidget(),
-                const SizedBox(height: 32,),
-              ],
+    return Consumer<UserInfoProvider>(
+      builder: (context, value, _) {
+        return Container(
+          color: const Color(0xFFF5F6F6),
+          child: SafeArea(
+            child: Scaffold(
+              backgroundColor: const Color(0xFFF5F6F6),
+              appBar: _buildAppBar(context),
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    _buildInvestmentTasteTestWidget(context),
+                    _buildHoldingProductAssetWidget(context),
+                    _buildHotAndAttentionProductWidget(context),
+                    _buildAttentionScheduleWidget(context),
+                    _buildIndexWidget(),
+                    const SizedBox(height: 32,),
+                  ],
+                ),
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      }
     );
   }
 
@@ -208,16 +222,37 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildHoldingProductAssetWidget(BuildContext context) {
+    final totalHoldingPrice = userProvider.totalHoldingPrice;
+    final profitAndLossPrice = userProvider.profitAndLossPrice;
+
     return Padding(
       padding: const EdgeInsets.only(left: 24, right: 24, top: 16),
       child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const HoldingProductsScreen(),
-            )
+        onTap: () async {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            },
           );
+
+          final result = await Provider.of<UserInfoProvider>(context, listen: false).fetchHoldingProducts();
+
+          Navigator.pop(context);
+
+          if (result) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const HoldingProductsScreen(),
+              )
+            );
+          } else {
+            Fluttertoast.showToast(msg: '오류가 발생했습니다. 다시 시도해주세요.', toastLength: Toast.LENGTH_SHORT);
+          }
         },
         child: Container(
           decoration: BoxDecoration(
@@ -233,12 +268,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ]
           ),
           width: double.infinity,
-          child: const Padding(
-            padding: EdgeInsets.all(20),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "보유 상품 가치",
                   style: TextStyle(
                     fontSize: 14,
@@ -248,10 +283,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: Color(0xFF838A8E),
                   ),
                 ),
-                SizedBox(height: 4,),
+                const SizedBox(height: 4,),
                 Text(
-                  "2,000,000원",
-                  style: TextStyle(
+                  '${decimalFormat.format(totalHoldingPrice)}원',
+                  style: const TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w600,
                     height: 1.30, // 118% line-height
@@ -259,15 +294,19 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: Color(0xFF000000),
                   ),
                 ),
-                SizedBox(height: 4,),
+                const SizedBox(height: 4,),
                 Text(
-                  "+1,000,000원",
+                  '${profitAndLossPrice > 0 ? '+' : ''}${decimalFormat.format(profitAndLossPrice)}원',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                     height: 1.18, // 118% line-height
                     letterSpacing: -0.28,
-                    color: Color(0xFFEE5648),
+                    color: profitAndLossPrice == 0
+                      ? AppColors.contentGray
+                      : profitAndLossPrice > 0
+                        ? AppColors.contentRed
+                        : AppColors.mainBlue,
                   ),
                 ),
               ],

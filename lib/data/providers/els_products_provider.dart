@@ -69,9 +69,7 @@ class ELSProductsProvider extends ChangeNotifier {
     notifyListeners();
     try {
       final responsePage = await _productService.fetchFilteredProducts(body);
-      _products += responsePage.content.where((e) => status == 'on'
-          ? e.subscriptionEndDate.compareTo(now) >= 0
-          : e.subscriptionEndDate.compareTo(now) < 0).toList();
+      _products += responsePage.content.where((e) => status == 'on' ? e.subscriptionEndDate.compareTo(now) >= 0 : e.subscriptionEndDate.compareTo(now) < 0).toList();
       _hasNext = responsePage.hasNext;
       _page++;
     } catch (error) {
@@ -139,7 +137,6 @@ class ELSProductsProvider extends ChangeNotifier {
       } else {
         throw Exception;
       }
-
     } catch (e) {
       print('비슷한 상품 불러오기 오류 : $e');
     } finally {

@@ -59,7 +59,7 @@ class CompareProductScreen extends StatelessWidget {
                     final compareProducts = provider!.compareProducts;
                     return Column(
                       children: [
-                        const Divider(height: 1, color: const Color(0xFFF5F6F6)),
+                        const Divider(height: 1, color:Color(0xFFF5F6F6)),
                         Padding(
                           padding: edgeInsetsAll24,
                           child: Column(

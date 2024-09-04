@@ -1,9 +1,6 @@
 import 'package:elswhere/config/app_resource.dart';
-import 'package:elswhere/ui/widgets/holding_product_card.dart';
+import 'package:elswhere/ui/views/holding_products_list_view.dart';
 import 'package:flutter/material.dart';
-
-import '../../data/providers/els_products_provider.dart';
-import '../views/els_product_list_view.dart';
 
 class HoldingProductsScreen extends StatefulWidget {
   const HoldingProductsScreen({super.key});
@@ -19,15 +16,15 @@ class _HoldingProductsScreenState extends State<HoldingProductsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(72),
+        preferredSize: const Size.fromHeight(72),
         child: Container(
-          decoration: BoxDecoration(
-              border: Border(
-                  bottom: BorderSide(
-                    color: AppColors.backgroundGray,
-                    width: 1,
-                  )
-              )
+          decoration: const BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                color: AppColors.backgroundGray,
+                width: 1,
+              ),
+            ),
           ),
           child: AppBar(
             leading: Padding(
@@ -35,14 +32,14 @@ class _HoldingProductsScreenState extends State<HoldingProductsScreen> {
               child: Align(
                 alignment: Alignment.center, // 아이콘을 수직 가운데 정렬
                 child: IconButton(
-                  icon: Icon(Icons.arrow_back),
+                  icon: const Icon(Icons.arrow_back),
                   onPressed: () {
                     Navigator.pop(context);
                   },
                 ),
               ),
             ),
-            title: Text(
+            title: const Text(
               "보유 상품",
               style: TextStyle(
                 fontWeight: FontWeight.w600,
@@ -57,7 +54,8 @@ class _HoldingProductsScreenState extends State<HoldingProductsScreen> {
         children: [
           _buildHoldingProductsString(),
           // ELSProductListView<ELSOnSaleProductsProvider>(type: type, nowComparing: false,),
-          const Expanded(child: Center(child: Text('추후 업데이트를 통해 제공될 예정입니다.'))),
+          HoldingProductsListView(),
+          // const Expanded(child: Center(child: Text('추후 업데이트를 통해 제공될 예정입니다.'))),
         ],
       ),
     );
@@ -65,9 +63,9 @@ class _HoldingProductsScreenState extends State<HoldingProductsScreen> {
 }
 
 Widget _buildHoldingProductsString() {
-  return Padding(
+  return const Padding(
     padding: EdgeInsets.only(top: 24, left: 24, right: 24, bottom: 16),
-    child: Container(
+    child: SizedBox(
       width: double.infinity,
       child: Text(
         "투자 중인 상품",
@@ -82,4 +80,3 @@ Widget _buildHoldingProductsString() {
     ),
   );
 }
-

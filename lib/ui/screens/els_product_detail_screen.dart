@@ -1,13 +1,14 @@
 import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/data/models/dtos/summarized_user_holding_dto.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
+import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/ui/views/add_holding_product_modal.dart';
 import 'package:elswhere/ui/views/els_product_detail_view.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../../data/models/dtos/response_single_product_dto.dart';
-
 
 class ELSProductDetailScreen extends StatefulWidget {
   const ELSProductDetailScreen({super.key});
@@ -17,29 +18,33 @@ class ELSProductDetailScreen extends StatefulWidget {
 }
 
 class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
+  late UserInfoProvider userProvider;
+  late ELSProductProvider productProvider;
   bool isLiked = false;
+  bool isBookmarked = false;
+  bool isHeld = false;
+
+  @override
+  void initState() {
+    super.initState();
+    userProvider = Provider.of<UserInfoProvider>(context, listen: false);
+    productProvider = Provider.of<ELSProductProvider>(context, listen: false);
+  }
 
   void changeLiked() => setState(() => isLiked = !isLiked);
   // void changeBookmarked() => setState(() => isBookmarked = !isBookmarked);
   void changeBookmarked() async {
-    final productProvider = Provider.of<ELSProductProvider>(context, listen: false);
     ResponseSingleProductDto? product = productProvider.product;
-    int? interestedId = productProvider.interestedId;
     bool isBookmarked = productProvider.isBookmarked;
     bool result;
-    // print(interestedId);
     if (isBookmarked == false) {
-      print("관심 등록합니다.");
-      // print(product!.id);
       result = await productProvider.registerInterested(product!.id);
     } else {
-      print("관심 해지합니다.");
       result = await productProvider.deleteFromInterested();
     }
 
     setState(() {
       isBookmarked = productProvider.isBookmarked;
-      // isBookmarked = !isBookmarked;
     });
     if (result) {
       Fluttertoast.showToast(msg: isBookmarked ? '관심 상품에 등록했습니다.' : '관심 상품에서 제거했습니다.', toastLength: Toast.LENGTH_SHORT);
@@ -48,129 +53,191 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
     }
   }
 
+  void _checkIsHeld() {
+    List<SummarizedUserHoldingDto> holdingProducts = userProvider.holdingProducts ?? [];
+    productProvider.checkisHeld(holdingProducts);
+  }
+
+  void _showModalBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => const AddHoldingProductModal(),
+    );
+  }
+
+  void _changeHeld() {
+    final isHeld = productProvider.isHeld;
+    if (!isHeld) {
+      _showModalBottomSheet();
+    } else {
+      showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) => _buildcheckDialog(),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<ELSProductProvider>(
       builder: (context, productProvider, child) {
-        final isBookmarked = productProvider.isBookmarked;
+        isBookmarked = productProvider.isBookmarked;
+        isHeld = productProvider.isHeld;
 
         return Scaffold(
           backgroundColor: AppColors.backgroundGray,
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(72),
-            child: Padding(
-              padding: edgeInsetsAll8,
-              child: AppBar(
-                backgroundColor: AppColors.backgroundGray,
-                leading: IconButton(
-                  icon: const Icon(Icons.arrow_back_rounded),
-                  onPressed: () => Navigator.pop(context),
-                ),
-                actions: [
-                  IconButton(
-                    icon: CircleAvatar(
-                      backgroundColor: AppColors.contentWhite,
-                      child: isLiked
-                          ? const Icon(Icons.favorite, color: AppColors.contentRed)
-                          : const Icon(Icons.favorite_border_outlined),
-                    ),
-                    onPressed: changeLiked,
-                  ),
-                  IconButton(
-                    icon: CircleAvatar(
-                      backgroundColor: AppColors.contentWhite,
-                      child: isBookmarked
-                          ? const Icon(Icons.bookmark, color: AppColors.contentYellow)
-                          : const Icon(Icons.bookmark_border_outlined),
-                    ),
-                    onPressed: changeBookmarked,
-                  ),
-                  IconButton(
-                    icon: const CircleAvatar(
-                      backgroundColor: AppColors.contentWhite,
-                      child: const Icon(Icons.add),
-                    ),
-                    onPressed: () {
-                      Fluttertoast.showToast(msg: '추후 업데이트를 통해 제공될 예정입니다.', toastLength: Toast.LENGTH_SHORT);
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-          body: ELSProductDetailView(),
+          appBar: _buildAppBar(),
+          body: const ELSProductDetailView(),
         );
       },
     );
-
-    // return Scaffold(
-    //   backgroundColor: AppColors.backgroundGray,
-    //   appBar: PreferredSize(
-    //     preferredSize: const Size.fromHeight(72),
-    //     child: Padding(
-    //       padding: edgeInsetsAll8,
-    //       child: AppBar(
-    //         backgroundColor: AppColors.backgroundGray,
-    //         leading: IconButton(
-    //           icon: const Icon(Icons.arrow_back_rounded),
-    //           onPressed: () => Navigator.pop(context),
-    //         ),
-    //         actions: [
-    //           IconButton(
-    //             icon: CircleAvatar(
-    //               backgroundColor: AppColors.contentWhite,
-    //               child: isLiked
-    //                   ? const Icon(Icons.favorite, color: AppColors.contentRed)
-    //                   : const Icon(Icons.favorite_border_outlined),
-    //             ),
-    //             onPressed: changeLiked,
-    //           ),
-    //           IconButton(
-    //             icon: CircleAvatar(
-    //               backgroundColor: AppColors.contentWhite,
-    //               child: isBookmarked
-    //                   ? const Icon(Icons.bookmark, color: AppColors.contentYellow)
-    //                   : const Icon(Icons.bookmark_border_outlined),
-    //             ),
-    //             onPressed: changeBookmarked,
-    //           ),
-    //           IconButton(
-    //             icon: const CircleAvatar(
-    //               backgroundColor: AppColors.contentWhite,
-    //               child: const Icon(Icons.add),
-    //             ),
-    //             onPressed: () {},
-    //           ),
-    //
-    //         ],
-    //       ),
-    //     ),
-    //   ),
-    //   body: SingleChildScrollView(
-    //     child: ELSProductDetailView(),
-    //   ),
-    // );
   }
 
-  Widget _buildCompanyCard(BoxConstraints constraints) {
-    final height = constraints.maxHeight;
-    final width = constraints.maxWidth;
-    return SizedBox(
-      height: height / 6,
-      width: width / 2 - 30,
-      child: Card(
-        elevation: 5,
-        shape: RoundedRectangleBorder(borderRadius: borderRadiusCircular10),
-        color: AppColors.blues2,
-        child: Container(
-          padding: edgeInsetsAll16,
+  Dialog _buildcheckDialog() {
+    return Dialog(
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: SizedBox(
+        height: 140,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 28, 20, 20),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Hello'),
+              Text(
+                '투자 정보를 삭제하시겠어요?',
+                style: textTheme.headlineMedium!.copyWith(
+                  color: Colors.black,
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        decoration: ShapeDecoration(
+                          color: const Color(0xFFE6E7E8),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            '취소',
+                            style: textTheme.headlineSmall!.copyWith(
+                              color: AppColors.titleGray,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 4,
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () async {
+                        Navigator.pop(context);
+
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
+                        );
+
+                        final result = await userProvider.deleteHoldingProduct(productProvider.holdingId!);
+
+                        if (mounted) Navigator.pop(context);
+
+                        if (result) {
+                          Fluttertoast.showToast(msg: '상품이 삭제되었습니다.', toastLength: Toast.LENGTH_SHORT);
+                          final holdingProducts = userProvider.holdingProducts ?? [];
+                          productProvider.checkisHeld(holdingProducts);
+                        } else {
+                          Fluttertoast.showToast(msg: '문제가 발생했습니다. 다시 시도해주세요.', toastLength: Toast.LENGTH_SHORT);
+                        }
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        decoration: ShapeDecoration(
+                          color: AppColors.contentRed,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            '확인',
+                            style: textTheme.headlineSmall!.copyWith(
+                              color: AppColors.contentWhite,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  PreferredSize _buildAppBar() {
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(72),
+      child: Padding(
+        padding: edgeInsetsAll8,
+        child: AppBar(
+          backgroundColor: AppColors.backgroundGray,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_rounded),
+            onPressed: () => Navigator.pop(context),
+          ),
+          actions: [
+            IconButton(
+              icon: CircleAvatar(
+                backgroundColor: AppColors.contentWhite,
+                child: isLiked ? const Icon(Icons.favorite, color: AppColors.contentRed) : const Icon(Icons.favorite_border_outlined),
+              ),
+              onPressed: changeLiked,
+            ),
+            IconButton(
+              icon: CircleAvatar(
+                backgroundColor: AppColors.contentWhite,
+                child: isBookmarked ? const Icon(Icons.bookmark, color: AppColors.contentYellow) : const Icon(Icons.bookmark_border_outlined),
+              ),
+              onPressed: changeBookmarked,
+            ),
+            IconButton(
+              icon: CircleAvatar(
+                backgroundColor: isHeld ? AppColors.mainBlue : AppColors.contentWhite,
+                child: isHeld ? const Icon(Icons.check, color: AppColors.contentWhite) : const Icon(Icons.add),
+              ),
+              onPressed: _changeHeld,
+              // () {
+              //   // Fluttertoast.showToast(msg: '추후 업데이트를 통해 제공될 예정입니다.', toastLength: Toast.LENGTH_SHORT);
+              // },
+            ),
+          ],
         ),
       ),
     );

@@ -15,8 +15,8 @@ class AddHoldingProductModal extends StatefulWidget {
 }
 
 class _AddHoldingProductModalState extends State<AddHoldingProductModal> {
-  ELSProductProvider? productProvider;
-  UserInfoProvider? userProvider;
+  late ELSProductProvider productProvider;
+  late UserInfoProvider userProvider;
   final TextEditingController _textEditingController = TextEditingController();
   bool disabled = true;
   FocusNode focusNode = FocusNode();
@@ -24,9 +24,9 @@ class _AddHoldingProductModalState extends State<AddHoldingProductModal> {
   @override
   void initState() {
     super.initState();
-    disabled = _textEditingController.text.isEmpty || _textEditingController.text == '0';
     productProvider = Provider.of<ELSProductProvider>(context, listen: false);
     userProvider = Provider.of<UserInfoProvider>(context, listen: false);
+    disabled = _textEditingController.text.isEmpty || _textEditingController.text == '0';
   }
 
   void onTapOutside(FocusNode focusNode) {
@@ -37,6 +37,34 @@ class _AddHoldingProductModalState extends State<AddHoldingProductModal> {
     setState(() {
       disabled = _textEditingController.text.isEmpty || _textEditingController.text == '0';
     });
+  }
+
+  void onTapSaveButton() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+
+    final result = await userProvider.addHoldingProduct(RequestCreateHoldingDto(
+      productId: productProvider.product!.id,
+      price: double.parse(_textEditingController.text.replaceAll(RegExp(r'[^0-9]'), '')),
+    ));
+
+    if (mounted) Navigator.pop(context);
+
+    if (result) {
+      Fluttertoast.showToast(msg: '저장되었습니다.', toastLength: Toast.LENGTH_SHORT);
+      final holdingProducts = userProvider.holdingProducts ?? [];
+      productProvider.checkisHeld(holdingProducts);
+      if (mounted) Navigator.pop(context);
+    } else {
+      Fluttertoast.showToast(msg: '저장에 실패했습니다. 다시 시도해주세요.', toastLength: Toast.LENGTH_SHORT);
+    }
   }
 
   @override
@@ -61,70 +89,7 @@ class _AddHoldingProductModalState extends State<AddHoldingProductModal> {
             children: [
               _buildModalTitle(),
               _buildModalBody(),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: PriceTextField(focusNode: focusNode, controller: _textEditingController, onChanged: onChanged),
-                    ),
-                    const SizedBox(width: 8),
-                    GestureDetector(
-                      onTap: disabled
-                        ? () => Fluttertoast.showToast(msg: '올바른 금액을 입력해주세요.', toastLength: Toast.LENGTH_SHORT)
-                        : null,
-                      child: ElevatedButton(
-                        onPressed: disabled
-                          ? null
-                          : () async {
-                              showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder: (BuildContext context) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                },
-                              );
-
-                              final result = await userProvider!.addHoldingProduct(
-                                RequestCreateHoldingDto(
-                                  productId: productProvider!.product!.id,
-                                  price: double.parse(_textEditingController.text.replaceAll(RegExp(r'[^0-9]'), '')),
-                                )
-                              );
-
-                              Navigator.pop(context);
-
-                              if (result) {
-                                Fluttertoast.showToast(msg: '저장되었습니다.', toastLength: Toast.LENGTH_SHORT);
-                                Navigator.pop(context);
-                              } else {
-                                Fluttertoast.showToast(msg: '저장에 실패했습니다. 다시 시도해주세요.', toastLength: Toast.LENGTH_SHORT);
-                              }
-                            }
-                        ,
-                        style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          backgroundColor: AppColors.mainBlue,
-                          disabledBackgroundColor: const Color(0xFFE6E7E8),
-                          padding: edgeInsetsAll16,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                        ),
-                        child: Text(
-                          '저장',
-                          style: textTheme.labelSmall!.copyWith(
-                            color: disabled
-                              ? const Color(0xFFACB2B5)
-                              : AppColors.contentWhite,
-                            fontWeight: FontWeight.w600,
-                          )
-                        )
-                      ),
-                    )
-                  ],
-                ),
-              ),
+              _buildTextField(),
             ],
           ),
         ),
@@ -134,36 +99,39 @@ class _AddHoldingProductModalState extends State<AddHoldingProductModal> {
 
   Widget _buildModalTitle() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-              '상품 추가',
-              style: textTheme.headlineMedium
-          ),
-          GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: const Icon(Icons.close, color: Color(0xFFACB2B5),),
-          ),
-        ],
-      )
-    );
+        padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('상품 추가', style: textTheme.headlineMedium),
+            GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: const Icon(
+                Icons.close,
+                color: Color(0xFFACB2B5),
+              ),
+            ),
+          ],
+        ));
   }
 
   Widget _buildModalBody() {
-    final productName = productProvider!.product!.name;
+    final productName = productProvider.product!.name;
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final Widget textWidget = _checkTextOverflow(productName, constraints.maxWidth - 48);
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24,),
+    return LayoutBuilder(builder: (context, constraints) {
+      final Widget textWidget = _checkTextOverflow(productName, constraints.maxWidth - 48);
+      return Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 8,
+            horizontal: 24,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               textWidget,
-              const SizedBox(height: 4,),
+              const SizedBox(
+                height: 4,
+              ),
               Text(
                 '얼마나 투자하셨나요?',
                 style: textTheme.labelMedium!.copyWith(
@@ -171,9 +139,41 @@ class _AddHoldingProductModalState extends State<AddHoldingProductModal> {
                 ),
               )
             ],
+          ));
+    });
+  }
+
+  Widget _buildTextField() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+      child: Row(
+        children: [
+          Expanded(
+            child: PriceTextField(focusNode: focusNode, controller: _textEditingController, onChanged: onChanged),
+          ),
+          const SizedBox(width: 8),
+          GestureDetector(
+            onTap: disabled ? () => Fluttertoast.showToast(msg: '올바른 금액을 입력해주세요.', toastLength: Toast.LENGTH_SHORT) : null,
+            child: ElevatedButton(
+              onPressed: disabled ? null : onTapSaveButton,
+              style: ElevatedButton.styleFrom(
+                elevation: 0,
+                backgroundColor: AppColors.mainBlue,
+                disabledBackgroundColor: const Color(0xFFE6E7E8),
+                padding: edgeInsetsAll16,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              child: Text(
+                '저장',
+                style: textTheme.labelSmall!.copyWith(
+                  color: disabled ? const Color(0xFFACB2B5) : AppColors.contentWhite,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
           )
-        );
-      }
+        ],
+      ),
     );
   }
 
@@ -208,9 +208,7 @@ class _AddHoldingProductModalState extends State<AddHoldingProductModal> {
     return Row(
       children: [
         Text(
-          isOverflowing
-            ? displayedText
-            : productProvider!.product!.name,
+          isOverflowing ? displayedText : productProvider.product!.name,
           style: textTheme.labelMedium!.copyWith(
             color: AppColors.mainBlue,
           ),

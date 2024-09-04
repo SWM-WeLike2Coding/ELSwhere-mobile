@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 sealed class Assets {
   static const String fontFamilyPretendard = "Pretendard";
@@ -144,13 +143,13 @@ sealed class AppColors {
 const textTheme = TextTheme(
   bodyLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.28),
   bodyMedium: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.28),
-  bodySmall: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.28),
+  bodySmall: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.28, fontSize: 14, fontWeight: FontWeight.w500),
 
   displayLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.28, fontSize: 24, fontWeight: FontWeight.w700),
   displayMedium: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.28, fontSize: 18),
   displaySmall: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.28, fontSize: 12),
 
-  headlineLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.28, fontWeight: FontWeight.w700),
+  headlineLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.28, fontSize: 18, fontWeight: FontWeight.w600),
   headlineMedium: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.28, fontSize: 18, fontWeight: FontWeight.w600), // 앱 바 타이틀
   headlineSmall: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.28, fontSize: 16, fontWeight: FontWeight.w500),
 
@@ -158,8 +157,8 @@ const textTheme = TextTheme(
   labelMedium: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.28, fontSize: 17, fontWeight: FontWeight.w500),
   labelSmall: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.28, fontSize: 12, fontWeight: FontWeight.w500),
 
-  titleLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.28, fontWeight: FontWeight.w600),
-  titleMedium: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.28),
+  titleLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.28, fontSize: 24, fontWeight: FontWeight.w600),
+  titleMedium: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.28, ),
   titleSmall: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.28),
 );
 
