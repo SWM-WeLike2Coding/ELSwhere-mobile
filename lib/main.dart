@@ -23,6 +23,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'firebase_options.dart';
 import 'package:firebase_in_app_messaging/firebase_in_app_messaging.dart';
 
@@ -47,10 +48,10 @@ Future<void> initApp() async {
   //   .onError((err) {
   //
   //   });
-  print(fcmToken);
+  // print(fcmToken);
 
-  await initPermissionSettings();
-  await setPermissionGranted();
+  // await initPermissionSettings();
+  // await setPermissionGranted();
 
   await dotenv.load(fileName: ".env");
   baseUrl = dotenv.env['ELS_BASE_URL']!;
@@ -89,30 +90,26 @@ Future<void> initPermissionSettings() async {
 
 Future<void> setPermissionGranted() async {
   // Android
-  final bool? grantedAndroid = await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-      ?.requestNotificationsPermission();
+  final bool? grantedAndroid = await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestNotificationsPermission();
 
   // iOS
-  final bool? grantedIOS = await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
-      ?.requestPermissions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
+  final bool? grantedIOS = await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
 
   if (Platform.isIOS) {
-
-  } else if (Platform.isAndroid) {
-
-  }
+  } else if (Platform.isAndroid) {}
 }
 
 class ELSwhere extends StatelessWidget {
   late final ProductService _productService;
   late final UserService _userService;
   late final YFinanceService _yFinanceService;
+
+  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
 
   ELSwhere({super.key}) {
     dio = DioClient.createDio();
@@ -143,33 +140,30 @@ class ELSwhere extends StatelessWidget {
           Locale('en', ''),
           Locale('ko', ''),
         ],
+        navigatorObservers: [observer],
         title: appName,
         theme: ThemeData(
-          primarySwatch: MaterialColorBuilder.createMaterialColor(AppColors.mainBlue),
-          primaryColor: AppColors.mainBlue,
-          colorScheme: ColorScheme.fromSwatch(
-            primarySwatch: MaterialColorBuilder.createMaterialColor(Colors.white),
-          ),
-          scaffoldBackgroundColor: AppColors.contentWhite,
-          textTheme: textTheme,
-          buttonTheme: const ButtonThemeData(
-            buttonColor: AppColors.mainBlue,
-            textTheme: ButtonTextTheme.primary,
-          ),
-          appBarTheme: const AppBarTheme(
-            backgroundColor: AppColors.contentWhite,
-          ),
-          bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-            selectedItemColor: AppColors.mainBlue,
-            backgroundColor: AppColors.contentWhite,
-            landscapeLayout: BottomNavigationBarLandscapeLayout.linear
-          ),
-          switchTheme: const SwitchThemeData(
-            trackColor: WidgetStatePropertyAll(AppColors.mainBlue),
-            trackOutlineColor: WidgetStatePropertyAll(AppColors.contentGray),
-            thumbColor: WidgetStatePropertyAll(AppColors.contentWhite),
-          )
-        ),
+            primarySwatch: MaterialColorBuilder.createMaterialColor(AppColors.mainBlue),
+            primaryColor: AppColors.mainBlue,
+            colorScheme: ColorScheme.fromSwatch(
+              primarySwatch: MaterialColorBuilder.createMaterialColor(Colors.white),
+            ),
+            scaffoldBackgroundColor: AppColors.contentWhite,
+            textTheme: textTheme,
+            buttonTheme: const ButtonThemeData(
+              buttonColor: AppColors.mainBlue,
+              textTheme: ButtonTextTheme.primary,
+            ),
+            appBarTheme: const AppBarTheme(
+              backgroundColor: AppColors.contentWhite,
+            ),
+            bottomNavigationBarTheme:
+                const BottomNavigationBarThemeData(selectedItemColor: AppColors.mainBlue, backgroundColor: AppColors.contentWhite, landscapeLayout: BottomNavigationBarLandscapeLayout.linear),
+            switchTheme: const SwitchThemeData(
+              trackColor: WidgetStatePropertyAll(AppColors.mainBlue),
+              trackOutlineColor: WidgetStatePropertyAll(AppColors.contentGray),
+              thumbColor: WidgetStatePropertyAll(AppColors.contentWhite),
+            )),
         home: SplashScreen(),
       ),
     );
