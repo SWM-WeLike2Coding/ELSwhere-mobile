@@ -14,9 +14,9 @@ class InvestmentPropensityScreen extends StatefulWidget {
 }
 
 class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen> {
-  int doesUserHaveExperience = -1;     // 1이 경험 있음, 0은 없음
-  int preferredInvestmentType = -1;    // 0: 1년미만, 1: 1~2년, 2: 3년이상
-  int riskTakingType = -1;             // 0이 위험 감수형, 1은 안전추구형
+  int doesUserHaveExperience = -1; // 1이 경험 있음, 0은 없음
+  int preferredInvestmentType = -1; // 0: 1년미만, 1: 1~2년, 2: 3년이상
+  int riskTakingType = -1; // 0이 위험 감수형, 1은 안전추구형
 
   bool _isAgreeBtnChecked = false;
 
@@ -54,13 +54,13 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
         } else {
           preferredInvestmentType = 0;
         }
-      } else if (text == "1~2년"){
+      } else if (text == "1~2년") {
         if (preferredInvestmentType == 1) {
           preferredInvestmentType = -1;
         } else {
           preferredInvestmentType = 1;
         }
-      } else if (text == "3년 이상"){
+      } else if (text == "3년 이상") {
         if (preferredInvestmentType == 2) {
           preferredInvestmentType = -1;
         } else {
@@ -126,30 +126,28 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(72),
+        preferredSize: const Size.fromHeight(72),
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               border: Border(
                   bottom: BorderSide(
-                    color: AppColors.backgroundGray,
-                    width: 1,
-                  )
-              )
-          ),
+            color: AppColors.backgroundGray,
+            width: 1,
+          ))),
           child: AppBar(
             leading: Padding(
               padding: const EdgeInsets.only(left: 24.0), // 좌측 패딩을 추가
               child: Align(
                 alignment: Alignment.center, // 아이콘을 수직 가운데 정렬
                 child: IconButton(
-                  icon: Icon(Icons.arrow_back),
+                  icon: const Icon(Icons.arrow_back),
                   onPressed: () {
                     Navigator.pop(context);
                   },
                 ),
               ),
             ),
-            title: Text(
+            title: const Text(
               "투자성향",
               style: TextStyle(
                 fontWeight: FontWeight.w600,
@@ -164,20 +162,26 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
         children: [
           Expanded(
             child: Padding(
-              padding: EdgeInsets.all(24),
+              padding: const EdgeInsets.all(24),
               child: Column(
                 children: [
                   _buildInvestmentExperienceForm(),
-                  SizedBox(height: 24,),
+                  const SizedBox(
+                    height: 24,
+                  ),
                   _buildPreferredInvestmentPeriod(),
-                  SizedBox(height: 24,),
+                  const SizedBox(
+                    height: 24,
+                  ),
                   _buildRiskTakingAbilityForm(),
                 ],
               ),
             ),
           ),
           _buildAgreementCheckbox(),
-          SizedBox(height: 8,),
+          const SizedBox(
+            height: 8,
+          ),
           _buildBottomButton(),
         ],
       ),
@@ -185,18 +189,18 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
   }
 
   Widget _buildCustomButton(String text, int integerFlag, int buttonType) {
-    bool _isPressed = false;
+    bool isPressed = false;
     if (buttonType == 1) {
       if ((text == "있음" && integerFlag == 1) || (text == "없음" && integerFlag == 0)) {
-        _isPressed = true;
+        isPressed = true;
       }
     } else if (buttonType == 2) {
       if ((text == "1년 미만" && integerFlag == 0) || (text == "1~2년" && integerFlag == 1) || (text == "3년 이상" && integerFlag == 2)) {
-        _isPressed = true;
+        isPressed = true;
       }
     } else if (buttonType == 3) {
       if ((text == "위험감수형" && integerFlag == 0) || (text == "안전추구형" && integerFlag == 1)) {
-        _isPressed = true;
+        isPressed = true;
       }
     }
 
@@ -215,9 +219,7 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
           // width: double.infinity,
           height: 33,
           decoration: BoxDecoration(
-            color: _isPressed
-                ? Color(0xFF1C6BF9)
-                : Color(0xFFF5F6F6),
+            color: isPressed ? const Color(0xFF1C6BF9) : const Color(0xFFF5F6F6),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Center(
@@ -228,9 +230,7 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
                 fontWeight: FontWeight.w500,
                 height: 1.18,
                 letterSpacing: -0.28,
-                color: _isPressed
-                    ? Color(0xFFFFFFFF)
-                    : Color(0xFFACB2B5),
+                color: isPressed ? const Color(0xFFFFFFFF) : const Color(0xFFACB2B5),
               ),
             ),
           ),
@@ -240,19 +240,21 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
   }
 
   Widget _buildInvestmentExperienceForm() {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-              "1. ELS 상품 투자 경험"
+          const Text("1. ELS 상품 투자 경험"),
+          const SizedBox(
+            height: 12,
           ),
-          SizedBox(height: 12,),
           Row(
             children: [
               _buildCustomButton("있음", doesUserHaveExperience, 1),
-              SizedBox(width: 12,),
+              const SizedBox(
+                width: 12,
+              ),
               _buildCustomButton("없음", doesUserHaveExperience, 1),
             ],
           ),
@@ -262,21 +264,25 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
   }
 
   Widget _buildPreferredInvestmentPeriod() {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-              "2. 선호 투자 기간"
+          const Text("2. 선호 투자 기간"),
+          const SizedBox(
+            height: 12,
           ),
-          SizedBox(height: 12,),
           Row(
             children: [
               _buildCustomButton("1년 미만", preferredInvestmentType, 2),
-              SizedBox(width: 8,),
+              const SizedBox(
+                width: 8,
+              ),
               _buildCustomButton("1~2년", preferredInvestmentType, 2),
-              SizedBox(width: 8,),
+              const SizedBox(
+                width: 8,
+              ),
               _buildCustomButton("3년 이상", preferredInvestmentType, 2),
             ],
           ),
@@ -286,19 +292,21 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
   }
 
   Widget _buildRiskTakingAbilityForm() {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-              "3. 투자자 위험 감수 능력"
+          const Text("3. 투자자 위험 감수 능력"),
+          const SizedBox(
+            height: 12,
           ),
-          SizedBox(height: 12,),
           Row(
             children: [
               _buildCustomButton("위험감수형", riskTakingType, 3),
-              SizedBox(width: 12,),
+              const SizedBox(
+                width: 12,
+              ),
               _buildCustomButton("안전추구형", riskTakingType, 3),
             ],
           ),
@@ -318,14 +326,12 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
               _isAgreeBtnChecked = value ?? false;
             });
           },
-          checkColor: Color(0xFFFFFFFF),
-          activeColor: Color(0xFF1C6BF9),
+          checkColor: const Color(0xFFFFFFFF),
+          activeColor: const Color(0xFF1C6BF9),
         ),
         GestureDetector(
           onTap: _toggleCheckbox,
-          child: Text(
-              "투자자 정보 제공에 동의합니다."
-          ),
+          child: const Text("투자자 정보 제공에 동의합니다."),
         ),
       ],
     );
@@ -334,10 +340,10 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
   Widget _buildBottomButton() {
     final userInfoProvider = Provider.of<UserInfoProvider>(context, listen: false);
 
-    return Container(
+    return SizedBox(
       height: 100,
       child: Padding(
-        padding: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 32),
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 32),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -348,16 +354,17 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
                   opacity: _isAllConditionSatisfied() ? 1.0 : 0.4,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFFE6E7E8),
-                        disabledBackgroundColor: Color(0xFFE6E7E8),
+                        backgroundColor: const Color(0xFFE6E7E8),
+                        disabledBackgroundColor: const Color(0xFFE6E7E8),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
-                        )
-                    ),
-                    onPressed: _isAgreeBtnChecked? () {
-                      Navigator.pop(context);
-                    } : null,
-                    child: Text(
+                        )),
+                    onPressed: _isAgreeBtnChecked
+                        ? () {
+                            Navigator.pop(context);
+                          }
+                        : null,
+                    child: const Text(
                       '취소',
                       style: TextStyle(
                         fontSize: 16,
@@ -369,7 +376,9 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
                 ),
               ),
             ),
-            SizedBox(width: 4,),
+            const SizedBox(
+              width: 4,
+            ),
             Expanded(
               child: SizedBox(
                 height: double.infinity,
@@ -377,23 +386,24 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
                   opacity: _isAllConditionSatisfied() ? 1.0 : 0.4,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF1C6BF9),
-                        disabledBackgroundColor: Color(0xFF1C6BF9),
+                        backgroundColor: const Color(0xFF1C6BF9),
+                        disabledBackgroundColor: const Color(0xFF1C6BF9),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
-                        )
-                    ),
-                    onPressed: _isAllConditionSatisfied() ? () async {
-                      if (await userInfoProvider.changeInvestmentType(doesUserHaveExperience, preferredInvestmentType, riskTakingType)) {
-                        print("투자 타입 정보 저장 성공");
-                        Fluttertoast.showToast(msg: "성공적으로 저장되었습니다");
-                      } else {
-                        print("투자 타입 정보 저장 실패");
-                        Fluttertoast.showToast(msg: "투자 성형 정보 저장에 실패했습니다");
-                      }
-                      Navigator.of(context).pop();
-                    } : null,
-                    child: Text(
+                        )),
+                    onPressed: _isAllConditionSatisfied()
+                        ? () async {
+                            if (await userInfoProvider.changeInvestmentType(doesUserHaveExperience, preferredInvestmentType, riskTakingType)) {
+                              print("투자 타입 정보 저장 성공");
+                              Fluttertoast.showToast(msg: "성공적으로 저장되었습니다");
+                            } else {
+                              print("투자 타입 정보 저장 실패");
+                              Fluttertoast.showToast(msg: "투자 성형 정보 저장에 실패했습니다");
+                            }
+                            Navigator.of(context).pop();
+                          }
+                        : null,
+                    child: const Text(
                       '저장하기',
                       style: TextStyle(
                         fontSize: 16,
@@ -411,4 +421,3 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
     );
   }
 }
-

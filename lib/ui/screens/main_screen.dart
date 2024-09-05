@@ -6,6 +6,8 @@ import '../widgets/bottom_navigation_bar_widget.dart';
 import 'home_screen.dart';
 
 class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
+
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
@@ -15,9 +17,9 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   DateTime? lastPressed;
 
   final List<Widget> _pages = [
-    HomeScreen(),
+    const HomeScreen(),
     ProductScreen(),
-    MoreScreen(),
+    const MoreScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -29,15 +31,11 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   Future<bool> _onWillPop() async {
     final now = DateTime.now();
 
-    if (lastPressed == null ||
-        now.difference(lastPressed!) > const Duration(seconds: 2)) {
+    if (lastPressed == null || now.difference(lastPressed!) > const Duration(seconds: 2)) {
       lastPressed = now;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-            '한 번 더 누르면 종료됩니다.',
-            style: textTheme.displayMedium
-          ),
+          content: Text('한 번 더 누르면 종료됩니다.', style: textTheme.displayMedium),
           duration: const Duration(seconds: 2),
         ),
       );

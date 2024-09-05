@@ -26,30 +26,28 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
 
   PreferredSize _buildAppbar() {
     return PreferredSize(
-      preferredSize: Size.fromHeight(72),
+      preferredSize: const Size.fromHeight(72),
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             border: Border(
                 bottom: BorderSide(
-                  color: Color(0xFFF5F6F6),
-                  width: 1,
-                )
-            )
-        ),
+          color: Color(0xFFF5F6F6),
+          width: 1,
+        ))),
         child: AppBar(
           leading: Padding(
             padding: const EdgeInsets.only(left: 24.0), // 좌측 패딩을 추가
             child: Align(
               alignment: Alignment.center, // 아이콘을 수직 가운데 정렬
               child: IconButton(
-                icon: Icon(Icons.arrow_back),
+                icon: const Icon(Icons.arrow_back),
                 onPressed: () {
                   Navigator.pop(context);
                 },
               ),
             ),
           ),
-          title: Text(
+          title: const Text(
             "공지사항",
             style: TextStyle(
               fontWeight: FontWeight.w600,
@@ -62,20 +60,22 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
     );
   }
 
-  Widget _buildTopContent()  {
+  Widget _buildTopContent() {
     return Padding(
-      padding: EdgeInsets.only(top: 24, left: 24, right: 24, bottom: 16),
+      padding: const EdgeInsets.only(top: 24, left: 24, right: 24, bottom: 16),
       child: Row(
         children: [
-          SizedBox(width: 4,),
+          const SizedBox(
+            width: 4,
+          ),
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Color(0xFFF06B23),
             ),
             width: 18,
             height: 18,
-            child: Center(
+            child: const Center(
               child: Text(
                 "N",
                 style: TextStyle(
@@ -88,8 +88,10 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
               ),
             ),
           ),
-          SizedBox(width: 8,),
-          Text(
+          const SizedBox(
+            width: 8,
+          ),
+          const Text(
             "새로운 소식",
             style: TextStyle(
               fontWeight: FontWeight.w600,

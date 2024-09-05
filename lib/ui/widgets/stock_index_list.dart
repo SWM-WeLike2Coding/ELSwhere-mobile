@@ -33,7 +33,6 @@ class _StockIndexListItemState extends State<StockIndexList> {
           List<double> priceList = tickerSymbolProvider.price;
           List<double> rateList = tickerSymbolProvider.rate;
 
-
           return Column(
             children: [
               ...stockIndexList.asMap().entries.map((entry) {
@@ -41,9 +40,9 @@ class _StockIndexListItemState extends State<StockIndexList> {
                 String stockIndex = entry.value;
                 Color getColor(double rate) {
                   if (rate > 0) {
-                    return Color(0xFFEE5648);
+                    return const Color(0xFFEE5648);
                   } else if (rate < 0) {
-                    return Color(0xFF3181F7);
+                    return const Color(0xFF3181F7);
                   } else {
                     return AppColors.textGray;
                   }
@@ -51,7 +50,9 @@ class _StockIndexListItemState extends State<StockIndexList> {
 
                 return Column(
                   children: [
-                    const SizedBox(height: 8,),
+                    const SizedBox(
+                      height: 8,
+                    ),
                     Row(
                       children: [
                         SizedBox(
@@ -64,7 +65,9 @@ class _StockIndexListItemState extends State<StockIndexList> {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 8,),
+                        const SizedBox(
+                          width: 8,
+                        ),
                         Text(
                           stockIndex,
                           style: const TextStyle(
@@ -80,18 +83,17 @@ class _StockIndexListItemState extends State<StockIndexList> {
                           priceFormat.format(priceList[index]),
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
-                            fontSize: 14, 
+                            fontSize: 14,
                             height: 1.18,
                             letterSpacing: -0.28,
                             color: getColor(rateList[index]),
                           ),
                         ),
-                        SizedBox(width: 8,),
+                        const SizedBox(
+                          width: 8,
+                        ),
                         Text(
-                          '${rateList[index] > 0
-                              ? '+'
-                              : ''}${tickerSymbolProvider.rate[index]
-                              .toStringAsPrecision(2)}%',
+                          '${rateList[index] > 0 ? '+' : ''}${tickerSymbolProvider.rate[index].toStringAsPrecision(2)}%',
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
@@ -102,8 +104,13 @@ class _StockIndexListItemState extends State<StockIndexList> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8,),
-                    if (index != stockIndexList.length - 1) const SizedBox(height: 16,),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    if (index != stockIndexList.length - 1)
+                      const SizedBox(
+                        height: 16,
+                      ),
                   ],
                 );
               }),

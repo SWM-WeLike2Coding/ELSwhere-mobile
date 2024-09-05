@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/data/providers/issuer_provider.dart';
@@ -35,13 +33,15 @@ class InitialScreen extends StatelessWidget {
                   const CircularProgressIndicator(
                     color: AppColors.mainBlue,
                   ),
-                  const SizedBox(height: 16,),
+                  const SizedBox(
+                    height: 16,
+                  ),
                   Text(
                     '데이터 로딩중 입니다...',
                     style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                      color: AppColors.contentBlack,
-                      fontSize: 12,
-                    ),
+                          color: AppColors.contentBlack,
+                          fontSize: 12,
+                        ),
                   ),
                 ],
               ),
@@ -50,7 +50,7 @@ class InitialScreen extends StatelessWidget {
         } else if (snapshot.hasError) {
           return const Center(child: Text('An error occurred!'));
         } else {
-          return MainScreen();
+          return const MainScreen();
         }
       },
     );

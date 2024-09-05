@@ -3,15 +3,12 @@ import 'package:elswhere/data/models/dtos/request_product_search_dto.dart';
 import 'package:elswhere/data/models/dtos/response_issuer_dto.dart';
 import 'package:elswhere/data/providers/els_products_provider.dart';
 import 'package:elswhere/data/providers/issuer_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 
 import '../../data/models/dtos/response_ticker_symbol_dto.dart';
 import '../../data/providers/ticker_symbol_provider.dart';
-
 
 class DetailSearchModal extends StatefulWidget {
   const DetailSearchModal({super.key});
@@ -27,10 +24,10 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
   final TextEditingController _firstBarrierController = TextEditingController();
   final TextEditingController _lastBarrierController = TextEditingController();
   final List<String> _chips = [];
-  List<ResponseTickerSymbolDto> _selectedTickers = [];
+  final List<ResponseTickerSymbolDto> _selectedTickers = [];
   List<ResponseTickerSymbolDto> _filteredTickers = [];
   List<ResponseIssuerDto> _issuerDTOList = [];
-  List<String> _issuerList = ['발행회사'];
+  final List<String> _issuerList = ['발행회사'];
   bool _isLoading = false;
 
   int? _equityCount;
@@ -44,12 +41,12 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
   bool _isStock = false;
   int _selectedTypeIndex = -1;
   String? _selectedIssuer;
-  List<String> _buttonLabels = ["스텝다운형", "리자드형", "월지급형", "기타"];
-  Map<int, String> _selectedDates = {0: "시작일", 1: "마감일"};
-  List<String> _initialDatePickerString = ["시작일", "마감일"];
+  final List<String> _buttonLabels = ["스텝다운형", "리자드형", "월지급형", "기타"];
+  final Map<int, String> _selectedDates = {0: "시작일", 1: "마감일"};
+  final List<String> _initialDatePickerString = ["시작일", "마감일"];
 
   Future<void> _getFilteredData() async {
-    String? equityType = null;
+    String? equityType;
     if (_isStock && _isIndex) {
       equityType = "MIX";
     } else if (_isIndex) {
@@ -57,11 +54,11 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
     } else if (_isStock) {
       equityType = "STOCK";
     } else {
-      equityType = null;  // 이거 바꿔줘야함
+      equityType = null; // 이거 바꿔줘야함
     }
 
     List<String> equityList = [];
-    for (int i = 0; i < _selectedTickers.length; i ++) {
+    for (int i = 0; i < _selectedTickers.length; i++) {
       equityList.add(_selectedTickers[i].equityName);
     }
     List<String> typeList = ["STEP_DOWN", "LIZARD", "MONTHLY_PAYMENT", "ETC"];
@@ -98,8 +95,8 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
   void _addTickerToSelected(ResponseTickerSymbolDto ticker) {
     setState(() {
       _selectedTickers.add(ticker);
-      _equityController.clear();  // Clear the text field after adding
-      _filteredTickers = [];  // Hide the list
+      _equityController.clear(); // Clear the text field after adding
+      _filteredTickers = []; // Hide the list
     });
   }
 
@@ -241,9 +238,9 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
 
     try {
       final provider = Provider.of<TickerSymbolProvider>(context, listen: false);
-      await provider.fetchTickers();  // 데이터 가져오기
+      await provider.fetchTickers(); // 데이터 가져오기
       setState(() {
-        _filteredTickers = provider.tickers;  // 초기 데이터 설정
+        _filteredTickers = provider.tickers; // 초기 데이터 설정
       });
     } catch (error) {
       print('Error fetching tickers: $error');
@@ -255,9 +252,9 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
 
     try {
       final issuerProvider = Provider.of<IssuerProvider>(context, listen: false);
-      await issuerProvider.fetchIssuers();  // 데이터 가져오기
+      await issuerProvider.fetchIssuers(); // 데이터 가져오기
       setState(() {
-        _issuerDTOList = issuerProvider.issuer;  // 초기 데이터 설정
+        _issuerDTOList = issuerProvider.issuer; // 초기 데이터 설정
       });
     } catch (error) {
       print('Error fetching tickers: $error');
@@ -267,7 +264,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
       });
     }
 
-    for (int i = 0; i < _issuerDTOList.length; i ++) {
+    for (int i = 0; i < _issuerDTOList.length; i++) {
       _issuerList.add(_issuerDTOList[i].issuer);
     }
   }
@@ -282,7 +279,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
   @override
   void dispose() {
     _equityController.removeListener(_onSearchTextChanged);
-    _equityController.dispose();  // 메모리 누수 방지를 위해 컨트롤러 해제
+    _equityController.dispose(); // 메모리 누수 방지를 위해 컨트롤러 해제
     super.dispose();
   }
 
@@ -299,7 +296,9 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 24,),
+                    const SizedBox(
+                      height: 24,
+                    ),
                     _buildSearchInput(),
                     Padding(
                       padding: const EdgeInsets.only(left: 24, right: 24),
@@ -340,13 +339,13 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                       decoration: const BoxDecoration(
                           border: Border(
                               bottom: BorderSide(
-                                color: Color(0xFFF5F6F6),
-                                width: 1,
-                              )
-                          )
-                      ),
+                        color: Color(0xFFF5F6F6),
+                        width: 1,
+                      ))),
                     ),
-                    const SizedBox(height: 16,),
+                    const SizedBox(
+                      height: 16,
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(left: 24, right: 24, top: 24),
                       child: _buildDropDowns(),
@@ -386,6 +385,13 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
             Navigator.pop(context);
             _getFilteredData();
           },
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            backgroundColor: const Color(0xFF1C6BF9),
+          ),
           child: const Text(
             '상품 검색',
             style: TextStyle(
@@ -394,18 +400,9 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
               color: Color(0xFFFFFFFF),
             ),
           ),
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            backgroundColor: const Color(0xFF1C6BF9),
-          ),
         ),
       ),
     );
-
-
   }
 
   Widget _buildSearchInput() {
@@ -467,7 +464,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                     print('Selected: ${ticker.equityName}');
                     // 선택된 항목을 _controller에 표시하고 리스트를 숨깁니다
                     _equityController.text = ticker.equityName;
-                    _filteredTickers = [];  // 리스트 숨기기
+                    _filteredTickers = []; // 리스트 숨기기
                     setState(() {
                       _addTickerToSelected(ticker);
                     }); // 상태 업데이트
@@ -492,7 +489,9 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
             color: Color(0xFF595E62),
           ),
         ),
-        const SizedBox(height: 12,),
+        const SizedBox(
+          height: 12,
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -508,22 +507,24 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                       child: DropdownButton<String>(
                         isExpanded: true,
                         underline: Container(),
-                        hint: _equityCount == null ?
-                          const Padding(
-                            padding: EdgeInsets.only(left: 8),
-                            child: Text("기초자산 수", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: Color(0xFFACB2B5)),)
-                          ) :
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8),
-                            child: Text(
-                              "${_equityCount!}개",
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
-                                color: Color(0xFF000000),
+                        hint: _equityCount == null
+                            ? const Padding(
+                                padding: EdgeInsets.only(left: 8),
+                                child: Text(
+                                  "기초자산 수",
+                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: Color(0xFFACB2B5)),
+                                ))
+                            : Padding(
+                                padding: const EdgeInsets.only(left: 8),
+                                child: Text(
+                                  "${_equityCount!}개",
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14,
+                                    color: Color(0xFF000000),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
                         items: ['기초자산 수', '1개', '2개', '3개'].map((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
@@ -545,7 +546,9 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                 ],
               ),
             ),
-            const SizedBox(width: 12,),
+            const SizedBox(
+              width: 12,
+            ),
             Expanded(
               child: Row(
                 children: [
@@ -558,22 +561,24 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                       child: DropdownButton<String>(
                         isExpanded: true,
                         underline: Container(),
-                        hint: _selectedIssuer == null ?
-                          const Padding(
-                            padding: EdgeInsets.only(left: 8),
-                            child: Text("발행회사", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: Color(0xFFACB2B5)),)
-                          ) :
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8),
-                            child: Text(
-                              _selectedIssuer!,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
-                                color: Color(0xFF000000),
+                        hint: _selectedIssuer == null
+                            ? const Padding(
+                                padding: EdgeInsets.only(left: 8),
+                                child: Text(
+                                  "발행회사",
+                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: Color(0xFFACB2B5)),
+                                ))
+                            : Padding(
+                                padding: const EdgeInsets.only(left: 8),
+                                child: Text(
+                                  _selectedIssuer!,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14,
+                                    color: Color(0xFF000000),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
                         items: _issuerList.map((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
@@ -600,7 +605,9 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
             ),
           ],
         ),
-        const SizedBox(height: 6,),
+        const SizedBox(
+          height: 6,
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -616,22 +623,24 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                       child: DropdownButton<String>(
                         isExpanded: true,
                         underline: Container(),
-                        hint: _subscriptionPeriod == null ?
-                          const Padding(
-                            padding: EdgeInsets.only(left: 8),
-                              child: Text("상품가입기간", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: Color(0xFFACB2B5)),)
-                          ) :
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8),
-                            child: Text(
-                              "${_subscriptionPeriod!}년",
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
-                                color: Color(0xFF000000),
+                        hint: _subscriptionPeriod == null
+                            ? const Padding(
+                                padding: EdgeInsets.only(left: 8),
+                                child: Text(
+                                  "상품가입기간",
+                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: Color(0xFFACB2B5)),
+                                ))
+                            : Padding(
+                                padding: const EdgeInsets.only(left: 8),
+                                child: Text(
+                                  "${_subscriptionPeriod!}년",
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14,
+                                    color: Color(0xFF000000),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
                         items: ['상품가입기간', '1년', '2년', '3년'].map((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
@@ -653,7 +662,9 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                 ],
               ),
             ),
-            const SizedBox(width: 12,),
+            const SizedBox(
+              width: 12,
+            ),
             Expanded(
               child: Row(
                 children: [
@@ -666,22 +677,24 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                       child: DropdownButton<String>(
                         isExpanded: true,
                         underline: Container(),
-                        hint: _redemptionInterval == null ?
-                          const Padding(
-                            padding: EdgeInsets.only(left: 8),
-                              child: Text("상환일간격", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: Color(0xFFACB2B5)),)
-                          ) :
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8),
-                            child: Text(
-                              "${_redemptionInterval!}개월",
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
-                                color: Color(0xFF000000),
+                        hint: _redemptionInterval == null
+                            ? const Padding(
+                                padding: EdgeInsets.only(left: 8),
+                                child: Text(
+                                  "상환일간격",
+                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: Color(0xFFACB2B5)),
+                                ))
+                            : Padding(
+                                padding: const EdgeInsets.only(left: 8),
+                                child: Text(
+                                  "${_redemptionInterval!}개월",
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14,
+                                    color: Color(0xFF000000),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
                         items: ['상환일간격', '3개월', '4개월', '6개월'].map((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
@@ -705,7 +718,9 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
             ),
           ],
         ),
-        const SizedBox(height: 6,),
+        const SizedBox(
+          height: 6,
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -720,7 +735,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                   ],
                   decoration: InputDecoration(
                     hintText: "최대 KI 낙인배리어",
-                    hintStyle:  const TextStyle(
+                    hintStyle: const TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
                       color: Color(0xFFACB2B5),
@@ -736,7 +751,9 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                 ),
               ),
             ),
-            const SizedBox(width: 12,),
+            const SizedBox(
+              width: 12,
+            ),
             Expanded(
               child: TextField(
                 controller: _yieldController,
@@ -764,7 +781,9 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
             ),
           ],
         ),
-        const SizedBox(height: 6,),
+        const SizedBox(
+          height: 6,
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -779,7 +798,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                   ],
                   decoration: InputDecoration(
                     hintText: "1차상환 배리어",
-                    hintStyle:  const TextStyle(
+                    hintStyle: const TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
                       color: Color(0xFFACB2B5),
@@ -795,7 +814,9 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                 ),
               ),
             ),
-            const SizedBox(width: 12,),
+            const SizedBox(
+              width: 12,
+            ),
             Expanded(
               child: SizedBox(
                 child: TextField(
@@ -807,7 +828,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                   ],
                   decoration: InputDecoration(
                     hintText: "만기상환 배리어",
-                    hintStyle:  const TextStyle(
+                    hintStyle: const TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
                       color: Color(0xFFACB2B5),
@@ -858,15 +879,13 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                 },
                 child: Text(
                   "지수형",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: _isIndex ? const Color(0xFFFFFFFF) : const Color(0xFFACB2B5)
-                  ),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: _isIndex ? const Color(0xFFFFFFFF) : const Color(0xFFACB2B5)),
                 ),
               ),
             ),
-            const SizedBox(width: 12,),
+            const SizedBox(
+              width: 12,
+            ),
             Expanded(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -882,17 +901,15 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                 },
                 child: Text(
                   "종목형",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: _isStock ? const Color(0xFFFFFFFF) : const Color(0xFFACB2B5)
-                  ),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: _isStock ? const Color(0xFFFFFFFF) : const Color(0xFFACB2B5)),
                 ),
               ),
             )
           ],
         ),
-        const SizedBox(height: 6,),
+        const SizedBox(
+          height: 6,
+        ),
         const Text(
           "상품종류",
           style: TextStyle(
@@ -925,11 +942,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                 child: Text(
                   _getButtonText(index),
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: _selectedTypeIndex == index ? const Color(0xFFFFFFFF) : const Color(0xFFACB2B5)
-                  ),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: _selectedTypeIndex == index ? const Color(0xFFFFFFFF) : const Color(0xFFACB2B5)),
                 ),
               );
             },
@@ -937,8 +950,6 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
         )
       ],
     );
-
-
   }
 
   Widget _buildDateButtons() {
@@ -956,7 +967,9 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
         Row(
           children: [
             _buildDateButton(context, _initialDatePickerString[0], 0),
-            const SizedBox(width: 12,),
+            const SizedBox(
+              width: 12,
+            ),
             _buildDateButton(context, _initialDatePickerString[1], 1),
           ],
         )
@@ -982,11 +995,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
         onPressed: () => _handleDateSelection(context, index),
         child: Text(
           displayLabel,
-          style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: displayLabel != label ? const Color(0xFFFFFFFF) : const Color(0xFFACB2B5)
-          ),
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: displayLabel != label ? const Color(0xFFFFFFFF) : const Color(0xFFACB2B5)),
         ),
       ),
     );
@@ -1000,8 +1009,7 @@ class NumberRangeTextInputFormatter extends TextInputFormatter {
   NumberRangeTextInputFormatter({required this.min, required this.max});
 
   @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
     if (newValue.text.isEmpty) {
       return newValue;
     }

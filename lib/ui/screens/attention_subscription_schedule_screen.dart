@@ -68,8 +68,7 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
 
   @override
   Widget build(BuildContext context) {
-
-    return Consumer<ELSProductProvider> (
+    return Consumer<ELSProductProvider>(
       builder: (context, elsProductProvider, child) {
         var interestingProducts = Provider.of<ELSProductProvider>(context, listen: false).interestingProducts;
         Map<DateTime, List<ElsProductForScheduleDto>> tempScheduleMap = {};
@@ -86,46 +85,43 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
         // 나중에 여기에 보유 상품 관련 정보들도 DTO 변환해서 tempScheduleMap에 넣어줘야함!!!
 
         List<DateTime> sortedDates = tempScheduleMap.keys.toList()..sort();
-        Map<DateTime, List<ElsProductForScheduleDto>> _scheduleMap = { for (var key in sortedDates) key : tempScheduleMap[key]! };
+        Map<DateTime, List<ElsProductForScheduleDto>> scheduleMap = {for (var key in sortedDates) key: tempScheduleMap[key]!};
 
         if (_selectedDay != null) {
           print(_selectedDay);
           DateTime selectedDayOnlyDate = DateTime(_selectedDay!.year, _selectedDay!.month, _selectedDay!.day);
-          if (_scheduleMap.containsKey(selectedDayOnlyDate)) {
-            filteredScheduleMap[selectedDayOnlyDate] = _scheduleMap[selectedDayOnlyDate]!;
+          if (scheduleMap.containsKey(selectedDayOnlyDate)) {
+            filteredScheduleMap[selectedDayOnlyDate] = scheduleMap[selectedDayOnlyDate]!;
           }
         }
 
-        Map<DateTime, List<ElsProductForScheduleDto>> finalScheduleMap = _selectedDay == null ? _scheduleMap : filteredScheduleMap;
+        Map<DateTime, List<ElsProductForScheduleDto>> finalScheduleMap = _selectedDay == null ? scheduleMap : filteredScheduleMap;
         print(finalScheduleMap.values.toString());
-
 
         return Scaffold(
           appBar: PreferredSize(
-            preferredSize: Size.fromHeight(72),
+            preferredSize: const Size.fromHeight(72),
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   border: Border(
                       bottom: BorderSide(
-                        color: AppColors.backgroundGray,
-                        width: 1,
-                      )
-                  )
-              ),
+                color: AppColors.backgroundGray,
+                width: 1,
+              ))),
               child: AppBar(
                 leading: Padding(
                   padding: const EdgeInsets.only(left: 24.0), // 좌측 패딩을 추가
                   child: Align(
                     alignment: Alignment.center, // 아이콘을 수직 가운데 정렬
                     child: IconButton(
-                      icon: Icon(Icons.arrow_back),
+                      icon: const Icon(Icons.arrow_back),
                       onPressed: () {
                         Navigator.pop(context);
                       },
                     ),
                   ),
                 ),
-                title: Text(
+                title: const Text(
                   "관심 청약 일정",
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
@@ -140,12 +136,10 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildTwoGreyCards(context, _scheduleMap),
-                _buildScheduleCalendar(_scheduleMap),
-                if (_selectedDay == null)
-                  _buildSchedules(finalScheduleMap, false),
-                if (_selectedDay != null)
-                  _buildSchedules(finalScheduleMap, true),
+                _buildTwoGreyCards(context, scheduleMap),
+                _buildScheduleCalendar(scheduleMap),
+                if (_selectedDay == null) _buildSchedules(finalScheduleMap, false),
+                if (_selectedDay != null) _buildSchedules(finalScheduleMap, true),
               ],
             ),
           ),
@@ -153,7 +147,7 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
       },
     );
   }
-  
+
   Widget _buildGreyCard(BuildContext context, String text, int numItems, Map<DateTime, List<ElsProductForScheduleDto>> schedulMap) {
     return GestureDetector(
       onTap: () {
@@ -161,14 +155,14 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => RedemptionScheduleScreen(),
+              builder: (context) => const RedemptionScheduleScreen(),
             ),
           );
         } else {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => SubscriptionEndScheduleScreen(),
+              builder: (context) => const SubscriptionEndScheduleScreen(),
             ),
           );
         }
@@ -178,14 +172,16 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: Color(0xFFF5F6F6),
+          color: const Color(0xFFF5F6F6),
         ),
         child: Row(
           children: [
-            SizedBox(width: 16,),
+            const SizedBox(
+              width: 16,
+            ),
             Text(
               text,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 14,
                 height: 1.18,
@@ -193,18 +189,18 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
                 color: Color(0xFF434648),
               ),
             ),
-            Spacer(),
+            const Spacer(),
             Container(
               width: 28,
               height: 28,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 color: Color(0xFF000000),
               ),
               child: Center(
                 child: Text(
-                  "${numItems}",
-                  style: TextStyle(
+                  "$numItems",
+                  style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     height: 1.18,
@@ -214,7 +210,9 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
                 ),
               ),
             ),
-            SizedBox(width: 16,),
+            const SizedBox(
+              width: 16,
+            ),
           ],
         ),
       ),
@@ -228,9 +226,9 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
     int numAttentionProducts = 0;
     int numHoldingProducts = 0;
 
-    for (int i = 0; i < dates.length; i ++) {
+    for (int i = 0; i < dates.length; i++) {
       var tempList = scheduleMap[dates[i]];
-      for (int j = 0; j < tempList!.length; j ++) {
+      for (int j = 0; j < tempList!.length; j++) {
         if (!isTodayOrFuture(tempList[j].subscriptionEndDate)) {
           continue;
         }
@@ -251,12 +249,14 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
     }
 
     return Padding(
-      padding: EdgeInsets.all(24),
+      padding: const EdgeInsets.all(24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildGreyCard(context, "가입 상품 중 상환 일정", numHoldingProducts, redemptionSchedule),
-          SizedBox(height: 8,),
+          const SizedBox(
+            height: 8,
+          ),
           _buildGreyCard(context, "관심 등록 상품 중 청약 마감", numAttentionProducts, subscriptionEndSchedule),
         ],
       ),
@@ -264,7 +264,7 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
   }
 
   Widget _buildScheduleCalendar(Map<DateTime, List<ElsProductForScheduleDto>> scheduleMap) {
-    TextStyle calendarTextStyle = TextStyle(
+    TextStyle calendarTextStyle = const TextStyle(
       color: Color(0xFF000000),
       fontSize: 14,
       fontWeight: FontWeight.w500,
@@ -275,15 +275,11 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
     List<DateTime> importantDays = scheduleMap.keys.toList();
 
     bool isImportantDay(DateTime date, List<DateTime> importantDays) {
-      return importantDays.any((importantDay) =>
-      importantDay.year == date.year &&
-          importantDay.month == date.month &&
-          importantDay.day == date.day
-      );
+      return importantDays.any((importantDay) => importantDay.year == date.year && importantDay.month == date.month && importantDay.day == date.day);
     }
 
     return Padding(
-      padding: EdgeInsets.only(top: 24, bottom: 16, left: 16, right: 16),
+      padding: const EdgeInsets.only(top: 24, bottom: 16, left: 16, right: 16),
       child: TableCalendar(
         availableGestures: AvailableGestures.none,
         firstDay: DateTime.utc(2020, 1, 1),
@@ -320,14 +316,14 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
           outsideDaysVisible: false,
           defaultTextStyle: calendarTextStyle,
           weekendTextStyle: calendarTextStyle,
-          todayTextStyle: TextStyle(
+          todayTextStyle: const TextStyle(
             color: Color(0xFF1C6BF9),
             fontWeight: FontWeight.w500,
             fontSize: 14,
             height: 1.18,
             letterSpacing: -0.28,
           ),
-          selectedTextStyle: TextStyle(
+          selectedTextStyle: const TextStyle(
             color: Color(0xFF000000),
             fontSize: 14,
             fontWeight: FontWeight.w600,
@@ -335,23 +331,22 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
             letterSpacing: -0.28,
           ),
           selectedDecoration: BoxDecoration(
-            color: Colors.white,
-            // shape: BoxShape.circle,
-            borderRadius: BorderRadius.circular(8),
-            boxShadow: [
-              BoxShadow(
-                color: Color.fromRGBO(0, 0, 0, 0.15), // 그림자 색상
-                spreadRadius: 0, // 확산 반경
-                blurRadius: 16, // 블러 반경
-                offset: Offset(0, 0), // 그림자의 x, y 오프셋
-              ),
-            ]
-          ),
-          todayDecoration: BoxDecoration(
+              color: Colors.white,
+              // shape: BoxShape.circle,
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: const [
+                BoxShadow(
+                  color: Color.fromRGBO(0, 0, 0, 0.15), // 그림자 색상
+                  spreadRadius: 0, // 확산 반경
+                  blurRadius: 16, // 블러 반경
+                  offset: Offset(0, 0), // 그림자의 x, y 오프셋
+                ),
+              ]),
+          todayDecoration: const BoxDecoration(
             color: Colors.white,
             shape: BoxShape.circle,
           ),
-          markerDecoration: BoxDecoration(
+          markerDecoration: const BoxDecoration(
             color: Colors.blueAccent,
             shape: BoxShape.circle,
           ),
@@ -360,28 +355,27 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
         daysOfWeekHeight: 31,
         rowHeight: 70,
         headerStyle: HeaderStyle(
-          titleTextFormatter: (date, locale) =>
-              DateFormat.yMMMM('ko').format(date), // 헤더 텍스트 한글로 포맷
+          titleTextFormatter: (date, locale) => DateFormat.yMMMM('ko').format(date), // 헤더 텍스트 한글로 포맷
           formatButtonVisible: false,
-          leftChevronIcon: Icon(
+          leftChevronIcon: const Icon(
             Icons.arrow_left,
             color: Color(0xFFCFD2D3),
           ),
-          rightChevronIcon: Icon(
+          rightChevronIcon: const Icon(
             Icons.arrow_right,
             color: Color(0xFFCFD2D3),
           ),
           leftChevronMargin: EdgeInsets.zero,
-          rightChevronMargin: EdgeInsets.only(left: 10),
+          rightChevronMargin: const EdgeInsets.only(left: 10),
           titleCentered: false,
-          titleTextStyle: TextStyle(
+          titleTextStyle: const TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 18,
             height: 1.18,
             letterSpacing: -0.36,
           ),
           headerMargin: EdgeInsets.zero,
-          headerPadding: EdgeInsets.only(left: 8),
+          headerPadding: const EdgeInsets.only(left: 8),
         ),
         locale: 'ko_KR',
         calendarBuilders: CalendarBuilders(
@@ -394,19 +388,21 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
                   width: 4,
                   height: 4,
                   decoration: isImportantDay(date, importantDays)
-                      ? BoxDecoration(
-                    color: Colors.red, // Ellipse color
-                    shape: BoxShape.circle,
-                  )
-                      : BoxDecoration(
-                    color: Colors.white, // Ellipse color
-                    shape: BoxShape.circle,
-                  ),
+                      ? const BoxDecoration(
+                          color: Colors.red, // Ellipse color
+                          shape: BoxShape.circle,
+                        )
+                      : const BoxDecoration(
+                          color: Colors.white, // Ellipse color
+                          shape: BoxShape.circle,
+                        ),
                 ),
-                SizedBox(height: 3.5,),
+                const SizedBox(
+                  height: 3.5,
+                ),
                 Text(
                   '${date.day}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Color(0xFF1C6BF9),
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
@@ -425,16 +421,18 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
                   width: 4,
                   height: 4,
                   decoration: isImportantDay(date, importantDays)
-                    ? BoxDecoration(
-                      color: Colors.red, // Ellipse color
-                      shape: BoxShape.circle,
-                    )
-                    : BoxDecoration(
-                    color: Colors.white, // Ellipse color
-                    shape: BoxShape.circle,
-                  ),
+                      ? const BoxDecoration(
+                          color: Colors.red, // Ellipse color
+                          shape: BoxShape.circle,
+                        )
+                      : const BoxDecoration(
+                          color: Colors.white, // Ellipse color
+                          shape: BoxShape.circle,
+                        ),
                 ),
-                SizedBox(height: 3.5,),
+                const SizedBox(
+                  height: 3.5,
+                ),
                 Text(
                   '${date.day}',
                   style: calendarTextStyle,
@@ -453,7 +451,7 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       // children: scheduleMap.entries.where((entry) => isTodayOrFuture(entry.key)).map((entry){
-      children: scheduleMap.entries.map((entry){
+      children: scheduleMap.entries.map((entry) {
         DateTime date = entry.key;
         List<ElsProductForScheduleDto> wholeProducts = entry.value;
         List<ElsProductForScheduleDto> interestedProducts = [];
@@ -474,18 +472,17 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
         }
 
         if (!isDaySelected && !isTodayOrFuture(date)) {
-          return SizedBox.shrink();
+          return const SizedBox.shrink();
         }
-
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.only(top: 24, left: 24, right: 24),
+              padding: const EdgeInsets.only(top: 24, left: 24, right: 24),
               child: Text(
                 "${date.month}월 ${date.day}일",
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                   height: 16.52 / 14,
@@ -495,27 +492,27 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
               ),
             ),
             if (isThereInterested)
-              Padding(
-                padding: EdgeInsets.only(top: 16, bottom:16, left: 24, right: 24),
+              const Padding(
+                padding: EdgeInsets.only(top: 16, bottom: 16, left: 24, right: 24),
                 child: Text(
                   "청약 마감",
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                     height: 18.88 / 16,
-                    letterSpacing:  -0.02,
+                    letterSpacing: -0.02,
                     color: Color(0xFF131415),
                   ),
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: interestedProducts.asMap().entries.map((entry) {
-                  int index = entry.key;
-                  ElsProductForScheduleDto product = entry.value;
-                  return ELSProductCard(product: convertProductForScheduleToSummarized(product), index: index);
-                }).toList(),
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: interestedProducts.asMap().entries.map((entry) {
+                int index = entry.key;
+                ElsProductForScheduleDto product = entry.value;
+                return ELSProductCard(product: convertProductForScheduleToSummarized(product), index: index);
+              }).toList(),
+            ),
           ],
         );
       }).toList(),

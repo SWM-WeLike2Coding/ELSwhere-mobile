@@ -16,7 +16,6 @@ class SubscriptionEndScheduleScreen extends StatefulWidget {
 }
 
 class _SubscriptionEndScheduleScreenState extends State<SubscriptionEndScheduleScreen> {
-
   SummarizedProductDto convertProductForScheduleToSummarized(ElsProductForScheduleDto product) {
     return SummarizedProductDto(
       id: product.productId,
@@ -53,8 +52,7 @@ class _SubscriptionEndScheduleScreenState extends State<SubscriptionEndScheduleS
 
   @override
   Widget build(BuildContext context) {
-
-    return Consumer<ELSProductProvider> (
+    return Consumer<ELSProductProvider>(
       builder: (context, elsProvider, child) {
         var interestingProducts = Provider.of<ELSProductProvider>(context, listen: false).interestingProducts;
         Map<DateTime, List<ElsProductForScheduleDto>> tempScheduleMap = {};
@@ -70,14 +68,14 @@ class _SubscriptionEndScheduleScreenState extends State<SubscriptionEndScheduleS
         // 나중에 여기에 보유 상품 관련 정보들도 DTO 변환해서 tempScheduleMap에 넣어줘야함!!!
 
         List<DateTime> sortedDates = tempScheduleMap.keys.toList()..sort();
-        Map<DateTime, List<ElsProductForScheduleDto>> scheduleMap = { for (var key in sortedDates) key : tempScheduleMap[key]! };
+        Map<DateTime, List<ElsProductForScheduleDto>> scheduleMap = {for (var key in sortedDates) key: tempScheduleMap[key]!};
 
         Map<DateTime, List<ElsProductForScheduleDto>> subscriptionEndSchedule = {};
         List<DateTime> dates = scheduleMap.keys.toList();
 
-        for (int i = 0; i < dates.length; i ++) {
+        for (int i = 0; i < dates.length; i++) {
           var tempList = scheduleMap[dates[i]];
-          for (int j = 0; j < tempList!.length; j ++) {
+          for (int j = 0; j < tempList!.length; j++) {
             if (tempList[j].isHolding == false && isTodayOrFuture(tempList[j].subscriptionEndDate)) {
               if (subscriptionEndSchedule[dates[i]] == null) {
                 subscriptionEndSchedule[dates[i]] = [];
@@ -89,33 +87,31 @@ class _SubscriptionEndScheduleScreenState extends State<SubscriptionEndScheduleS
 
         scheduleMap = subscriptionEndSchedule;
 
-        if (scheduleMap.length == 0) {
+        if (scheduleMap.isEmpty) {
           return Scaffold(
             appBar: PreferredSize(
-              preferredSize: Size.fromHeight(72),
+              preferredSize: const Size.fromHeight(72),
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     border: Border(
                         bottom: BorderSide(
-                          color: AppColors.backgroundGray,
-                          width: 1,
-                        )
-                    )
-                ),
+                  color: AppColors.backgroundGray,
+                  width: 1,
+                ))),
                 child: AppBar(
                   leading: Padding(
                     padding: const EdgeInsets.only(left: 24.0), // 좌측 패딩을 추가
                     child: Align(
                       alignment: Alignment.center, // 아이콘을 수직 가운데 정렬
                       child: IconButton(
-                        icon: Icon(Icons.arrow_back),
+                        icon: const Icon(Icons.arrow_back),
                         onPressed: () {
                           Navigator.pop(context);
                         },
                       ),
                     ),
                   ),
-                  title: Text(
+                  title: const Text(
                     "관심 등록 상품 중 청약 마감",
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
@@ -126,39 +122,35 @@ class _SubscriptionEndScheduleScreenState extends State<SubscriptionEndScheduleS
                 ),
               ),
             ),
-            body: Center(
-              child: Text(
-                  "일정이 없어요"
-              ),
+            body: const Center(
+              child: Text("일정이 없어요"),
             ),
           );
         } else {
           return Scaffold(
               appBar: PreferredSize(
-                preferredSize: Size.fromHeight(72),
+                preferredSize: const Size.fromHeight(72),
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       border: Border(
                           bottom: BorderSide(
-                            color: AppColors.backgroundGray,
-                            width: 1,
-                          )
-                      )
-                  ),
+                    color: AppColors.backgroundGray,
+                    width: 1,
+                  ))),
                   child: AppBar(
                     leading: Padding(
                       padding: const EdgeInsets.only(left: 24.0), // 좌측 패딩을 추가
                       child: Align(
                         alignment: Alignment.center, // 아이콘을 수직 가운데 정렬
                         child: IconButton(
-                          icon: Icon(Icons.arrow_back),
+                          icon: const Icon(Icons.arrow_back),
                           onPressed: () {
                             Navigator.pop(context);
                           },
                         ),
                       ),
                     ),
-                    title: Text(
+                    title: const Text(
                       "관심 등록 상품 중 청약 마감",
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
@@ -178,10 +170,10 @@ class _SubscriptionEndScheduleScreenState extends State<SubscriptionEndScheduleS
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(top: 24, left: 24, right: 24),
+                          padding: const EdgeInsets.only(top: 24, left: 24, right: 24),
                           child: Text(
                             "${date.month}월 ${date.day}일",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
                               height: 16.52 / 14,
@@ -190,15 +182,15 @@ class _SubscriptionEndScheduleScreenState extends State<SubscriptionEndScheduleS
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 16, bottom:16, left: 24, right: 24),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 16, bottom: 16, left: 24, right: 24),
                           child: Text(
                             "청약 마감",
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                               height: 18.88 / 16,
-                              letterSpacing:  -0.02,
+                              letterSpacing: -0.02,
                               color: Color(0xFF131415),
                             ),
                           ),
@@ -215,8 +207,7 @@ class _SubscriptionEndScheduleScreenState extends State<SubscriptionEndScheduleS
                     );
                   }).toList(),
                 ),
-              )
-          );
+              ));
         }
       },
     );

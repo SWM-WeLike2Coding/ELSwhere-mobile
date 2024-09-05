@@ -310,10 +310,10 @@ class CompareProductScreen extends StatelessWidget {
           flex: 2,
           child: LayoutBuilder(
             builder: (context, constraints) {
-              final equities = product1!.equities.split('/');
+              final equities = product1.equities.split('/');
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: product1!.equities.split('/').map((e) {
+                children: product1.equities.split('/').map((e) {
                   final String equity = e.trim();
 
                   return Column(
@@ -329,7 +329,7 @@ class CompareProductScreen extends StatelessWidget {
                           letterSpacing: -0.28,
                         ),
                       ),
-                      if (e != product1!.equities.split('/').last) const SizedBox(height: 8,),
+                      if (e != product1.equities.split('/').last) const SizedBox(height: 8,),
                     ],
                   );
                 }).toList(),
@@ -342,10 +342,10 @@ class CompareProductScreen extends StatelessWidget {
           flex: 2,
           child: LayoutBuilder(
             builder: (context, constraints) {
-              final equities = product2!.equities.split('/');
+              final equities = product2.equities.split('/');
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: product2!.equities.split('/').map((e) {
+                children: product2.equities.split('/').map((e) {
                   final String equity = e.trim();
 
                   return Column(
@@ -361,7 +361,7 @@ class CompareProductScreen extends StatelessWidget {
                           letterSpacing: -0.28,
                         ),
                       ),
-                      if (e != product2!.equities.split('/').last) const SizedBox(height: 8,),
+                      if (e != product2.equities.split('/').last) const SizedBox(height: 8,),
                     ],
                   );
                 }).toList(),
