@@ -62,7 +62,7 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      builder: (context) => const AddHoldingProductModal(),
+      builder: (context) => AddHoldingProductModal(),
     );
   }
 
@@ -228,14 +228,29 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
               onPressed: changeBookmarked,
             ),
             IconButton(
-              icon: CircleAvatar(
-                backgroundColor: isHeld ? AppColors.mainBlue : AppColors.contentWhite,
-                child: isHeld ? const Icon(Icons.check, color: AppColors.contentWhite) : const Icon(Icons.add),
-              ),
               onPressed: _changeHeld,
-              // () {
-              //   // Fluttertoast.showToast(msg: '추후 업데이트를 통해 제공될 예정입니다.', toastLength: Toast.LENGTH_SHORT);
-              // },
+              icon: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 700),
+                switchInCurve: Curves.fastLinearToSlowEaseIn,
+                switchOutCurve: Curves.fastLinearToSlowEaseIn,
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return RotationTransition(
+                    turns: child.key == const ValueKey('add') ? Tween<double>(begin: 1, end: 0.75).animate(animation) : Tween<double>(begin: 0.75, end: 1).animate(animation),
+                    child: FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    ),
+                  );
+                },
+                child: CircleAvatar(
+                  key: ValueKey(isHeld ? 'check' : 'add'),
+                  backgroundColor: isHeld ? AppColors.mainBlue : Colors.white,
+                  child: Icon(
+                    isHeld ? Icons.check : Icons.add,
+                    color: isHeld ? Colors.white : Colors.black,
+                  ),
+                ),
+              ),
             ),
           ],
         ),

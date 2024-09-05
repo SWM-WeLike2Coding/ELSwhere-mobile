@@ -6,6 +6,7 @@ import 'package:elswhere/data/models/dtos/response_single_product_dto.dart';
 import 'package:elswhere/data/models/dtos/summarized_user_holding_dto.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/ui/views/add_holding_product_modal.dart';
 import 'package:elswhere/ui/views/stock_price_graph_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -161,9 +162,9 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
   }
 
   Widget _buildInvestmentStatusWidget() {
-    SummarizedUserHoldingDto? holdingProduct;
-    int holdingProductId = 0;
+    SummarizedUserHoldingDto? holdingProduct = productProvider.holdingProduct;
     double holdingPrice = 0;
+    double? priceRatio;
     final decimalFormat = NumberFormat.decimalPattern('ko');
     final dateFormat = DateFormat().addPattern('yyyy년 MM월 dd일');
 
@@ -197,7 +198,13 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
                     ),
                     const SizedBox(width: 8),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          builder: (context) => AddHoldingProductModal(initValue: holdingProduct!.price, isUpdate: true, holdingId: holdingProduct.holdingId),
+                        );
+                      },
                       icon: const SizedBox(
                         width: 30,
                         height: 30,
@@ -223,8 +230,9 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
       switch (caseNumber) {
         case 0:
           title = '평가 금액';
-          content = '${decimalFormat.format((holdingPrice * (100 + holdingProduct!.yieldIfConditionsMet) / 100).toInt())}원\n(+${holdingProduct!.yieldIfConditionsMet.toStringAsFixed(1)}%)';
-          color = AppColors.contentRed;
+          content =
+              '${decimalFormat.format((holdingPrice * (100 + (priceRatio == null ? 0 : holdingProduct!.yieldIfConditionsMet)) / 100).toInt())}원\n(${priceRatio == null ? '미발행' : '+${holdingProduct!.yieldIfConditionsMet.toStringAsFixed(1)}%'})';
+          color = priceRatio == null ? Colors.black : AppColors.contentRed;
         case 1:
           title = '다음 상환 평가일';
           content = dateFormat.format(holdingProduct!.nextRepaymentEvaluationDate);
@@ -233,7 +241,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
           content = dateFormat.format(DateTime.parse(product!.maturityDate));
         case 3:
           title = '낙인 도달 여부';
-          content = 100 + holdingProduct!.recentAndInitialPriceRatio < (product!.knockIn ?? 0) ? '있음' : '없음';
+          content = 100 + (holdingProduct!.recentAndInitialPriceRatio ?? 0) < (product!.knockIn ?? 0) ? '있음' : '없음';
       }
 
       return Row(
@@ -280,24 +288,16 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
       );
     }
 
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 200),
-      switchInCurve: Curves.easeInOut,
-      switchOutCurve: Curves.easeInOut,
-      transitionBuilder: (Widget child, Animation<double> animation) {
-        final offsetAnimation = Tween<Offset>(
-          begin: !isHeld ? const Offset(0, 0) : const Offset(0, -1),
-          end: !isHeld ? const Offset(0, 1) : const Offset(0, 0),
-        ).animate(animation);
-        return SlideTransition(position: offsetAnimation, child: child);
-      },
+    return AnimatedSize(
+      duration: const Duration(milliseconds: 500),
+      alignment: Alignment.topCenter,
+      curve: Curves.fastOutSlowIn,
       child: productProvider.isHeld
           ? Builder(
               key: const ValueKey(1),
               builder: (context) {
-                holdingProductId = product!.id;
-                holdingProduct = userProvider.holdingProducts?.firstWhere((e) => e.productId == holdingProductId);
-                holdingPrice = holdingProduct?.price ?? 0;
+                holdingPrice = holdingProduct!.price;
+                priceRatio = holdingProduct.recentAndInitialPriceRatio;
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -315,6 +315,41 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
             )
           : const SizedBox(key: ValueKey(2)),
     );
+    // return AnimatedSwitcher(
+    //   duration: const Duration(milliseconds: 700),
+    //   switchInCurve: Curves.fastOutSlowIn,
+    //   switchOutCurve: Curves.fastOutSlowIn,
+    //   transitionBuilder: (Widget child, Animation<double> animation) {
+    //     final offsetAnimation = Tween<Offset>(
+    //       begin: !isHeld ? const Offset(1, 0) : const Offset(-1, 0),
+    //       end: !isHeld ? const Offset(0, 0) : const Offset(0, 0),
+    //     ).animate(animation);
+    //     return SlideTransition(position: offsetAnimation, child: child);
+    //   },
+    //   child: productProvider.isHeld
+    //       ? Builder(
+    //           key: const ValueKey(1),
+    //           builder: (context) {
+    //             holdingProductId = product!.id;
+    //             holdingProduct = userProvider.holdingProducts?.firstWhere((e) => e.productId == holdingProductId);
+    //             holdingPrice = holdingProduct?.price ?? 0;
+    //             return Column(
+    //               crossAxisAlignment: CrossAxisAlignment.start,
+    //               children: [
+    //                 _buildTitleText('내 투자 현황'),
+    //                 const SizedBox(height: 24),
+    //                 buildInvestedPrice(),
+    //                 const SizedBox(height: 8),
+    //                 buildDetailInvestmentInformation(),
+    //                 const SizedBox(height: 48),
+    //                 _buildTitleText('상품 정보'),
+    //                 const SizedBox(height: 24),
+    //               ],
+    //             );
+    //           },
+    //         )
+    //       : const SizedBox(key: ValueKey(2)),
+    // );
   }
 
   Widget _buildText({required String text, required double height, required double maxWidth, required TextStyle style}) {

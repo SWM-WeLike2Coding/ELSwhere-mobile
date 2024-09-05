@@ -248,8 +248,11 @@ class UserInfoProvider with ChangeNotifier {
       if (response.statusCode == 200) {
         _holdingProducts = httpResponse.data;
         for (var product in _holdingProducts!) {
+          double? priceRatio = product.recentAndInitialPriceRatio;
           _totalHoldingPrice += product.price.toInt();
-          _profitAndLossPrice += (product.price * product.yieldIfConditionsMet / 100).toInt();
+          _profitAndLossPrice += priceRatio == null 
+            ? 0
+            : (product.price * product.yieldIfConditionsMet / 100).toInt();
         }
       } else {
         throw Exception('Error Code: ${response.statusCode}, ${response.statusMessage}');
@@ -307,21 +310,23 @@ class UserInfoProvider with ChangeNotifier {
   }
 
   Future<bool> updateHoldindProduct(int id, int price) async {
+    bool success = true;
     _isLoading = true;
 
     try {
       final httpResponse = await _userService.updateHoldingProduct(id, price);
       final response = httpResponse.response;
-      if (response.statusCode == 200) {
-        _isLoading = false;
-        return true;
-      } else {
+      if (response.statusCode != 200 || !await fetchHoldingProducts()) {
         throw Exception('Error Code: ${response.statusCode}, ${response.statusMessage}');
       }
     } catch (e) {
       print("보유 상품 갱신 실패: $e");
-      _isLoading = false;
+      success = false;
       return false;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
+    return success;
   }
 }

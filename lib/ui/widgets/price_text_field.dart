@@ -9,6 +9,7 @@ class PriceTextField extends StatefulWidget {
   final void Function() onChanged;
 
   const PriceTextField({
+    super.key,
     required this.focusNode,
     required this.controller,
     required this.onChanged,
@@ -29,6 +30,7 @@ class _PriceTextFieldState extends State<PriceTextField> {
     super.initState();
     _controller = widget.controller;
     _controller.addListener(_formatInput);
+    print(_controller.text);
     _focusNode = widget.focusNode;
   }
 
@@ -79,7 +81,10 @@ class _PriceTextFieldState extends State<PriceTextField> {
       maxLines: 1,
       cursorColor: AppColors.mainBlue,
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 11,),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 12,
+          horizontal: 11,
+        ),
         hintText: '금액 입력',
         hintStyle: textTheme.labelSmall!.copyWith(
           fontSize: 14,
@@ -88,9 +93,9 @@ class _PriceTextFieldState extends State<PriceTextField> {
         counterText: '',
         suffixIcon: _controller.text.isNotEmpty
             ? IconButton(
-          icon: const Icon(Icons.cancel, color: Color(0xFFACB2B5)),
-          onPressed: () => _controller.clear(),
-        )
+                icon: const Icon(Icons.cancel, color: Color(0xFFACB2B5)),
+                onPressed: () => _controller.clear(),
+              )
             : null,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
@@ -101,9 +106,7 @@ class _PriceTextFieldState extends State<PriceTextField> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(
-            width: 1,
-            color: _isZeroValue ? Colors.red : AppColors.mainBlue),
+          borderSide: BorderSide(width: 1, color: _isZeroValue ? Colors.red : AppColors.mainBlue),
         ),
       ),
     );

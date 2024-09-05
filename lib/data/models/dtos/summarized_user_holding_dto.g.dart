@@ -19,7 +19,7 @@ SummarizedUserHoldingDto _$SummarizedUserHoldingDtoFromJson(
           DateTime.parse(json['nextRepaymentEvaluationDate'] as String),
       price: (json['price'] as num).toDouble(),
       recentAndInitialPriceRatio:
-          (json['recentAndInitialPriceRatio'] ?? 0 as num).toDouble(),
+          (json['recentAndInitialPriceRatio'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$SummarizedUserHoldingDtoToJson(

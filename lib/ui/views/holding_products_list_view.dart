@@ -76,6 +76,7 @@ class HoldingProductsListView extends StatelessWidget {
             itemCount: provider.holdingProducts!.length,
             itemBuilder: (context, index) {
               return HoldingProductCard(
+                key: ValueKey(provider.holdingProducts![index].holdingId),
                 product: provider.holdingProducts![index],
               );
             },

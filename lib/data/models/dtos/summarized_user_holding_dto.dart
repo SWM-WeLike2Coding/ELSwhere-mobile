@@ -12,7 +12,7 @@ class SummarizedUserHoldingDto {
   final double yieldIfConditionsMet;
   final DateTime nextRepaymentEvaluationDate;
   final double price;
-  final double recentAndInitialPriceRatio;
+  final double? recentAndInitialPriceRatio;
 
   SummarizedUserHoldingDto({
     required this.holdingId,

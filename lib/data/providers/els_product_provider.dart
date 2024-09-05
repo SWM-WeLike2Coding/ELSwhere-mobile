@@ -17,6 +17,7 @@ class ELSProductProvider with ChangeNotifier {
   ELSProductProvider(this._productService, this._userService, this._yFinanceService);
 
   ResponseSingleProductDto? _product;
+  SummarizedUserHoldingDto? _holdingProduct;
   bool _isLoading = false;
   bool _isBookmarked = false;
   bool _isHeld = false;
@@ -28,6 +29,7 @@ class ELSProductProvider with ChangeNotifier {
   Map<String, YahooFinanceResponse>? _stockPrices;
 
   ResponseSingleProductDto? get product => _product;
+  SummarizedUserHoldingDto? get holdingProduct => _holdingProduct;
   bool get isLoading => _isLoading;
   bool get isBookmarked => _isBookmarked;
   int? get interestedId => _interestId;
@@ -157,9 +159,11 @@ class ELSProductProvider with ChangeNotifier {
     try {
       _isHeld = false;
       _holdingId = null;
+      _holdingProduct = null;
       for (SummarizedUserHoldingDto product in holdingProducts) {
         if (product.productId == _product!.id) {
           _holdingId = product.holdingId;
+          _holdingProduct = product;
           _isHeld = true;
         }
       }
