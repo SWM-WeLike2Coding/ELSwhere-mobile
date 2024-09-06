@@ -34,7 +34,7 @@ class _ELSProductCardState extends State<HoldingProductCard> with AutomaticKeepA
 
   late ELSProductProvider productProvider;
   late UserInfoProvider userProvider;
-  late final SummarizedUserHoldingDto product;
+  late SummarizedUserHoldingDto product;
   late int dayDifference;
   late NumberFormat format;
   late String price;
@@ -83,60 +83,63 @@ class _ELSProductCardState extends State<HoldingProductCard> with AutomaticKeepA
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    dayDifference = product.nextRepaymentEvaluationDate.difference(DateTime.now()).inDays;
-    format = NumberFormat.decimalPattern('ko');
-    price = '${format.format(product.price)}원';
-    priceRatio = product.recentAndInitialPriceRatio;
-    nowPrice = priceRatio == null ? 0 : product.price * product.yieldIfConditionsMet / 100;
+    return Consumer<UserInfoProvider>(builder: (context, userProvider, _) {
+      product = widget.product;
+      dayDifference = product.nextRepaymentEvaluationDate.difference(DateTime.now()).inDays;
+      format = NumberFormat.decimalPattern('ko');
+      price = '${format.format(product.price)}원';
+      priceRatio = product.recentAndInitialPriceRatio;
+      nowPrice = priceRatio == null ? 0 : product.price * product.yieldIfConditionsMet / 100;
 
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: onItemTapped,
-      child: SizedBox(
-        height: cardHeight,
-        child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-            child: Row(
-              children: [
-                Column(children: [_buildIssuerIcon()]),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _buildProductName(),
-                          const SizedBox(height: 4),
-                          _buildPrice(),
-                        ],
-                      ),
-                      _buildNextRepaymentDate(),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 4),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+      return GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onItemTapped,
+        child: SizedBox(
+          height: cardHeight,
+          child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+              child: Row(
+                children: [
+                  Column(children: [_buildIssuerIcon()]),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildProfitAndLossPrice(),
-                        const SizedBox(width: 4),
-                        _buildProfitAndLossRate(),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildProductName(),
+                            const SizedBox(height: 4),
+                            _buildPrice(),
+                          ],
+                        ),
+                        _buildNextRepaymentDate(),
                       ],
                     ),
-                    _buildProductType(),
-                  ],
-                )
-              ],
-            )),
-      ),
-    );
+                  ),
+                  const SizedBox(width: 4),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          _buildProfitAndLossPrice(),
+                          const SizedBox(width: 4),
+                          _buildProfitAndLossRate(),
+                        ],
+                      ),
+                      _buildProductType(),
+                    ],
+                  )
+                ],
+              )),
+        ),
+      );
+    });
   }
 
   Widget _buildIssuerIcon() {
@@ -220,7 +223,8 @@ class _ELSProductCardState extends State<HoldingProductCard> with AutomaticKeepA
     );
   }
 
-  Widget _buildProfitAndLossPrice() { // 추후 가격 제공 예정, 현재는 쿠폰금리로 표시
+  Widget _buildProfitAndLossPrice() {
+    // 추후 가격 제공 예정, 현재는 쿠폰금리로 표시
     return Text(
       // '${nowPrice == 0 ? '' : nowPrice > 0 ? '+' : '-'}${format.format(nowPrice.toInt())}원',
       '연 ${product.yieldIfConditionsMet.toStringAsFixed(1)}%',
