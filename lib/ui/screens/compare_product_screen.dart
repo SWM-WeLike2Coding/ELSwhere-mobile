@@ -6,6 +6,7 @@ import 'package:elswhere/config/config.dart';
 import 'package:elswhere/data/models/dtos/response_single_product_dto.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/data/providers/els_products_provider.dart';
+import 'package:elswhere/data/providers/user_info_provider.dart';
 import 'package:elswhere/ui/screens/els_product_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -17,14 +18,16 @@ class CompareProductScreen extends StatelessWidget {
   late final double statusBarHeight;
   late final double height;
   late final double width;
-  late final ELSProductProvider? provider;
+  late final ELSProductProvider? productProvider;
+  late final UserInfoProvider? userProvider;
 
   CompareProductScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    provider = Provider.of<ELSProductProvider>(context, listen: false);
+    productProvider = Provider.of<ELSProductProvider>(context, listen: false);
+    userProvider = Provider.of<UserInfoProvider>(context, listen: false);
     statusBarHeight = MediaQuery.of(context).padding.top;
     height = size.height;
     width = size.width;
@@ -33,73 +36,87 @@ class CompareProductScreen extends StatelessWidget {
       canPop: true,
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) {
-          if (provider != null) {
-            provider!.compareId.removeLast();
-            provider!.compareProducts.clear();
+          if (productProvider != null) {
+            productProvider!.compareId.removeLast();
+            productProvider!.compareProducts.clear();
           }
         }
       },
       child: Scaffold(
-        appBar: _buildAppBar(context),
-        body: Consumer<ELSOnSaleProductsProvider>(
-          builder: (context, productsProvider, child) {
-            if (productsProvider.isLoading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (!productsProvider.isLoading && productsProvider.products.isEmpty) {
-              return const Center(child: Text('상품이 없습니다.'));
-            } else {
-              return FutureBuilder(
-                future: provider!.fetchCompareProduct(provider!.compareId[0], provider!.compareId[1]),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return const Center(child: Text('An error occurred!'));
-                  } else {
-                    final compareProducts = provider!.compareProducts;
-                    return Column(
-                      children: [
-                        const Divider(height: 1, color:Color(0xFFF5F6F6)),
-                        Padding(
-                          padding: edgeInsetsAll24,
-                          child: Column(
-                            children: [
-                              _buildProductName(compareProducts[0], compareProducts[1]),
-                              const SizedBox(height: 32,),
-                              _buildProductIssuer(compareProducts[0], compareProducts[1]),
-                              const SizedBox(height: 32,),
-                              _buildProductYield(compareProducts[0], compareProducts[1]),
-                              const SizedBox(height: 32,),
-                              _buildProductEquities(compareProducts[0], compareProducts[1]),
-                              const SizedBox(height: 32,),
-                              _buildProductType(compareProducts[0], compareProducts[1]),
-                              const SizedBox(height: 32,),
-                              _buildProductKnockin(compareProducts[0], compareProducts[1]),
-                              const SizedBox(height: 32,),
-                              _buildProductLossRate(compareProducts[0], compareProducts[1]),
-                              const SizedBox(height: 32,),
-                              _buildProductSubscriptionEndDate(compareProducts[0], compareProducts[1]),
-                              const SizedBox(height: 16,),
-                              _buildProductDetailScreeenButton(context, compareProducts[0], compareProducts[1]),
-                            ],
-                          ),
-                        ),
-                      ],
-                    );
-                  }
-                }
-              );
-            }
-          },
-        )
-      ),
+          appBar: _buildAppBar(context),
+          body: Consumer<ELSOnSaleProductsProvider>(
+            builder: (context, productsProvider, child) {
+              if (productsProvider.isLoading) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (!productsProvider.isLoading && productsProvider.products.isEmpty) {
+                return const Center(child: Text('상품이 없습니다.'));
+              } else {
+                return FutureBuilder(
+                    future: productProvider!.fetchCompareProduct(productProvider!.compareId[0], productProvider!.compareId[1]),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return const Center(child: Text('An error occurred!'));
+                      } else {
+                        final compareProducts = productProvider!.compareProducts;
+                        return Column(
+                          children: [
+                            const Divider(height: 1, color: Color(0xFFF5F6F6)),
+                            Padding(
+                              padding: edgeInsetsAll24,
+                              child: Column(
+                                children: [
+                                  _buildProductName(compareProducts[0], compareProducts[1]),
+                                  const SizedBox(
+                                    height: 32,
+                                  ),
+                                  _buildProductIssuer(compareProducts[0], compareProducts[1]),
+                                  const SizedBox(
+                                    height: 32,
+                                  ),
+                                  _buildProductYield(compareProducts[0], compareProducts[1]),
+                                  const SizedBox(
+                                    height: 32,
+                                  ),
+                                  _buildProductEquities(compareProducts[0], compareProducts[1]),
+                                  const SizedBox(
+                                    height: 32,
+                                  ),
+                                  _buildProductType(compareProducts[0], compareProducts[1]),
+                                  const SizedBox(
+                                    height: 32,
+                                  ),
+                                  _buildProductKnockin(compareProducts[0], compareProducts[1]),
+                                  const SizedBox(
+                                    height: 32,
+                                  ),
+                                  _buildProductLossRate(compareProducts[0], compareProducts[1]),
+                                  const SizedBox(
+                                    height: 32,
+                                  ),
+                                  _buildProductSubscriptionEndDate(compareProducts[0], compareProducts[1]),
+                                  const SizedBox(
+                                    height: 16,
+                                  ),
+                                  _buildProductDetailScreeenButton(context, compareProducts[0], compareProducts[1]),
+                                ],
+                              ),
+                            ),
+                          ],
+                        );
+                      }
+                    });
+              }
+            },
+          )),
     );
   }
 
   // ======================================================================================================
   PreferredSize _buildAppBar(BuildContext context) {
     return PreferredSize(
-      preferredSize: Size(width, 48+statusBarHeight),
+      preferredSize: Size(width, 48 + statusBarHeight),
       child: Padding(
         padding: EdgeInsets.fromLTRB(12, statusBarHeight + (Platform.isIOS ? 0 : 12), 12, 12),
         child: Row(
@@ -109,15 +126,12 @@ class CompareProductScreen extends StatelessWidget {
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
                 Navigator.pop(context);
-                print(provider!.compareId);
-                print(provider!.compareProducts);
+                print(productProvider!.compareId);
+                print(productProvider!.compareProducts);
               },
             ),
             const SizedBox(width: 8),
-            Text(
-              '상품 비교',
-              style: textTheme.headlineMedium
-            ),
+            Text('상품 비교', style: textTheme.headlineMedium),
           ],
         ),
       ),
@@ -190,15 +204,12 @@ class CompareProductScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: edgeInsetsAll8,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.backgroundGray,
-                ),
-                child: Assets.issuerIconMap[product1.issuer] != null
-                  ? SvgPicture.asset(Assets.issuerIconMap[product1.issuer]!)
-                  : const Icon(Icons.question_mark, color: AppColors.contentBlack)
-              ),
+                  padding: edgeInsetsAll8,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColors.backgroundGray,
+                  ),
+                  child: Assets.issuerIconMap[product1.issuer] != null ? SvgPicture.asset(Assets.issuerIconMap[product1.issuer]!) : const Icon(Icons.question_mark, color: AppColors.contentBlack)),
               const SizedBox(height: 8),
               Text(
                 product1.issuer,
@@ -224,10 +235,7 @@ class CompareProductScreen extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: AppColors.backgroundGray,
                   ),
-                  child: Assets.issuerIconMap[product2.issuer] != null
-                      ? SvgPicture.asset(Assets.issuerIconMap[product2.issuer]!)
-                      : const Icon(Icons.question_mark, color: AppColors.contentBlack)
-              ),
+                  child: Assets.issuerIconMap[product2.issuer] != null ? SvgPicture.asset(Assets.issuerIconMap[product2.issuer]!) : const Icon(Icons.question_mark, color: AppColors.contentBlack)),
               const SizedBox(height: 8),
               Text(
                 product2.issuer,
@@ -307,9 +315,8 @@ class CompareProductScreen extends StatelessWidget {
         ),
         const SizedBox(width: 8),
         Expanded(
-          flex: 2,
-          child: LayoutBuilder(
-            builder: (context, constraints) {
+            flex: 2,
+            child: LayoutBuilder(builder: (context, constraints) {
               final equities = product1.equities.split('/');
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -329,19 +336,19 @@ class CompareProductScreen extends StatelessWidget {
                           letterSpacing: -0.28,
                         ),
                       ),
-                      if (e != product1.equities.split('/').last) const SizedBox(height: 8,),
+                      if (e != product1.equities.split('/').last)
+                        const SizedBox(
+                          height: 8,
+                        ),
                     ],
                   );
                 }).toList(),
               );
-            }
-          )
-        ),
+            })),
         const SizedBox(width: 8),
         Expanded(
-          flex: 2,
-          child: LayoutBuilder(
-            builder: (context, constraints) {
+            flex: 2,
+            child: LayoutBuilder(builder: (context, constraints) {
               final equities = product2.equities.split('/');
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -361,14 +368,15 @@ class CompareProductScreen extends StatelessWidget {
                           letterSpacing: -0.28,
                         ),
                       ),
-                      if (e != product2.equities.split('/').last) const SizedBox(height: 8,),
+                      if (e != product2.equities.split('/').last)
+                        const SizedBox(
+                          height: 8,
+                        ),
                     ],
                   );
                 }).toList(),
               );
-            }
-          )
-        ),
+            })),
       ],
     );
   }
@@ -557,7 +565,6 @@ class CompareProductScreen extends StatelessWidget {
   }
 
   Widget _buildProductDetailScreeenButton(BuildContext context, ResponseSingleProductDto compareProduct1, ResponseSingleProductDto compareProduct2) {
-    final provider = Provider.of<ELSProductProvider>(context, listen: false);
     return Row(
       children: [
         Expanded(
@@ -587,24 +594,28 @@ class CompareProductScreen extends StatelessWidget {
                     },
                   );
 
-                  await provider.fetchProduct(compareProduct1.id);
-
+                  await productProvider!.fetchProduct(compareProduct1.id);
+                  productProvider!.checkisHeld(userProvider!.holdingProducts ?? []);
 
                   // 로딩 다이얼로그 닫기
                   Navigator.of(context).pop();
 
-                  if (provider.product == null) throw Exception;
+                  if (productProvider!.product == null) throw Exception;
 
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const ELSProductDetailScreen(),)
-                  );
+                      MaterialPageRoute(
+                        builder: (context) => const ELSProductDetailScreen(),
+                      ));
                 } catch (e) {
                   Fluttertoast.showToast(msg: '상품 불러오기에 실패했습니다. 다시 시도해주세요.', toastLength: Toast.LENGTH_SHORT);
                 }
               },
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16,),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 14,
+                  horizontal: 16,
+                ),
                 child: Text(
                   '자세히',
                   style: textTheme.labelSmall!.copyWith(
@@ -639,23 +650,28 @@ class CompareProductScreen extends StatelessWidget {
                     },
                   );
 
-                  await provider.fetchProduct(compareProduct2.id);
+                  await productProvider!.fetchProduct(compareProduct2.id);
+                  productProvider!.checkisHeld(userProvider!.holdingProducts ?? []);
 
                   // 로딩 다이얼로그 닫기
                   Navigator.of(context).pop();
 
-                  if (provider.product == null) throw Exception;
+                  if (productProvider!.product == null) throw Exception;
 
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const ELSProductDetailScreen(),)
-                  );
+                      MaterialPageRoute(
+                        builder: (context) => const ELSProductDetailScreen(),
+                      ));
                 } catch (e) {
                   Fluttertoast.showToast(msg: '상품 불러오기에 실패했습니다. 다시 시도해주세요.', toastLength: Toast.LENGTH_SHORT);
                 }
               },
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16,),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 14,
+                  horizontal: 16,
+                ),
                 child: Text(
                   '자세히',
                   style: textTheme.labelSmall!.copyWith(
@@ -679,31 +695,30 @@ class CompareProductScreen extends StatelessWidget {
       ),
       maxLines: 1,
       textDirection: ui.TextDirection.ltr,
-    )
-      ..layout(maxWidth: maxWidth);
+    )..layout(maxWidth: maxWidth);
 
     final isOverflowing = textPainter.didExceedMaxLines;
 
     return isOverflowing
         ? SizedBox(
-      height: height,
-      child: Marquee(
-        text: text,
-        style: style,
-        scrollAxis: Axis.horizontal,
-        crossAxisAlignment:
-        CrossAxisAlignment.start,
-        startAfter: const Duration(seconds: 1),
-        velocity: 30.0,
-        blankSpace: 100,
-        accelerationDuration: const Duration(seconds: 1),
-        accelerationCurve: Curves.linear,
-        fadingEdgeEndFraction: 0.7,
-        decelerationCurve: Curves.linear,
-      ),
-    ) : Text(
-      text,
-      style: style,
-    );
+            height: height,
+            child: Marquee(
+              text: text,
+              style: style,
+              scrollAxis: Axis.horizontal,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              startAfter: const Duration(seconds: 1),
+              velocity: 30.0,
+              blankSpace: 100,
+              accelerationDuration: const Duration(seconds: 1),
+              accelerationCurve: Curves.linear,
+              fadingEdgeEndFraction: 0.7,
+              decelerationCurve: Curves.linear,
+            ),
+          )
+        : Text(
+            text,
+            style: style,
+          );
   }
 }
