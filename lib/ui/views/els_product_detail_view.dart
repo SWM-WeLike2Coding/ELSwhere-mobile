@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:ui' as ui;
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/config.dart';
@@ -229,10 +228,18 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
       Color color = Colors.black;
       switch (caseNumber) {
         case 0:
-          title = '평가 금액';
-          content =
-              '${decimalFormat.format((holdingPrice * (100 + (priceRatio == null ? 0 : holdingProduct!.yieldIfConditionsMet)) / 100).toInt())}원\n(${priceRatio == null ? '미발행' : '+${holdingProduct!.yieldIfConditionsMet.toStringAsFixed(1)}%'})';
-          color = priceRatio == null ? Colors.black : AppColors.contentRed;
+          // title = '평가 금액';
+          // content =
+          //     '${decimalFormat.format((holdingPrice * (100 + (priceRatio == null ? 0 : holdingProduct!.yieldIfConditionsMet)) / 100).toInt())}원\n(${priceRatio == null ? '미발행' : '+${holdingProduct!.yieldIfConditionsMet.toStringAsFixed(1)}%'})';
+          // color = priceRatio == null ? Colors.black : AppColors.contentRed;
+          title = '최초 기준가격 대비 변동율';
+          content = priceRatio == null ? '미발행' : '${priceRatio! < 0 ? '' : '+'}${priceRatio!.toStringAsFixed(2)}%';
+          color = priceRatio == null || priceRatio! == 0
+              ? Colors.black
+              : priceRatio! > 0
+                  ? AppColors.contentRed
+                  : AppColors.mainBlue;
+          print(priceRatio);
         case 1:
           title = '다음 상환 평가일';
           content = dateFormat.format(holdingProduct!.nextRepaymentEvaluationDate);
@@ -489,54 +496,94 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
   }
 
   Widget _buildDateCard() {
-    final dayDifference = DateTime.parse(product!.subscriptionEndDate).difference(DateTime.now()).inDays;
+    final format = DateFormat().addPattern('yyyy-MM-dd');
+    final dayDifference = isHeld
+        ? DateTime.parse(productProvider.holdingProduct!.nextRepaymentEvaluationDate.toString()).difference(DateTime.now()).inDays
+        : DateTime.parse(product!.subscriptionEndDate).difference(DateTime.now()).inDays;
 
-    return Container(
-      decoration: const BoxDecoration(
-        color: AppColors.contentWhite,
-        borderRadius: borderRadiusCircular10,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '청약 시작•마감일',
-                  style: textTheme.labelMedium!.copyWith(
-                    color: AppColors.textGray,
+    return isHeld
+        ? Container(
+            decoration: const BoxDecoration(
+              color: AppColors.contentWhite,
+              borderRadius: borderRadiusCircular10,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '다음 평가일',
+                        style: textTheme.labelMedium!.copyWith(
+                          color: AppColors.textGray,
+                        ),
+                      ),
+                      Text(
+                        '$dayDifference일 후',
+                        style: textTheme.labelMedium!.copyWith(
+                          color: AppColors.mainBlue,
+                        ),
+                      )
+                    ],
                   ),
-                ),
-                Text(
-                  '${dayDifference != 0 ? '${dayDifference.abs()}일 ${dayDifference < 0 ? '전' : '후'}' : '오늘'} 마감',
-                  style: textTheme.labelMedium!.copyWith(
-                    color: AppColors.mainBlue,
+                  const SizedBox(height: 12),
+                  Text(
+                    format.format(productProvider.holdingProduct!.nextRepaymentEvaluationDate),
+                    style: textTheme.labelMedium,
                   ),
-                )
-              ],
+                ],
+              ),
             ),
-            const SizedBox(height: 12),
-            Text(
-              '${product!.subscriptionStartDate} ~ ${product!.subscriptionEndDate}',
-              style: textTheme.labelMedium,
+          )
+        : Container(
+            decoration: const BoxDecoration(
+              color: AppColors.contentWhite,
+              borderRadius: borderRadiusCircular10,
             ),
-            const SizedBox(height: 16),
-            Text('발행•만기일',
-                style: textTheme.labelMedium!.copyWith(
-                  color: AppColors.textGray,
-                )),
-            const SizedBox(height: 12),
-            Text(
-              '${product!.issuedDate} ~ ${product!.maturityDate}',
-              style: textTheme.labelMedium,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '청약 시작•마감일',
+                        style: textTheme.labelMedium!.copyWith(
+                          color: AppColors.textGray,
+                        ),
+                      ),
+                      Text(
+                        '${dayDifference != 0 ? '${dayDifference.abs()}일 ${dayDifference < 0 ? '전' : '후'}' : '오늘'} 마감',
+                        style: textTheme.labelMedium!.copyWith(
+                          color: AppColors.mainBlue,
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    '${product!.subscriptionStartDate} ~ ${product!.subscriptionEndDate}',
+                    style: textTheme.labelMedium,
+                  ),
+                  const SizedBox(height: 16),
+                  Text('발행•만기일',
+                      style: textTheme.labelMedium!.copyWith(
+                        color: AppColors.textGray,
+                      )),
+                  const SizedBox(height: 12),
+                  Text(
+                    '${product!.issuedDate} ~ ${product!.maturityDate}',
+                    style: textTheme.labelMedium,
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
-    );
+          );
   }
 
   Widget _buildProductTypeCard() {

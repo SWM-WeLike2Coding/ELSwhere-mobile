@@ -87,9 +87,7 @@ class _ELSProductCardState extends State<HoldingProductCard> with AutomaticKeepA
     format = NumberFormat.decimalPattern('ko');
     price = '${format.format(product.price)}원';
     priceRatio = product.recentAndInitialPriceRatio;
-    nowPrice = priceRatio == null
-      ? 0
-      : product.price * product.yieldIfConditionsMet / 100;
+    nowPrice = priceRatio == null ? 0 : product.price * product.yieldIfConditionsMet / 100;
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
@@ -222,12 +220,14 @@ class _ELSProductCardState extends State<HoldingProductCard> with AutomaticKeepA
     );
   }
 
-  Widget _buildProfitAndLossPrice() {
+  Widget _buildProfitAndLossPrice() { // 추후 가격 제공 예정, 현재는 쿠폰금리로 표시
     return Text(
-      '${nowPrice == 0 ? '' : nowPrice > 0 ? '+' : '-'}${format.format(nowPrice.toInt())}원',
-      style: textTheme.labelSmall!.copyWith(
-        color: const Color(0xFF434648),
-        fontSize: 14,
+      // '${nowPrice == 0 ? '' : nowPrice > 0 ? '+' : '-'}${format.format(nowPrice.toInt())}원',
+      '연 ${product.yieldIfConditionsMet.toStringAsFixed(1)}%',
+      style: textTheme.labelMedium!.copyWith(
+        // color: const Color(0xFF434648),
+        color: AppColors.contentRed,
+        // fontSize: 14,
         fontWeight: FontWeight.w600,
       ),
     );
@@ -235,7 +235,8 @@ class _ELSProductCardState extends State<HoldingProductCard> with AutomaticKeepA
 
   Widget _buildProfitAndLossRate() {
     return Text(
-      priceRatio == null ? '미발행' : '${priceRatio! > 0 ? '+' : '-'}${product.yieldIfConditionsMet.toStringAsPrecision(2)}%',
+      // priceRatio == null ? '미발행' : '${priceRatio! > 0 ? '+' : '-'}${product.yieldIfConditionsMet.toStringAsPrecision(2)}%',
+      priceRatio == null ? '미발행' : '${priceRatio! < 0 ? '' : '+'}${priceRatio!.toStringAsFixed(2)}%',
       style: textTheme.labelSmall!.copyWith(
         color: (priceRatio ?? 0) == 0
             ? AppColors.contentGray

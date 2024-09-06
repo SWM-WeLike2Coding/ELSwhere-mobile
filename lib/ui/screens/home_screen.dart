@@ -70,31 +70,31 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserInfoProvider>(
-      builder: (context, value, _) {
-        return Container(
-          color: const Color(0xFFF5F6F6),
-          child: SafeArea(
-            child: Scaffold(
-              backgroundColor: const Color(0xFFF5F6F6),
-              appBar: _buildAppBar(context),
-              body: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    _buildInvestmentTasteTestWidget(context),
-                    _buildHoldingProductAssetWidget(context),
-                    _buildHotAndAttentionProductWidget(context),
-                    _buildAttentionScheduleWidget(context),
-                    _buildIndexWidget(),
-                    const SizedBox(height: 32,),
-                  ],
-                ),
+    return Consumer<UserInfoProvider>(builder: (context, value, _) {
+      return Container(
+        color: const Color(0xFFF5F6F6),
+        child: SafeArea(
+          child: Scaffold(
+            backgroundColor: const Color(0xFFF5F6F6),
+            appBar: _buildAppBar(context),
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  _buildInvestmentTasteTestWidget(context),
+                  _buildHoldingProductAssetWidget(context),
+                  _buildHotAndAttentionProductWidget(context),
+                  _buildAttentionScheduleWidget(context),
+                  _buildIndexWidget(),
+                  const SizedBox(
+                    height: 32,
+                  ),
+                ],
               ),
             ),
           ),
-        );
-      }
-    );
+        ),
+      );
+    });
   }
 
   List<ElsProductForScheduleDto> getTodayAndFutureProducts(Map<DateTime, List<ElsProductForScheduleDto>> scheduleMap, int maxItems) {
@@ -130,7 +130,10 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: const EdgeInsets.only(left: 24),
         child: Row(
           children: [
-            SvgPicture.asset(tempIcon, height: 30,),
+            SvgPicture.asset(
+              tempIcon,
+              height: 30,
+            ),
           ],
         ),
       ),
@@ -139,12 +142,16 @@ class _HomeScreenState extends State<HomeScreen> {
         Padding(
           padding: edgeInsetsAll8,
           child: IconButton(
-            icon: const Icon(Icons.notifications_none_rounded, size: 30,),
+            icon: const Icon(
+              Icons.notifications_none_rounded,
+              size: 30,
+            ),
             onPressed: () {
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const NotificationScreen(),)
-              );
+                  MaterialPageRoute(
+                    builder: (context) => const NotificationScreen(),
+                  ));
             },
           ),
         ),
@@ -162,22 +169,17 @@ class _HomeScreenState extends State<HomeScreen> {
               context,
               MaterialPageRoute(
                 builder: (context) => const InvestmentPropensityScreen(),
-              )
-          );
+              ));
         },
         child: Container(
-          decoration: BoxDecoration(
-              color: const Color(0xFFFFFFFF),
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: const [
-                BoxShadow(
-                  color: Color.fromRGBO(0, 0, 0, 0.04), // 그림자 색상
-                  spreadRadius: 0, // 확산 반경
-                  blurRadius: 16, // 블러 반경
-                  offset: Offset(0, 0), // 그림자의 x, y 오프셋
-                ),
-              ]
-          ),
+          decoration: BoxDecoration(color: const Color(0xFFFFFFFF), borderRadius: BorderRadius.circular(12), boxShadow: const [
+            BoxShadow(
+              color: Color.fromRGBO(0, 0, 0, 0.04), // 그림자 색상
+              spreadRadius: 0, // 확산 반경
+              blurRadius: 16, // 블러 반경
+              offset: Offset(0, 0), // 그림자의 x, y 오프셋
+            ),
+          ]),
           width: double.infinity,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -229,86 +231,96 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.only(left: 24, right: 24, top: 16),
       child: GestureDetector(
         onTap: () async {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            },
+          // showDialog(
+          //   context: context,
+          //   barrierDismissible: false,
+          //   builder: (BuildContext context) {
+          //     return const Center(
+          //       child: CircularProgressIndicator(),
+          //     );
+          //   },
+          // );
+
+          // final result = await Provider.of<UserInfoProvider>(context, listen: false).fetchHoldingProducts();
+
+          // Navigator.pop(context);
+
+          // if (result) {
+          //   Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => const HoldingProductsScreen(),
+          //       ));
+          // } else {
+          //   Fluttertoast.showToast(msg: '오류가 발생했습니다. 다시 시도해주세요.', toastLength: Toast.LENGTH_SHORT);
+          // }
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HoldingProductsScreen(),
+            ),
           );
-
-          final result = await Provider.of<UserInfoProvider>(context, listen: false).fetchHoldingProducts();
-
-          Navigator.pop(context);
-
-          if (result) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const HoldingProductsScreen(),
-              )
-            );
-          } else {
-            Fluttertoast.showToast(msg: '오류가 발생했습니다. 다시 시도해주세요.', toastLength: Toast.LENGTH_SHORT);
-          }
         },
         child: Container(
-          decoration: BoxDecoration(
-              color: const Color(0xFFFFFFFF),
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: const [
-                BoxShadow(
-                  color: Color.fromRGBO(0, 0, 0, 0.04), // 그림자 색상
-                  spreadRadius: 0, // 확산 반경
-                  blurRadius: 16, // 블러 반경
-                  offset: Offset(0, 0), // 그림자의 x, y 오프셋
-                ),
-              ]
-          ),
+          decoration: BoxDecoration(color: const Color(0xFFFFFFFF), borderRadius: BorderRadius.circular(12), boxShadow: const [
+            BoxShadow(
+              color: Color.fromRGBO(0, 0, 0, 0.04), // 그림자 색상
+              spreadRadius: 0, // 확산 반경
+              blurRadius: 16, // 블러 반경
+              offset: Offset(0, 0), // 그림자의 x, y 오프셋
+            ),
+          ]),
           width: double.infinity,
           child: Padding(
             padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  "보유 상품 가치",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    height: 1.18, // 118% line-height
-                    letterSpacing: -0.28,
-                    color: Color(0xFF838A8E),
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      // "보유 상품 가치",
+                      "총 투자 금액",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        height: 1.18, // 118% line-height
+                        letterSpacing: -0.28,
+                        color: Color(0xFF838A8E),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    Text(
+                      '${decimalFormat.format(totalHoldingPrice)}원',
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                        height: 1.30, // 118% line-height
+                        letterSpacing: -0.44,
+                        color: Color(0xFF000000),
+                      ),
+                    ),
+                    // const SizedBox(height: 4,),
+                    // Text(
+                    //   '${profitAndLossPrice > 0 ? '+' : ''}${decimalFormat.format(profitAndLossPrice)}원',
+                    //   style: TextStyle(
+                    //     fontSize: 14,
+                    //     fontWeight: FontWeight.w500,
+                    //     height: 1.18, // 118% line-height
+                    //     letterSpacing: -0.28,
+                    //     color: profitAndLossPrice == 0
+                    //       ? AppColors.contentGray
+                    //       : profitAndLossPrice > 0
+                    //         ? AppColors.contentRed
+                    //         : AppColors.mainBlue,
+                    //   ),
+                    // ),
+                  ],
                 ),
-                const SizedBox(height: 4,),
-                Text(
-                  '${decimalFormat.format(totalHoldingPrice)}원',
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
-                    height: 1.30, // 118% line-height
-                    letterSpacing: -0.44,
-                    color: Color(0xFF000000),
-                  ),
-                ),
-                const SizedBox(height: 4,),
-                Text(
-                  '${profitAndLossPrice > 0 ? '+' : ''}${decimalFormat.format(profitAndLossPrice)}원',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    height: 1.18, // 118% line-height
-                    letterSpacing: -0.28,
-                    color: profitAndLossPrice == 0
-                      ? AppColors.contentGray
-                      : profitAndLossPrice > 0
-                        ? AppColors.contentRed
-                        : AppColors.mainBlue,
-                  ),
-                ),
+                const Icon(Icons.keyboard_arrow_right_rounded),
               ],
             ),
           ),
@@ -323,7 +335,9 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Row(
         children: [
           Expanded(child: _buildHotProductButton()),
-          const SizedBox(width: 8,),
+          const SizedBox(
+            width: 8,
+          ),
           Expanded(child: _buildAttentionProductButton(context)),
         ],
       ),
@@ -384,8 +398,7 @@ class _HomeScreenState extends State<HomeScreen> {
             context,
             MaterialPageRoute(
               builder: (context) => const AttentionProductsScreen(),
-            )
-        );
+            ));
       },
       child: Container(
         height: 100,
@@ -457,7 +470,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 color: Color(0xFF595E62),
               ),
             ),
-            const SizedBox(width: 12,),
+            const SizedBox(
+              width: 12,
+            ),
             const Text(
               "나의 일정 보기",
               style: TextStyle(
@@ -487,11 +502,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: 36,
                   height: 36,
                   alignment: Alignment.center,
-                  child: Assets.issuerIconMap[product.issuer] != null
-                      ? SvgPicture.asset(Assets.issuerIconMap[product.issuer]!)
-                      : const Icon(Icons.question_mark, color: AppColors.contentBlack),
+                  child: Assets.issuerIconMap[product.issuer] != null ? SvgPicture.asset(Assets.issuerIconMap[product.issuer]!) : const Icon(Icons.question_mark, color: AppColors.contentBlack),
                 ),
-                const SizedBox(width: 12,),
+                const SizedBox(
+                  width: 12,
+                ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.5,
                   child: Column(
@@ -510,7 +525,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                       ),
-                      const SizedBox(height: 2,),
+                      const SizedBox(
+                        height: 2,
+                      ),
                       Text(
                         product.equities.replaceAll('/', '·'),
                         style: const TextStyle(
@@ -549,7 +566,9 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          const SizedBox(height: 16,),
+          const SizedBox(
+            height: 16,
+          ),
         ],
       );
     }
@@ -583,7 +602,7 @@ class _HomeScreenState extends State<HomeScreen> {
         // 나중에 여기에 보유 상품 관련 정보들도 DTO 변환해서 tempScheduleMap에 넣어줘야함!!!
 
         List<DateTime> sortedDates = tempScheduleMap.keys.toList()..sort();
-        Map<DateTime, List<ElsProductForScheduleDto>> scheduleMap = { for (var key in sortedDates) key : tempScheduleMap[key]! };
+        Map<DateTime, List<ElsProductForScheduleDto>> scheduleMap = {for (var key in sortedDates) key: tempScheduleMap[key]!};
 
         return Padding(
           padding: const EdgeInsets.only(top: 16, left: 24, right: 24),
@@ -597,18 +616,14 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             },
             child: Container(
-              decoration: BoxDecoration(
-                  color: const Color(0xFFFFFFFF),
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Color.fromRGBO(0, 0, 0, 0.04), // 그림자 색상
-                      spreadRadius: 0, // 확산 반경
-                      blurRadius: 16, // 블러 반경
-                      offset: Offset(0, 0), // 그림자의 x, y 오프셋
-                    ),
-                  ]
-              ),
+              decoration: BoxDecoration(color: const Color(0xFFFFFFFF), borderRadius: BorderRadius.circular(12), boxShadow: const [
+                BoxShadow(
+                  color: Color.fromRGBO(0, 0, 0, 0.04), // 그림자 색상
+                  spreadRadius: 0, // 확산 반경
+                  blurRadius: 16, // 블러 반경
+                  offset: Offset(0, 0), // 그림자의 x, y 오프셋
+                ),
+              ]),
               width: double.infinity,
               child: Padding(
                 padding: const EdgeInsets.all(20),
@@ -625,7 +640,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Color(0xFF000000),
                       ),
                     ),
-                    const SizedBox(height: 8,),
+                    const SizedBox(
+                      height: 8,
+                    ),
                     const Text(
                       "곧 다가오는 청약 상품 일정이에요.",
                       style: TextStyle(
@@ -636,7 +653,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Color(0xFF838A8E),
                       ),
                     ),
-                    const SizedBox(height: 16,),
+                    const SizedBox(
+                      height: 16,
+                    ),
                     _buildScheduleCards(context, scheduleMap),
                     _buildOneScheduleCard(context, null),
                   ],
@@ -653,18 +672,14 @@ class _HomeScreenState extends State<HomeScreen> {
     return Padding(
       padding: const EdgeInsets.only(top: 16, left: 24, right: 24),
       child: Container(
-        decoration: BoxDecoration(
-            color: const Color(0xFFFFFFFF),
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: const [
-              BoxShadow(
-                color: Color.fromRGBO(0, 0, 0, 0.04), // 그림자 색상
-                spreadRadius: 0, // 확산 반경
-                blurRadius: 16, // 블러 반경
-                offset: Offset(0, 0), // 그림자의 x, y 오프셋
-              ),
-            ]
-        ),
+        decoration: BoxDecoration(color: const Color(0xFFFFFFFF), borderRadius: BorderRadius.circular(12), boxShadow: const [
+          BoxShadow(
+            color: Color.fromRGBO(0, 0, 0, 0.04), // 그림자 색상
+            spreadRadius: 0, // 확산 반경
+            blurRadius: 16, // 블러 반경
+            offset: Offset(0, 0), // 그림자의 x, y 오프셋
+          ),
+        ]),
         width: double.infinity,
         child: const Padding(
           padding: EdgeInsets.all(20),
@@ -681,7 +696,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Color(0xFF000000),
                 ),
               ),
-              SizedBox(height: 16,),
+              SizedBox(
+                height: 16,
+              ),
               StockIndexList(),
             ],
           ),
@@ -690,4 +707,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
