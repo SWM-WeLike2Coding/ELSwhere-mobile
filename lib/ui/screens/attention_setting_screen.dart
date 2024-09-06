@@ -1,6 +1,7 @@
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/ui/views/alarm_setting_modal.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class AttentionSettingScreen extends StatefulWidget {
   const AttentionSettingScreen({super.key});
@@ -58,15 +59,16 @@ class _AttentionSettingScreenState extends State<AttentionSettingScreen> {
                       size: 27,
                     ),
                     onPressed: () {
-                      showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          useSafeArea: true,
-                          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                          builder: (context) => SizedBox(
-                                height: MediaQuery.of(context).size.height,
-                                child: const AlarmSettingModal(),
-                              ));
+                      Fluttertoast.showToast(msg: '추후 업데이트를 통해 제공할 예정입니다.', toastLength: Toast.LENGTH_SHORT);
+                      // showModalBottomSheet(
+                      //     context: context,
+                      //     isScrollControlled: true,
+                      //     useSafeArea: true,
+                      //     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                      //     builder: (context) => SizedBox(
+                      //           height: MediaQuery.of(context).size.height,
+                      //           child: const AlarmSettingModal(),
+                      //         ));
                     },
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(),
@@ -77,7 +79,12 @@ class _AttentionSettingScreenState extends State<AttentionSettingScreen> {
                 ),
               ],
             ),
-          )
+          ),
+          const Expanded(
+            child: Center(
+              child: Text('추후 업데이트를 통해 제공할 예정입니다.'),
+            ),
+          ),
         ],
       ),
     ));

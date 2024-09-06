@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/data/models/dtos/request_product_search_dto.dart';
 import 'package:elswhere/data/models/dtos/response_issuer_dto.dart';
 import 'package:elswhere/data/providers/els_products_provider.dart';
@@ -164,6 +165,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
+      
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: Theme.of(context).copyWith(
@@ -174,6 +176,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
             ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
+                textStyle: textTheme.labelMedium,
                 foregroundColor: Colors.black, // 버튼 텍스트 색상
               ),
             ),

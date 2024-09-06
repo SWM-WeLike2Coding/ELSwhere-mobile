@@ -13,11 +13,13 @@ PostDto _$PostDtoFromJson(Map<String, dynamic> json) => PostDto(
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),
-);
+      imagePath: json['imagePath'] as String?,
+    );
 
 Map<String, dynamic> _$PostDtoToJson(PostDto instance) => <String, dynamic>{
       'title': instance.title,
       'content': instance.content,
       'type': instance.type,
+      'imagePath': instance.imagePath,
       'createdAt': instance.createdAt?.toIso8601String(),
-};
+    };

@@ -4,7 +4,9 @@ part 'response_login_dto.g.dart';
 
 @JsonSerializable()
 class ResponseLoginDto {
+  @JsonKey(name: "access_token")
   final String accessToken;
+  @JsonKey(name: "refresh_token")
   final String refreshToken;
 
   ResponseLoginDto({
