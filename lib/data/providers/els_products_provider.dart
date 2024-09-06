@@ -1,6 +1,5 @@
 import 'package:elswhere/data/models/dtos/request_product_search_dto.dart';
 import 'package:elswhere/data/models/dtos/response_product_comparison_main_dto.dart';
-import 'package:elswhere/data/models/dtos/response_product_comparison_target_dto.dart';
 import 'package:flutter/material.dart';
 import '../models/dtos/summarized_product_dto.dart';
 import '../services/els_product_service.dart';
@@ -69,9 +68,7 @@ class ELSProductsProvider extends ChangeNotifier {
     notifyListeners();
     try {
       final responsePage = await _productService.fetchFilteredProducts(body);
-      _products += responsePage.content.where((e) => status == 'on'
-          ? e.subscriptionEndDate.compareTo(now) >= 0
-          : e.subscriptionEndDate.compareTo(now) < 0).toList();
+      _products += responsePage.content.where((e) => status == 'on' ? e.subscriptionEndDate.compareTo(now) >= 0 : e.subscriptionEndDate.compareTo(now) < 0).toList();
       _hasNext = responsePage.hasNext;
       _page++;
     } catch (error) {
@@ -139,7 +136,6 @@ class ELSProductsProvider extends ChangeNotifier {
       } else {
         throw Exception;
       }
-
     } catch (e) {
       print('비슷한 상품 불러오기 오류 : $e');
     } finally {

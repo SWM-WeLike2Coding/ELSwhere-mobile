@@ -14,17 +14,18 @@ class InvestmentGuideDetailScreen extends StatelessWidget {
       appBar: _buildAppbar(context),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.only(left: 24, right: 24),
-          child: Container(
+          padding: const EdgeInsets.only(left: 24, right: 24),
+          child: SizedBox(
             width: double.infinity,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildTitle(post.title, post.createdAt),
-                if (post.imagePath != null)
-                  _buildImage(post.imagePath),
+                if (post.imagePath != null) _buildImage(post.imagePath),
                 _buildContent(post.content),
-                SizedBox(height: 24,),
+                const SizedBox(
+                  height: 24,
+                ),
               ],
             ),
           ),
@@ -35,30 +36,28 @@ class InvestmentGuideDetailScreen extends StatelessWidget {
 
   PreferredSize _buildAppbar(BuildContext context) {
     return PreferredSize(
-      preferredSize: Size.fromHeight(72),
+      preferredSize: const Size.fromHeight(72),
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             border: Border(
                 bottom: BorderSide(
-                  color: AppColors.backgroundGray,
-                  width: 1,
-                )
-            )
-        ),
+          color: AppColors.backgroundGray,
+          width: 1,
+        ))),
         child: AppBar(
           leading: Padding(
             padding: const EdgeInsets.only(left: 24.0), // 좌측 패딩을 추가
             child: Align(
               alignment: Alignment.center, // 아이콘을 수직 가운데 정렬
               child: IconButton(
-                icon: Icon(Icons.arrow_back),
+                icon: const Icon(Icons.arrow_back),
                 onPressed: () {
                   Navigator.pop(context);
                 },
               ),
             ),
           ),
-          title: Text(
+          title: const Text(
             "",
             style: TextStyle(
               fontWeight: FontWeight.w600,
@@ -77,10 +76,12 @@ class InvestmentGuideDetailScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 24,),
+        const SizedBox(
+          height: 24,
+        ),
         Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w600,
             height: 1.18,
@@ -88,10 +89,12 @@ class InvestmentGuideDetailScreen extends StatelessWidget {
             color: Color(0xFF000000),
           ),
         ),
-        SizedBox(height: 8,),
+        const SizedBox(
+          height: 8,
+        ),
         Text(
           formattedDateTime,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
             height: 1.18,
@@ -106,8 +109,10 @@ class InvestmentGuideDetailScreen extends StatelessWidget {
   Widget _buildImage(String? imagePath) {
     return Column(
       children: [
-        SizedBox(height: 40,),
-        Container(
+        const SizedBox(
+          height: 40,
+        ),
+        SizedBox(
           width: double.infinity,
           child: Image.asset(
             imagePath!,
@@ -120,12 +125,12 @@ class InvestmentGuideDetailScreen extends StatelessWidget {
 
   Widget _buildContent(String content) {
     return Padding(
-      padding: EdgeInsets.only(top: 40),
-      child: Container(
+      padding: const EdgeInsets.only(top: 40),
+      child: SizedBox(
         width: double.infinity,
         child: Text(
           content,
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.w400,
             fontSize: 16,
             height: 1.40,

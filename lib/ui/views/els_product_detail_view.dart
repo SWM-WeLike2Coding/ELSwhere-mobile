@@ -1,9 +1,11 @@
-import 'dart:ffi';
 import 'dart:ui' as ui;
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/config.dart';
 import 'package:elswhere/data/models/dtos/response_single_product_dto.dart';
+import 'package:elswhere/data/models/dtos/summarized_user_holding_dto.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
+import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/ui/views/add_holding_product_modal.dart';
 import 'package:elswhere/ui/views/stock_price_graph_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -12,29 +14,43 @@ import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ELSProductDetailView extends StatelessWidget {
-  ResponseSingleProductDto? product;
+class ELSProductDetailView extends StatefulWidget {
+  const ELSProductDetailView({super.key});
 
-  ELSProductDetailView({super.key});
+  @override
+  State<ELSProductDetailView> createState() => _ELSProductDetailViewState();
+}
+
+class _ELSProductDetailViewState extends State<ELSProductDetailView> {
+  late ELSProductProvider productProvider;
+  late UserInfoProvider userProvider;
+  ResponseSingleProductDto? product;
+  bool isHeld = false;
+
+  @override
+  void initState() {
+    super.initState();
+    productProvider = Provider.of<ELSProductProvider>(context, listen: false);
+    userProvider = Provider.of<UserInfoProvider>(context, listen: false);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ELSProductProvider>(
-      builder: (context, productProvider, child) {
-        if (productProvider.isLoading &&
-            productProvider.product == null) {
+    return Consumer<ELSProductProvider>(builder: (context, productProvider, child) {
+      return Consumer<UserInfoProvider>(builder: (context, userProvider, child) {
+        if (productProvider.isLoading && productProvider.product == null) {
           return const Center(child: CircularProgressIndicator());
-        }
-        else if (productProvider.product == null) {
+        } else if (productProvider.product == null) {
           return const Center(child: Text('상품이 존재하지 않습니다.'));
         }
-
         product = productProvider.product!;
+        isHeld = productProvider.isHeld;
+
+        print('보유중인가?: $isHeld');
 
         return LayoutBuilder(
           builder: (context, constraints) {
             final width = constraints.maxWidth;
-            final height = constraints.maxHeight;
             final length = (width - 56) / 2;
 
             return SingleChildScrollView(
@@ -46,12 +62,12 @@ class ELSProductDetailView extends StatelessWidget {
                   children: [
                     _buildProductTitle(width),
                     const SizedBox(height: 48),
+                    _buildInvestmentStatusWidget(),
                     Row(
-                      // crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        _buildYieldRateCard((width - 56) / 2),
+                        _buildYieldRateCard(length),
                         const SizedBox(width: 8),
-                        _buildEquitiesCard((width - 56) / 2),
+                        _buildEquitiesCard(length),
                       ],
                     ),
                     const SizedBox(height: 8),
@@ -63,30 +79,9 @@ class ELSProductDetailView extends StatelessWidget {
                     const SizedBox(height: 48),
                     _buildTitleText('기초자산 주가'),
                     const SizedBox(height: 24),
-                    StockPriceGraphView(),
+                    const StockPriceGraphView(),
                     // const SizedBox(height: 48),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     _buildTitleText('엘스웨어 분석 결과'),
-                    //     SizedBox(
-                    //       width: 24,
-                    //       height: 24,
-                    //       child: GestureDetector(
-                    //         onTap: () {},
-                    //         child: CircleAvatar(
-                    //           backgroundColor: const Color(0xFFE6E7E8),
-                    //           child: Text(
-                    //             '?',
-                    //             style: textTheme.labelSmall!.copyWith(
-                    //               fontWeight: FontWeight.w700,
-                    //             )
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     )
-                    //   ],
-                    // ),
+                    // _buildAnalysisResult(),
                     // const SizedBox(height: 32),
                     // _buildRepaymentRatesList(),
                     const SizedBox(height: 48),
@@ -94,7 +89,7 @@ class ELSProductDetailView extends StatelessWidget {
                     const SizedBox(height: 32),
                     _buildEvaluationDatesList(),
                     const SizedBox(height: 48),
-                    const Divider(height: 1, color: const Color(0xFFE6E7E8),),
+                    _buildDivider(),
                     const SizedBox(height: 24),
                     _buildRedirectText('간이투자설명서', product!.summaryInvestmentProspectusLink),
                     _buildRedirectText('홈페이지', product!.link),
@@ -102,13 +97,13 @@ class ELSProductDetailView extends StatelessWidget {
                     _buildNoticeText(product!.issuer),
                     const SizedBox(height: 8),
                   ],
-                )
+                ),
               ),
             );
           },
         );
-      }
-    );
+      });
+    });
   }
 
   Widget _buildProductTitle(double width) {
@@ -128,7 +123,7 @@ class ELSProductDetailView extends StatelessWidget {
           product!.issuer,
           style: textTheme.labelMedium?.copyWith(
             fontSize: 18,
-            color: AppColors.contentGray,
+            color: AppColors.textGray,
           ),
         ),
       ],
@@ -136,13 +131,11 @@ class ELSProductDetailView extends StatelessWidget {
   }
 
   Widget _buildTitleText(String text) {
-    return Text(
-      text,
-      style: textTheme.titleLarge!.copyWith(
-        fontSize: 24,
-        color: AppColors.titleGray,
-      )
-    );
+    return Text(text,
+        style: textTheme.titleLarge!.copyWith(
+          fontSize: 24,
+          color: AppColors.titleGray,
+        ));
   }
 
   Widget _buildIssuerIcon() {
@@ -152,23 +145,218 @@ class ELSProductDetailView extends StatelessWidget {
       child: CircleAvatar(
         child: Padding(
           padding: edgeInsetsAll8,
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              return SizedBox(
-                width: constraints.maxWidth,
-                height: constraints.maxHeight,
-                child: FittedBox(
-                  fit: BoxFit.fill,
-                  child: Assets.issuerIconMap[product?.issuer] != null
-                      ? SvgPicture.asset(Assets.issuerIconMap[product?.issuer]!)
-                      : const Icon(Icons.question_mark, color: AppColors.contentBlack),
-                ),
-              );
-            }
-          ),
+          child: LayoutBuilder(builder: (context, constraints) {
+            return SizedBox(
+              width: constraints.maxWidth,
+              height: constraints.maxHeight,
+              child: FittedBox(
+                fit: BoxFit.fill,
+                child: Assets.issuerIconMap[product?.issuer] != null ? SvgPicture.asset(Assets.issuerIconMap[product?.issuer]!) : const Icon(Icons.question_mark, color: AppColors.contentBlack),
+              ),
+            );
+          }),
         ),
       ),
     );
+  }
+
+  Widget _buildInvestmentStatusWidget() {
+    SummarizedUserHoldingDto? holdingProduct = productProvider.holdingProduct;
+    double holdingPrice = 0;
+    double? priceRatio;
+    final decimalFormat = NumberFormat.decimalPattern('ko');
+    final dateFormat = DateFormat().addPattern('yyyy년 MM월 dd일');
+
+    Widget buildInvestedPrice() {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 24,
+              horizontal: 16,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  '투자 금액',
+                  style: textTheme.labelMedium!.copyWith(
+                    color: AppColors.textGray,
+                  ),
+                ),
+                Row(
+                  children: [
+                    Text(
+                      '${decimalFormat.format(holdingPrice.toInt())}원',
+                      style: textTheme.labelLarge!.copyWith(
+                        fontSize: 22,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    IconButton(
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          builder: (context) => AddHoldingProductModal(initValue: holdingProduct!.price, isUpdate: true, holdingId: holdingProduct.holdingId),
+                        );
+                      },
+                      icon: const SizedBox(
+                        width: 30,
+                        height: 30,
+                        child: CircleAvatar(
+                          backgroundColor: AppColors.backgroundGray,
+                          child: Icon(Icons.edit, size: 20),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    Widget buildInRowText(int caseNumber) {
+      String title = '';
+      String content = '';
+      Color color = Colors.black;
+      switch (caseNumber) {
+        case 0:
+          // title = '평가 금액';
+          // content =
+          //     '${decimalFormat.format((holdingPrice * (100 + (priceRatio == null ? 0 : holdingProduct!.yieldIfConditionsMet)) / 100).toInt())}원\n(${priceRatio == null ? '미발행' : '+${holdingProduct!.yieldIfConditionsMet.toStringAsFixed(1)}%'})';
+          // color = priceRatio == null ? Colors.black : AppColors.contentRed;
+          title = '최초 기준가격 대비 변동율';
+          content = priceRatio == null ? '미발행' : '${priceRatio! < 0 ? '' : '+'}${priceRatio!.toStringAsFixed(2)}%';
+          color = priceRatio == null || priceRatio! == 0
+              ? Colors.black
+              : priceRatio! > 0
+                  ? AppColors.contentRed
+                  : AppColors.mainBlue;
+          print(priceRatio);
+        case 1:
+          title = '다음 상환 평가일';
+          content = dateFormat.format(holdingProduct!.nextRepaymentEvaluationDate);
+        case 2:
+          title = '만기 상환 평가일';
+          content = dateFormat.format(DateTime.parse(product!.maturityDate));
+        case 3:
+          title = '낙인 도달 여부';
+          content = 100 + (holdingProduct!.recentAndInitialPriceRatio ?? 0) < (product!.knockIn ?? 0) ? '있음' : '없음';
+      }
+
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            title,
+            style: textTheme.labelMedium!.copyWith(
+              color: AppColors.textGray,
+            ),
+          ),
+          Text(
+            content,
+            textAlign: TextAlign.end,
+            style: textTheme.labelMedium!.copyWith(
+              color: color,
+            ),
+          ),
+        ],
+      );
+    }
+
+    Widget buildDetailInvestmentInformation() {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                buildInRowText(0),
+                const SizedBox(height: 18),
+                buildInRowText(1),
+                const SizedBox(height: 18),
+                buildInRowText(2),
+                const SizedBox(height: 18),
+                buildInRowText(3),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    return AnimatedSize(
+      duration: const Duration(milliseconds: 500),
+      alignment: Alignment.topCenter,
+      curve: Curves.fastOutSlowIn,
+      child: productProvider.isHeld
+          ? Builder(
+              key: const ValueKey(1),
+              builder: (context) {
+                holdingPrice = holdingProduct!.price;
+                priceRatio = holdingProduct.recentAndInitialPriceRatio;
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildTitleText('내 투자 현황'),
+                    const SizedBox(height: 24),
+                    buildInvestedPrice(),
+                    const SizedBox(height: 8),
+                    buildDetailInvestmentInformation(),
+                    const SizedBox(height: 48),
+                    _buildTitleText('상품 정보'),
+                    const SizedBox(height: 24),
+                  ],
+                );
+              },
+            )
+          : const SizedBox(key: ValueKey(2)),
+    );
+    // return AnimatedSwitcher(
+    //   duration: const Duration(milliseconds: 700),
+    //   switchInCurve: Curves.fastOutSlowIn,
+    //   switchOutCurve: Curves.fastOutSlowIn,
+    //   transitionBuilder: (Widget child, Animation<double> animation) {
+    //     final offsetAnimation = Tween<Offset>(
+    //       begin: !isHeld ? const Offset(1, 0) : const Offset(-1, 0),
+    //       end: !isHeld ? const Offset(0, 0) : const Offset(0, 0),
+    //     ).animate(animation);
+    //     return SlideTransition(position: offsetAnimation, child: child);
+    //   },
+    //   child: productProvider.isHeld
+    //       ? Builder(
+    //           key: const ValueKey(1),
+    //           builder: (context) {
+    //             holdingProductId = product!.id;
+    //             holdingProduct = userProvider.holdingProducts?.firstWhere((e) => e.productId == holdingProductId);
+    //             holdingPrice = holdingProduct?.price ?? 0;
+    //             return Column(
+    //               crossAxisAlignment: CrossAxisAlignment.start,
+    //               children: [
+    //                 _buildTitleText('내 투자 현황'),
+    //                 const SizedBox(height: 24),
+    //                 buildInvestedPrice(),
+    //                 const SizedBox(height: 8),
+    //                 buildDetailInvestmentInformation(),
+    //                 const SizedBox(height: 48),
+    //                 _buildTitleText('상품 정보'),
+    //                 const SizedBox(height: 24),
+    //               ],
+    //             );
+    //           },
+    //         )
+    //       : const SizedBox(key: ValueKey(2)),
+    // );
   }
 
   Widget _buildText({required String text, required double height, required double maxWidth, required TextStyle style}) {
@@ -179,32 +367,31 @@ class ELSProductDetailView extends StatelessWidget {
       ),
       maxLines: 1,
       textDirection: ui.TextDirection.ltr,
-    )
-      ..layout(maxWidth: maxWidth);
+    )..layout(maxWidth: maxWidth);
 
     final isOverflowing = textPainter.didExceedMaxLines;
 
     return isOverflowing
         ? SizedBox(
-      height: height,
-      child: Marquee(
-        text: text,
-        style: style,
-        scrollAxis: Axis.horizontal,
-        crossAxisAlignment:
-        CrossAxisAlignment.start,
-        startAfter: const Duration(seconds: 1),
-        velocity: 30.0,
-        blankSpace: 100,
-        accelerationDuration: const Duration(seconds: 1),
-        accelerationCurve: Curves.linear,
-        fadingEdgeEndFraction: 0.7,
-        decelerationCurve: Curves.linear,
-      ),
-    ) : Text(
-      text,
-      style: style,
-    );
+            height: height,
+            child: Marquee(
+              text: text,
+              style: style,
+              scrollAxis: Axis.horizontal,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              startAfter: const Duration(seconds: 1),
+              velocity: 30.0,
+              blankSpace: 100,
+              accelerationDuration: const Duration(seconds: 1),
+              accelerationCurve: Curves.linear,
+              fadingEdgeEndFraction: 0.7,
+              decelerationCurve: Curves.linear,
+            ),
+          )
+        : Text(
+            text,
+            style: style,
+          );
   }
 
   Widget _buildYieldRateCard(double length) {
@@ -224,10 +411,10 @@ class ELSProductDetailView extends StatelessWidget {
           Column(
             children: [
               Text(
-                  '수익률',
-                  style: textTheme.labelMedium?.copyWith(
-                    color: AppColors.contentGray,
-                  )
+                '수익률',
+                style: textTheme.labelMedium?.copyWith(
+                  color: AppColors.textGray,
+                ),
               ),
               const SizedBox(height: 18),
             ],
@@ -236,19 +423,17 @@ class ELSProductDetailView extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                  '연 ${product!.yieldIfConditionsMet}%',
+              Text('연 ${product!.yieldIfConditionsMet}%',
                   style: textTheme.labelLarge?.copyWith(
                     fontSize: 24,
                     color: AppColors.contentRed,
-                  )
-              ),
+                  )),
               const SizedBox(height: 4),
               Text(
                 '조건 충족시',
                 style: textTheme.labelSmall?.copyWith(
                   fontSize: 14,
-                  color: AppColors.contentGray,
+                  color: AppColors.textGray,
                 ),
               ),
             ],
@@ -274,94 +459,131 @@ class ELSProductDetailView extends StatelessWidget {
         children: [
           Column(
             children: [
-              Text(
-                  '기초자산',
+              Text('기초자산',
                   style: textTheme.labelMedium?.copyWith(
-                    color: AppColors.contentGray,
-                  )
-              ),
+                    color: AppColors.textGray,
+                  )),
               const SizedBox(height: 18),
             ],
           ),
-          LayoutBuilder(
-            builder: (context, constraints) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: equities.map((e) {
-                  final String equity = e.trim();
+          LayoutBuilder(builder: (context, constraints) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: equities.map((e) {
+                final String equity = e.trim();
 
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _buildText(
-                        text: equity,
-                        height: 20,
-                        maxWidth: constraints.maxWidth,
-                        style: textTheme.labelMedium!.copyWith(),
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _buildText(
+                      text: equity,
+                      height: 20,
+                      maxWidth: constraints.maxWidth,
+                      style: textTheme.labelMedium!.copyWith(),
+                    ),
+                    if (e != product!.equities.split('/').last)
+                      const SizedBox(
+                        height: 8,
                       ),
-                      if (e != product!.equities.split('/').last) const SizedBox(height: 8,),
-                    ],
-                  );
-                }).toList(),
-              );
-            }
-          )
+                  ],
+                );
+              }).toList(),
+            );
+          })
         ],
       ),
     );
   }
 
   Widget _buildDateCard() {
-    final dayDifference = DateTime.parse(product!.subscriptionEndDate).difference(DateTime.now()).inDays;
+    final format = DateFormat().addPattern('yyyy-MM-dd');
+    final dayDifference = isHeld
+        ? DateTime.parse(productProvider.holdingProduct!.nextRepaymentEvaluationDate.toString()).difference(DateTime.now()).inDays
+        : DateTime.parse(product!.subscriptionEndDate).difference(DateTime.now()).inDays;
 
-    return Container(
-      decoration: const BoxDecoration(
-        color: AppColors.contentWhite,
-        borderRadius: borderRadiusCircular10,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                    '청약 시작•마감일',
-                    style: textTheme.labelMedium!.copyWith(
-                      color: AppColors.textGray,
-                    )
-                ),
-                Text(
-                    '${dayDifference != 0 ? '${dayDifference.abs()}일 ${dayDifference < 0 ? '전' : '후'}' : '오늘'} 마감',
-                    style: textTheme.labelMedium!.copyWith(
-                      color: AppColors.mainBlue,
-                    )
-                )
-              ],
+    return isHeld
+        ? Container(
+            decoration: const BoxDecoration(
+              color: AppColors.contentWhite,
+              borderRadius: borderRadiusCircular10,
             ),
-            const SizedBox(height: 12),
-            Text(
-              '${product!.subscriptionStartDate} ~ ${product!.subscriptionEndDate}',
-              style: textTheme.labelMedium,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '다음 평가일',
+                        style: textTheme.labelMedium!.copyWith(
+                          color: AppColors.textGray,
+                        ),
+                      ),
+                      Text(
+                        '$dayDifference일 후',
+                        style: textTheme.labelMedium!.copyWith(
+                          color: AppColors.mainBlue,
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    format.format(productProvider.holdingProduct!.nextRepaymentEvaluationDate),
+                    style: textTheme.labelMedium,
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 16),
-            Text(
-                '발행•만기일',
-                style: textTheme.labelMedium!.copyWith(
-                  color: AppColors.textGray,
-                )
+          )
+        : Container(
+            decoration: const BoxDecoration(
+              color: AppColors.contentWhite,
+              borderRadius: borderRadiusCircular10,
             ),
-            const SizedBox(height: 12),
-            Text(
-              '${product!.issuedDate} ~ ${product!.maturityDate}',
-              style: textTheme.labelMedium,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '청약 시작•마감일',
+                        style: textTheme.labelMedium!.copyWith(
+                          color: AppColors.textGray,
+                        ),
+                      ),
+                      Text(
+                        '${dayDifference != 0 ? '${dayDifference.abs()}일 ${dayDifference < 0 ? '전' : '후'}' : '오늘'} 마감',
+                        style: textTheme.labelMedium!.copyWith(
+                          color: AppColors.mainBlue,
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    '${product!.subscriptionStartDate} ~ ${product!.subscriptionEndDate}',
+                    style: textTheme.labelMedium,
+                  ),
+                  const SizedBox(height: 16),
+                  Text('발행•만기일',
+                      style: textTheme.labelMedium!.copyWith(
+                        color: AppColors.textGray,
+                      )),
+                  const SizedBox(height: 12),
+                  Text(
+                    '${product!.issuedDate} ~ ${product!.maturityDate}',
+                    style: textTheme.labelMedium,
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
-    );
+          );
   }
 
   Widget _buildProductTypeCard() {
@@ -391,16 +613,9 @@ class ELSProductDetailView extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 8),
-            Text(
-              'KI ${product!.knockIn ?? '없음'}',
-              style: textTheme.labelMedium!.copyWith()
-            ),
+            Text('KI ${product!.knockIn ?? '없음'}', style: textTheme.labelMedium!.copyWith()),
             const SizedBox(height: 8),
-            if (product!.productInfo != null)
-              Text(
-                '${product!.productInfo}',
-                style: textTheme.labelMedium!.copyWith()
-              ),
+            if (product!.productInfo != null) Text('${product!.productInfo}', style: textTheme.labelMedium!.copyWith()),
           ],
         ),
       ),
@@ -426,7 +641,9 @@ class ELSProductDetailView extends StatelessWidget {
                   color: AppColors.textGray,
                 ),
               ),
-              const SizedBox(height: 10,),
+              const SizedBox(
+                height: 10,
+              ),
               Text(
                 '${product!.remarks}형',
                 style: textTheme.labelMedium!.copyWith(),
@@ -435,6 +652,29 @@ class ELSProductDetailView extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildAnalysisResult() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        _buildTitleText('엘스웨어 분석 결과'),
+        SizedBox(
+          width: 24,
+          height: 24,
+          child: GestureDetector(
+            onTap: () {},
+            child: CircleAvatar(
+              backgroundColor: const Color(0xFFE6E7E8),
+              child: Text('?',
+                  style: textTheme.labelSmall!.copyWith(
+                    fontWeight: FontWeight.w700,
+                  )),
+            ),
+          ),
+        )
+      ],
     );
   }
 
@@ -459,10 +699,7 @@ class ELSProductDetailView extends StatelessWidget {
                       color: AppColors.textGray,
                     ),
                   ),
-                  Text(
-                    item.last,
-                    style: textTheme.labelMedium
-                  ),
+                  Text(item.last, style: textTheme.labelMedium),
                 ],
               ),
               const SizedBox(height: 24),
@@ -478,42 +715,43 @@ class ELSProductDetailView extends StatelessWidget {
                 color: AppColors.textGray,
               ),
             ),
-            Text(
-              DateFormat().addPattern('yyyy년 MM월 dd일').format(DateTime.parse(product!.maturityDate)),
-              style: textTheme.labelMedium
-            ),
+            Text(DateFormat().addPattern('yyyy년 MM월 dd일').format(DateTime.parse(product!.maturityDate)), style: textTheme.labelMedium),
           ],
         ),
       ],
     );
   }
 
+  Widget _buildDivider() {
+    return const Divider(
+      height: 1,
+      color: Color(0xFFE6E7E8),
+    );
+  }
+
   Widget _buildRedirectText(String text, String url) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: InkWell(
-        onTap: () async {
-          final uri = Uri.parse(url);
-          if (await canLaunchUrl(uri)) {
-            await launchUrl(uri);
-          } else {
-            throw 'Could not launch $url';
-          }
-        },
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              text,
-              style: textTheme.labelMedium!.copyWith(
-                color: const Color(0xFF3B3D3F)
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: InkWell(
+          onTap: () async {
+            final uri = Uri.parse(url);
+            if (await canLaunchUrl(uri)) {
+              await launchUrl(uri);
+            } else {
+              throw 'Could not launch $url';
+            }
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                text,
+                style: textTheme.labelMedium!.copyWith(color: const Color(0xFF3B3D3F)),
               ),
-            ),
-            const Icon(Icons.arrow_forward_ios_rounded),
-          ],
-        ),
-      )
-    );
+              const Icon(Icons.arrow_forward_ios_rounded),
+            ],
+          ),
+        ));
   }
 
   Widget _buildNoticeText(String issuer) {

@@ -15,30 +15,28 @@ class _RedemptionScheduleScreenState extends State<RedemptionScheduleScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(72),
+        preferredSize: const Size.fromHeight(72),
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               border: Border(
                   bottom: BorderSide(
-                    color: AppColors.backgroundGray,
-                    width: 1,
-                  )
-              )
-          ),
+            color: AppColors.backgroundGray,
+            width: 1,
+          ))),
           child: AppBar(
             leading: Padding(
               padding: const EdgeInsets.only(left: 24.0), // 좌측 패딩을 추가
               child: Align(
                 alignment: Alignment.center, // 아이콘을 수직 가운데 정렬
                 child: IconButton(
-                  icon: Icon(Icons.arrow_back),
+                  icon: const Icon(Icons.arrow_back),
                   onPressed: () {
                     Navigator.pop(context);
                   },
                 ),
               ),
             ),
-            title: Text(
+            title: const Text(
               "가입 상품 중 상환 일정",
               style: TextStyle(
                 fontWeight: FontWeight.w600,
@@ -49,10 +47,8 @@ class _RedemptionScheduleScreenState extends State<RedemptionScheduleScreen> {
           ),
         ),
       ),
-      body: Center(
-        child: Text(
-            "일정이 없어요"
-        ),
+      body: const Center(
+        child: Text("일정이 없어요"),
       ),
     );
   }

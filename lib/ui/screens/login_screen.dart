@@ -24,25 +24,24 @@ class LoginScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 96, right: 96),
-                        child: SvgPicture.asset(Assets.logoELSwhere),
-                      ),
-                      const SizedBox(height: 4,),
-                      Text(
-                        'ELSwhere in Everywhere',
+                    child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 96, right: 96),
+                      child: SvgPicture.asset(Assets.logoELSwhere),
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    Text('ELSwhere in Everywhere',
                         style: textTheme.bodySmall!.copyWith(
                           fontSize: 14,
                           color: const Color(0xFF838A8E),
-                        )
-                      ),
-                    ],
-                  )
-                ),
+                        )),
+                  ],
+                )),
                 // Expanded(
                 //   child: Row(
                 //     mainAxisAlignment: MainAxisAlignment.center,
@@ -83,7 +82,8 @@ class LoginScreen extends StatelessWidget {
                             print(refreshToken);
                             Navigator.pushAndRemoveUntil(
                               context,
-                              MaterialPageRoute(builder: (context) => InitialScreen()), (route) => false,
+                              MaterialPageRoute(builder: (context) => const InitialScreen()),
+                              (route) => false,
                             );
                           } else {
                             Fluttertoast.showToast(msg: '로그인에 실패했습니다.', toastLength: Toast.LENGTH_SHORT);
@@ -92,10 +92,10 @@ class LoginScreen extends StatelessWidget {
                         label: Text(
                           '구글로 계속하기',
                           style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                            color: AppColors.contentBlack,
-                            fontSize: 16,
-                            letterSpacing: -0.2,
-                          ),
+                                color: AppColors.contentBlack,
+                                fontSize: 16,
+                                letterSpacing: -0.2,
+                              ),
                         ),
                       ),
                     ),

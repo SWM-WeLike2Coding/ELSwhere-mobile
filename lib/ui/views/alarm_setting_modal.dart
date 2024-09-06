@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import '../../data/models/dtos/response_ticker_symbol_dto.dart';
 import '../../data/providers/ticker_symbol_provider.dart';
 
-
 class AlarmSettingModal extends StatefulWidget {
   const AlarmSettingModal({super.key});
 
@@ -21,14 +20,13 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
   int _selectedTypeIndex = -1;
   bool _isLoading = false;
   List<ResponseTickerSymbolDto> _filteredTickers = [];
-  List<ResponseTickerSymbolDto> _selectedTickers = [];
-
+  final List<ResponseTickerSymbolDto> _selectedTickers = [];
 
   void _addTickerToSelected(ResponseTickerSymbolDto ticker) {
     setState(() {
       _selectedTickers.add(ticker);
-      _controller.clear();  // Clear the text field after adding
-      _filteredTickers = [];  // Hide the list
+      _controller.clear(); // Clear the text field after adding
+      _filteredTickers = []; // Hide the list
     });
   }
 
@@ -52,9 +50,9 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
 
     try {
       final provider = Provider.of<TickerSymbolProvider>(context, listen: false);
-      await provider.fetchTickers();  // 데이터 가져오기
+      await provider.fetchTickers(); // 데이터 가져오기
       setState(() {
-        _filteredTickers = provider.tickers;  // 초기 데이터 설정
+        _filteredTickers = provider.tickers; // 초기 데이터 설정
       });
     } catch (error) {
       print('Error fetching tickers: $error');
@@ -81,10 +79,9 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
   @override
   void dispose() {
     _controller.removeListener(_onSearchTextChanged);
-    _controller.dispose();  // 메모리 누수 방지를 위해 컨트롤러 해제
+    _controller.dispose(); // 메모리 누수 방지를 위해 컨트롤러 해제
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -98,20 +95,22 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 24,),
+                  const SizedBox(
+                    height: 24,
+                  ),
                   _buildSearchInput(),
                   Padding(
-                    padding: EdgeInsets.only(left: 24, right: 24),
+                    padding: const EdgeInsets.only(left: 24, right: 24),
                     child: Wrap(
                       spacing: 8.0,
                       runSpacing: 4.0,
                       children: _selectedTickers.map((ticker) {
                         return Padding(
-                          padding: EdgeInsets.only(left: 4),
+                          padding: const EdgeInsets.only(left: 4),
                           child: Chip(
                             label: Text(
                               ticker.equityName,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
                                 color: AppColors.contentGray,
@@ -120,12 +119,12 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                             onDeleted: () {
                               _removeTickerFromSelected(ticker);
                             },
-                            deleteIcon: Icon(Icons.close),
-                            deleteIconColor: Color(0xFFACB2B5),
+                            deleteIcon: const Icon(Icons.close),
+                            deleteIconColor: const Color(0xFFACB2B5),
                             backgroundColor: AppColors.backgroundGray,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(600),
-                              side: BorderSide(
+                              side: const BorderSide(
                                 color: AppColors.backgroundGray,
                                 width: 0,
                               ),
@@ -136,23 +135,21 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                     ),
                   ),
                   Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                         border: Border(
                             bottom: BorderSide(
-                              color: AppColors.backgroundGray,
-                              width: 1,
-                            )
-                        )
-                    ),
+                      color: AppColors.backgroundGray,
+                      width: 1,
+                    ))),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Padding(
-                    padding: EdgeInsets.only(left: 24, right: 24, top: 24),
+                    padding: const EdgeInsets.only(left: 24, right: 24, top: 24),
                     child: Container(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             "검색필터",
                             style: TextStyle(
                               fontSize: 14,
@@ -160,7 +157,9 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                               color: AppColors.textGray,
                             ),
                           ),
-                          SizedBox(height: 12,),
+                          const SizedBox(
+                            height: 12,
+                          ),
                           Row(
                             children: [
                               Expanded(
@@ -171,9 +170,9 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                                     FilteringTextInputFormatter.digitsOnly,
                                     NumberRangeTextInputFormatter(min: 0, max: 100),
                                   ],
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     hintText: "최대 KI 낙인배리어",
-                                    hintStyle:  TextStyle(
+                                    hintStyle: TextStyle(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 14,
                                       color: Color(0xFFACB2B5),
@@ -184,16 +183,18 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 12,),
+                              const SizedBox(
+                                width: 12,
+                              ),
                               Expanded(
                                 child: TextField(
                                   controller: _controllerCoupon,
-                                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
                                   inputFormatters: [
                                     FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
                                     NumberRangeTextInputFormatter(min: 0, max: 100),
                                   ],
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     hintText: "최소 수익률",
                                     hintStyle: TextStyle(
                                       fontWeight: FontWeight.w500,
@@ -213,12 +214,12 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 24, right: 24, top: 24),
+                    padding: const EdgeInsets.only(left: 24, right: 24, top: 24),
                     child: Container(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             "상품종류",
                             style: TextStyle(
                               fontSize: 14,
@@ -226,13 +227,15 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                               color: AppColors.textGray,
                             ),
                           ),
-                          SizedBox(height: 12,),
+                          const SizedBox(
+                            height: 12,
+                          ),
                           SizedBox(
                             height: 86,
                             child: GridView.builder(
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
                                 crossAxisSpacing: 12,
                                 mainAxisSpacing: 12,
@@ -246,16 +249,12 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8.0),
                                     ),
-                                    backgroundColor: _selectedTypeIndex == index ? Color(0xFF1C6BF9) : AppColors.backgroundGray,
+                                    backgroundColor: _selectedTypeIndex == index ? const Color(0xFF1C6BF9) : AppColors.backgroundGray,
                                   ),
                                   child: Text(
                                     _getButtonText(index),
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                        color: _selectedTypeIndex == index ? Color(0xFFFFFFFF) : Color(0xFFACB2B5)
-                                    ),
+                                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: _selectedTypeIndex == index ? const Color(0xFFFFFFFF) : const Color(0xFFACB2B5)),
                                   ),
                                 );
                               },
@@ -265,8 +264,8 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   // _buildCheckboxes(),
                 ],
               ),
@@ -275,25 +274,25 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
         ),
       ),
       bottomNavigationBar: Container(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: ElevatedButton(
           onPressed: () {
             // 저장 버튼 기능 구현
           },
-          child: Text(
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            backgroundColor: const Color(0xFF1C6BF9),
+          ),
+          child: const Text(
             '관심 상품 알림 저장',
             style: TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 16,
               color: Color(0xFFFFFFFF),
             ),
-          ),
-          style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.symmetric(vertical: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            backgroundColor: Color(0xFF1C6BF9),
           ),
         ),
       ),
@@ -333,9 +332,9 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
       children: [
         Row(
           children: [
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -345,7 +344,7 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                 controller: _controller,
                 decoration: InputDecoration(
                   hintText: '기초자산명을 검색해보세요',
-                  hintStyle: TextStyle(
+                  hintStyle: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                     color: AppColors.contentGray,
@@ -359,13 +358,13 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                 ),
               ),
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
           ],
         ),
         if (_controller.text.isNotEmpty && !_isLoading)
           Container(
             height: 200, // 결과 리스트의 높이
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               borderRadius: BorderRadius.vertical(bottom: Radius.circular(8)),
               color: Colors.white,
               boxShadow: [
@@ -387,7 +386,7 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                     print('Selected: ${ticker.equityName}');
                     // 선택된 항목을 _controller에 표시하고 리스트를 숨깁니다
                     _controller.text = ticker.equityName;
-                    _filteredTickers = [];  // 리스트 숨기기
+                    _filteredTickers = []; // 리스트 숨기기
                     setState(() {
                       _addTickerToSelected(ticker);
                     }); // 상태 업데이트
@@ -408,8 +407,7 @@ class NumberRangeTextInputFormatter extends TextInputFormatter {
   NumberRangeTextInputFormatter({required this.min, required this.max});
 
   @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
     if (newValue.text.isEmpty) {
       return newValue;
     }

@@ -4,7 +4,6 @@ import 'package:elswhere/ui/views/interesting_product_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-
 class AttentionProductsScreen extends StatefulWidget {
   const AttentionProductsScreen({super.key});
 
@@ -23,7 +22,7 @@ class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
         children: [
           _buildGetAlarmCard(context),
           _buildMyAttentionProductString(),
-          InterestingProductListView(),
+          const InterestingProductListView(),
         ],
       ),
     );
@@ -31,16 +30,14 @@ class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
 
   PreferredSize _buildAppbar(BuildContext context) {
     return PreferredSize(
-      preferredSize: Size.fromHeight(72),
+      preferredSize: const Size.fromHeight(72),
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             border: Border(
                 bottom: BorderSide(
-                  color: AppColors.backgroundGray,
-                  width: 1,
-                )
-            )
-        ),
+          color: AppColors.backgroundGray,
+          width: 1,
+        ))),
         child: AppBar(
           leading: Padding(
             padding: const EdgeInsets.only(left: 24.0), // 좌측 패딩을 추가
@@ -92,7 +89,9 @@ class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
                 );
               },
             ),
-            const SizedBox(width: 16,),
+            const SizedBox(
+              width: 16,
+            ),
           ],
         ),
       ),
@@ -109,14 +108,13 @@ class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => AttentionSettingScreen(),
-              )
-          );
+                builder: (context) => const AttentionSettingScreen(),
+              ));
         },
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: Color(0xFF1C6BF9),
+            color: const Color(0xFF1C6BF9),
           ),
           width: double.infinity,
           child: Row(
@@ -136,7 +134,9 @@ class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
                         color: Color(0xFFFFFFFF),
                       ),
                     ),
-                    SizedBox(height: 4,),
+                    SizedBox(
+                      height: 4,
+                    ),
                     Text(
                       "원하는 조건을 등록하여 새로운\n상품이 나올 때 알림을 받아보세요!",
                       style: TextStyle(
@@ -185,4 +185,3 @@ class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
     );
   }
 }
-

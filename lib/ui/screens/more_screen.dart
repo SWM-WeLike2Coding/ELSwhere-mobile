@@ -29,9 +29,9 @@ class MoreScreen extends StatefulWidget {
 }
 
 class _MoreScreenState extends State<MoreScreen> {
-  bool _isNoticeAlarmOn = false;
-  bool _isRedemptionAlarmOn = false;
-  bool _isDdayAlarmOn = false;
+  final bool _isNoticeAlarmOn = false;
+  final bool _isRedemptionAlarmOn = false;
+  final bool _isDdayAlarmOn = false;
 
   void _showSaveConfirmation(BuildContext context) {
     const snackBar = SnackBar(
@@ -44,7 +44,7 @@ class _MoreScreenState extends State<MoreScreen> {
   }
 
   void _showEditNicknameDialog(BuildContext context) {
-    final TextEditingController _nicknameController = TextEditingController();
+    final TextEditingController nicknameController = TextEditingController();
 
     showDialog(
       context: context,
@@ -52,7 +52,7 @@ class _MoreScreenState extends State<MoreScreen> {
         return AlertDialog(
           title: const Text('닉네임 수정'),
           content: TextField(
-            controller: _nicknameController,
+            controller: nicknameController,
             decoration: const InputDecoration(
               hintText: '새 닉네임 입력',
             ),
@@ -72,7 +72,7 @@ class _MoreScreenState extends State<MoreScreen> {
             ElevatedButton(
               onPressed: () async {
                 final userInfoProvider = Provider.of<UserInfoProvider>(context, listen: false);
-                final newNickname = _nicknameController.text;
+                final newNickname = nicknameController.text;
                 if (await userInfoProvider.changeNickname(newNickname)) {
                   print("닉네임 변경 성공");
                 } else {
@@ -127,7 +127,7 @@ class _MoreScreenState extends State<MoreScreen> {
                         height: 48, // 버튼 높이 조정 가능
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFFE6E7E8),
+                            backgroundColor: const Color(0xFFE6E7E8),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
@@ -165,7 +165,9 @@ class _MoreScreenState extends State<MoreScreen> {
                             if (result) {
                               Navigator.pushAndRemoveUntil(
                                 context,
-                                MaterialPageRoute(builder: (context) => const LoginScreen()), (route) => false,);
+                                MaterialPageRoute(builder: (context) => const LoginScreen()),
+                                (route) => false,
+                              );
                             }
                           },
                           child: const Text(
@@ -199,7 +201,6 @@ class _MoreScreenState extends State<MoreScreen> {
     const String manIcon = "assets/icons/icon_man.svg";
     const String googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLScZr3KWFVD82FepPi2KPUsEF3sKV2YApyTMv75ku35-KvsZ1A/viewform?usp=sf_link";
 
-
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -223,16 +224,17 @@ class _MoreScreenState extends State<MoreScreen> {
                 padding: const EdgeInsets.only(left: 24, right: 24),
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: const Color(0xFFE6E7E8),
-                      width: 1.0,
-                    )
-                  ),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: const Color(0xFFE6E7E8),
+                        width: 1.0,
+                      )),
                   height: 70,
                   child: Row(
                     children: [
-                      const SizedBox(width: 16,),
+                      const SizedBox(
+                        width: 16,
+                      ),
                       Container(
                         width: 36,
                         height: 36,
@@ -250,7 +252,9 @@ class _MoreScreenState extends State<MoreScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 16,),
+                      const SizedBox(
+                        width: 16,
+                      ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
@@ -274,7 +278,7 @@ class _MoreScreenState extends State<MoreScreen> {
                           Consumer<UserInfoProvider>(
                             builder: (context, userInfoProvider, child) {
                               return Text(
-                                userInfoProvider.getNickname() + '님', // 여기에서 닉네임을 받아옵니다.
+                                '${userInfoProvider.getNickname()}님', // 여기에서 닉네임을 받아옵니다.
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 16,
@@ -301,7 +305,9 @@ class _MoreScreenState extends State<MoreScreen> {
                           );
                         },
                       ),
-                      const SizedBox(width: 8,),
+                      const SizedBox(
+                        width: 8,
+                      ),
                     ],
                   ),
                 ),
@@ -462,8 +468,7 @@ class _MoreScreenState extends State<MoreScreen> {
                             builder: (context) => const AnnouncementScreen(),
                           ),
                         );
-                      }
-                  ),
+                      }),
                   _buildLittleListTile(
                       context: context,
                       title: "투자가이드",
@@ -474,8 +479,7 @@ class _MoreScreenState extends State<MoreScreen> {
                             builder: (context) => const InvestmentGuideScreen(),
                           ),
                         );
-                      }
-                  ),
+                      }),
                   _buildLittleListTile(
                       context: context,
                       title: "문의 및 신고",
@@ -485,8 +489,7 @@ class _MoreScreenState extends State<MoreScreen> {
                         } else {
                           throw 'Could not launch $googleFormUrl';
                         }
-                      }
-                  ),
+                      }),
 
                   _buildMiddleListTile(title: "계정"),
                   _buildLittleListTile(
@@ -496,11 +499,11 @@ class _MoreScreenState extends State<MoreScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ServiceAgreementScreen(typeIndex: 0,),
-                            )
-                        );
-                      }
-                  ),
+                              builder: (context) => const ServiceAgreementScreen(
+                                typeIndex: 0,
+                              ),
+                            ));
+                      }),
                   _buildLittleListTile(
                       context: context,
                       title: "개인정보 처리방침",
@@ -508,29 +511,27 @@ class _MoreScreenState extends State<MoreScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ServiceAgreementScreen(typeIndex: 1,),
-                            )
-                        );
-                      }
-                  ),
+                              builder: (context) => const ServiceAgreementScreen(
+                                typeIndex: 1,
+                              ),
+                            ));
+                      }),
                   _buildLittleListTile(
                       context: context,
                       title: "로그아웃",
                       onTap: () {
                         _showLogoutDialog(context);
-                      }
-                  ),
+                      }),
                   _buildLittleListTile(
-                      context: context,
-                      title: "회원탈퇴",
-                      onTap: () {
-                        Navigator.push(
+                    context: context,
+                    title: "회원탈퇴",
+                    onTap: () {
+                      Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => const MemberQuitScreen(),
-                          )
-                        );
-                      },
+                          ));
+                    },
                   ),
                 ],
               ),
@@ -589,9 +590,7 @@ class _MoreScreenState extends State<MoreScreen> {
                     color: title == "회원탈퇴" ? const Color(0xFFEE5648) : const Color(0xFF3B3D3F),
                   ),
                 ),
-                trailing: const Padding(
-                  padding: EdgeInsets.only(right: 8),
-                  child: Icon(Icons.arrow_forward_ios, size: 16)),
+                trailing: const Padding(padding: EdgeInsets.only(right: 8), child: Icon(Icons.arrow_forward_ios, size: 16)),
               ),
             ),
           ),

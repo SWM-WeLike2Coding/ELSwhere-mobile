@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:elswhere/data/models/dtos/summarized_user_holding_dto.dart';
 import 'package:elswhere/data/services/yfinance_service.dart';
 import 'package:flutter/material.dart';
 import 'package:retrofit/dio.dart';
@@ -16,24 +17,30 @@ class ELSProductProvider with ChangeNotifier {
   ELSProductProvider(this._productService, this._userService, this._yFinanceService);
 
   ResponseSingleProductDto? _product;
+  SummarizedUserHoldingDto? _holdingProduct;
   bool _isLoading = false;
   bool _isBookmarked = false;
+  bool _isHeld = false;
   int? _interestId;
+  int? _holdingId;
   List<ResponseInterestingProductDto> _interestingProducts = [];
   List<int> _compareId = [];
   List<ResponseSingleProductDto> _compareProducts = [];
   Map<String, YahooFinanceResponse>? _stockPrices;
 
   ResponseSingleProductDto? get product => _product;
+  SummarizedUserHoldingDto? get holdingProduct => _holdingProduct;
   bool get isLoading => _isLoading;
   bool get isBookmarked => _isBookmarked;
   int? get interestedId => _interestId;
+  int? get holdingId => _holdingId;
+  bool get isHeld => _isHeld;
   List<ResponseInterestingProductDto> get interestingProducts => _interestingProducts;
   List<int> get compareId => _compareId;
   List<ResponseSingleProductDto> get compareProducts => _compareProducts;
   Map<String, YahooFinanceResponse>? get stockPrices => _stockPrices;
 
-  Future<void> fetchProduct(int id) async {
+  Future<bool> fetchProduct(int id) async {
     _isLoading = true;
     notifyListeners();
 
@@ -60,6 +67,7 @@ class ELSProductProvider with ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
+    return _product != null;
   }
 
   Future<void> fetchInterested() async {
@@ -129,16 +137,45 @@ class ELSProductProvider with ChangeNotifier {
     }
   }
 
-  Future<void> fetchStockPrices() async { // fetchProduct로 _product가 있어야만 해당 상품에서 조회가 가능
+  Future<bool> fetchStockPrices() async {
+    // fetchProduct로 _product가 있어야만 해당 상품에서 조회가 가능
+    bool success = true;
     _isLoading = true;
     notifyListeners();
     try {
       _stockPrices = await _yFinanceService.fetchStockPrices(_product!.equityTickerSymbols);
     } catch (e) {
       print('주가 가져오기 실패: $e');
+      success = false;
     } finally {
       _isLoading = false;
       notifyListeners();
     }
+    return success;
+  }
+
+  bool checkisHeld(List<SummarizedUserHoldingDto> holdingProducts) {
+    bool success = true;
+    try {
+      _isHeld = false;
+      _holdingId = null;
+      _holdingProduct = null;
+      for (SummarizedUserHoldingDto product in holdingProducts) {
+        if (product.productId == _product!.id) {
+          _holdingId = product.holdingId;
+          _holdingProduct = product;
+          _isHeld = true;
+        }
+      }
+    } catch (e) {
+      print("무슨 오류인가?: $e");
+      _holdingId = null;
+      _isHeld = false;
+      success = false;
+    } finally {
+      notifyListeners();
+    }
+    print('$_isHeld, 성공?: $success');
+    return success;
   }
 }

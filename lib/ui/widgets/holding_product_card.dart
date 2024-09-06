@@ -1,121 +1,259 @@
+import 'dart:ui' as ui;
+
 import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/config/config.dart';
+import 'package:elswhere/data/models/dtos/summarized_user_holding_dto.dart';
+import 'package:elswhere/data/providers/els_product_provider.dart';
+import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/ui/screens/els_product_detail_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:marquee/marquee.dart';
+import 'package:provider/provider.dart';
 
-class HoldingProductCard extends StatelessWidget {
+class HoldingProductCard extends StatefulWidget {
+  SummarizedUserHoldingDto product;
 
-  const HoldingProductCard({Key? key,}) : super(key: key);
+  HoldingProductCard({
+    super.key,
+    required this.product,
+  });
 
-  String formatCurrency(int value) {
-    final formatter = NumberFormat('#,###');
-    return formatter.format(value);
+  @override
+  State<HoldingProductCard> createState() => _ELSProductCardState();
+}
+
+class _ELSProductCardState extends State<HoldingProductCard> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+  bool isSelected = false;
+  bool isOnSale = false;
+  final cardHeight = 105.0;
+
+  late ELSProductProvider productProvider;
+  late UserInfoProvider userProvider;
+  late final SummarizedUserHoldingDto product;
+  late int dayDifference;
+  late NumberFormat format;
+  late String price;
+  late double nowPrice;
+  double? priceRatio;
+
+  @override
+  void initState() {
+    super.initState();
+    product = widget.product;
+    productProvider = Provider.of<ELSProductProvider>(context, listen: false);
+    userProvider = Provider.of<UserInfoProvider>(context, listen: false);
+  }
+
+  void onItemTapped() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+
+    final result = [
+      await productProvider.fetchProduct(product.productId),
+      await productProvider.fetchStockPrices(),
+      productProvider.checkisHeld(userProvider.holdingProducts!),
+    ].every((result) => result);
+
+    if (mounted) Navigator.pop(context);
+
+    if (result) {
+      if (mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ELSProductDetailScreen()),
+        );
+      }
+    } else {
+      Fluttertoast.showToast(msg: '정보를 불러오는데 실패했습니다. 다시 시도해주세요.', toastLength: Toast.LENGTH_SHORT);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    int dummyLeftDays = 153;
-    String dummyProductName = "키움증권 ELS 3041회";
-    int dummyAsset = 1000000;
-    double dummyInterest = 5.4;
+    super.build(context);
+    dayDifference = product.nextRepaymentEvaluationDate.difference(DateTime.now()).inDays;
+    format = NumberFormat.decimalPattern('ko');
+    price = '${format.format(product.price)}원';
+    priceRatio = product.recentAndInitialPriceRatio;
+    nowPrice = priceRatio == null ? 0 : product.price * product.yieldIfConditionsMet / 100;
 
-    return Card(
-      elevation: 3,
-      child: InkWell(
-        child: Container(
-          padding: edgeInsetsAll12,
-          decoration: BoxDecoration(
-            color: Color(0xFF99CCFF),
-            borderRadius: borderRadiusCircular10,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Icon(
-                      Icons.ac_unit
-                  ),
-                  SizedBox(width: 8,),
-                  Column(
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onItemTapped,
+      child: SizedBox(
+        height: cardHeight,
+        child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+            child: Row(
+              children: [
+                Column(children: [_buildIssuerIcon()]),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "${dummyProductName}",
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFFFFFFFF),
-                        ),
-                      ),
-                      Text(
-                        "${formatCurrency(dummyAsset)}원",
-                        style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFFFFFFFF),
-                        ),
-                      ),
-                      Row(
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "평가손익",
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF9A9A9A),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Container(
-                            width: 1.0,
-                            height: 12,
-                            color: Colors.grey,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            "+${formatCurrency((dummyAsset * dummyInterest / 100).toInt())}원(+${dummyInterest}%)",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF5D63FF),
-                            ),
-                          )
+                          _buildProductName(),
+                          const SizedBox(height: 4),
+                          _buildPrice(),
                         ],
-                      )
+                      ),
+                      _buildNextRepaymentDate(),
                     ],
                   ),
-                ],
-              ),
-              RichText(
-                textAlign: TextAlign.start,
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: "다음상환 평가일",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 8,
-                        color: Color(0xFFFFFFFF),
-                      ),
-                    ),
-                    TextSpan(
-                      text: "D-${dummyLeftDays}",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                        color: Color(0xFFFFFFFF),
-                      ),
-                    ),
-                  ],
                 ),
-              ),
-            ],
-          ),
+                const SizedBox(width: 4),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        _buildProfitAndLossPrice(),
+                        const SizedBox(width: 4),
+                        _buildProfitAndLossRate(),
+                      ],
+                    ),
+                    _buildProductType(),
+                  ],
+                )
+              ],
+            )),
+      ),
+    );
+  }
+
+  Widget _buildIssuerIcon() {
+    return CircleAvatar(
+      backgroundColor: AppColors.backgroundGray,
+      child: Padding(
+        padding: edgeInsetsAll4,
+        child: Assets.issuerIconMap[widget.product.issuer] != null ? SvgPicture.asset(Assets.issuerIconMap[widget.product.issuer]!) : const Icon(Icons.question_mark, color: AppColors.contentBlack),
+      ),
+    );
+  }
+
+  Widget _buildProductName() {
+    return Text(
+      product.name,
+      style: const TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 16,
+        color: AppColors.contentBlack,
+      ),
+      overflow: TextOverflow.ellipsis,
+      maxLines: 1,
+    );
+  }
+
+  Widget _buildPrice() {
+    return SizedBox(
+      height: 16,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final textPainter = TextPainter(
+            text: TextSpan(
+              text: price,
+              style: const TextStyle(fontSize: 14),
+            ),
+            maxLines: 1,
+            textDirection: ui.TextDirection.ltr,
+          )..layout(maxWidth: constraints.maxWidth);
+
+          final isOverflowing = textPainter.didExceedMaxLines;
+
+          return isOverflowing
+              ? Marquee(
+                  text: price,
+                  style: const TextStyle(color: Color(0xFF686F74), fontSize: 14),
+                  scrollAxis: Axis.horizontal,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  startAfter: const Duration(seconds: 1),
+                  blankSpace: 30,
+                  velocity: 30.0,
+                  accelerationDuration: const Duration(seconds: 1),
+                  accelerationCurve: Curves.linear,
+                  fadingEdgeEndFraction: 0.7,
+                  decelerationDuration: const Duration(milliseconds: 500),
+                  decelerationCurve: Curves.easeOut,
+                )
+              : Text(
+                  price,
+                  style: const TextStyle(color: Color(0xFF686F74), fontSize: 14),
+                );
+        },
+      ),
+    );
+  }
+
+  Widget _buildNextRepaymentDate() {
+    return Row(
+      children: [
+        Text('다음 상환평가일',
+            style: textTheme.labelSmall!.copyWith(
+              color: const Color(0xFFACB2B5),
+            )),
+        const SizedBox(
+          width: 4,
         ),
+        Text('$dayDifference일 후',
+            style: textTheme.labelSmall!.copyWith(
+              color: const Color(0xFF595E62),
+            )),
+      ],
+    );
+  }
+
+  Widget _buildProfitAndLossPrice() { // 추후 가격 제공 예정, 현재는 쿠폰금리로 표시
+    return Text(
+      // '${nowPrice == 0 ? '' : nowPrice > 0 ? '+' : '-'}${format.format(nowPrice.toInt())}원',
+      '연 ${product.yieldIfConditionsMet.toStringAsFixed(1)}%',
+      style: textTheme.labelMedium!.copyWith(
+        // color: const Color(0xFF434648),
+        color: AppColors.contentRed,
+        // fontSize: 14,
+        fontWeight: FontWeight.w600,
+      ),
+    );
+  }
+
+  Widget _buildProfitAndLossRate() {
+    return Text(
+      // priceRatio == null ? '미발행' : '${priceRatio! > 0 ? '+' : '-'}${product.yieldIfConditionsMet.toStringAsPrecision(2)}%',
+      priceRatio == null ? '미발행' : '${priceRatio! < 0 ? '' : '+'}${priceRatio!.toStringAsFixed(2)}%',
+      style: textTheme.labelSmall!.copyWith(
+        color: (priceRatio ?? 0) == 0
+            ? AppColors.contentGray
+            : priceRatio! > 0
+                ? AppColors.contentRed
+                : AppColors.mainBlue,
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+      ),
+    );
+  }
+
+  Widget _buildProductType() {
+    return Text(
+      '${productType[product.productType]!}형',
+      style: textTheme.labelSmall!.copyWith(
+        color: AppColors.mainBlue,
       ),
     );
   }

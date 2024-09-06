@@ -10,7 +10,7 @@ class ServiceAgreementScreen extends StatefulWidget {
   State<ServiceAgreementScreen> createState() => _ServiceAgreementScreenState();
 }
 
-class _ServiceAgreementScreenState extends State<ServiceAgreementScreen> with TickerProviderStateMixin{
+class _ServiceAgreementScreenState extends State<ServiceAgreementScreen> with TickerProviderStateMixin {
   late final TabController tabController;
   String _appBarTitle = "서비스 약관";
 
@@ -43,28 +43,25 @@ class _ServiceAgreementScreenState extends State<ServiceAgreementScreen> with Ti
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(72),
+        preferredSize: const Size.fromHeight(72),
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               border: Border(
                   bottom: BorderSide(
-                    color: Color(0xFFF5F6F6),
-                    width: 1,
-                  )
-              )
-          ),
+            color: Color(0xFFF5F6F6),
+            width: 1,
+          ))),
           child: AppBar(
             leading: Padding(
               padding: const EdgeInsets.only(left: 24.0), // 좌측 패딩을 추가
               child: Align(
                 alignment: Alignment.center, // 아이콘을 수직 가운데 정렬
                 child: IconButton(
-                  icon: Icon(Icons.arrow_back),
+                  icon: const Icon(Icons.arrow_back),
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -73,7 +70,7 @@ class _ServiceAgreementScreenState extends State<ServiceAgreementScreen> with Ti
             ),
             title: Text(
               _appBarTitle,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 18,
               ),
@@ -85,17 +82,17 @@ class _ServiceAgreementScreenState extends State<ServiceAgreementScreen> with Ti
       body: Column(
         children: [
           PreferredSize(
-            preferredSize: Size.fromHeight(50), // TabBar의 전체 높이
+            preferredSize: const Size.fromHeight(50), // TabBar의 전체 높이
             child: Padding(
               padding: edgeInsetsAll8,
               child: TabBar(
                 controller: tabController,
-                tabs: [
+                tabs: const [
                   Tab(text: "서비스 이용 약관"),
                   Tab(text: "개인 정보 처리 방침"),
                 ],
                 // labelPadding: EdgeInsets.symmetric(horizontal: 6), // 탭 사이의 패딩
-                indicator: UnderlineTabIndicator(
+                indicator: const UnderlineTabIndicator(
                   borderSide: BorderSide(color: Color(0xFF1C6BF9), width: 1.5),
                 ),
                 // indicatorPadding: EdgeInsets.only(left: 24, right: 24), // 첫 번째 탭의 인디케이터 패딩
@@ -117,7 +114,7 @@ class _ServiceAgreementScreenState extends State<ServiceAgreementScreen> with Ti
           Expanded(
             child: TabBarView(
               controller: tabController,
-              children: [
+              children: const [
                 UsageAgreement(),
                 PrivacyPolicy(),
               ],
@@ -134,7 +131,7 @@ class UsageAgreement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return const SingleChildScrollView(
       child: Padding(
         padding: edgeInsetsAll24,
         child: Column(
@@ -156,7 +153,9 @@ class UsageAgreement extends StatelessWidget {
                 color: Color(0xFF434648),
               ),
             ),
-            SizedBox(height: 22,),
+            SizedBox(
+              height: 22,
+            ),
             Text(
               "제 2 조 (용어의 정의)",
               style: TextStyle(
@@ -167,10 +166,12 @@ class UsageAgreement extends StatelessWidget {
             ),
             OrderedList([
               "\"회사\"라 함은 ELS 상품을 소개하는 앱을 운영하는 주체를 말합니다.",
-              "\”이용자\”라 함은 본 약관에 따라 회사가 제공하는 서비스를 이용하는 자를 말합니다.",
-              "\”서비스\”라 함은 회사가 제공하는 ELS 상품 정보 및 관련 부가 서비스를 의미합니다.",
+              "”이용자”라 함은 본 약관에 따라 회사가 제공하는 서비스를 이용하는 자를 말합니다.",
+              "”서비스”라 함은 회사가 제공하는 ELS 상품 정보 및 관련 부가 서비스를 의미합니다.",
             ]),
-            SizedBox(height: 22,),
+            SizedBox(
+              height: 22,
+            ),
             Text(
               "제 3 조 (약관의 게시 및 변경)",
               style: TextStyle(
@@ -184,7 +185,9 @@ class UsageAgreement extends StatelessWidget {
               "회사는 필요에 따라 약관을 변경할 수 있으며, 변경된 약관은 앱 내에 게시함으로써 효력이 발생합니다.",
               "이용자는 변경된 약관에 동의하지 않을 권리가 있으며, 변경된 약관에 동의하지 않을 경우 서비스 이용을 중단하고 탈퇴할 수 있습니다.",
             ]),
-            SizedBox(height: 22,),
+            SizedBox(
+              height: 22,
+            ),
             Text(
               "제 4 조 (서비스의 제공)",
               style: TextStyle(
@@ -197,7 +200,9 @@ class UsageAgreement extends StatelessWidget {
               "회사는 이용자에게 다음과 같은 서비스를 제공합니다. a. ELS 상품 정보 제공 b. 투자 관련 뉴스 및 자료 제공 c. 기타 회사가 정하는 서비스",
               "서비스는 연중무휴 24시간 제공함을 원칙으로 합니다. 다만, 회사의 사정으로 인한 서비스 중단 시 사전에 공지합니다.",
             ]),
-            SizedBox(height: 22,),
+            SizedBox(
+              height: 22,
+            ),
             Text(
               "제 5 조 (이용자의 의무)",
               style: TextStyle(
@@ -211,7 +216,9 @@ class UsageAgreement extends StatelessWidget {
               "이용자는 타인의 권리나 명예를 침해하는 행위를 해서는 안 됩니다.",
               "이용자는 허위 정보를 제공하거나 부정한 방법으로 서비스를 이용해서는 안 됩니다.",
             ]),
-            SizedBox(height: 22,),
+            SizedBox(
+              height: 22,
+            ),
             Text(
               "제 6 조 (회사의 의무)",
               style: TextStyle(
@@ -235,7 +242,7 @@ class PrivacyPolicy extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return const SingleChildScrollView(
       child: Padding(
         padding: edgeInsetsAll24,
         child: Column(
@@ -257,7 +264,9 @@ class PrivacyPolicy extends StatelessWidget {
                 color: Color(0xFF434648),
               ),
             ),
-            SizedBox(height: 22,),
+            SizedBox(
+              height: 22,
+            ),
             Text(
               "제 2 조 (수집하는 개인 정보의 항목 및 수집 방법)",
               style: TextStyle(
@@ -288,7 +297,9 @@ class PrivacyPolicy extends StatelessWidget {
                 "서비스 이용 과정에서 자동으로 수집",
               ]),
             ),
-            SizedBox(height: 22,),
+            SizedBox(
+              height: 22,
+            ),
             Text(
               "제 3 조 (개인 정보의 수집 및 이용 목적)",
               style: TextStyle(
@@ -313,7 +324,9 @@ class PrivacyPolicy extends StatelessWidget {
                 "마케팅 및 광고: 이벤트 및 광고성 정보 제공, 이용자의 서비스 이용에 대한 통계 분석",
               ]),
             ),
-            SizedBox(height: 22,),
+            SizedBox(
+              height: 22,
+            ),
             Text(
               "제 4 조 (개인 정보의 보유 및 이용 기간)",
               style: TextStyle(
@@ -346,7 +359,9 @@ class PrivacyPolicy extends StatelessWidget {
                 color: Color(0xFF434648),
               ),
             ),
-            SizedBox(height: 22,),
+            SizedBox(
+              height: 22,
+            ),
             Text(
               "제 6 조 (회사의 의무)",
               style: TextStyle(
@@ -370,9 +385,8 @@ class PrivacyPolicy extends StatelessWidget {
   }
 }
 
-
 class OrderedList extends StatelessWidget {
-  OrderedList(this.texts);
+  const OrderedList(this.texts, {super.key});
   final List<String> texts;
 
   @override
@@ -390,7 +404,7 @@ class OrderedList extends StatelessWidget {
 }
 
 class OrderedListItem extends StatelessWidget {
-  OrderedListItem(this.number, this.text);
+  const OrderedListItem(this.number, this.text, {super.key});
   final String text;
   final int number;
 
@@ -400,8 +414,8 @@ class OrderedListItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          "${number} .  ",
-          style: TextStyle(
+          "$number .  ",
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w400,
             color: Color(0xFF434648),
@@ -410,7 +424,7 @@ class OrderedListItem extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w400,
               color: Color(0xFF434648),
@@ -423,7 +437,7 @@ class OrderedListItem extends StatelessWidget {
 }
 
 class UnorderedList extends StatelessWidget {
-  UnorderedList(this.texts);
+  const UnorderedList(this.texts, {super.key});
   final List<String> texts;
 
   @override
@@ -440,7 +454,7 @@ class UnorderedList extends StatelessWidget {
 }
 
 class UnorderedListItem extends StatelessWidget {
-  UnorderedListItem(this.text);
+  const UnorderedListItem(this.text, {super.key});
   final String text;
 
   @override
@@ -448,7 +462,7 @@ class UnorderedListItem extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
+        const Text(
           "•  ",
           style: TextStyle(
             fontSize: 16,
@@ -459,7 +473,7 @@ class UnorderedListItem extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w400,
               color: Color(0xFF434648),

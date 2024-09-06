@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 class IssuerProvider extends ChangeNotifier {
   List<ResponseIssuerDto> _issuer = [];
-  bool _isLoading = false;
 
   final ProductService _productService;
 
@@ -13,7 +12,6 @@ class IssuerProvider extends ChangeNotifier {
   List<ResponseIssuerDto> get issuer => _issuer;
 
   Future<void> fetchIssuers() async {
-    _isLoading = true;
     try {
       final response = await _productService.fetchIssuers();
       _issuer = response;
@@ -21,7 +19,6 @@ class IssuerProvider extends ChangeNotifier {
       print('Issuer Error fetching products: $error');
       // 에러 처리 로직 추가
     } finally {
-      _isLoading = false;
       notifyListeners();
     }
   }
