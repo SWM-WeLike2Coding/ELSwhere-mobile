@@ -25,7 +25,7 @@ ResponseSingleProductDto _$ResponseSingleProductDtoFromJson(
       subscriptionStartDate: json['subscriptionStartDate'] as String,
       subscriptionEndDate: json['subscriptionEndDate'] as String,
       initialBasePriceEvaluationDate:
-          json['initialBasePriceEvaluationDate'] as String,
+          json['initialBasePriceEvaluationDate'] as String?,
       type: json['type'] as String,
       productFullInfo: json['productFullInfo'] as String,
       productInfo: json['productInfo'] as String?,

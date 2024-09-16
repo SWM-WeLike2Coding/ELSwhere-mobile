@@ -76,8 +76,10 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
     if (productProvider.product != null && result) {
       // ELSDetailDialog.show(context, productProvider.product!);
       Navigator.push(context, MaterialPageRoute(builder: (context) => const ELSProductDetailScreen()));
+      onItemTapped();
+    } else {
+      Fluttertoast.showToast(msg: '상품을 불러오는데 실패했습니다.', toastLength: Toast.LENGTH_SHORT);
     }
-    onItemTapped();
   }
 
   @override

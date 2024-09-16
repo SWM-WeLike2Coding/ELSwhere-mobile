@@ -1,0 +1,1 @@
+enum SocialType { GOOGLE, APPLE, KAKAO }
