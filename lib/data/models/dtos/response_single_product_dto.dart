@@ -18,7 +18,7 @@ class ResponseSingleProductDto {
   final double maximumLossRate;
   final String subscriptionStartDate;
   final String subscriptionEndDate;
-  final String initialBasePriceEvaluationDate;
+  final String? initialBasePriceEvaluationDate;
   final String type;
   final String productFullInfo;
   final String? productInfo;
@@ -42,7 +42,7 @@ class ResponseSingleProductDto {
     required this.maximumLossRate,
     required this.subscriptionStartDate,
     required this.subscriptionEndDate,
-    required this.initialBasePriceEvaluationDate,
+    this.initialBasePriceEvaluationDate,
     required this.type,
     required this.productFullInfo,
     this.productInfo,

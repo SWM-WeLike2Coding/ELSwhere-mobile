@@ -79,6 +79,7 @@ sealed class Assets {
     "DB금융투자": "assets/icons/company/db.svg",
     "IBK투자증권": "assets/icons/company/ibk.svg",
     "NH투자증권": "assets/icons/company/nh.svg",
+    "에스케이증권": "assets/icons/company/sk.svg",
     "SK증권": "assets/icons/company/sk.svg",
     "KB증권": "assets/icons/company/국민.svg",
     "교보증권": "assets/icons/company/교보.svg",
@@ -158,7 +159,10 @@ const textTheme = TextTheme(
   labelSmall: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.28, fontSize: 12, fontWeight: FontWeight.w500),
 
   titleLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.28, fontSize: 24, fontWeight: FontWeight.w600),
-  titleMedium: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.28, ),
+  titleMedium: TextStyle(
+    fontFamily: Assets.fontFamilyPretendard,
+    letterSpacing: -0.28,
+  ),
   titleSmall: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.28),
 );
 
