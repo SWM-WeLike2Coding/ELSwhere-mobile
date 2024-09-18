@@ -11,6 +11,7 @@ ElsProductForScheduleDto _$ElsProductForScheduleDtoFromJson(
     ElsProductForScheduleDto(
       isHolding: json['isHolding'] as bool,
       productId: (json['productId'] as num).toInt(),
+      holdingId: (json['holdingId'] as num?)?.toInt(),
       issuer: json['issuer'] as String,
       name: json['name'] as String,
       equities: json['equities'] as String,
@@ -22,7 +23,7 @@ ElsProductForScheduleDto _$ElsProductForScheduleDtoFromJson(
       interestId: (json['interestId'] as num?)?.toInt(),
       productType: json['productType'] as String,
       knockIn: (json['knockIn'] as num?)?.toInt(),
-      investingAmount: (json['investingAmount'] as num?)?.toInt(),
+      investingAmount: (json['investingAmount'] as num?)?.toDouble(),
       earlyRedemptionEvaluationDates:
           (json['earlyRedemptionEvaluationDates'] as List<dynamic>?)
               ?.map((e) => DateTime.parse(e as String))
@@ -36,6 +37,7 @@ Map<String, dynamic> _$ElsProductForScheduleDtoToJson(
     <String, dynamic>{
       'isHolding': instance.isHolding,
       'productId': instance.productId,
+      'holdingId': instance.holdingId,
       'issuer': instance.issuer,
       'name': instance.name,
       'equities': instance.equities,
