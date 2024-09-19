@@ -1,5 +1,6 @@
 import 'package:elswhere/config/config.dart';
 import 'package:elswhere/data/models/dtos/response_login_dto.dart';
+import 'package:elswhere/data/models/social_type.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 
@@ -14,6 +15,7 @@ class AuthService {
       );
 
       final jsonResponse = Uri.parse(result).queryParameters;
+      if (jsonResponse.containsKey('error')) throw Exception;
       final response = ResponseLoginDto.fromJson(jsonResponse);
       // print('${response.accessToken} \n ${response.refreshToken}}');
       return response;

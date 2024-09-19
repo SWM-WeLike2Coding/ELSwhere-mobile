@@ -1,5 +1,6 @@
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/config.dart';
+import 'package:elswhere/data/models/social_type.dart';
 import 'package:elswhere/data/services/auth_service.dart';
 import 'package:elswhere/ui/screens/initial_screen.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,40 @@ import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
+
+  Future<bool> _login(SocialType socialType) async {
+    final authUrl = '$baseUrl$loginEndpoint/${switch (socialType) {
+      SocialType.GOOGLE => 'google',
+      SocialType.APPLE => 'apple',
+      SocialType.KAKAO => 'kakao',
+    }}/login';
+    final response = await AuthService.authenticateUser(authUrl);
+
+    if (response != null) {
+      accessToken = response.accessToken;
+      refreshToken = response.refreshToken;
+      storage.write(key: 'ACCESS_TOKEN', value: accessToken);
+      storage.write(key: 'REFRESH_TOKEN', value: refreshToken);
+      return true;
+    }
+    return false;
+  }
+
+  void _onTapLoginButton(BuildContext context, SocialType socialType) async {
+    final bool result = await _login(socialType);
+
+    if (result) {
+      print(accessToken);
+      print(refreshToken);
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const InitialScreen()),
+        (route) => false,
+      );
+    } else {
+      Fluttertoast.showToast(msg: '로그인에 실패했습니다.', toastLength: Toast.LENGTH_SHORT);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,45 +95,9 @@ class LoginScreen extends StatelessWidget {
                 // ),
                 Column(
                   children: [
-                    SizedBox(
-                      width: width - 32,
-                      child: OutlinedButton.icon(
-                        style: OutlinedButton.styleFrom(
-                          padding: edgeInsetsAll12,
-                          shape: const RoundedRectangleBorder(borderRadius: borderRadiusCircular10),
-                          backgroundColor: AppColors.contentWhite,
-                          side: const BorderSide(color: AppColors.iconGray),
-                        ),
-                        icon: SvgPicture.asset(
-                          Assets.iconGoogle,
-                          height: 24,
-                          width: 24,
-                        ),
-                        onPressed: () async {
-                          final bool result = await login();
-
-                          if (result) {
-                            print(accessToken);
-                            print(refreshToken);
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(builder: (context) => const InitialScreen()),
-                              (route) => false,
-                            );
-                          } else {
-                            Fluttertoast.showToast(msg: '로그인에 실패했습니다.', toastLength: Toast.LENGTH_SHORT);
-                          }
-                        },
-                        label: Text(
-                          '구글로 계속하기',
-                          style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                                color: AppColors.contentBlack,
-                                fontSize: 16,
-                                letterSpacing: -0.2,
-                              ),
-                        ),
-                      ),
-                    ),
+                    _buildGoogleLoginButton(context),
+                    const SizedBox(height: 12),
+                    _buildAppleLoginButton(context),
                     const SizedBox(height: 30),
                   ],
                 )
@@ -110,17 +109,68 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Future<bool> login() async {
-    final authUrl = baseUrl + loginEndpoint;
-    final response = await AuthService.authenticateUser(authUrl);
+  Widget _buildGoogleLoginButton(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 12, right: 12),
+            child: OutlinedButton.icon(
+              style: OutlinedButton.styleFrom(
+                padding: edgeInsetsAll12,
+                shape: const RoundedRectangleBorder(borderRadius: borderRadiusCircular10),
+                backgroundColor: AppColors.contentWhite,
+                side: const BorderSide(color: AppColors.iconGray),
+              ),
+              icon: SvgPicture.asset(
+                Assets.iconGoogle,
+                height: 24,
+                width: 24,
+              ),
+              onPressed: () => _onTapLoginButton(context, SocialType.GOOGLE),
+              label: Text(
+                '구글로 계속하기',
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      color: AppColors.contentBlack,
+                      fontSize: 16,
+                    ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
-    if (response != null) {
-      accessToken = response.accessToken;
-      refreshToken = response.refreshToken;
-      storage.write(key: 'ACCESS_TOKEN', value: accessToken);
-      storage.write(key: 'REFRESH_TOKEN', value: refreshToken);
-      return true;
-    }
-    return false;
+  Widget _buildAppleLoginButton(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 12, right: 12),
+            child: OutlinedButton.icon(
+              style: OutlinedButton.styleFrom(
+                padding: edgeInsetsAll12,
+                shape: const RoundedRectangleBorder(borderRadius: borderRadiusCircular10),
+                backgroundColor: AppColors.contentBlack,
+              ),
+              icon: SvgPicture.asset(
+                Assets.iconApple,
+                height: 24,
+                width: 24,
+              ),
+              onPressed: () => _onTapLoginButton(context, SocialType.APPLE),
+              label: Text(
+                '애플로 계속하기',
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      color: AppColors.contentWhite,
+                      fontSize: 16,
+                    ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
