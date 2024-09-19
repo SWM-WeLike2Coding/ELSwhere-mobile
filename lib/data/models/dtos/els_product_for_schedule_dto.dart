@@ -6,6 +6,7 @@ part 'els_product_for_schedule_dto.g.dart';
 class ElsProductForScheduleDto {
   final bool isHolding;
   final int productId;
+  final int? holdingId;
   final String issuer;
   final String name;
   final String equities;
@@ -14,7 +15,7 @@ class ElsProductForScheduleDto {
   final DateTime subscriptionEndDate;
   final int? knockIn;
   final String productType;
-  final int? investingAmount;
+  final double? investingAmount;
   final List<DateTime>? earlyRedemptionEvaluationDates; // 조기상환평가일
   final double? currentEarningPercent;
   final int? interestId;
@@ -24,6 +25,7 @@ class ElsProductForScheduleDto {
   ElsProductForScheduleDto({
     required this.isHolding,
     required this.productId,
+    this.holdingId,
     required this.issuer,
     required this.name,
     required this.equities,

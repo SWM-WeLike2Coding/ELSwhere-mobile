@@ -1,8 +1,11 @@
 import 'package:elswhere/data/models/dtos/els_product_for_schedule_dto.dart';
 import 'package:elswhere/data/models/dtos/response_interesting_product_dto.dart';
+import 'package:elswhere/data/models/dtos/summarized_user_holding_dto.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
+import 'package:elswhere/data/providers/user_info_provider.dart';
 import 'package:elswhere/ui/screens/redemption_schedule_screen.dart';
 import 'package:elswhere/ui/screens/subscription_end_schedule_screen.dart';
+import 'package:elswhere/ui/widgets/holding_product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -39,6 +42,24 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
     );
   }
 
+  // 기존에 schedulDTO가 관심 상품에 맞춰져 있어서, 청약 상품까지 포함할 수 있게 바꾸거나 새로운 DTO를 나중에 만드는 것이 더 깔끔할 것 같음(나중에 유지보수 시 헷갈리지 않게끔 두 종류의 상품 데이터를 아우를 수 있는 변수명으로 바꿔야 할 듯)
+  ElsProductForScheduleDto convertHoldingProductToProductForSchedule(SummarizedUserHoldingDto holdingProduct) {
+    return ElsProductForScheduleDto(
+      isHolding: true,
+      productId: holdingProduct.productId,
+      holdingId: holdingProduct.holdingId,
+      issuer: holdingProduct.issuer,
+      name: holdingProduct.name,
+      productType: holdingProduct.productType,
+      equities: '',
+      yieldIfConditionsMet: holdingProduct.yieldIfConditionsMet,
+      subscriptionStartDate: DateTime.now(),
+      subscriptionEndDate: holdingProduct.nextRepaymentEvaluationDate,
+      investingAmount: holdingProduct.price,
+      currentEarningPercent: holdingProduct.recentAndInitialPriceRatio,
+    );
+  }
+
   SummarizedProductDto convertProductForScheduleToSummarized(ElsProductForScheduleDto product) {
     return SummarizedProductDto(
       id: product.productId,
@@ -52,6 +73,20 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
     );
   }
 
+  SummarizedUserHoldingDto convertProductForScheduleToSummarizedHolding(ElsProductForScheduleDto product) {
+    return SummarizedUserHoldingDto(
+      holdingId: product.holdingId!,
+      productId: product.productId,
+      issuer: product.issuer,
+      name: product.name,
+      productType: product.productType,
+      yieldIfConditionsMet: product.yieldIfConditionsMet,
+      nextRepaymentEvaluationDate: product.subscriptionEndDate,
+      price: product.investingAmount!,
+      recentAndInitialPriceRatio: product.currentEarningPercent,
+    );
+  }
+
   bool isTodayOrFuture(DateTime date) {
     DateTime now = DateTime.now();
     DateTime today = DateTime(now.year, now.month, now.day);
@@ -61,7 +96,7 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
 
   void _updateScheduleMap(DateTime selectDate) {
     setState(() {
-      print(selectDate);
+      // print(selectDate);
       // print(_scheduleMap!.values.toString());
     });
   }
@@ -71,6 +106,11 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
     return Consumer<ELSProductProvider>(
       builder: (context, elsProductProvider, child) {
         var interestingProducts = Provider.of<ELSProductProvider>(context, listen: false).interestingProducts;
+        var holdingProducts = Provider.of<UserInfoProvider>(context, listen: false).holdingProducts;
+        if (holdingProducts == null) {
+          holdingProducts = [];
+        }
+
         Map<DateTime, List<ElsProductForScheduleDto>> tempScheduleMap = {};
         Map<DateTime, List<ElsProductForScheduleDto>> filteredScheduleMap = {};
 
@@ -82,7 +122,14 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
           }
         }
 
-        // 나중에 여기에 보유 상품 관련 정보들도 DTO 변환해서 tempScheduleMap에 넣어줘야함!!!
+        // 나중에 여기에 보유 상품 관련 정보들도 DTO 변환해서 tempScheduleMap에 넣어줘야함!!!(방금 바로 아래에 넣어줌)
+        for (int i = 0; i < holdingProducts.length; i++) {
+          if (tempScheduleMap.containsKey(holdingProducts[i].nextRepaymentEvaluationDate)) {
+            tempScheduleMap[holdingProducts[i].nextRepaymentEvaluationDate]!.add(convertHoldingProductToProductForSchedule(holdingProducts[i]));
+          } else {
+            tempScheduleMap[holdingProducts[i].nextRepaymentEvaluationDate] = [convertHoldingProductToProductForSchedule(holdingProducts[i])];
+          }
+        }
 
         List<DateTime> sortedDates = tempScheduleMap.keys.toList()..sort();
         Map<DateTime, List<ElsProductForScheduleDto>> scheduleMap = {for (var key in sortedDates) key: tempScheduleMap[key]!};
@@ -492,27 +539,60 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
               ),
             ),
             if (isThereInterested)
-              const Padding(
-                padding: EdgeInsets.only(top: 16, bottom: 16, left: 24, right: 24),
-                child: Text(
-                  "청약 마감",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    height: 18.88 / 16,
-                    letterSpacing: -0.02,
-                    color: Color(0xFF131415),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(top: 16, bottom: 16, left: 24, right: 24),
+                    child: Text(
+                      "청약 마감",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        height: 18.88 / 16,
+                        letterSpacing: -0.02,
+                        color: Color(0xFF131415),
+                      ),
+                    ),
                   ),
-                ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: interestedProducts.asMap().entries.map((entry) {
+                      int index = entry.key;
+                      ElsProductForScheduleDto product = entry.value;
+                      return ELSProductCard(product: convertProductForScheduleToSummarized(product), index: index);
+                    }).toList(),
+                  ),
+                ],
               ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: interestedProducts.asMap().entries.map((entry) {
-                int index = entry.key;
-                ElsProductForScheduleDto product = entry.value;
-                return ELSProductCard(product: convertProductForScheduleToSummarized(product), index: index);
-              }).toList(),
-            ),
+            if (isThereHolding)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(top: 16, bottom: 16, left: 24, right: 24),
+                    child: Text(
+                      "조기/만기 상환",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        height: 18.88 / 16,
+                        letterSpacing: -0.02,
+                        color: Color(0xFF131415),
+                      ),
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: holdingProducts.asMap().entries.map((entry) {
+                      // int index = entry.key;
+                      ElsProductForScheduleDto product = entry.value;
+                      return HoldingProductCard(product: convertProductForScheduleToSummarizedHolding(product));
+                      // return ELSProductCard(product: convertProductForScheduleToSummarized(product), index: index);
+                    }).toList(),
+                  ),
+                ],
+              )
           ],
         );
       }).toList(),
