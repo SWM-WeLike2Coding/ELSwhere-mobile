@@ -71,6 +71,8 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
                       ],
                     ),
                     const SizedBox(height: 8),
+                    _buildInitialBasePriceEvaluationDateCard(),
+                    const SizedBox(height: 8),
                     _buildDateCard(),
                     const SizedBox(height: 8),
                     _buildProductTypeCard(),
@@ -491,6 +493,48 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
             );
           })
         ],
+      ),
+    );
+  }
+
+  Widget _buildInitialBasePriceEvaluationDateCard() {
+    // final format = DateFormat().addPattern('yyyy-MM-dd');
+    final dayDifference = DateTime.parse(product!.initialBasePriceEvaluationDate.toString()).difference(DateTime.now()).inDays;
+
+    return Container(
+      decoration: const BoxDecoration(
+        color: AppColors.contentWhite,
+        borderRadius: borderRadiusCircular10,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '최초 기준가격 평가일',
+                  style: textTheme.labelMedium!.copyWith(
+                    color: AppColors.textGray,
+                  ),
+                ),
+                Text(
+                  dayDifference != 0 ? '${dayDifference.abs()}일 ${dayDifference < 0 ? '전' : '후'}' : '오늘',
+                  style: textTheme.labelMedium!.copyWith(
+                    color: AppColors.mainBlue,
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(height: 12),
+            Text(
+              product!.initialBasePriceEvaluationDate ?? '',
+              style: textTheme.labelMedium,
+            ),
+          ],
+        ),
       ),
     );
   }
