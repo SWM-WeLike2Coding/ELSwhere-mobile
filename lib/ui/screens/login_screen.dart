@@ -122,10 +122,12 @@ class LoginScreen extends StatelessWidget {
                 backgroundColor: AppColors.contentWhite,
                 side: const BorderSide(color: AppColors.iconGray),
               ),
-              icon: SvgPicture.asset(
-                Assets.iconGoogle,
+              icon: SizedBox(
                 height: 24,
                 width: 24,
+                child: SvgPicture.asset(
+                  Assets.iconGoogle,
+                ),
               ),
               onPressed: () => _onTapLoginButton(context, SocialType.GOOGLE),
               label: Text(
@@ -154,10 +156,12 @@ class LoginScreen extends StatelessWidget {
                 shape: const RoundedRectangleBorder(borderRadius: borderRadiusCircular10),
                 backgroundColor: AppColors.contentBlack,
               ),
-              icon: SvgPicture.asset(
-                Assets.iconApple,
+              icon: SizedBox(
                 height: 24,
                 width: 24,
+                child: SvgPicture.asset(
+                  Assets.iconApple,
+                ),
               ),
               onPressed: () => _onTapLoginButton(context, SocialType.APPLE),
               label: Text(
