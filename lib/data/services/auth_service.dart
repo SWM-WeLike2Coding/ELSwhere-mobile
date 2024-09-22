@@ -1,6 +1,5 @@
 import 'package:elswhere/config/config.dart';
 import 'package:elswhere/data/models/dtos/response_login_dto.dart';
-import 'package:elswhere/data/models/social_type.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 

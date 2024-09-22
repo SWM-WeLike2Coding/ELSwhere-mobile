@@ -31,7 +31,26 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
     productProvider = Provider.of<ELSProductProvider>(context, listen: false);
   }
 
-  void changeLiked() => setState(() => isLiked = !isLiked);
+  void changeLiked() async {
+    ResponseSingleProductDto? product = productProvider.product;
+    isLiked = productProvider.isLiked;
+    bool result;
+    if (isLiked == false) {
+      result = await productProvider.postProductLike(product!.id);
+    } else {
+      result = await productProvider.deleteProductLike(product!.id);
+    }
+
+    setState(() {
+      isLiked = productProvider.isLiked;
+    });
+    if (result) {
+      Fluttertoast.showToast(msg: isLiked ? '좋아요를 추가했습니다.' : '좋아요를 취소했습니다.', toastLength: Toast.LENGTH_SHORT);
+    } else {
+      Fluttertoast.showToast(msg: '좋아요에 실패했습니다. 다시 시도해주세요.', toastLength: Toast.LENGTH_SHORT);
+    }
+  }
+
   // void changeBookmarked() => setState(() => isBookmarked = !isBookmarked);
   void changeBookmarked() async {
     ResponseSingleProductDto? product = productProvider.product;
@@ -83,6 +102,7 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
   Widget build(BuildContext context) {
     return Consumer<ELSProductProvider>(
       builder: (context, productProvider, child) {
+        isLiked = productProvider.isLiked;
         isBookmarked = productProvider.isBookmarked;
         isHeld = productProvider.isHeld;
 

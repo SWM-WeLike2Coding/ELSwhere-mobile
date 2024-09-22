@@ -26,10 +26,10 @@ abstract class ProductService {
 
   @GET("/v1/product/{status}-sale")
   Future<ResponsePageSummarizedProductDto> fetchProducts(
-      @Path("status") String status,
-      @Query("type") String type,
-      @Query("page") int page,
-      @Query("size") int size,
+    @Path("status") String status,
+    @Query("type") String type,
+    @Query("page") int page,
+    @Query("size") int size,
   );
 
   @GET("/v1/product/{id}")
@@ -40,4 +40,10 @@ abstract class ProductService {
 
   @GET("/v1/product/similar/{id}")
   Future<HttpResponse> fetchSimilarProducts(@Path("id") int id);
+
+  @POST("/v1/product/like/{id}")
+  Future<HttpResponse> postProductLike(@Path("id") int id);
+
+  @DELETE("/v1/product/like/{id}")
+  Future<HttpResponse> deleteProductLike(@Path("id") int id);
 }

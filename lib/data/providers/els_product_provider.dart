@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:elswhere/data/models/dtos/summarized_user_holding_dto.dart';
+import 'package:elswhere/data/models/dtos/user_like_product_dto.dart';
 import 'package:elswhere/data/services/yfinance_service.dart';
 import 'package:flutter/material.dart';
 import 'package:retrofit/dio.dart';
@@ -20,10 +21,12 @@ class ELSProductProvider with ChangeNotifier {
   SummarizedUserHoldingDto? _holdingProduct;
   bool _isLoading = false;
   bool _isBookmarked = false;
+  bool _isLiked = false;
   bool _isHeld = false;
   int? _interestId;
   int? _holdingId;
   List<ResponseInterestingProductDto> _interestingProducts = [];
+  List<UserLikeProductDto> _likeProducts = [];
   List<int> _compareId = [];
   List<ResponseSingleProductDto> _compareProducts = [];
   Map<String, YahooFinanceResponse>? _stockPrices;
@@ -32,15 +35,18 @@ class ELSProductProvider with ChangeNotifier {
   SummarizedUserHoldingDto? get holdingProduct => _holdingProduct;
   bool get isLoading => _isLoading;
   bool get isBookmarked => _isBookmarked;
+  bool get isLiked => _isLiked;
   int? get interestedId => _interestId;
   int? get holdingId => _holdingId;
   bool get isHeld => _isHeld;
   List<ResponseInterestingProductDto> get interestingProducts => _interestingProducts;
+  List<UserLikeProductDto> get likeProducts => _likeProducts;
   List<int> get compareId => _compareId;
   List<ResponseSingleProductDto> get compareProducts => _compareProducts;
   Map<String, YahooFinanceResponse>? get stockPrices => _stockPrices;
 
   Future<bool> fetchProduct(int id) async {
+    _isLiked = false;
     _isLoading = true;
     notifyListeners();
 
@@ -57,6 +63,14 @@ class ELSProductProvider with ChangeNotifier {
         } else {
           _isBookmarked = false;
           _interestId = null;
+        }
+      }
+
+      for (int i = 0; i < _likeProducts.length; i++) {
+        print('id값: ${_product!.id}, ${_likeProducts[i].id}');
+        if (_product?.id == _likeProducts[i].id) {
+          _isLiked = true;
+          break;
         }
       }
       notifyListeners();
@@ -176,6 +190,61 @@ class ELSProductProvider with ChangeNotifier {
       notifyListeners();
     }
     print('$_isHeld, 성공?: $success');
+    return success;
+  }
+
+  Future<bool> fetchLikeProducts() async {
+    bool success = true;
+    _isLoading = true;
+
+    try {
+      final httpResponse = await _userService.fetchLikeProducts();
+      final response = httpResponse.response;
+      if (response.statusCode == 200) {
+        _likeProducts = httpResponse.data;
+      } else {
+        throw Exception('Error Code: ${response.statusCode}, ${response.statusMessage}');
+      }
+    } catch (e) {
+      print("좋아요 상품 불러오기 실패: $e");
+      success = false;
+    } finally {
+      _isLoading = false;
+    }
+    return success;
+  }
+
+  Future<bool> postProductLike(int id) async {
+    bool success = true;
+
+    try {
+      final httpResponse = await _productService.postProductLike(id);
+      final response = httpResponse.response;
+      if (response.statusCode != 200 || !await fetchLikeProducts()) {
+        success = false;
+        throw Exception("Error Code: ${response.statusCode}, ${response.statusMessage}");
+      }
+      _isLiked = true;
+    } catch (e) {
+      print("상품 좋아요 실패: $e");
+    }
+    return success;
+  }
+
+  Future<bool> deleteProductLike(int id) async {
+    bool success = true;
+
+    try {
+      final httpResponse = await _productService.deleteProductLike(id);
+      final response = httpResponse.response;
+      if (response.statusCode != 200 || !await fetchLikeProducts()) {
+        success = false;
+        throw Exception("Error Code: ${response.statusCode}, ${response.statusMessage}");
+      }
+      _isLiked = false;
+    } catch (e) {
+      print("상품 좋아요 실패: $e");
+    }
     return success;
   }
 }

@@ -248,9 +248,7 @@ class UserInfoProvider with ChangeNotifier {
         for (var product in _holdingProducts!) {
           double? priceRatio = product.recentAndInitialPriceRatio;
           _totalHoldingPrice += product.price.toInt();
-          _profitAndLossPrice += priceRatio == null 
-            ? 0
-            : (product.price * product.yieldIfConditionsMet / 100).toInt();
+          _profitAndLossPrice += priceRatio == null ? 0 : (product.price * product.yieldIfConditionsMet / 100).toInt();
         }
       } else {
         throw Exception('Error Code: ${response.statusCode}, ${response.statusMessage}');
