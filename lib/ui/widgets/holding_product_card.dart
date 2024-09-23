@@ -240,7 +240,7 @@ class _ELSProductCardState extends State<HoldingProductCard> with AutomaticKeepA
   Widget _buildProfitAndLossRate() {
     return Text(
       // priceRatio == null ? '미발행' : '${priceRatio! > 0 ? '+' : '-'}${product.yieldIfConditionsMet.toStringAsPrecision(2)}%',
-      priceRatio == null ? '미발행' : '${priceRatio! < 0 ? '' : '+'}${priceRatio!.toStringAsFixed(2)}%',
+      priceRatio == null ? '미반영' : '${priceRatio! < 0 ? '' : '+'}${priceRatio!.toStringAsFixed(2)}%',
       style: textTheme.labelSmall!.copyWith(
         color: (priceRatio ?? 0) == 0
             ? AppColors.contentGray
