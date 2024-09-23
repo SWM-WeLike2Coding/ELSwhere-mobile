@@ -594,6 +594,7 @@ class CompareProductScreen extends StatelessWidget {
                     },
                   );
 
+                  await productProvider!.fetchMonteCarloResponse(compareProduct1.id);
                   await productProvider!.fetchProduct(compareProduct1.id);
                   productProvider!.checkisHeld(userProvider!.holdingProducts ?? []);
 
@@ -650,6 +651,7 @@ class CompareProductScreen extends StatelessWidget {
                     },
                   );
 
+                  await productProvider!.fetchMonteCarloResponse(compareProduct2.id);
                   await productProvider!.fetchProduct(compareProduct2.id);
                   productProvider!.checkisHeld(userProvider!.holdingProducts ?? []);
 
