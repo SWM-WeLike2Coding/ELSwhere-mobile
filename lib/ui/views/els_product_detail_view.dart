@@ -1,6 +1,8 @@
 import 'dart:ui' as ui;
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/config.dart';
+import 'package:elswhere/config/strings.dart';
+import 'package:elswhere/data/models/dtos/monte_carlo_response.dart';
 import 'package:elswhere/data/models/dtos/response_single_product_dto.dart';
 import 'package:elswhere/data/models/dtos/summarized_user_holding_dto.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
@@ -24,6 +26,7 @@ class ELSProductDetailView extends StatefulWidget {
 class _ELSProductDetailViewState extends State<ELSProductDetailView> {
   late ELSProductProvider productProvider;
   late UserInfoProvider userProvider;
+  late OverlayPortalController _overlayPortalController;
   ResponseSingleProductDto? product;
   bool isHeld = false;
 
@@ -32,6 +35,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
     super.initState();
     productProvider = Provider.of<ELSProductProvider>(context, listen: false);
     userProvider = Provider.of<UserInfoProvider>(context, listen: false);
+    _overlayPortalController = OverlayPortalController();
   }
 
   @override
@@ -82,10 +86,15 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
                     _buildTitleText('기초자산 주가'),
                     const SizedBox(height: 24),
                     const StockPriceGraphView(),
-                    // const SizedBox(height: 48),
-                    // _buildAnalysisResult(),
-                    // const SizedBox(height: 32),
-                    // _buildRepaymentRatesList(),
+                    if (productProvider.monteCarloResponse != null)
+                      Column(
+                        children: [
+                          const SizedBox(height: 48),
+                          _buildAnalysisResult(),
+                          const SizedBox(height: 32),
+                          _buildRepaymentRatesList(),
+                        ],
+                      ),
                     const SizedBox(height: 48),
                     _buildTitleText('조기•만기상환 평가 일정'),
                     const SizedBox(height: 32),
@@ -704,17 +713,63 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _buildTitleText('엘스웨어 분석 결과'),
-        SizedBox(
-          width: 24,
-          height: 24,
-          child: GestureDetector(
-            onTap: () {},
-            child: CircleAvatar(
-              backgroundColor: const Color(0xFFE6E7E8),
-              child: Text('?',
+        OverlayPortal(
+          controller: _overlayPortalController,
+          overlayChildBuilder: (context) {
+            return Positioned(
+              top: 30,
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Padding(
+                  padding: edgeInsetsAll24,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Container(
+                      color: Colors.white,
+                      child: Padding(
+                        padding: edgeInsetsAll16,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            GestureDetector(
+                              onTap: _overlayPortalController.hide,
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 4),
+                                child: Icon(Icons.close),
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              descriptionMonteCarlo,
+                              style: textTheme.headlineSmall,
+                              softWrap: true,
+                              maxLines: null,
+                              overflow: TextOverflow.visible,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+          child: SizedBox(
+            width: 24,
+            height: 24,
+            child: GestureDetector(
+              onTap: _overlayPortalController.toggle,
+              child: CircleAvatar(
+                backgroundColor: const Color(0xFFE6E7E8),
+                child: Text(
+                  '?',
                   style: textTheme.labelSmall!.copyWith(
                     fontWeight: FontWeight.w700,
-                  )),
+                  ),
+                ),
+              ),
             ),
           ),
         )
@@ -723,7 +778,34 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
   }
 
   Widget _buildRepaymentRatesList() {
-    return const Placeholder();
+    MonteCarloResponse monteCarloResponse = productProvider.monteCarloResponse!;
+    List<String> splitedEarlyRepaymentProbability = monteCarloResponse.earlyRepaymentProbability.split(',');
+    int length = splitedEarlyRepaymentProbability.length;
+    List<double> earlyRepaymentProbabilities = splitedEarlyRepaymentProbability.map((e) => double.parse(e)).toList()
+      ..addAll([monteCarloResponse.maturityRepaymentProbability, monteCarloResponse.lossProbability]);
+    List<String> levelString = List.generate(length, (idx) => '${idx + 1}차 조기상환율')..addAll(["만기 상환율", "손실율"]);
+
+    return Column(
+      children: [
+        for (int i = 0; i <= length + 1; i++) ...[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                levelString[i],
+                style: textTheme.labelMedium!.copyWith(color: i == length + 1 ? AppColors.contentRed : AppColors.textGray),
+              ),
+              Text(
+                '${earlyRepaymentProbabilities[i].toStringAsFixed(2)}%',
+                style: textTheme.labelMedium!.copyWith(color: i == length + 1 ? AppColors.contentRed : AppColors.contentBlack),
+              ),
+            ],
+          ),
+          if (i != length + 1) const SizedBox(height: 24),
+        ]
+      ],
+    );
   }
 
   Widget _buildEvaluationDatesList() {

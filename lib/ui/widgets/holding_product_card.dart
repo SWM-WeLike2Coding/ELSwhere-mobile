@@ -63,6 +63,7 @@ class _ELSProductCardState extends State<HoldingProductCard> with AutomaticKeepA
     final result = [
       await productProvider.fetchProduct(product.productId),
       await productProvider.fetchStockPrices(),
+      await productProvider.fetchMonteCarloResponse(product.productId),
       productProvider.checkisHeld(userProvider.holdingProducts!),
     ].every((result) => result);
 

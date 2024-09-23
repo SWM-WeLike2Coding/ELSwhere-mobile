@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:elswhere/config/config.dart';
+import 'package:elswhere/data/models/dtos/monte_carlo_response.dart';
 import 'package:elswhere/data/models/dtos/price_ratio_response.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -17,4 +18,7 @@ abstract class AnalysisService {
 
   @POST("/v1/product/price/ratio/list")
   Future<HttpResponse<PriceRatioResponse>> getPriceRatioList(@Body() Map<String, dynamic> productIdList);
+
+  @GET("/v1/monte-carlo/{productId}")
+  Future<HttpResponse<MonteCarloResponse>> fetchMonteCarloResponse(@Path("productId") int productId);
 }

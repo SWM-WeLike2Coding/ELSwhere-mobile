@@ -66,8 +66,9 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
       },
     );
 
-    await productProvider.fetchProduct(widget.product.id);
+    await productProvider.fetchProduct(product.id);
     await productProvider.fetchStockPrices();
+    await productProvider.fetchMonteCarloResponse(product.id);
     final result = productProvider.checkisHeld(userProvider.holdingProducts ?? []);
 
     // 로딩 다이얼로그 닫기

@@ -7,6 +7,7 @@ import 'package:elswhere/data/providers/els_products_provider.dart';
 import 'package:elswhere/data/providers/issuer_provider.dart';
 import 'package:elswhere/data/providers/ticker_symbol_provider.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/data/services/analysis_service.dart';
 import 'package:elswhere/data/services/dio_client.dart';
 import 'package:elswhere/data/services/els_product_service.dart';
 import 'package:elswhere/data/services/user_service.dart';
@@ -107,6 +108,7 @@ class ELSwhere extends StatelessWidget {
   late final ProductService _productService;
   late final UserService _userService;
   late final YFinanceService _yFinanceService;
+  late final AnalysisService _analysisService;
 
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
@@ -116,6 +118,7 @@ class ELSwhere extends StatelessWidget {
     _productService = ProductService(dio);
     _userService = UserService(dio);
     _yFinanceService = YFinanceService.getInstance();
+    _analysisService = AnalysisService(dio);
   }
 
   @override
@@ -124,7 +127,7 @@ class ELSwhere extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => ELSOnSaleProductsProvider(_productService)),
         ChangeNotifierProvider(create: (context) => ELSEndSaleProductsProvider(_productService)),
-        ChangeNotifierProvider(create: (context) => ELSProductProvider(_productService, _userService, _yFinanceService)),
+        ChangeNotifierProvider(create: (context) => ELSProductProvider(_productService, _userService, _yFinanceService, _analysisService)),
         ChangeNotifierProvider(create: (context) => IssuerProvider(_productService)),
         ChangeNotifierProvider(create: (context) => TickerSymbolProvider(_productService)),
         ChangeNotifierProvider(create: (context) => UserInfoProvider(_userService)),
@@ -143,27 +146,34 @@ class ELSwhere extends StatelessWidget {
         navigatorObservers: [observer],
         title: appName,
         theme: ThemeData(
-            primarySwatch: MaterialColorBuilder.createMaterialColor(AppColors.mainBlue),
-            primaryColor: AppColors.mainBlue,
-            colorScheme: ColorScheme.fromSwatch(
-              primarySwatch: MaterialColorBuilder.createMaterialColor(Colors.white),
-            ),
-            scaffoldBackgroundColor: AppColors.contentWhite,
-            textTheme: textTheme,
-            buttonTheme: const ButtonThemeData(
-              buttonColor: AppColors.mainBlue,
-              textTheme: ButtonTextTheme.primary,
-            ),
-            appBarTheme: const AppBarTheme(
-              backgroundColor: AppColors.contentWhite,
-            ),
-            bottomNavigationBarTheme:
-                const BottomNavigationBarThemeData(selectedItemColor: AppColors.mainBlue, backgroundColor: AppColors.contentWhite, landscapeLayout: BottomNavigationBarLandscapeLayout.linear),
-            switchTheme: const SwitchThemeData(
-              trackColor: WidgetStatePropertyAll(AppColors.mainBlue),
-              trackOutlineColor: WidgetStatePropertyAll(AppColors.contentGray),
-              thumbColor: WidgetStatePropertyAll(AppColors.contentWhite),
-            )),
+          primarySwatch: MaterialColorBuilder.createMaterialColor(AppColors.mainBlue),
+          primaryColor: AppColors.mainBlue,
+          colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: MaterialColorBuilder.createMaterialColor(Colors.white),
+          ),
+          scaffoldBackgroundColor: AppColors.contentWhite,
+          textTheme: textTheme,
+          buttonTheme: const ButtonThemeData(
+            buttonColor: AppColors.mainBlue,
+            textTheme: ButtonTextTheme.primary,
+          ),
+          appBarTheme: const AppBarTheme(
+            backgroundColor: AppColors.contentWhite,
+          ),
+          bottomNavigationBarTheme:
+              const BottomNavigationBarThemeData(selectedItemColor: AppColors.mainBlue, backgroundColor: AppColors.contentWhite, landscapeLayout: BottomNavigationBarLandscapeLayout.linear),
+          switchTheme: const SwitchThemeData(
+            trackColor: WidgetStatePropertyAll(AppColors.mainBlue),
+            trackOutlineColor: WidgetStatePropertyAll(AppColors.contentGray),
+            thumbColor: WidgetStatePropertyAll(AppColors.contentWhite),
+          ),
+        ),
+        builder: (context, child) {
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
+            child: child!,
+          );
+        },
         home: SplashScreen(),
       ),
     );
