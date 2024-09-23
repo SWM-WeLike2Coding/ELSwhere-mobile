@@ -235,7 +235,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
           //     '${decimalFormat.format((holdingPrice * (100 + (priceRatio == null ? 0 : holdingProduct!.yieldIfConditionsMet)) / 100).toInt())}원\n(${priceRatio == null ? '미발행' : '+${holdingProduct!.yieldIfConditionsMet.toStringAsFixed(1)}%'})';
           // color = priceRatio == null ? Colors.black : AppColors.contentRed;
           title = '최초 기준가격 대비 변동율';
-          content = priceRatio == null ? '미발행' : '${priceRatio! < 0 ? '' : '+'}${priceRatio!.toStringAsFixed(2)}%';
+          content = priceRatio == null ? '미반영' : '${priceRatio! < 0 ? '' : '+'}${priceRatio!.toStringAsFixed(2)}%';
           color = priceRatio == null || priceRatio! == 0
               ? Colors.black
               : priceRatio! > 0
