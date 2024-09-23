@@ -1,4 +1,5 @@
 import 'dart:ui' as ui;
+import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/config.dart';
 import 'package:elswhere/config/strings.dart';
@@ -27,6 +28,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
   late ELSProductProvider productProvider;
   late UserInfoProvider userProvider;
   late OverlayPortalController _overlayPortalController;
+  // late AnimatedDigitController _animatedDigitController;
   ResponseSingleProductDto? product;
   bool isHeld = false;
 
@@ -36,6 +38,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
     productProvider = Provider.of<ELSProductProvider>(context, listen: false);
     userProvider = Provider.of<UserInfoProvider>(context, listen: false);
     _overlayPortalController = OverlayPortalController();
+    // _animatedDigitController = AnimatedDigitController(0);
   }
 
   @override
@@ -142,11 +145,13 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
   }
 
   Widget _buildTitleText(String text) {
-    return Text(text,
-        style: textTheme.titleLarge!.copyWith(
-          fontSize: 24,
-          color: AppColors.titleGray,
-        ));
+    return Text(
+      text,
+      style: textTheme.titleLarge!.copyWith(
+        fontSize: 24,
+        color: AppColors.titleGray,
+      ),
+    );
   }
 
   Widget _buildIssuerIcon() {
@@ -200,11 +205,21 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
                 ),
                 Row(
                   children: [
-                    Text(
-                      '${decimalFormat.format(holdingPrice.toInt())}원',
-                      style: textTheme.labelLarge!.copyWith(
+                    // Text(
+                    //   '${decimalFormat.format(holdingPrice.toInt())}원',
+                    //   style: textTheme.labelLarge!.copyWith(
+                    //     fontSize: 22,
+                    //   ),
+                    // ),
+                    AnimatedFlipCounter(
+                      value: holdingPrice.toInt(),
+                      textStyle: textTheme.labelLarge!.copyWith(
                         fontSize: 22,
                       ),
+                      thousandSeparator: ',',
+                      suffix: '원',
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeOutCirc,
                     ),
                     const SizedBox(width: 8),
                     IconButton(
