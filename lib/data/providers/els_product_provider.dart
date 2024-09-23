@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
+import 'package:elswhere/data/models/dtos/monte_carlo_response.dart';
 import 'package:elswhere/data/models/dtos/summarized_user_holding_dto.dart';
 import 'package:elswhere/data/models/dtos/user_like_product_dto.dart';
+import 'package:elswhere/data/services/analysis_service.dart';
 import 'package:elswhere/data/services/yfinance_service.dart';
 import 'package:flutter/material.dart';
 import 'package:retrofit/dio.dart';
@@ -14,11 +18,13 @@ class ELSProductProvider with ChangeNotifier {
   final ProductService _productService;
   final UserService _userService;
   final YFinanceService _yFinanceService;
+  final AnalysisService _analysisService;
 
-  ELSProductProvider(this._productService, this._userService, this._yFinanceService);
+  ELSProductProvider(this._productService, this._userService, this._yFinanceService, this._analysisService);
 
   ResponseSingleProductDto? _product;
   SummarizedUserHoldingDto? _holdingProduct;
+  MonteCarloResponse? _monteCarloResponse;
   bool _isLoading = false;
   bool _isBookmarked = false;
   bool _isLiked = false;
@@ -33,6 +39,7 @@ class ELSProductProvider with ChangeNotifier {
 
   ResponseSingleProductDto? get product => _product;
   SummarizedUserHoldingDto? get holdingProduct => _holdingProduct;
+  MonteCarloResponse? get monteCarloResponse => _monteCarloResponse;
   bool get isLoading => _isLoading;
   bool get isBookmarked => _isBookmarked;
   bool get isLiked => _isLiked;
@@ -244,6 +251,32 @@ class ELSProductProvider with ChangeNotifier {
       _isLiked = false;
     } catch (e) {
       print("상품 좋아요 실패: $e");
+    }
+    return success;
+  }
+
+  Future<bool> fetchMonteCarloResponse(int productId) async {
+    bool success = true;
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      final httpResponse = await _analysisService.fetchMonteCarloResponse(productId);
+      final response = httpResponse.response;
+      if (response.statusCode == 200) {
+        _monteCarloResponse = httpResponse.data;
+      } else if (response.statusCode == 404 || response.statusCode == 422) {
+        throw Exception("Error code: ${response.statusCode}, ${response.statusMessage}");
+      } else {
+        throw Exception("Unknown Error: ${response.statusCode}, ${response.statusMessage}");
+      }
+    } catch (e) {
+      log("몬테 카를로 결과 불러오기 실패: $e");
+      _monteCarloResponse = null;
+      success = false;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
     return success;
   }
