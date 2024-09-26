@@ -9,7 +9,7 @@ class StockPriceGraphView extends StatefulWidget {
   State<StockPriceGraphView> createState() => _StockPriceGraphViewState();
 }
 
-class _StockPriceGraphViewState extends State<StockPriceGraphView> with SingleTickerProviderStateMixin{
+class _StockPriceGraphViewState extends State<StockPriceGraphView> with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
 
   void changeIndex(int index) {
@@ -19,15 +19,19 @@ class _StockPriceGraphViewState extends State<StockPriceGraphView> with SingleTi
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            _buildPeriodButton(0, '1개월'),
-            _buildPeriodButton(1, '3개월'),
-            _buildPeriodButton(2, '6개월'),
-            _buildPeriodButton(3, '1년'),
-            _buildPeriodButton(4, '3년'),
-          ]
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              _buildPeriodButton(0, '1개월'),
+              _buildPeriodButton(1, '3개월'),
+              _buildPeriodButton(2, '6개월'),
+              _buildPeriodButton(3, '1년'),
+              _buildPeriodButton(4, '3년'),
+            ],
+          ),
         ),
         const SizedBox(height: 24),
         IndexedStack(
@@ -53,10 +57,8 @@ class _StockPriceGraphViewState extends State<StockPriceGraphView> with SingleTi
         },
         style: ElevatedButton.styleFrom(
           minimumSize: Size.zero,
-          fixedSize: Size.fromWidth(63),
-          backgroundColor: index == _selectedIndex
-              ? const Color(0xFF3B3D3F)
-              : AppColors.contentWhite,
+          fixedSize: const Size.fromWidth(63),
+          backgroundColor: index == _selectedIndex ? const Color(0xFF3B3D3F) : AppColors.contentWhite,
           elevation: 0,
         ),
         child: Padding(
@@ -66,9 +68,7 @@ class _StockPriceGraphViewState extends State<StockPriceGraphView> with SingleTi
             style: textTheme.labelSmall!.copyWith(
               fontSize: 13,
               fontWeight: FontWeight.w600,
-              color: index == _selectedIndex
-                  ? AppColors.contentWhite
-                  : const Color(0xFFACB2B5),
+              color: index == _selectedIndex ? AppColors.contentWhite : const Color(0xFFACB2B5),
             ),
           ),
         ),

@@ -21,6 +21,7 @@ class CompareProductScreen extends StatelessWidget {
   late final ELSProductProvider? productProvider;
   late final UserInfoProvider? userProvider;
 
+  // ignore: prefer_const_constructors_in_immutables
   CompareProductScreen({super.key});
 
   @override
@@ -60,50 +61,36 @@ class CompareProductScreen extends StatelessWidget {
                         return const Center(child: Text('An error occurred!'));
                       } else {
                         final compareProducts = productProvider!.compareProducts;
-                        return Column(
-                          children: [
-                            const Divider(height: 1, color: Color(0xFFF5F6F6)),
-                            Padding(
-                              padding: edgeInsetsAll24,
-                              child: Column(
-                                children: [
-                                  _buildProductName(compareProducts[0], compareProducts[1]),
-                                  const SizedBox(
-                                    height: 32,
-                                  ),
-                                  _buildProductIssuer(compareProducts[0], compareProducts[1]),
-                                  const SizedBox(
-                                    height: 32,
-                                  ),
-                                  _buildProductYield(compareProducts[0], compareProducts[1]),
-                                  const SizedBox(
-                                    height: 32,
-                                  ),
-                                  _buildProductEquities(compareProducts[0], compareProducts[1]),
-                                  const SizedBox(
-                                    height: 32,
-                                  ),
-                                  _buildProductType(compareProducts[0], compareProducts[1]),
-                                  const SizedBox(
-                                    height: 32,
-                                  ),
-                                  _buildProductKnockin(compareProducts[0], compareProducts[1]),
-                                  const SizedBox(
-                                    height: 32,
-                                  ),
-                                  _buildProductLossRate(compareProducts[0], compareProducts[1]),
-                                  const SizedBox(
-                                    height: 32,
-                                  ),
-                                  _buildProductSubscriptionEndDate(compareProducts[0], compareProducts[1]),
-                                  const SizedBox(
-                                    height: 16,
-                                  ),
-                                  _buildProductDetailScreeenButton(context, compareProducts[0], compareProducts[1]),
-                                ],
+                        return SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: edgeInsetsAll24,
+                                child: Column(
+                                  children: [
+                                    _buildProductName(compareProducts[0], compareProducts[1]),
+                                    const SizedBox(height: 32),
+                                    _buildProductIssuer(compareProducts[0], compareProducts[1]),
+                                    const SizedBox(height: 32),
+                                    _buildProductYield(compareProducts[0], compareProducts[1]),
+                                    const SizedBox(height: 32),
+                                    _buildProductEquities(compareProducts[0], compareProducts[1]),
+                                    const SizedBox(height: 32),
+                                    _buildProductType(compareProducts[0], compareProducts[1]),
+                                    const SizedBox(height: 32),
+                                    _buildProductKnockin(compareProducts[0], compareProducts[1]),
+                                    const SizedBox(height: 32),
+                                    _buildProductLossRate(compareProducts[0], compareProducts[1]),
+                                    const SizedBox(height: 32),
+                                    _buildProductSubscriptionEndDate(compareProducts[0], compareProducts[1]),
+                                    const SizedBox(height: 16),
+                                    _buildProductDetailScreeenButton(context, compareProducts[0], compareProducts[1]),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                              const Divider(height: 1, color: Color(0xFFF5F6F6)),
+                            ],
+                          ),
                         );
                       }
                     });
