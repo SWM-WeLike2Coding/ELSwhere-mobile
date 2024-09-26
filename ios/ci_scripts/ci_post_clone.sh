@@ -6,6 +6,14 @@ set -e
 # The default execution directory of this script is the ci_scripts directory.
 cd $CI_PRIMARY_REPOSITORY_PATH # change working directory to the root of your cloned repo.
 
+# 1. .env 파일 생성
+if [ -n "$ENV_FILE" ]; then
+  echo "$ENV_FILE" | base64 --decode > .env
+  echo ".env file created successfully."
+else
+  echo "ENV_FILE secret is not set."
+fi
+
 # Install Flutter using git.
 git clone https://github.com/flutter/flutter.git --depth 1 -b stable $HOME/flutter
 export PATH="$PATH:$HOME/flutter/bin"
