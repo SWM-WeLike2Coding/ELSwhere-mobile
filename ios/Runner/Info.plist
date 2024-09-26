@@ -78,5 +78,7 @@
 		</array>
 		<key>UIUserNotificationSettings</key>
 		<true/>
+        <key>ITSAppUsesNonExemptEncryption</key>
+        <false/>
 	</dict>
 </plist>
