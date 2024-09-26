@@ -79,6 +79,6 @@ local.properties
 .idea/
 /devtools_options.yaml
 /android/java_pid77905.hprof
-/assets/icons/company/
-/assets/icons/flags/
+# /assets/icons/company/
+# /assets/icons/flags/
 /android/app/release/app-release.aab
