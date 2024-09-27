@@ -51,7 +51,7 @@ class UserInfoProvider with ChangeNotifier {
 
   Future<bool> checkUser() async {
     try {
-      final httpResponse = await _userService.checkUser();
+      final httpResponse = await _userService.checkUser().timeout(const Duration(seconds: 10));
       final response = httpResponse.response;
       final data = response.data;
       final userInfo = ResponseUserInfoDto.fromJson(data);
