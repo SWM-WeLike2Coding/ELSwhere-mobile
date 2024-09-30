@@ -3,7 +3,13 @@ import 'package:elswhere/config/config.dart';
 
 class DioClient {
   static Dio createDio() {
-    final dio = Dio();
+    final dio = Dio(
+      BaseOptions(
+        connectTimeout: const Duration(seconds: 10),
+        receiveTimeout: const Duration(seconds: 10),
+        sendTimeout: const Duration(seconds: 10),
+      ),
+    );
 
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) {
