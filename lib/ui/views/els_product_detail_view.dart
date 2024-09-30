@@ -38,7 +38,6 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
     productProvider = Provider.of<ELSProductProvider>(context, listen: false);
     userProvider = Provider.of<UserInfoProvider>(context, listen: false);
     _overlayPortalController = OverlayPortalController();
-    // _animatedDigitController = AnimatedDigitController(0);
   }
 
   @override
