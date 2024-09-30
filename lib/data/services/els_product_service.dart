@@ -36,7 +36,11 @@ abstract class ProductService {
   Future<ResponseSingleProductDto> fetchProduct(@Path("id") int id);
 
   @POST("/v1/product/search")
-  Future<ResponsePageSummarizedProductDto> fetchFilteredProducts(@Body() RequestProductSearchDto data);
+  Future<ResponsePageSummarizedProductDto> fetchFilteredProducts(
+    @Query('page') int page,
+    @Query('size') int size,
+    @Body() RequestProductSearchDto data,
+  );
 
   @GET("/v1/product/similar/{id}")
   Future<HttpResponse> fetchSimilarProducts(@Path("id") int id);

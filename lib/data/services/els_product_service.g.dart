@@ -170,9 +170,15 @@ class _ProductService implements ProductService {
 
   @override
   Future<ResponsePageSummarizedProductDto> fetchFilteredProducts(
-      RequestProductSearchDto data) async {
+    int page,
+    int size,
+    RequestProductSearchDto data,
+  ) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'size': size,
+    };
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(data.toJson());
