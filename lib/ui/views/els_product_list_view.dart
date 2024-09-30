@@ -9,6 +9,7 @@ class ELSProductListView<T extends ELSProductsProvider> extends StatelessWidget 
   final String type;
   bool nowComparing;
   void Function(bool, SummarizedProductDto)? checkCompare;
+  late ELSProductsProvider provider;
 
   ELSProductListView({super.key, this.checkCompare, required this.type, required this.nowComparing});
 
@@ -18,10 +19,11 @@ class ELSProductListView<T extends ELSProductsProvider> extends StatelessWidget 
 
   @override
   Widget build(BuildContext context) {
+    provider = Provider.of<T>(context, listen: false);
     print(type);
     return Expanded(
       child: FutureBuilder(
-        future: Provider.of<T>(context, listen: false).initProducts(type),
+        future: provider.isInit ? provider.initProducts(type) : null,
         builder: (ctx, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -39,20 +41,15 @@ class ELSProductListView<T extends ELSProductsProvider> extends StatelessWidget 
                       onRefresh: () async {
                         _refreshList(context);
                       },
-                      child: Stack(
-                        children: [
-                          ListView(),
-                          const Center(child: Text('상품이 존재하지 않습니다.')),
-                        ]
-                      ),
+                      child: Stack(children: [
+                        ListView(),
+                        const Center(child: Text('상품이 존재하지 않습니다.')),
+                      ]),
                     );
                   } else {
                     return NotificationListener<ScrollNotification>(
                       onNotification: (ScrollNotification scrollInfo) {
-                        if (!productsProvider.isLoading &&
-                            productsProvider.hasNext &&
-                            scrollInfo.metrics.pixels ==
-                                scrollInfo.metrics.maxScrollExtent) {
+                        if (!productsProvider.isLoading && productsProvider.hasNext && scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
                           productsProvider.fetchProducts(type);
                         }
                         return false;

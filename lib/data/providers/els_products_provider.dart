@@ -7,10 +7,11 @@ import '../services/els_product_service.dart';
 class ELSProductsProvider extends ChangeNotifier {
   List<SummarizedProductDto> _products = [];
   ResponseProductComparisonMainDto? _similarProducts;
+  bool _isInit = true;
   bool _isLoading = false;
   bool _hasNext = true;
   int _page = 0;
-  final int _size = 1000;
+  final int _size = 5000;
   final String status;
 
   final ProductService _productService;
@@ -19,6 +20,7 @@ class ELSProductsProvider extends ChangeNotifier {
 
   List<SummarizedProductDto> get products => _products;
   ResponseProductComparisonMainDto? get similarProducts => _similarProducts;
+  bool get isInit => _isInit;
   bool get isLoading => _isLoading;
   bool get hasNext => _hasNext;
 
@@ -38,6 +40,7 @@ class ELSProductsProvider extends ChangeNotifier {
   }
 
   Future<void> refreshProducts(String type) async {
+    _isInit = true;
     resetProducts();
     fetchProducts(type);
   }
@@ -64,13 +67,15 @@ class ELSProductsProvider extends ChangeNotifier {
   Future<void> fetchFilteredProducts(RequestProductSearchDto body) async {
     final now = DateTime.now().copyWith(hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0);
     resetProducts();
+    _isInit = false;
     _isLoading = true;
     notifyListeners();
     try {
-      final responsePage = await _productService.fetchFilteredProducts(body);
-      _products += responsePage.content.where((e) => status == 'on' ? e.subscriptionEndDate.compareTo(now) >= 0 : e.subscriptionEndDate.compareTo(now) < 0).toList();
-      _hasNext = responsePage.hasNext;
-      _page++;
+      final responsePage = await _productService.fetchFilteredProducts(_page, _size, body);
+      for (var e in responsePage.content) {
+        print(e.equities.split('/').length);
+      }
+      _products = responsePage.content.where((e) => status == 'on' ? e.subscriptionEndDate.compareTo(now) >= 0 : e.subscriptionEndDate.compareTo(now) < 0).toList();
     } catch (error) {
       print('Error fetching products: $error');
       // 에러 처리 로직 추가
@@ -83,10 +88,10 @@ class ELSProductsProvider extends ChangeNotifier {
   void sortProducts(String type) {
     switch (type) {
       case '최신순':
-        products.sort((a, b) => b.id.compareTo(a.id));
+        _products.sort((a, b) => b.id.compareTo(a.id));
         if (similarProducts?.results != null) similarProducts!.results.sort((a, b) => b.id.compareTo(a.id));
       case '낙인순':
-        products.sort((a, b) {
+        _products.sort((a, b) {
           final x = a.knockIn ?? 999;
           final y = b.knockIn ?? 999;
           final result = x.compareTo(y);
@@ -103,7 +108,7 @@ class ELSProductsProvider extends ChangeNotifier {
           });
         }
       case '수익률순':
-        products.sort((a, b) {
+        _products.sort((a, b) {
           final result = b.yieldIfConditionsMet.compareTo(a.yieldIfConditionsMet);
           if (result == 0) return b.id.compareTo(a.id);
           return result;

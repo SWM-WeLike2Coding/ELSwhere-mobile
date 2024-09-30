@@ -51,7 +51,7 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
       if (selectedProduct == null || product == null) selectedProduct = product;
     });
   }
-  
+
   Future<void> typeChanged(BuildContext context, String? value) async {
     //TODO: ProductProvider에 따라서 on sale end sale 구분해서 refresh 해야함
     // switch(_tabIndex) {
@@ -93,12 +93,10 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      '선택한 상품',
-                      style: textTheme.displayMedium!.copyWith(
-                        fontWeight: FontWeight.w600,
-                      )
-                    ),
+                    child: Text('선택한 상품',
+                        style: textTheme.displayMedium!.copyWith(
+                          fontWeight: FontWeight.w600,
+                        )),
                   ),
                 ],
               ),
@@ -119,10 +117,12 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
                           color: Theme.of(context).hintColor,
                         ),
                       ),
-                      items: widget.items.map((String item) => DropdownMenuItem<String>(
-                        value: item,
-                        child: Text(item),
-                      )).toList(),
+                      items: widget.items
+                          .map((String item) => DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(item),
+                              ))
+                          .toList(),
                       value: selectedValue,
                       onChanged: (String? value) async {
                         await typeChanged(context, value);
@@ -168,33 +168,43 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
             ),
             Expanded(
               child: nowComparing
-                ? Column(
-                    children: [
-                      ELSProductListView<ELSOnSaleProductsProvider>(type: type, nowComparing: nowComparing, checkCompare: checkComparing,),
-                    ],
-                  )
-                : TabBarView(
-                    controller: tabController,
-                    children: [
-                      Column(
-                        children: [
-                          ELSProductListView<ELSOnSaleProductsProvider>(type: type, nowComparing: nowComparing, checkCompare: checkComparing,),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          ELSProductListView<ELSEndSaleProductsProvider>(type: type, nowComparing: nowComparing, checkCompare: checkComparing,),
-                        ],
-                      ),
-                    ],
-                  ),
+                  ? Column(
+                      children: [
+                        ELSProductListView<ELSOnSaleProductsProvider>(
+                          type: type,
+                          nowComparing: nowComparing,
+                          checkCompare: checkComparing,
+                        ),
+                      ],
+                    )
+                  : TabBarView(
+                      controller: tabController,
+                      children: [
+                        Column(
+                          children: [
+                            ELSProductListView<ELSOnSaleProductsProvider>(
+                              type: type,
+                              nowComparing: nowComparing,
+                              checkCompare: checkComparing,
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            ELSProductListView<ELSEndSaleProductsProvider>(
+                              type: type,
+                              nowComparing: nowComparing,
+                              checkCompare: checkComparing,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
             ),
           ],
         ),
       ),
-      floatingActionButton: nowComparing
-        ? _buildFloatingButton(context)
-        : null,
+      floatingActionButton: nowComparing ? _buildFloatingButton(context) : null,
     );
   }
 
@@ -209,12 +219,16 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
         Padding(
           padding: edgeInsetsAll8,
           child: IconButton(
-            icon: const Icon(Icons.notifications_none_rounded, size: 30,),
+            icon: const Icon(
+              Icons.notifications_none_rounded,
+              size: 30,
+            ),
             onPressed: () {
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const NotificationScreen(),)
-              );
+                  MaterialPageRoute(
+                    builder: (context) => const NotificationScreen(),
+                  ));
             },
           ),
         ),
@@ -223,9 +237,11 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
   }
 
   Widget _buildSearchTextField() {
-    return const Padding(
+    return Padding(
       padding: edgeInsetsAll8,
-      child: SearchTextField(),
+      child: SearchTextField(callback: () {
+        typeChanged(context, '최신순');
+      }),
     );
   }
 
@@ -264,11 +280,7 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
             const SizedBox(width: 5),
             Text(
               '상품 비교',
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: AppColors.contentWhite,
-                  fontSize: 15,
-                  letterSpacing: -0.7
-              ),
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.contentWhite, fontSize: 15, letterSpacing: -0.7),
             ),
           ],
         ),

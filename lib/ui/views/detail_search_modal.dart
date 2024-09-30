@@ -12,7 +12,8 @@ import '../../data/models/dtos/response_ticker_symbol_dto.dart';
 import '../../data/providers/ticker_symbol_provider.dart';
 
 class DetailSearchModal extends StatefulWidget {
-  const DetailSearchModal({super.key});
+  VoidCallback? callback;
+  DetailSearchModal({super.key, this.callback});
 
   @override
   State<DetailSearchModal> createState() => _DetailSearchModalState();
@@ -47,6 +48,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
   final List<String> _initialDatePickerString = ["시작일", "마감일"];
 
   Future<void> _getFilteredData() async {
+    if (widget.callback != null) widget.callback!();
     String? equityType;
     if (_isStock && _isIndex) {
       equityType = "MIX";
@@ -89,8 +91,21 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
     print(body);
 
     final requestBody = RequestProductSearchDto.fromJson(body);
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+
     await Provider.of<ELSOnSaleProductsProvider>(context, listen: false).fetchFilteredProducts(requestBody);
     await Provider.of<ELSEndSaleProductsProvider>(context, listen: false).fetchFilteredProducts(requestBody);
+
+    Navigator.of(context).pop();
   }
 
   void _addTickerToSelected(ResponseTickerSymbolDto ticker) {
@@ -165,7 +180,6 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
-      
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: Theme.of(context).copyWith(
@@ -371,7 +385,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(16),
         child: ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             if (_selectedDates[0] != "시작일" && _selectedDates[1] != "마감일") {
               DateTime startDate = DateTime.parse(_selectedDates[0]!);
               DateTime endDate = DateTime.parse(_selectedDates[1]!);
@@ -385,8 +399,8 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
               }
             }
 
+            await _getFilteredData();
             Navigator.pop(context);
-            _getFilteredData();
           },
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(vertical: 16),

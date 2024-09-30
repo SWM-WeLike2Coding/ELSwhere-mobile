@@ -4,10 +4,9 @@ import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/ui/views/detail_search_modal.dart';
 import 'package:flutter/material.dart';
 
-import '../views/alarm_setting_modal.dart';
-
 class SearchTextField extends StatefulWidget {
-  const SearchTextField({super.key});
+  VoidCallback? callback;
+  SearchTextField({super.key, this.callback});
 
   @override
   State<SearchTextField> createState() => _SearchTextFieldState();
@@ -41,22 +40,25 @@ class _SearchTextFieldState extends State<SearchTextField> {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      builder: (context) => const DetailSearchModal(),
+      builder: (context) => DetailSearchModal(callback: widget.callback),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 50,
       child: TextField(
         focusNode: _focusNode,
         decoration: InputDecoration(
           focusColor: Colors.amber,
-          prefixIcon: Icon(Icons.search, color: Colors.black.withOpacity(0.4),),
+          prefixIcon: Icon(
+            Icons.search,
+            color: Colors.black.withOpacity(0.4),
+          ),
           hintText: '상품 검색',
-          hintStyle: TextStyle(color: AppColors.textGray, letterSpacing: -0.02),
-          border: OutlineInputBorder(
+          hintStyle: const TextStyle(color: AppColors.textGray, letterSpacing: -0.02),
+          border: const OutlineInputBorder(
             borderRadius: borderRadiusCircular10,
             borderSide: BorderSide.none,
           ),
@@ -67,7 +69,6 @@ class _SearchTextFieldState extends State<SearchTextField> {
       ),
     );
 
-
     // return TextField(
     //   focusNode: _focusNode,
     //   decoration: InputDecoration(
@@ -77,4 +78,3 @@ class _SearchTextFieldState extends State<SearchTextField> {
     // );
   }
 }
-
