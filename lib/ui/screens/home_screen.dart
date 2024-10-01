@@ -337,10 +337,10 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.only(top: 16, left: 24, right: 24),
       child: Row(
         children: [
-          // Expanded(child: _buildHotProductButton()),
-          // const SizedBox(
-          //   width: 8,
-          // ),
+          Expanded(child: _buildHotProductButton()),
+          const SizedBox(
+            width: 8,
+          ),
           Expanded(child: _buildAttentionProductButton(context)),
         ],
       ),
