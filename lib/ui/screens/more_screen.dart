@@ -127,7 +127,7 @@ class _MoreScreenState extends State<MoreScreen> {
                         height: 48, // 버튼 높이 조정 가능
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFE6E7E8),
+                            backgroundColor: AppColors.gray100,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
@@ -216,7 +216,7 @@ class _MoreScreenState extends State<MoreScreen> {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF131415),
+                    color: AppColors.gray950,
                   ),
                 ),
               ),
@@ -226,7 +226,7 @@ class _MoreScreenState extends State<MoreScreen> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: const Color(0xFFE6E7E8),
+                        color: AppColors.gray100,
                         width: 1.0,
                       )),
                   height: 70,
@@ -347,9 +347,9 @@ class _MoreScreenState extends State<MoreScreen> {
                   //                   },
                   //                   activeColor: const Color(0xFFFFFFFF),
                   //                   inactiveThumbColor: const Color(0xFFFFFFFF),
-                  //                   inactiveTrackColor: const Color(0xFFE6E7E8),
+                  //                   inactiveTrackColor: AppColors.gray100,
                   //                   activeTrackColor: const Color(0xFF1C6BF9),
-                  //                   trackOutlineColor: const WidgetStatePropertyAll(Color(0xFFE6E7E8)),
+                  //                   trackOutlineColor: const WidgetStatePropertyAll(AppColors.gray100),
                   //                 ),
                   //               ),
                   //             ),
@@ -389,9 +389,9 @@ class _MoreScreenState extends State<MoreScreen> {
                   //                   },
                   //                   activeColor: const Color(0xFFFFFFFF),
                   //                   inactiveThumbColor: const Color(0xFFFFFFFF),
-                  //                   inactiveTrackColor: const Color(0xFFE6E7E8),
+                  //                   inactiveTrackColor: AppColors.gray100,
                   //                   activeTrackColor: const Color(0xFF1C6BF9),
-                  //                   trackOutlineColor: const WidgetStatePropertyAll(Color(0xFFE6E7E8)),
+                  //                   trackOutlineColor: const WidgetStatePropertyAll(AppColors.gray100),
                   //                 ),
                   //               ),
                   //             ),
@@ -431,9 +431,9 @@ class _MoreScreenState extends State<MoreScreen> {
                   //                   },
                   //                   activeColor: const Color(0xFFFFFFFF),
                   //                   inactiveThumbColor: const Color(0xFFFFFFFF),
-                  //                   inactiveTrackColor: const Color(0xFFE6E7E8),
+                  //                   inactiveTrackColor: AppColors.gray100,
                   //                   activeTrackColor: const Color(0xFF1C6BF9),
-                  //                   trackOutlineColor: const WidgetStatePropertyAll(Color(0xFFE6E7E8)),
+                  //                   trackOutlineColor: const WidgetStatePropertyAll(AppColors.gray100),
                   //                 ),
                   //               ),
                   //             ),
@@ -557,7 +557,7 @@ class _MoreScreenState extends State<MoreScreen> {
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF131415),
+                  color: AppColors.gray950,
                 ),
               ),
             ),

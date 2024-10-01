@@ -5,6 +5,7 @@ import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/config.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/data/providers/els_products_provider.dart';
+import 'package:elswhere/data/providers/hot_products_provider.dart';
 import 'package:elswhere/data/providers/issuer_provider.dart';
 import 'package:elswhere/data/providers/ticker_symbol_provider.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
@@ -75,7 +76,7 @@ Future<void> initApp() async {
 
   // await initPermissionSettings();
   // await setPermissionGranted();
-  
+
   print(accessToken);
   print(refreshToken);
 }
@@ -139,6 +140,7 @@ class ELSwhere extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => IssuerProvider(_productService)),
         ChangeNotifierProvider(create: (context) => TickerSymbolProvider(_productService)),
         ChangeNotifierProvider(create: (context) => UserInfoProvider(_userService)),
+        ChangeNotifierProvider(create: (context) => HotProductsProvider(_productService)),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -172,7 +174,7 @@ class ELSwhere extends StatelessWidget {
               const BottomNavigationBarThemeData(selectedItemColor: AppColors.mainBlue, backgroundColor: AppColors.contentWhite, landscapeLayout: BottomNavigationBarLandscapeLayout.linear),
           switchTheme: const SwitchThemeData(
             trackColor: WidgetStatePropertyAll(AppColors.mainBlue),
-            trackOutlineColor: WidgetStatePropertyAll(AppColors.contentGray),
+            trackOutlineColor: WidgetStatePropertyAll(AppColors.gray400),
             thumbColor: WidgetStatePropertyAll(AppColors.contentWhite),
           ),
         ),

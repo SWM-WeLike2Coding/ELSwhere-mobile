@@ -178,7 +178,7 @@ class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
             fontWeight: FontWeight.w600,
             height: 1.18,
             letterSpacing: -0.32,
-            color: Color(0xFF131415),
+            color: AppColors.gray950,
           ),
         ),
       ),

@@ -41,7 +41,7 @@ class _AttentionSettingScreenState extends State<AttentionSettingScreen> {
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 18,
-                    color: Color(0xFF131415),
+                    color: AppColors.gray950,
                   ),
                 ),
                 const Spacer(),

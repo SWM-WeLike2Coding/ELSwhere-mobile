@@ -53,9 +53,7 @@ class _HoldingProductsScreenState extends State<HoldingProductsScreen> {
       body: Column(
         children: [
           _buildHoldingProductsString(),
-          // ELSProductListView<ELSOnSaleProductsProvider>(type: type, nowComparing: false,),
           HoldingProductsListView(),
-          // const Expanded(child: Center(child: Text('추후 업데이트를 통해 제공될 예정입니다.'))),
         ],
       ),
     );
@@ -74,7 +72,7 @@ Widget _buildHoldingProductsString() {
           fontWeight: FontWeight.w600,
           height: 1.18,
           letterSpacing: -0.32,
-          color: Color(0xFF131415),
+          color: AppColors.gray950,
         ),
       ),
     ),

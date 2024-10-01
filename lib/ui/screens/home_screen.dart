@@ -1,7 +1,10 @@
+import 'package:elswhere/config/strings.dart';
+import 'package:elswhere/data/providers/hot_products_provider.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
 import 'package:elswhere/ui/screens/attention_products_screen.dart';
 import 'package:elswhere/ui/screens/attention_subscription_schedule_screen.dart';
 import 'package:elswhere/ui/screens/holding_products_screen.dart';
+import 'package:elswhere/ui/screens/hot_products_screen.dart';
 import 'package:elswhere/ui/screens/investment_propensity_screen.dart';
 import 'package:elswhere/ui/screens/notification_screen.dart';
 import 'package:elswhere/ui/widgets/stock_index_list.dart';
@@ -312,7 +315,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     //     height: 1.18, // 118% line-height
                     //     letterSpacing: -0.28,
                     //     color: profitAndLossPrice == 0
-                    //       ? AppColors.contentGray
+                    //       ? AppColors.gray400
                     //       : profitAndLossPrice > 0
                     //         ? AppColors.contentRed
                     //         : AppColors.mainBlue,
@@ -347,7 +350,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildHotProductButton() {
     const String hotIcon = "assets/icons/icon_hot.svg";
     return GestureDetector(
-      onTap: () => Fluttertoast.showToast(msg: '추후 업데이트를 통해 제공될 예정입니다.', toastLength: Toast.LENGTH_SHORT),
+      onTap: _navigateToHotProductsScreen,
       child: Container(
         height: 100,
         decoration: BoxDecoration(
@@ -705,5 +708,30 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  void _navigateToHotProductsScreen() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+
+    bool result = await Provider.of<HotProductsProvider>(context, listen: false).fetchDailyHotProducts();
+
+    Navigator.pop(context);
+
+    if (result) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const HotProductsScreen()),
+      );
+    } else {
+      Fluttertoast.showToast(msg: MSG_ERR_FETCH, toastLength: Toast.LENGTH_SHORT);
+    }
   }
 }

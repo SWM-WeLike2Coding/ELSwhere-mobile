@@ -52,7 +52,7 @@ class HoldingProductsListView extends StatelessWidget {
               const SizedBox(height: 12),
               Text(
                 '상품을 골라 추가해 보세요',
-                style: textTheme.bodySmall!.copyWith(color: AppColors.contentGray),
+                style: textTheme.bodySmall!.copyWith(color: AppColors.gray400),
               ),
               const SizedBox(height: 24),
               GestureDetector(

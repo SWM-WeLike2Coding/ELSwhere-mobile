@@ -145,7 +145,7 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
                 //         '투자 성향 반영',
                 //         style: Theme.of(context).textTheme.displaySmall?.copyWith(
                 //           fontSize: 14,
-                //           color: AppColors.contentGray,
+                //           color: AppColors.gray400,
                 //         ),
                 //       ),
                 //       const SizedBox(width: 8),
@@ -156,7 +156,7 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
                 //           child: Switch(
                 //             value: applyTendency,
                 //             onChanged: (value) => _changeTendency(value),
-                //             inactiveTrackColor: AppColors.contentGray,
+                //             inactiveTrackColor: AppColors.gray400,
                 //             trackOutlineWidth: const WidgetStatePropertyAll(0),
                 //           ),
                 //         ),
@@ -258,14 +258,14 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
         isScrollable: true,
         labelColor: AppColors.contentBlack,
         labelStyle: Theme.of(context).textTheme.displayMedium,
-        unselectedLabelColor: AppColors.contentGray,
+        unselectedLabelColor: AppColors.gray400,
         unselectedLabelStyle: Theme.of(context).textTheme.displayMedium,
-        overlayColor: const WidgetStatePropertyAll(AppColors.contentGray),
+        overlayColor: const WidgetStatePropertyAll(AppColors.gray400),
         splashBorderRadius: BorderRadius.circular(10),
         indicatorSize: TabBarIndicatorSize.tab,
         indicatorPadding: const EdgeInsets.symmetric(horizontal: 12),
         indicatorColor: AppColors.contentBlack,
-        dividerColor: const Color(0xFFE6E7E8),
+        dividerColor: AppColors.gray100,
       ),
     );
   }

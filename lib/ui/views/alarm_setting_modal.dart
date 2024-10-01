@@ -113,7 +113,7 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                               style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
-                                color: AppColors.contentGray,
+                                color: AppColors.gray400,
                               ),
                             ),
                             onDeleted: () {
@@ -347,7 +347,7 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                   hintStyle: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    color: AppColors.contentGray,
+                    color: AppColors.gray400,
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),

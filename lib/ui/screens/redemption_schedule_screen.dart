@@ -99,9 +99,9 @@ class _RedemptionScheduleScreenState extends State<RedemptionScheduleScreen> {
                 decoration: const BoxDecoration(
                     border: Border(
                         bottom: BorderSide(
-                          color: AppColors.backgroundGray,
-                          width: 1,
-                        ))),
+                  color: AppColors.backgroundGray,
+                  width: 1,
+                ))),
                 child: AppBar(
                   leading: Padding(
                     padding: const EdgeInsets.only(left: 24.0), // 좌측 패딩을 추가
@@ -138,9 +138,9 @@ class _RedemptionScheduleScreenState extends State<RedemptionScheduleScreen> {
                   decoration: const BoxDecoration(
                       border: Border(
                           bottom: BorderSide(
-                            color: AppColors.backgroundGray,
-                            width: 1,
-                          ))),
+                    color: AppColors.backgroundGray,
+                    width: 1,
+                  ))),
                   child: AppBar(
                     leading: Padding(
                       padding: const EdgeInsets.only(left: 24.0), // 좌측 패딩을 추가
@@ -195,7 +195,7 @@ class _RedemptionScheduleScreenState extends State<RedemptionScheduleScreen> {
                               fontWeight: FontWeight.w600,
                               height: 18.88 / 16,
                               letterSpacing: -0.02,
-                              color: Color(0xFF131415),
+                              color: AppColors.gray950,
                             ),
                           ),
                         ),
@@ -212,7 +212,6 @@ class _RedemptionScheduleScreenState extends State<RedemptionScheduleScreen> {
                 ),
               ));
         }
-
       },
     );
     // return Scaffold(

@@ -264,7 +264,7 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
                             return isOverflowing
                                 ? Marquee(
                                     text: widget.product.equities,
-                                    style: const TextStyle(color: AppColors.contentGray, fontSize: 14),
+                                    style: const TextStyle(color: AppColors.gray400, fontSize: 14),
                                     scrollAxis: Axis.horizontal,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     startAfter: const Duration(seconds: 1),
@@ -278,7 +278,7 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
                                   )
                                 : Text(
                                     widget.product.equities,
-                                    style: const TextStyle(color: AppColors.contentGray, fontSize: 14),
+                                    style: const TextStyle(color: AppColors.gray400, fontSize: 14),
                                   );
                           },
                         ),

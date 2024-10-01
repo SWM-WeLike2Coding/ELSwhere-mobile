@@ -166,7 +166,7 @@ class _ChangeNicknameScreenState extends State<ChangeNicknameScreen> {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
-                  color: const Color(0xFFE6E7E8),
+                  color: AppColors.gray100,
                   width: 1,
                 )),
             height: 52,

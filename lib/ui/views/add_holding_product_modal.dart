@@ -181,7 +181,7 @@ class _AddHoldingProductModalState extends State<AddHoldingProductModal> {
               style: ElevatedButton.styleFrom(
                 elevation: 0,
                 backgroundColor: AppColors.mainBlue,
-                disabledBackgroundColor: const Color(0xFFE6E7E8),
+                disabledBackgroundColor: AppColors.gray100,
                 padding: edgeInsetsAll16,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               ),

@@ -101,7 +101,7 @@ class _PriceTextFieldState extends State<PriceTextField> {
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(
             width: 1,
-            color: _isZeroValue ? Colors.red : const Color(0xFFE6E7E8),
+            color: _isZeroValue ? Colors.red : AppColors.gray100,
           ),
         ),
         focusedBorder: OutlineInputBorder(
