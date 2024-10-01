@@ -133,8 +133,8 @@ class _MemberQuitScreenState extends State<MemberQuitScreen> {
                         opacity: _isAgreeBtnChecked ? 1.0 : 0.4,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFE6E7E8),
-                              disabledBackgroundColor: const Color(0xFFE6E7E8),
+                              backgroundColor: AppColors.gray100,
+                              disabledBackgroundColor: AppColors.gray100,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               )),

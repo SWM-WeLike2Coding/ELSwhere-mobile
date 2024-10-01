@@ -98,46 +98,47 @@ class _ELSProductCardState extends State<HoldingProductCard> with AutomaticKeepA
         child: SizedBox(
           height: cardHeight,
           child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-              child: Row(
-                children: [
-                  Column(children: [_buildIssuerIcon()]),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _buildProductName(),
-                            const SizedBox(height: 4),
-                            _buildPrice(),
-                          ],
-                        ),
-                        _buildNextRepaymentDate(),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 4),
-                  Column(
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+            child: Row(
+              children: [
+                Column(children: [_buildIssuerIcon()]),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildProfitAndLossPrice(),
-                          const SizedBox(width: 4),
-                          _buildProfitAndLossRate(),
+                          _buildProductName(),
+                          const SizedBox(height: 4),
+                          _buildPrice(),
                         ],
                       ),
-                      _buildProductType(),
+                      _buildNextRepaymentDate(),
                     ],
-                  )
-                ],
-              )),
+                  ),
+                ),
+                const SizedBox(width: 4),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        _buildProfitAndLossPrice(),
+                        const SizedBox(width: 4),
+                        _buildProfitAndLossRate(),
+                      ],
+                    ),
+                    _buildProductType(),
+                  ],
+                )
+              ],
+            ),
+          ),
         ),
       );
     });
@@ -244,7 +245,7 @@ class _ELSProductCardState extends State<HoldingProductCard> with AutomaticKeepA
       priceRatio == null ? '미반영' : '${priceRatio! < 0 ? '' : '+'}${priceRatio!.toStringAsFixed(2)}%',
       style: textTheme.labelSmall!.copyWith(
         color: (priceRatio ?? 0) == 0
-            ? AppColors.contentGray
+            ? AppColors.gray400
             : priceRatio! > 0
                 ? AppColors.contentRed
                 : AppColors.mainBlue,

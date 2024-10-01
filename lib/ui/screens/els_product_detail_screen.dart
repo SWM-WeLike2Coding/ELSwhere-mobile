@@ -147,7 +147,7 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         decoration: ShapeDecoration(
-                          color: const Color(0xFFE6E7E8),
+                          color: AppColors.gray100,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),

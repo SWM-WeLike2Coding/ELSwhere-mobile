@@ -776,7 +776,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
             child: GestureDetector(
               onTap: _overlayPortalController.toggle,
               child: CircleAvatar(
-                backgroundColor: const Color(0xFFE6E7E8),
+                backgroundColor: AppColors.gray100,
                 child: Text(
                   '?',
                   style: textTheme.labelSmall!.copyWith(
@@ -865,7 +865,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
   Widget _buildDivider() {
     return const Divider(
       height: 1,
-      color: Color(0xFFE6E7E8),
+      color: AppColors.gray100,
     );
   }
 

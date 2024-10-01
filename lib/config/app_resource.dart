@@ -117,30 +117,23 @@ sealed class Assets {
 sealed class AppColors {
   static const Color contentRed = Color(0xFFEE5648);
   static const Color contentYellow = Color(0xFFF3972C);
-  static const Color contentGray = Color(0xFF838A8E);
   static const Color contentBlack = Color(0xFF000000);
   static const Color contentWhite = Color(0xFFFFFFFF);
   static const Color textFieldWhite = Color(0xFFF3F3F3);
 
-  static const Color cornflowerBlues1 = Color(0xFF7499FF); // 첫 번째 색상
-  static const Color cornflowerBlues2 = Color(0xFF7FA8FF); // 두 번째 색상
-  static const Color cornflowerBlues3 = Color(0xFFA4C1FF); // 세 번째 색상
-  static const Color cornflowerBlues4 = Color(0xFFC4D7FF); // 네 번째 색상
-  static const Color cornflowerBlues5 = Color(0xFFE0EAFF); // 다섯 번째 색상
-
-  static const Color blues1 = Color(0xFF3366FF); // 여섯 번째 색상
-  static const Color blues2 = Color(0xFF5588FF); // 일곱 번째 색상
-  static const Color blues3 = Color(0xFFBBEEFF); // 여덟 번째 색상
-  static const Color blues4 = Color(0xFF99CCFF); // 아홉 번째 색상
-  static const Color blues5 = Color(0xFF77AAFF); // 열 번째 색상
-
   static const Color mainBlue = Color(0xFF1C6BF9); // 메인 색상
 
+  static const Color gray100 = Color(0xFFE6E7E8);
+  static const Color gray400 = Color(0xFF838A8E);
+  static const Color gray800 = Color(0xFF434648);
+  static const Color gray950 = Color(0xFF131415);
   static const Color backgroundGray = Color(0xFFF5F6F6);
   static const Color iconGray = Color(0xFFCFD2D3);
   static const Color textGray = Color(0xFF595E62);
   static const Color titleGray = Color(0xFF4C4F53);
 }
+
+const TextStyle pretendard = TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.28);
 
 const textTheme = TextTheme(
   bodyLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.28),
@@ -160,10 +153,7 @@ const textTheme = TextTheme(
   labelSmall: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.28, fontSize: 12, fontWeight: FontWeight.w500),
 
   titleLarge: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.28, fontSize: 24, fontWeight: FontWeight.w600),
-  titleMedium: TextStyle(
-    fontFamily: Assets.fontFamilyPretendard,
-    letterSpacing: -0.28,
-  ),
+  titleMedium: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.28),
   titleSmall: TextStyle(fontFamily: Assets.fontFamilyPretendard, letterSpacing: -0.28),
 );
 
@@ -177,3 +167,9 @@ const edgeInsetsAll24 = EdgeInsets.all(24);
 const borderRadiusCircular10 = BorderRadius.all(Radius.circular(10));
 
 late final FlutterSecureStorage storage;
+
+extension ELSwhereTextTheme on TextTheme {
+  TextStyle get SM_16 => pretendard.copyWith(fontSize: 16, fontWeight: FontWeight.w600);
+  TextStyle get SM_18 => pretendard.copyWith(fontSize: 18, fontWeight: FontWeight.w600);
+  TextStyle get M_14 => pretendard.copyWith(fontSize: 14, fontWeight: FontWeight.w500);
+}

@@ -3,6 +3,7 @@ import 'package:elswhere/config/config.dart';
 import 'package:elswhere/data/models/dtos/request_product_search_dto.dart';
 import 'package:elswhere/data/models/dtos/response_issuer_dto.dart';
 import 'package:elswhere/data/models/dtos/response_ticker_symbol_dto.dart';
+import 'package:elswhere/data/models/dtos/summarized_product_dto.dart';
 import 'package:elswhere/data/services/api_interceptor.dart';
 import 'package:retrofit/retrofit.dart';
 import '../models/dtos/response_page_summarized_product_dto.dart';
@@ -50,4 +51,7 @@ abstract class ProductService {
 
   @DELETE("/v1/product/like/{id}")
   Future<HttpResponse> deleteProductLike(@Path("id") int id);
+
+  @GET("/v1/product/hot/daily")
+  Future<HttpResponse<List<SummarizedProductDto>>> fetchDailyHotProducts();
 }
