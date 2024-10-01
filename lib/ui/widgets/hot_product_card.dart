@@ -41,7 +41,7 @@ class HotProductCard extends StatelessWidget {
             children: [
               Text(
                 '$rank',
-                style: textTheme.SM_16.copyWith(color: AppColors.mainBlue),
+                style: textTheme.SM_16.copyWith(color: rank == 1 ? AppColors.contentRed : AppColors.mainBlue),
               ),
               const SizedBox(width: 16),
               Expanded(
