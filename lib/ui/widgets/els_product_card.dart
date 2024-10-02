@@ -127,12 +127,12 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
                       children: [
                         const Icon(
                           Icons.arrow_right_alt,
-                          color: AppColors.textGray,
+                          color: AppColors.gray600,
                         ),
                         Text(
                           '자세히',
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: AppColors.textGray,
+                                color: AppColors.gray600,
                               ),
                         ),
                       ],
@@ -310,7 +310,7 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
                   '${dayDifference != 0 ? '${dayDifference.abs()}일 ${dayDifference < 0 ? '전' : '후'}' : '오늘'} 마감',
                   style: Theme.of(context).textTheme.displayMedium?.copyWith(
                         fontSize: 14,
-                        color: AppColors.textGray,
+                        color: AppColors.gray600,
                       ),
                 )
               ],

@@ -157,7 +157,7 @@ class _AddHoldingProductModalState extends State<AddHoldingProductModal> {
               Text(
                 '얼마나 투자하셨나요?',
                 style: textTheme.labelMedium!.copyWith(
-                  color: AppColors.textGray,
+                  color: AppColors.gray600,
                 ),
               )
             ],
@@ -238,7 +238,7 @@ class _AddHoldingProductModalState extends State<AddHoldingProductModal> {
         Text(
           ' 상품에',
           style: textTheme.labelMedium!.copyWith(
-            color: AppColors.textGray,
+            color: AppColors.gray600,
           ),
         ),
       ],

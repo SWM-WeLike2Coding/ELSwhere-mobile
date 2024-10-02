@@ -136,7 +136,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
           product!.issuer,
           style: textTheme.labelMedium?.copyWith(
             fontSize: 18,
-            color: AppColors.textGray,
+            color: AppColors.gray600,
           ),
         ),
       ],
@@ -199,7 +199,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
                 Text(
                   '투자 금액',
                   style: textTheme.labelMedium!.copyWith(
-                    color: AppColors.textGray,
+                    color: AppColors.gray600,
                   ),
                 ),
                 Row(
@@ -283,7 +283,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
           Text(
             title,
             style: textTheme.labelMedium!.copyWith(
-              color: AppColors.textGray,
+              color: AppColors.gray600,
             ),
           ),
           Text(
@@ -438,7 +438,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
               Text(
                 '수익률',
                 style: textTheme.labelMedium?.copyWith(
-                  color: AppColors.textGray,
+                  color: AppColors.gray600,
                 ),
               ),
               const SizedBox(height: 18),
@@ -458,7 +458,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
                 '조건 충족시',
                 style: textTheme.labelSmall?.copyWith(
                   fontSize: 14,
-                  color: AppColors.textGray,
+                  color: AppColors.gray600,
                 ),
               ),
             ],
@@ -486,7 +486,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
             children: [
               Text('기초자산',
                   style: textTheme.labelMedium?.copyWith(
-                    color: AppColors.textGray,
+                    color: AppColors.gray600,
                   )),
               const SizedBox(height: 18),
             ],
@@ -540,7 +540,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
                 Text(
                   '최초 기준가격 평가일',
                   style: textTheme.labelMedium!.copyWith(
-                    color: AppColors.textGray,
+                    color: AppColors.gray600,
                   ),
                 ),
                 Text(
@@ -585,7 +585,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
                       Text(
                         '다음 평가일',
                         style: textTheme.labelMedium!.copyWith(
-                          color: AppColors.textGray,
+                          color: AppColors.gray600,
                         ),
                       ),
                       Text(
@@ -621,7 +621,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
                       Text(
                         '청약 시작•마감일',
                         style: textTheme.labelMedium!.copyWith(
-                          color: AppColors.textGray,
+                          color: AppColors.gray600,
                         ),
                       ),
                       Text(
@@ -640,7 +640,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
                   const SizedBox(height: 16),
                   Text('발행•만기일',
                       style: textTheme.labelMedium!.copyWith(
-                        color: AppColors.textGray,
+                        color: AppColors.gray600,
                       )),
                   const SizedBox(height: 12),
                   Text(
@@ -670,7 +670,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
                 Text(
                   '상품 유형',
                   style: textTheme.labelMedium!.copyWith(
-                    color: AppColors.textGray,
+                    color: AppColors.gray600,
                   ),
                 ),
                 Text(
@@ -705,7 +705,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
               Text(
                 '비고',
                 style: textTheme.labelMedium!.copyWith(
-                  color: AppColors.textGray,
+                  color: AppColors.gray600,
                 ),
               ),
               const SizedBox(
@@ -755,7 +755,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              descriptionMonteCarlo,
+                              MSG_DESCRIPTION_MONTECARLO,
                               style: textTheme.headlineSmall,
                               softWrap: true,
                               maxLines: null,
@@ -808,7 +808,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
             children: [
               Text(
                 levelString[i],
-                style: textTheme.labelMedium!.copyWith(color: i == length + 1 ? AppColors.contentRed : AppColors.textGray),
+                style: textTheme.labelMedium!.copyWith(color: i == length + 1 ? AppColors.contentRed : AppColors.gray600),
               ),
               Text(
                 '${earlyRepaymentProbabilities[i].toStringAsFixed(2)}%',
@@ -836,7 +836,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
                   Text(
                     '${item.first} 평가일',
                     style: textTheme.labelMedium!.copyWith(
-                      color: AppColors.textGray,
+                      color: AppColors.gray600,
                     ),
                   ),
                   Text(item.last, style: textTheme.labelMedium),
@@ -852,7 +852,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
             Text(
               '만기 평가일',
               style: textTheme.labelMedium!.copyWith(
-                color: AppColors.textGray,
+                color: AppColors.gray600,
               ),
             ),
             Text(DateFormat().addPattern('yyyy년 MM월 dd일').format(DateTime.parse(product!.maturityDate)), style: textTheme.labelMedium),

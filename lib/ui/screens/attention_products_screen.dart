@@ -20,7 +20,7 @@ class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
       appBar: _buildAppbar(context),
       body: Column(
         children: [
-          // _buildGetAlarmCard(context),
+          _buildGetAlarmCard(context),
           _buildMyAttentionProductString(),
           const InterestingProductListView(),
         ],
@@ -63,7 +63,7 @@ class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
           //   //     child: Icon(
           //   //       Icons.add,
           //   //       size: 24,
-          //   //       color: Color(0xFF595E62),
+          //   //       color: AppColors.gray600,
           //   //     ),
           //   //   ),
           //   //   onPressed: () {
@@ -79,7 +79,7 @@ class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
           //       child: Icon(
           //         Icons.settings,
           //         size: 24,
-          //         color: Color(0xFF595E62),
+          //         color: AppColors.gray600,
           //       ),
           //     ),
           //     onPressed: () {

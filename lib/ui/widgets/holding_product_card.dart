@@ -219,7 +219,7 @@ class _ELSProductCardState extends State<HoldingProductCard> with AutomaticKeepA
         ),
         Text('$dayDifference일 후',
             style: textTheme.labelSmall!.copyWith(
-              color: const Color(0xFF595E62),
+              color: AppColors.gray600,
             )),
       ],
     );

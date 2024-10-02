@@ -144,7 +144,7 @@ class HotProductCard extends StatelessWidget {
                           '${dayDifference != 0 ? '${dayDifference.abs()}일 ${dayDifference < 0 ? '전' : '후'}' : '오늘'} 마감',
                           style: Theme.of(context).textTheme.displayMedium?.copyWith(
                                 fontSize: 14,
-                                color: AppColors.textGray,
+                                color: AppColors.gray600,
                               ),
                         )
                       ],

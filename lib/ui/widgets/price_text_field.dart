@@ -88,7 +88,7 @@ class _PriceTextFieldState extends State<PriceTextField> {
         hintText: '금액 입력',
         hintStyle: textTheme.labelSmall!.copyWith(
           fontSize: 14,
-          color: AppColors.textGray,
+          color: AppColors.gray600,
         ),
         counterText: '',
         suffixIcon: _controller.text.isNotEmpty

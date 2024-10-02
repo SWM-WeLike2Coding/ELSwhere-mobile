@@ -44,7 +44,7 @@ class _StockIndexListItemState extends State<StockIndexList> {
                   } else if (rate < 0) {
                     return const Color(0xFF3181F7);
                   } else {
-                    return AppColors.textGray;
+                    return AppColors.gray600;
                   }
                 }
 

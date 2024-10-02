@@ -470,7 +470,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: const Icon(
                 Icons.more_horiz,
                 size: 20,
-                color: Color(0xFF595E62),
+                color: AppColors.gray600,
               ),
             ),
             const SizedBox(
