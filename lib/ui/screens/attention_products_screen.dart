@@ -20,7 +20,7 @@ class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
       appBar: _buildAppbar(context),
       body: Column(
         children: [
-          _buildGetAlarmCard(context),
+          // _buildGetAlarmCard(context),
           _buildMyAttentionProductString(),
           const InterestingProductListView(),
         ],
