@@ -194,11 +194,11 @@ class _ChangeNicknameScreenState extends State<ChangeNicknameScreen> {
                           controller: _controller,
                           showCursor: true,
                           cursorColor: AppColors.mainBlue,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             border: InputBorder.none,
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                            hintText: userInfoProvider.getNickname(),
-                            hintStyle: const TextStyle(color: AppColors.gray400),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 12),
+                            hintText: MSG_INSERT_NICKNAME,
+                            hintStyle: TextStyle(color: AppColors.gray400),
                           ),
                           onChanged: _onNicknameChanged,
                         ),
