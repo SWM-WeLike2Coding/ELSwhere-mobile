@@ -154,7 +154,7 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
-                              color: AppColors.textGray,
+                              color: AppColors.gray600,
                             ),
                           ),
                           const SizedBox(
@@ -224,7 +224,7 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
-                              color: AppColors.textGray,
+                              color: AppColors.gray600,
                             ),
                           ),
                           const SizedBox(

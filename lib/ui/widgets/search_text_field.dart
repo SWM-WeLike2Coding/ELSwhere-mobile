@@ -57,7 +57,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
             color: Colors.black.withOpacity(0.4),
           ),
           hintText: '상품 검색',
-          hintStyle: const TextStyle(color: AppColors.textGray, letterSpacing: -0.02),
+          hintStyle: const TextStyle(color: AppColors.gray600, letterSpacing: -0.02),
           border: const OutlineInputBorder(
             borderRadius: borderRadiusCircular10,
             borderSide: BorderSide.none,

@@ -43,52 +43,31 @@ class StockIndexCardSwiperState extends State<StockIndexCardSwiper> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 8,),
+                      const SizedBox(
+                        width: 8,
+                      ),
                       Text(
                         tickerSymbolProvider.stockIndex[index],
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .headlineSmall
-                            ?.copyWith(
-                          letterSpacing: -0.02,
-                        ),
+                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                              letterSpacing: -0.02,
+                            ),
                       ),
                       const SizedBox(width: 8),
                       Text(
                         priceFormat.format(tickerSymbolProvider.price[index]),
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .headlineSmall
-                            ?.copyWith(
-                          color: tickerSymbolProvider.rate[index] > 0
-                              ? AppColors.contentRed
-                              : (tickerSymbolProvider.rate[index] != 0
-                              ? AppColors.mainBlue
-                              : AppColors.textGray),
-                          letterSpacing: -0.02,
-                        ),
+                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                              color: tickerSymbolProvider.rate[index] > 0 ? AppColors.contentRed : (tickerSymbolProvider.rate[index] != 0 ? AppColors.mainBlue : AppColors.gray600),
+                              letterSpacing: -0.02,
+                            ),
                       ),
                       const SizedBox(width: 8),
                       Text(
                         // percentageFormat.format(tickerSymbolProvider.rate[index]),
-                        '${tickerSymbolProvider.rate[index] > 0
-                            ? '+'
-                            : ''}${tickerSymbolProvider.rate[index]
-                            .toStringAsPrecision(2)}%',
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .headlineSmall
-                            ?.copyWith(
-                          color: tickerSymbolProvider.rate[index] > 0
-                              ? AppColors.contentRed
-                              : (tickerSymbolProvider.rate[index] != 0
-                              ? AppColors.mainBlue
-                              : AppColors.textGray),
-                          letterSpacing: -0.02,
-                        ),
+                        '${tickerSymbolProvider.rate[index] > 0 ? '+' : ''}${tickerSymbolProvider.rate[index].toStringAsPrecision(2)}%',
+                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                              color: tickerSymbolProvider.rate[index] > 0 ? AppColors.contentRed : (tickerSymbolProvider.rate[index] != 0 ? AppColors.mainBlue : AppColors.gray600),
+                              letterSpacing: -0.02,
+                            ),
                       ),
                     ],
                   );

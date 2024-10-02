@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:elswhere/config/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -45,9 +46,9 @@ class _ChangeNicknameScreenState extends State<ChangeNicknameScreen> {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(seconds: 1), () async {
       if (value.isNotEmpty) {
-        bool isAvailable = await userInfoProvider.checkNicknamePossible(value);
+        int isAvailable = await userInfoProvider.checkNicknamePossible(value);
         setState(() {
-          _isThisNicknamePossible = isAvailable ? 1 : 0;
+          _isThisNicknamePossible = isAvailable;
         });
       } else {
         setState(() {
@@ -72,8 +73,24 @@ class _ChangeNicknameScreenState extends State<ChangeNicknameScreen> {
             height: 40,
           ),
           _buildNicknameField(),
-          if (_isThisNicknamePossible == 1) _buildPossibleSign(),
-          if (_isThisNicknamePossible == 0) _buildImpossibleSign(),
+          if (_isThisNicknamePossible == 0) _buildPossibleSign(),
+          if (_isThisNicknamePossible > 0) _buildImpossibleSign(),
+          const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Wrap(
+              children: [
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(text: '$MSG_NICKNAME_RULE_TITLE\n', style: textTheme.SM_14.copyWith(color: AppColors.gray600)),
+                      TextSpan(text: MSG_NICKNAME_RULE_BODY, style: textTheme.SM_14.copyWith(color: AppColors.gray600)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
       bottomNavigationBar: _buildBottomSaveButton(),
@@ -149,61 +166,64 @@ class _ChangeNicknameScreenState extends State<ChangeNicknameScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "닉네임",
-            style: TextStyle(
-              color: Color(0xFF595E62),
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              height: 1.18,
-              letterSpacing: -0.02,
-            ),
-          ),
-          const SizedBox(
-            height: 12,
-          ),
-          Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                  color: AppColors.gray100,
-                  width: 1,
-                )),
-            height: 52,
-            child: Stack(
-              alignment: Alignment.centerRight,
-              children: [
-                Consumer<UserInfoProvider>(
-                  builder: (context, userInfoProvider, child) {
-                    return TextField(
-                      controller: _controller,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                        hintText: userInfoProvider.getNickname(),
-                      ),
-                      onChanged: _onNicknameChanged,
-                    );
-                  },
-                ),
-                if (_controller.text.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.only(right: 16),
-                    child: GestureDetector(
-                      onTap: () {
-                        _controller.clear();
-                        setState(() {});
-                      },
-                      child: SvgPicture.asset(
-                        removeIcon,
-                        width: 20,
-                        height: 20,
-                        fit: BoxFit.contain,
+          Consumer<UserInfoProvider>(
+            builder: (context, userInfoProvider, child) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '',
+                    style: textTheme.SM_14.copyWith(color: AppColors.gray800),
+                  ),
+                  const SizedBox(height: 12),
+                  Text("닉네임 (현재 닉네임: ${userInfoProvider.getNickname()})", style: textTheme.SM_14.copyWith(color: AppColors.gray400)),
+                  const SizedBox(height: 12),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: AppColors.gray100,
+                        width: 1,
                       ),
                     ),
+                    height: 52,
+                    child: Stack(
+                      alignment: Alignment.centerRight,
+                      children: [
+                        TextField(
+                          controller: _controller,
+                          showCursor: true,
+                          cursorColor: AppColors.mainBlue,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(horizontal: 12),
+                            hintText: MSG_INSERT_NICKNAME,
+                            hintStyle: TextStyle(color: AppColors.gray400),
+                          ),
+                          onChanged: _onNicknameChanged,
+                        ),
+                        if (_controller.text.isNotEmpty)
+                          Padding(
+                            padding: const EdgeInsets.only(right: 16),
+                            child: GestureDetector(
+                              onTap: () {
+                                _controller.clear();
+                                setState(() {});
+                              },
+                              child: SvgPicture.asset(
+                                removeIcon,
+                                width: 20,
+                                height: 20,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
-              ],
-            ),
+                ],
+              );
+            },
           ),
         ],
       ),
@@ -276,15 +296,9 @@ class _ChangeNicknameScreenState extends State<ChangeNicknameScreen> {
             const SizedBox(
               width: 8,
             ),
-            const Text(
-              "이미 사용 중인 닉네임입니다",
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 14,
-                height: 1.18,
-                letterSpacing: -0.02,
-                color: Color(0xFFEE5648),
-              ),
+            Text(
+              _isThisNicknamePossible == 1 ? MSG_INVALID_NICKNAME : MSG_EXIST_NICKNAME,
+              style: textTheme.M_14.copyWith(color: AppColors.contentRed),
             ),
           ],
         ),
@@ -302,7 +316,7 @@ class _ChangeNicknameScreenState extends State<ChangeNicknameScreen> {
         height: 50, // 버튼 높이 설정
         child: ElevatedButton(
           onPressed: () async {
-            if (_isThisNicknamePossible == 1) {
+            if (_isThisNicknamePossible == 0) {
               final newNickname = _controller.text;
               if (await userInfoProvider.changeNickname(newNickname)) {
                 print("닉네임 변경 성공");

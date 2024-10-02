@@ -132,7 +132,7 @@ class CompareProductScreen extends StatelessWidget {
           child: Text(
             '상품명',
             style: textTheme.labelSmall!.copyWith(
-              color: const Color(0xFF595E62),
+              color: AppColors.gray600,
               fontSize: 14,
               fontWeight: FontWeight.w500,
               letterSpacing: -0.28,
@@ -177,7 +177,7 @@ class CompareProductScreen extends StatelessWidget {
           child: Text(
             '발행사',
             style: textTheme.labelSmall!.copyWith(
-              color: const Color(0xFF595E62),
+              color: AppColors.gray600,
               fontSize: 14,
               fontWeight: FontWeight.w500,
               letterSpacing: -0.28,
@@ -248,7 +248,7 @@ class CompareProductScreen extends StatelessWidget {
           child: Text(
             '연 수익률',
             style: textTheme.labelSmall!.copyWith(
-              color: const Color(0xFF595E62),
+              color: AppColors.gray600,
               fontSize: 14,
               fontWeight: FontWeight.w500,
               letterSpacing: -0.28,
@@ -293,7 +293,7 @@ class CompareProductScreen extends StatelessWidget {
           child: Text(
             '기초자산',
             style: textTheme.labelSmall!.copyWith(
-              color: const Color(0xFF595E62),
+              color: AppColors.gray600,
               fontSize: 14,
               fontWeight: FontWeight.w500,
               letterSpacing: -0.28,
@@ -376,7 +376,7 @@ class CompareProductScreen extends StatelessWidget {
           child: Text(
             '상품 유형',
             style: textTheme.labelSmall!.copyWith(
-              color: const Color(0xFF595E62),
+              color: AppColors.gray600,
               fontSize: 14,
               fontWeight: FontWeight.w500,
               letterSpacing: -0.28,
@@ -421,7 +421,7 @@ class CompareProductScreen extends StatelessWidget {
           child: Text(
             '낙인 유무',
             style: textTheme.labelSmall!.copyWith(
-              color: const Color(0xFF595E62),
+              color: AppColors.gray600,
               fontSize: 14,
               fontWeight: FontWeight.w500,
               letterSpacing: -0.28,
@@ -466,7 +466,7 @@ class CompareProductScreen extends StatelessWidget {
           child: Text(
             '최대 손실률',
             style: textTheme.labelSmall!.copyWith(
-              color: const Color(0xFF595E62),
+              color: AppColors.gray600,
               fontSize: 14,
               fontWeight: FontWeight.w500,
               letterSpacing: -0.28,
@@ -514,7 +514,7 @@ class CompareProductScreen extends StatelessWidget {
           child: Text(
             '청약 마감일',
             style: textTheme.labelSmall!.copyWith(
-              color: const Color(0xFF595E62),
+              color: AppColors.gray600,
               fontSize: 14,
               fontWeight: FontWeight.w500,
               letterSpacing: -0.28,

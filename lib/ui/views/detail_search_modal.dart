@@ -503,7 +503,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: Color(0xFF595E62),
+            color: AppColors.gray600,
           ),
         ),
         const SizedBox(
@@ -876,7 +876,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: Color(0xFF595E62),
+            color: AppColors.gray600,
           ),
         ),
         Row(
@@ -932,7 +932,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: Color(0xFF595E62),
+            color: AppColors.gray600,
           ),
         ),
         SizedBox(
@@ -978,7 +978,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: Color(0xFF595E62),
+            color: AppColors.gray600,
           ),
         ),
         Row(

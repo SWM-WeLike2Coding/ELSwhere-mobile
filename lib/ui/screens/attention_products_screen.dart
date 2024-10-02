@@ -20,7 +20,7 @@ class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
       appBar: _buildAppbar(context),
       body: Column(
         children: [
-          _buildGetAlarmCard(context),
+          // _buildGetAlarmCard(context),
           _buildMyAttentionProductString(),
           const InterestingProductListView(),
         ],
@@ -56,43 +56,43 @@ class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
             style: textTheme.headlineMedium,
           ),
           centerTitle: false,
-          actions: [
-            // IconButton(
-            //   icon: const CircleAvatar(
-            //     backgroundColor: Color(0xFFF5F6F6),
-            //     child: Icon(
-            //       Icons.add,
-            //       size: 24,
-            //       color: Color(0xFF595E62),
-            //     ),
-            //   ),
-            //   onPressed: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(builder: (context) => ProductScreen()),
-            //     );
-            //   },
-            // ),
-            IconButton(
-              icon: const CircleAvatar(
-                backgroundColor: Color(0xFFF5F6F6),
-                child: Icon(
-                  Icons.settings,
-                  size: 24,
-                  color: Color(0xFF595E62),
-                ),
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const AttentionSettingScreen()),
-                );
-              },
-            ),
-            const SizedBox(
-              width: 16,
-            ),
-          ],
+          // actions: [
+          //   // IconButton(
+          //   //   icon: const CircleAvatar(
+          //   //     backgroundColor: Color(0xFFF5F6F6),
+          //   //     child: Icon(
+          //   //       Icons.add,
+          //   //       size: 24,
+          //   //       color: AppColors.gray600,
+          //   //     ),
+          //   //   ),
+          //   //   onPressed: () {
+          //   //     Navigator.push(
+          //   //       context,
+          //   //       MaterialPageRoute(builder: (context) => ProductScreen()),
+          //   //     );
+          //   //   },
+          //   // ),
+          //   IconButton(
+          //     icon: const CircleAvatar(
+          //       backgroundColor: Color(0xFFF5F6F6),
+          //       child: Icon(
+          //         Icons.settings,
+          //         size: 24,
+          //         color: AppColors.gray600,
+          //       ),
+          //     ),
+          //     onPressed: () {
+          //       Navigator.push(
+          //         context,
+          //         MaterialPageRoute(builder: (context) => const AttentionSettingScreen()),
+          //       );
+          //     },
+          //   ),
+          //   const SizedBox(
+          //     width: 16,
+          //   ),
+          // ],
         ),
       ),
     );
