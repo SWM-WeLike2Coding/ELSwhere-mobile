@@ -936,7 +936,6 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
           ),
         ),
         SizedBox(
-          height: 86,
           child: GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
