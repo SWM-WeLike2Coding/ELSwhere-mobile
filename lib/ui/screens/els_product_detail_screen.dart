@@ -31,7 +31,7 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
     productProvider = Provider.of<ELSProductProvider>(context, listen: false);
   }
 
-  void changeLiked() async {
+  void _changeLiked() async {
     ResponseSingleProductDto? product = productProvider.product;
     isLiked = productProvider.isLiked;
     bool result;
@@ -52,7 +52,7 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
   }
 
   // void changeBookmarked() => setState(() => isBookmarked = !isBookmarked);
-  void changeBookmarked() async {
+  void _changeBookmarked() async {
     ResponseSingleProductDto? product = productProvider.product;
     bool isBookmarked = productProvider.isBookmarked;
     bool result;
@@ -107,7 +107,7 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
         isHeld = productProvider.isHeld;
 
         return Scaffold(
-          backgroundColor: AppColors.backgroundGray,
+          backgroundColor: AppColors.gray50,
           appBar: _buildAppBar(),
           body: const ELSProductDetailView(),
         );
@@ -223,53 +223,73 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
 
   PreferredSize _buildAppBar() {
     return PreferredSize(
-      preferredSize: const Size.fromHeight(72),
+      preferredSize: const Size.fromHeight(90),
       child: Padding(
         padding: edgeInsetsAll8,
         child: AppBar(
-          backgroundColor: AppColors.backgroundGray,
+          toolbarHeight: 90,
+          backgroundColor: AppColors.gray50,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_rounded),
             onPressed: () => Navigator.pop(context),
           ),
           actions: [
-            IconButton(
-              icon: CircleAvatar(
-                backgroundColor: AppColors.contentWhite,
-                child: isLiked ? const Icon(Icons.favorite, color: AppColors.contentRed) : const Icon(Icons.favorite_border_outlined),
-              ),
-              onPressed: changeLiked,
-            ),
-            IconButton(
-              icon: CircleAvatar(
-                backgroundColor: AppColors.contentWhite,
-                child: isBookmarked ? const Icon(Icons.bookmark, color: AppColors.contentYellow) : const Icon(Icons.bookmark_border_outlined),
-              ),
-              onPressed: changeBookmarked,
-            ),
-            IconButton(
-              onPressed: _changeHeld,
-              icon: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 700),
-                switchInCurve: Curves.fastLinearToSlowEaseIn,
-                switchOutCurve: Curves.fastLinearToSlowEaseIn,
-                transitionBuilder: (Widget child, Animation<double> animation) {
-                  return RotationTransition(
-                    turns: child.key == const ValueKey('add') ? Tween<double>(begin: 1, end: 0.75).animate(animation) : Tween<double>(begin: 0.75, end: 1).animate(animation),
-                    child: FadeTransition(
-                      opacity: animation,
-                      child: child,
+            FittedBox(
+              fit: BoxFit.fitHeight,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          icon: CircleAvatar(
+                            backgroundColor: AppColors.contentWhite,
+                            child: isLiked ? const Icon(Icons.favorite, color: AppColors.contentRed) : const Icon(Icons.favorite_border_outlined),
+                          ),
+                          onPressed: _changeLiked,
+                        ),
+                        Text(
+                          '${productProvider.likes}',
+                          style: textTheme.M_12.copyWith(color: AppColors.gray400),
+                        )
+                      ],
                     ),
-                  );
-                },
-                child: CircleAvatar(
-                  key: ValueKey(isHeld ? 'check' : 'add'),
-                  backgroundColor: isHeld ? AppColors.mainBlue : Colors.white,
-                  child: Icon(
-                    isHeld ? Icons.check : Icons.add,
-                    color: isHeld ? Colors.white : Colors.black,
                   ),
-                ),
+                  IconButton(
+                    icon: CircleAvatar(
+                      backgroundColor: AppColors.contentWhite,
+                      child: isBookmarked ? const Icon(Icons.bookmark, color: AppColors.contentYellow) : const Icon(Icons.bookmark_border_outlined),
+                    ),
+                    onPressed: _changeBookmarked,
+                  ),
+                  IconButton(
+                    onPressed: _changeHeld,
+                    icon: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 700),
+                      switchInCurve: Curves.fastLinearToSlowEaseIn,
+                      switchOutCurve: Curves.fastLinearToSlowEaseIn,
+                      transitionBuilder: (Widget child, Animation<double> animation) {
+                        return RotationTransition(
+                          turns: child.key == const ValueKey('add') ? Tween<double>(begin: 1, end: 0.75).animate(animation) : Tween<double>(begin: 0.75, end: 1).animate(animation),
+                          child: FadeTransition(
+                            opacity: animation,
+                            child: child,
+                          ),
+                        );
+                      },
+                      child: CircleAvatar(
+                        key: ValueKey(isHeld ? 'check' : 'add'),
+                        backgroundColor: isHeld ? AppColors.mainBlue : Colors.white,
+                        child: Icon(
+                          isHeld ? Icons.check : Icons.add,
+                          color: isHeld ? Colors.white : Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

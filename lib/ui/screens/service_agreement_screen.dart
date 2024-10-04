@@ -52,7 +52,7 @@ class _ServiceAgreementScreenState extends State<ServiceAgreementScreen> with Ti
           decoration: const BoxDecoration(
               border: Border(
                   bottom: BorderSide(
-            color: Color(0xFFF5F6F6),
+            color: AppColors.gray50,
             width: 1,
           ))),
           child: AppBar(

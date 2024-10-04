@@ -35,6 +35,8 @@ ResponseSingleProductDto _$ResponseSingleProductDtoFromJson(
           json['summaryInvestmentProspectusLink'] as String,
       equityTickerSymbols:
           Map<String, String>.from(json['equityTickerSymbols'] as Map),
+      likes: (json['likes'] as num).toInt(),
+      liked: json['liked'] as bool,
     );
 
 Map<String, dynamic> _$ResponseSingleProductDtoToJson(
@@ -63,4 +65,6 @@ Map<String, dynamic> _$ResponseSingleProductDtoToJson(
       'summaryInvestmentProspectusLink':
           instance.summaryInvestmentProspectusLink,
       'equityTickerSymbols': instance.equityTickerSymbols,
+      'likes': instance.likes,
+      'liked': instance.liked,
     };

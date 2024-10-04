@@ -339,11 +339,11 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                               },
                               deleteIcon: const Icon(Icons.close),
                               deleteIconColor: const Color(0xFFACB2B5),
-                              backgroundColor: const Color(0xFFF5F6F6),
+                              backgroundColor: AppColors.gray50,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(600),
                                 side: const BorderSide(
-                                  color: Color(0xFFF5F6F6),
+                                  color: AppColors.gray50,
                                   width: 0,
                                 ),
                               ),
@@ -356,7 +356,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                       decoration: const BoxDecoration(
                           border: Border(
                               bottom: BorderSide(
-                        color: Color(0xFFF5F6F6),
+                        color: AppColors.gray50,
                         width: 1,
                       ))),
                     ),
@@ -518,7 +518,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF5F6F6),
+                        color: AppColors.gray50,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: DropdownButton<String>(
@@ -572,7 +572,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF5F6F6),
+                        color: AppColors.gray50,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: DropdownButton<String>(
@@ -634,7 +634,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF5F6F6),
+                        color: AppColors.gray50,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: DropdownButton<String>(
@@ -688,7 +688,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF5F6F6),
+                        color: AppColors.gray50,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: DropdownButton<String>(
@@ -762,7 +762,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                       borderSide: BorderSide.none,
                     ),
                     filled: true,
-                    fillColor: const Color(0xFFF5F6F6),
+                    fillColor: AppColors.gray50,
                   ),
                   onChanged: _updateKIValue,
                 ),
@@ -791,7 +791,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                     borderSide: BorderSide.none,
                   ),
                   filled: true,
-                  fillColor: const Color(0xFFF5F6F6),
+                  fillColor: AppColors.gray50,
                 ),
                 onChanged: _updateYieldValue,
               ),
@@ -825,7 +825,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                       borderSide: BorderSide.none,
                     ),
                     filled: true,
-                    fillColor: const Color(0xFFF5F6F6),
+                    fillColor: AppColors.gray50,
                   ),
                   onChanged: _updateFirstBarrier,
                 ),
@@ -855,7 +855,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                       borderSide: BorderSide.none,
                     ),
                     filled: true,
-                    fillColor: const Color(0xFFF5F6F6),
+                    fillColor: AppColors.gray50,
                   ),
                   onChanged: _updateLastBarrier,
                 ),
@@ -887,7 +887,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
-                  backgroundColor: _isIndex ? const Color(0xFF1C6BF9) : const Color(0xFFF5F6F6),
+                  backgroundColor: _isIndex ? const Color(0xFF1C6BF9) : AppColors.gray50,
                 ),
                 onPressed: () {
                   setState(() {
@@ -909,7 +909,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
-                  backgroundColor: _isStock ? const Color(0xFF1C6BF9) : const Color(0xFFF5F6F6),
+                  backgroundColor: _isStock ? const Color(0xFF1C6BF9) : AppColors.gray50,
                 ),
                 onPressed: () {
                   setState(() {
@@ -953,7 +953,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
-                  backgroundColor: _selectedTypeIndex == index ? const Color(0xFF1C6BF9) : const Color(0xFFF5F6F6),
+                  backgroundColor: _selectedTypeIndex == index ? const Color(0xFF1C6BF9) : AppColors.gray50,
                 ),
                 child: Text(
                   _getButtonText(index),
@@ -1001,7 +1001,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),
-          backgroundColor: displayLabel != label ? const Color(0xFF1C6BF9) : const Color(0xFFF5F6F6),
+          backgroundColor: displayLabel != label ? const Color(0xFF1C6BF9) : AppColors.gray50,
         ),
         // onPressed: () {
         //   if (displayLabel == label) {

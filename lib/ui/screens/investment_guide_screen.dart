@@ -1,3 +1,4 @@
+import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/data/models/dtos/post_dto.dart';
 import 'package:elswhere/ui/widgets/post_card.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +57,7 @@ class _InvestmentGuideScreenState extends State<InvestmentGuideScreen> {
         decoration: const BoxDecoration(
             border: Border(
                 bottom: BorderSide(
-          color: Color(0xFFF5F6F6),
+          color: AppColors.gray50,
           width: 1,
         ))),
         child: AppBar(
@@ -146,7 +147,7 @@ class _InvestmentGuideScreenState extends State<InvestmentGuideScreen> {
                 padding: EdgeInsets.only(left: 16, right: 16),
                 child: Divider(
                   height: 1.0,
-                  color: Color(0xFFF5F6F6),
+                  color: AppColors.gray50,
                 ),
               ),
           ],

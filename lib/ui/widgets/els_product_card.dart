@@ -117,7 +117,7 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
                   width: 75,
                   decoration: const BoxDecoration(
                     borderRadius: borderRadiusCircular10,
-                    color: AppColors.backgroundGray,
+                    color: AppColors.gray50,
                   ),
                   child: Padding(
                     padding: edgeInsetsAll16,
@@ -209,14 +209,14 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
       child: Container(
         height: cardHeight,
         padding: edgeInsetsAll16,
-        decoration: BoxDecoration(color: AppColors.contentWhite, borderRadius: borderRadiusCircular10, border: Border.all(color: isSelected ? AppColors.backgroundGray : AppColors.contentWhite)),
+        decoration: BoxDecoration(color: AppColors.contentWhite, borderRadius: borderRadiusCircular10, border: Border.all(color: isSelected ? AppColors.gray50 : AppColors.contentWhite)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Column(
               children: [
                 CircleAvatar(
-                  backgroundColor: AppColors.backgroundGray,
+                  backgroundColor: AppColors.gray50,
                   child: Padding(
                     padding: edgeInsetsAll4,
                     child: Assets.issuerIconMap[widget.product.issuer] != null

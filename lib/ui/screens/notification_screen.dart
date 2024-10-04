@@ -19,7 +19,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           decoration: const BoxDecoration(
               border: Border(
                   bottom: BorderSide(
-            color: AppColors.backgroundGray,
+            color: AppColors.gray50,
             width: 1,
           ))),
           child: AppBar(

@@ -1,3 +1,4 @@
+import 'package:elswhere/config/app_resource.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -31,7 +32,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
         decoration: const BoxDecoration(
             border: Border(
                 bottom: BorderSide(
-          color: Color(0xFFF5F6F6),
+          color: AppColors.gray50,
           width: 1,
         ))),
         child: AppBar(

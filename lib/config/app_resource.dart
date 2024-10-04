@@ -128,7 +128,7 @@ sealed class AppColors {
   static const Color gray600 = Color(0xFF595E62);
   static const Color gray800 = Color(0xFF434648);
   static const Color gray950 = Color(0xFF131415);
-  static const Color backgroundGray = Color(0xFFF5F6F6);
+  static const Color gray50 = Color(0xFFF5F6F6);
   static const Color iconGray = Color(0xFFCFD2D3);
   static const Color titleGray = Color(0xFF4C4F53);
 }
@@ -169,8 +169,21 @@ const borderRadiusCircular10 = BorderRadius.all(Radius.circular(10));
 late final FlutterSecureStorage storage;
 
 extension ELSwhereTextTheme on TextTheme {
+  // Medium
+  TextStyle get M_12 => pretendard.copyWith(fontSize: 12, fontWeight: FontWeight.w500);
+  TextStyle get M_14 => pretendard.copyWith(fontSize: 14, fontWeight: FontWeight.w500);
+  TextStyle get M_16 => pretendard.copyWith(fontSize: 16, fontWeight: FontWeight.w500);
+  TextStyle get M_18 => pretendard.copyWith(fontSize: 18, fontWeight: FontWeight.w500);
+
+  // Semi-Bold
+  TextStyle get SM_12 => pretendard.copyWith(fontSize: 12, fontWeight: FontWeight.w600);
   TextStyle get SM_14 => pretendard.copyWith(fontSize: 14, fontWeight: FontWeight.w600);
   TextStyle get SM_16 => pretendard.copyWith(fontSize: 16, fontWeight: FontWeight.w600);
   TextStyle get SM_18 => pretendard.copyWith(fontSize: 18, fontWeight: FontWeight.w600);
-  TextStyle get M_14 => pretendard.copyWith(fontSize: 14, fontWeight: FontWeight.w500);
+  TextStyle get SM_22 => pretendard.copyWith(fontSize: 22, fontWeight: FontWeight.w600);
+  TextStyle get SM_24 => pretendard.copyWith(fontSize: 24, fontWeight: FontWeight.w600);
+
+  // Regular
+  TextStyle get R_10 => pretendard.copyWith(fontSize: 10, fontWeight: FontWeight.w400);
+  TextStyle get R_16 => pretendard.copyWith(fontSize: 16, fontWeight: FontWeight.w400);
 }

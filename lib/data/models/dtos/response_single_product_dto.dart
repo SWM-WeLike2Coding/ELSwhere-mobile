@@ -26,6 +26,8 @@ class ResponseSingleProductDto {
   final String link;
   final String summaryInvestmentProspectusLink;
   final Map<String, String> equityTickerSymbols;
+  final int likes;
+  final bool liked;
 
   ResponseSingleProductDto({
     required this.id,
@@ -50,6 +52,8 @@ class ResponseSingleProductDto {
     required this.link,
     required this.summaryInvestmentProspectusLink,
     required this.equityTickerSymbols,
+    required this.likes,
+    required this.liked,
   });
 
   factory ResponseSingleProductDto.fromJson(Map<String, dynamic> json) => _$ResponseSingleProductDtoFromJson(json);
