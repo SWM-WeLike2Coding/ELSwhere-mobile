@@ -233,7 +233,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
                         width: 30,
                         height: 30,
                         child: CircleAvatar(
-                          backgroundColor: AppColors.backgroundGray,
+                          backgroundColor: AppColors.gray50,
                           child: Icon(Icons.edit, size: 20),
                         ),
                       ),

@@ -51,7 +51,7 @@ class HotProductCard extends StatelessWidget {
                     Column(
                       children: [
                         CircleAvatar(
-                          backgroundColor: AppColors.backgroundGray,
+                          backgroundColor: AppColors.gray50,
                           child: Padding(
                             padding: edgeInsetsAll4,
                             child:

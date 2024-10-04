@@ -29,11 +29,12 @@ class ELSProductProvider with ChangeNotifier {
   bool _isBookmarked = false;
   bool _isLiked = false;
   bool _isHeld = false;
+  int _likes = 0;
   int? _interestId;
   int? _holdingId;
   List<ResponseInterestingProductDto> _interestingProducts = [];
   List<UserLikeProductDto> _likeProducts = [];
-  List<int> _compareId = [];
+  final List<int> _compareId = [];
   List<ResponseSingleProductDto> _compareProducts = [];
   Map<String, YahooFinanceResponse>? _stockPrices;
 
@@ -43,6 +44,7 @@ class ELSProductProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   bool get isBookmarked => _isBookmarked;
   bool get isLiked => _isLiked;
+  int get likes => _likes;
   int? get interestedId => _interestId;
   int? get holdingId => _holdingId;
   bool get isHeld => _isHeld;
@@ -73,13 +75,8 @@ class ELSProductProvider with ChangeNotifier {
         }
       }
 
-      for (int i = 0; i < _likeProducts.length; i++) {
-        print('id값: ${_product!.id}, ${_likeProducts[i].id}');
-        if (_product?.id == _likeProducts[i].id) {
-          _isLiked = true;
-          break;
-        }
-      }
+      _isLiked = _product!.liked;
+      _likes = _product!.likes;
       notifyListeners();
     } catch (error) {
       print('Error fetching product: $error');
@@ -232,9 +229,11 @@ class ELSProductProvider with ChangeNotifier {
         throw Exception("Error Code: ${response.statusCode}, ${response.statusMessage}");
       }
       _isLiked = true;
+      _likes++;
     } catch (e) {
       print("상품 좋아요 실패: $e");
     }
+    // notifyListeners();
     return success;
   }
 
@@ -249,9 +248,11 @@ class ELSProductProvider with ChangeNotifier {
         throw Exception("Error Code: ${response.statusCode}, ${response.statusMessage}");
       }
       _isLiked = false;
+      _likes--;
     } catch (e) {
       print("상품 좋아요 실패: $e");
     }
+    // notifyListeners();
     return success;
   }
 

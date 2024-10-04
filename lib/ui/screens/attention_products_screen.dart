@@ -35,7 +35,7 @@ class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
         decoration: const BoxDecoration(
             border: Border(
                 bottom: BorderSide(
-          color: AppColors.backgroundGray,
+          color: AppColors.gray50,
           width: 1,
         ))),
         child: AppBar(
@@ -59,7 +59,7 @@ class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
           // actions: [
           //   // IconButton(
           //   //   icon: const CircleAvatar(
-          //   //     backgroundColor: Color(0xFFF5F6F6),
+          //   //     backgroundColor: AppColors.gray50,
           //   //     child: Icon(
           //   //       Icons.add,
           //   //       size: 24,
@@ -75,7 +75,7 @@ class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
           //   // ),
           //   IconButton(
           //     icon: const CircleAvatar(
-          //       backgroundColor: Color(0xFFF5F6F6),
+          //       backgroundColor: AppColors.gray50,
           //       child: Icon(
           //         Icons.settings,
           //         size: 24,

@@ -60,7 +60,7 @@ class HoldingProductsListView extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: Container(
-                    color: AppColors.backgroundGray,
+                    color: AppColors.gray50,
                     padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
                     child: Text(
                       '상품 보기',

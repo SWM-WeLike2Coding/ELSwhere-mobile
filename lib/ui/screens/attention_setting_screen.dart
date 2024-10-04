@@ -50,7 +50,7 @@ class _AttentionSettingScreenState extends State<AttentionSettingScreen> {
                   height: 40,
                   alignment: Alignment.center,
                   decoration: const BoxDecoration(
-                    color: AppColors.backgroundGray,
+                    color: AppColors.gray50,
                     shape: BoxShape.circle,
                   ),
                   child: IconButton(

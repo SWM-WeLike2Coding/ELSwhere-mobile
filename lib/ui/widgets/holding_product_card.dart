@@ -146,7 +146,7 @@ class _ELSProductCardState extends State<HoldingProductCard> with AutomaticKeepA
 
   Widget _buildIssuerIcon() {
     return CircleAvatar(
-      backgroundColor: AppColors.backgroundGray,
+      backgroundColor: AppColors.gray50,
       child: Padding(
         padding: edgeInsetsAll4,
         child: Assets.issuerIconMap[widget.product.issuer] != null ? SvgPicture.asset(Assets.issuerIconMap[widget.product.issuer]!) : const Icon(Icons.question_mark, color: AppColors.contentBlack),

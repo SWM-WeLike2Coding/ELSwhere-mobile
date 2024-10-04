@@ -95,7 +95,7 @@ class _SubscriptionEndScheduleScreenState extends State<SubscriptionEndScheduleS
                 decoration: const BoxDecoration(
                     border: Border(
                         bottom: BorderSide(
-                  color: AppColors.backgroundGray,
+                  color: AppColors.gray50,
                   width: 1,
                 ))),
                 child: AppBar(
@@ -134,7 +134,7 @@ class _SubscriptionEndScheduleScreenState extends State<SubscriptionEndScheduleS
                   decoration: const BoxDecoration(
                       border: Border(
                           bottom: BorderSide(
-                    color: AppColors.backgroundGray,
+                    color: AppColors.gray50,
                     width: 1,
                   ))),
                   child: AppBar(

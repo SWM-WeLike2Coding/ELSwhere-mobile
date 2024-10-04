@@ -131,7 +131,7 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
           decoration: const BoxDecoration(
               border: Border(
                   bottom: BorderSide(
-            color: AppColors.backgroundGray,
+            color: AppColors.gray50,
             width: 1,
           ))),
           child: AppBar(
@@ -219,7 +219,7 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
           // width: double.infinity,
           height: 33,
           decoration: BoxDecoration(
-            color: isPressed ? const Color(0xFF1C6BF9) : const Color(0xFFF5F6F6),
+            color: isPressed ? const Color(0xFF1C6BF9) : AppColors.gray50,
             borderRadius: BorderRadius.circular(8),
           ),
           child: Center(

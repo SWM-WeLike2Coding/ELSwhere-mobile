@@ -88,7 +88,7 @@ class CompareProductScreen extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              const Divider(height: 1, color: Color(0xFFF5F6F6)),
+                              const Divider(height: 1, color: AppColors.gray50),
                             ],
                           ),
                         );
@@ -194,7 +194,7 @@ class CompareProductScreen extends StatelessWidget {
                   padding: edgeInsetsAll8,
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                    color: AppColors.backgroundGray,
+                    color: AppColors.gray50,
                   ),
                   child: Assets.issuerIconMap[product1.issuer] != null ? SvgPicture.asset(Assets.issuerIconMap[product1.issuer]!) : const Icon(Icons.question_mark, color: AppColors.contentBlack)),
               const SizedBox(height: 8),
@@ -220,7 +220,7 @@ class CompareProductScreen extends StatelessWidget {
                   padding: edgeInsetsAll8,
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                    color: AppColors.backgroundGray,
+                    color: AppColors.gray50,
                   ),
                   child: Assets.issuerIconMap[product2.issuer] != null ? SvgPicture.asset(Assets.issuerIconMap[product2.issuer]!) : const Icon(Icons.question_mark, color: AppColors.contentBlack)),
               const SizedBox(height: 8),
@@ -566,7 +566,7 @@ class CompareProductScreen extends StatelessWidget {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 elevation: 0,
-                backgroundColor: AppColors.backgroundGray,
+                backgroundColor: AppColors.gray50,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               ),
               onPressed: () async {
@@ -623,7 +623,7 @@ class CompareProductScreen extends StatelessWidget {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 elevation: 0,
-                backgroundColor: AppColors.backgroundGray,
+                backgroundColor: AppColors.gray50,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               ),
               onPressed: () async {

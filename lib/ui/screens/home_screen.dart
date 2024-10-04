@@ -75,10 +75,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Consumer<UserInfoProvider>(builder: (context, value, _) {
       return Container(
-        color: const Color(0xFFF5F6F6),
+        color: AppColors.gray50,
         child: SafeArea(
           child: Scaffold(
-            backgroundColor: const Color(0xFFF5F6F6),
+            backgroundColor: AppColors.gray50,
             appBar: _buildAppBar(context),
             body: SingleChildScrollView(
               child: Column(
@@ -128,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const String tempIcon = "assets/icons/icon_elswhere_home.svg";
 
     return AppBar(
-      backgroundColor: const Color(0xFFF5F6F6),
+      backgroundColor: AppColors.gray50,
       leading: Padding(
         padding: const EdgeInsets.only(left: 24),
         child: Row(
@@ -463,7 +463,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Container(
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: Color(0xFFF5F6F6),
+                color: AppColors.gray50,
               ),
               width: 36,
               height: 36,
@@ -499,7 +499,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Container(
                   decoration: const BoxDecoration(
-                    color: Color(0xFFF5F6F6),
+                    color: AppColors.gray50,
                     shape: BoxShape.circle,
                   ),
                   width: 36,

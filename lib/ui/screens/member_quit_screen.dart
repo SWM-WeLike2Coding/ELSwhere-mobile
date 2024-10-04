@@ -34,7 +34,7 @@ class _MemberQuitScreenState extends State<MemberQuitScreen> {
           decoration: const BoxDecoration(
               border: Border(
                   bottom: BorderSide(
-            color: AppColors.backgroundGray,
+            color: AppColors.gray50,
             width: 1,
           ))),
           child: AppBar(
@@ -88,7 +88,7 @@ class _MemberQuitScreenState extends State<MemberQuitScreen> {
                   ),
                   Container(
                     decoration: BoxDecoration(
-                      color: AppColors.backgroundGray,
+                      color: AppColors.gray50,
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     child: const Padding(padding: edgeInsetsAll16, child: UnorderedList(["서비스에서 탈퇴되며 복구가 불가능합니다.", "단, 일부 정보는 일정기간 보관 후 파기됩니다.", "자세한 내용은 이용약관 및 개인정보와 연결정보를 확인해주세요."])),

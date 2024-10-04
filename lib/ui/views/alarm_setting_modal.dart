@@ -121,11 +121,11 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                             },
                             deleteIcon: const Icon(Icons.close),
                             deleteIconColor: const Color(0xFFACB2B5),
-                            backgroundColor: AppColors.backgroundGray,
+                            backgroundColor: AppColors.gray50,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(600),
                               side: const BorderSide(
-                                color: AppColors.backgroundGray,
+                                color: AppColors.gray50,
                                 width: 0,
                               ),
                             ),
@@ -138,7 +138,7 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                     decoration: const BoxDecoration(
                         border: Border(
                             bottom: BorderSide(
-                      color: AppColors.backgroundGray,
+                      color: AppColors.gray50,
                       width: 1,
                     ))),
                   ),
@@ -179,7 +179,7 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                                     ),
                                     border: InputBorder.none,
                                     filled: true,
-                                    fillColor: AppColors.backgroundGray,
+                                    fillColor: AppColors.gray50,
                                   ),
                                 ),
                               ),
@@ -203,7 +203,7 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                                     ),
                                     border: InputBorder.none,
                                     filled: true,
-                                    fillColor: AppColors.backgroundGray,
+                                    fillColor: AppColors.gray50,
                                   ),
                                 ),
                               ),
@@ -249,7 +249,7 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8.0),
                                     ),
-                                    backgroundColor: _selectedTypeIndex == index ? const Color(0xFF1C6BF9) : AppColors.backgroundGray,
+                                    backgroundColor: _selectedTypeIndex == index ? const Color(0xFF1C6BF9) : AppColors.gray50,
                                   ),
                                   child: Text(
                                     _getButtonText(index),

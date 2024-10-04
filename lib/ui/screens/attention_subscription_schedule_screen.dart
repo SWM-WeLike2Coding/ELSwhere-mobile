@@ -152,7 +152,7 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
               decoration: const BoxDecoration(
                   border: Border(
                       bottom: BorderSide(
-                color: AppColors.backgroundGray,
+                color: AppColors.gray50,
                 width: 1,
               ))),
               child: AppBar(
@@ -219,7 +219,7 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: const Color(0xFFF5F6F6),
+          color: AppColors.gray50,
         ),
         child: Row(
           children: [

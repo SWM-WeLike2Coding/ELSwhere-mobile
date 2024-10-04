@@ -62,7 +62,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
             borderRadius: borderRadiusCircular10,
             borderSide: BorderSide.none,
           ),
-          fillColor: AppColors.backgroundGray,
+          fillColor: AppColors.gray50,
           filled: true,
           // fillColor: AppColors.contentPurple,
         ),
