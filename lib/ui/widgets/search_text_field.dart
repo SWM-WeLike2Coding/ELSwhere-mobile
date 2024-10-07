@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/ui/screens/search_product_screen.dart';
 import 'package:elswhere/ui/views/detail_search_modal.dart';
 import 'package:flutter/material.dart';
 
@@ -22,8 +23,18 @@ class _SearchTextFieldState extends State<SearchTextField> {
 
     // Add listener to show modal when the TextField gains focus
     _focusNode.addListener(() {
+      // 원래의 Modal 띄우는 코드
+      // if (_focusNode.hasFocus) {
+      //   _showModal();
+      // }
+
+      // 2024-10-04 아예 새로운 화면을 띄워서 상품 검색하도록 바꾸기
       if (_focusNode.hasFocus) {
-        _showModal();
+        _focusNode.unfocus();
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SearchProductScreen()),
+        );
       }
     });
   }
