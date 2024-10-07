@@ -1,5 +1,6 @@
 import 'package:elswhere/data/providers/els_products_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -132,6 +133,10 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                           filled: true,
                           fillColor: Theme.of(context).scaffoldBackgroundColor,
                         ),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly, // 숫자만 허용
+                        ],
                         onSubmitted: _onSearch,
                       ),
                     ),
