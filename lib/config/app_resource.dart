@@ -123,12 +123,13 @@ sealed class AppColors {
 
   static const Color mainBlue = Color(0xFF1C6BF9); // 메인 색상
 
+  static const Color gray50 = Color(0xFFF5F6F6);
   static const Color gray100 = Color(0xFFE6E7E8);
   static const Color gray400 = Color(0xFF838A8E);
   static const Color gray600 = Color(0xFF595E62);
   static const Color gray800 = Color(0xFF434648);
+  static const Color gray900 = Color(0xFF3B3D3F);
   static const Color gray950 = Color(0xFF131415);
-  static const Color gray50 = Color(0xFFF5F6F6);
   static const Color iconGray = Color(0xFFCFD2D3);
   static const Color titleGray = Color(0xFF4C4F53);
 }

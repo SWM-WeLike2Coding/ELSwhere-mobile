@@ -58,7 +58,7 @@ class _StockPriceGraphViewState extends State<StockPriceGraphView> with SingleTi
         style: ElevatedButton.styleFrom(
           minimumSize: Size.zero,
           fixedSize: const Size.fromWidth(63),
-          backgroundColor: index == _selectedIndex ? const Color(0xFF3B3D3F) : AppColors.contentWhite,
+          backgroundColor: index == _selectedIndex ? AppColors.gray900 : AppColors.contentWhite,
           elevation: 0,
         ),
         child: Padding(
