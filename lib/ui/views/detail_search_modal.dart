@@ -106,6 +106,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
     await Provider.of<ELSEndSaleProductsProvider>(context, listen: false).fetchFilteredProducts(requestBody);
 
     Navigator.of(context).pop();
+    Navigator.of(context).pop();
   }
 
   void _addTickerToSelected(ResponseTickerSymbolDto ticker) {

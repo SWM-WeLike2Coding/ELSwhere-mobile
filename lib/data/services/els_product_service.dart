@@ -46,6 +46,9 @@ abstract class ProductService {
   @GET("/v1/product/similar/{id}")
   Future<HttpResponse> fetchSimilarProducts(@Path("id") int id);
 
+  @GET("/v1/product/search/{number}")
+  Future<HttpResponse> fetchProductByNumber(@Path("number") int number);
+
   @POST("/v1/product/like/{id}")
   Future<HttpResponse> postProductLike(@Path("id") int id);
 

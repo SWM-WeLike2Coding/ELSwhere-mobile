@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:elswhere/data/models/dtos/request_product_search_dto.dart';
 import 'package:elswhere/data/models/dtos/response_product_comparison_main_dto.dart';
 import 'package:flutter/material.dart';
 import '../models/dtos/summarized_product_dto.dart';
 import '../services/els_product_service.dart';
+import 'package:intl/intl.dart';
 
 class ELSProductsProvider extends ChangeNotifier {
   List<SummarizedProductDto> _products = [];
@@ -76,6 +79,41 @@ class ELSProductsProvider extends ChangeNotifier {
         print(e.equities.split('/').length);
       }
       _products = responsePage.content.where((e) => status == 'on' ? e.subscriptionEndDate.compareTo(now) >= 0 : e.subscriptionEndDate.compareTo(now) < 0).toList();
+    } catch (error) {
+      print('Error fetching products: $error');
+      // 에러 처리 로직 추가
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  List<SummarizedProductDto> convertToSummarizedProductDtoList(List<dynamic> data) {
+    return data.map((item) => SummarizedProductDto(
+      id: item['id'] as int,
+      issuer: item['issuer'] as String,
+      name: item['name'] as String,
+      productType: item['productType'] as String,
+      equities: item['equities'] as String,
+      yieldIfConditionsMet: (item['yieldIfConditionsMet'] as num).toDouble(),
+      knockIn: item['knockIn'] as int?,
+      subscriptionStartDate: DateFormat('yyyy-MM-dd').parse(item['subscriptionStartDate'] as String),
+      subscriptionEndDate: DateFormat('yyyy-MM-dd').parse(item['subscriptionEndDate'] as String),
+    )).toList();
+  }
+
+  Future<void> fetchProductByNumber(int number) async {
+    resetProducts();
+    _isInit = false;
+    _isLoading = true;
+    notifyListeners();
+    try {
+      final response = await _productService.fetchProductByNumber(number);
+      final tempProductList = convertToSummarizedProductDtoList(response.data);
+
+      for (var tempProduct in tempProductList) {
+        _products.add(tempProduct);
+      }
     } catch (error) {
       print('Error fetching products: $error');
       // 에러 처리 로직 추가
