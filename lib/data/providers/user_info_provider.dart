@@ -217,7 +217,7 @@ class UserInfoProvider with ChangeNotifier {
         notifyListeners();
         await storage.deleteAll();
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
+          MaterialPageRoute(builder: (context) => LoginScreen()),
         );
         return true;
       } else {

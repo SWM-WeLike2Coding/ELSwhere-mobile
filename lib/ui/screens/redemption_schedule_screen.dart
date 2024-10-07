@@ -1,5 +1,6 @@
 import 'package:elswhere/data/providers/user_info_provider.dart';
 import 'package:elswhere/ui/widgets/holding_product_card.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -53,14 +54,27 @@ class _RedemptionScheduleScreenState extends State<RedemptionScheduleScreen> {
     return targetDate.isAfter(today) || targetDate.isAtSameMomentAs(today);
   }
 
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
+  Future<void> _setCurrentScreen() async {
+    await analytics.logScreenView(
+      screenName: '상환 일정 화면',
+      screenClass: 'RedemptionScheduleScreen',
+    );
+  }
+
+  @override
+  void initState() {
+    _setCurrentScreen();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<UserInfoProvider>(
       builder: (context, provider, child) {
         var holdingProducts = Provider.of<UserInfoProvider>(context, listen: false).holdingProducts;
-        if (holdingProducts == null) {
-          holdingProducts = [];
-        }
+        holdingProducts ??= [];
         Map<DateTime, List<ElsProductForScheduleDto>> tempScheduleMap = {};
 
         for (int i = 0; i < holdingProducts.length; i++) {

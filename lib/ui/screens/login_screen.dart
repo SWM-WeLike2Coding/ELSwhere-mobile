@@ -3,13 +3,23 @@ import 'package:elswhere/config/config.dart';
 import 'package:elswhere/data/models/social_type.dart';
 import 'package:elswhere/data/services/auth_service.dart';
 import 'package:elswhere/ui/screens/initial_screen.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
+  LoginScreen({super.key});
+
+  Future<void> _setCurrentScreen() async {
+    await analytics.logScreenView(
+      screenName: '로그인 화면',
+      screenClass: 'LoginScreen',
+    );
+  }
 
   Future<bool> _login(SocialType socialType) async {
     final authUrl = '$baseUrl$loginEndpoint/${switch (socialType) {
@@ -47,6 +57,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _setCurrentScreen();
     return Scaffold(
       body: LayoutBuilder(
         builder: (context, constraints) {

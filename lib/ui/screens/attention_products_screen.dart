@@ -1,6 +1,7 @@
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/ui/screens/attention_setting_screen.dart';
 import 'package:elswhere/ui/views/interesting_product_list_view.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -13,6 +14,21 @@ class AttentionProductsScreen extends StatefulWidget {
 
 class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
   String type = 'latest';
+
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
+  Future<void> _setCurrentScreen() async {
+    await analytics.logScreenView(
+      screenName: '관심 상품 화면',
+      screenClass: 'AttentionProductsScreen',
+    );
+  }
+
+  @override
+  void initState() {
+    _setCurrentScreen();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

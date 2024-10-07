@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:elswhere/config/strings.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -21,9 +22,19 @@ class _ChangeNicknameScreenState extends State<ChangeNicknameScreen> {
   int _isThisNicknamePossible = -1;
   Timer? _debounce;
 
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
+  Future<void> _setCurrentScreen() async {
+    await analytics.logScreenView(
+      screenName: '닉네임 변경 화면',
+      screenClass: 'ChangeNicknameScreen',
+    );
+  }
+
   @override
   void initState() {
     super.initState();
+    _setCurrentScreen();
     _controller.addListener(() {
       _onNicknameChanged(_controller.text);
     });

@@ -1,10 +1,9 @@
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/strings.dart';
-import 'package:elswhere/data/providers/hot_products_provider.dart';
 import 'package:elswhere/ui/views/hot_products_list_view.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 class HotProductsScreen extends StatefulWidget {
   const HotProductsScreen({super.key});
@@ -14,6 +13,21 @@ class HotProductsScreen extends StatefulWidget {
 }
 
 class _HotProductsScreenState extends State<HotProductsScreen> {
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
+  Future<void> _setCurrentScreen() async {
+    await analytics.logScreenView(
+      screenName: '인기 상품 화면',
+      screenClass: 'HotProductsScreen',
+    );
+  }
+
+  @override
+  void initState() {
+    _setCurrentScreen();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

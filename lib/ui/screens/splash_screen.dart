@@ -38,7 +38,7 @@ class SplashScreen extends StatelessWidget {
         if (userProvider.checkAuthenticated) {
           return const InitialScreen();
         } else {
-          return const LoginScreen();
+          return LoginScreen();
         }
       },
     );

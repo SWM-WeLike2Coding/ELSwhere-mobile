@@ -1,6 +1,7 @@
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/data/models/dtos/post_dto.dart';
 import 'package:elswhere/ui/widgets/post_card.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 
 class InvestmentGuideScreen extends StatefulWidget {
@@ -35,6 +36,21 @@ class _InvestmentGuideScreenState extends State<InvestmentGuideScreen> {
       createdAt: DateTime(2024, 8, 11),
     ),
   ];
+
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
+  Future<void> _setCurrentScreen() async {
+    await analytics.logScreenView(
+      screenName: '투자 가이드 화면',
+      screenClass: 'InvestmentGuideScreen',
+    );
+  }
+
+  @override
+  void initState() {
+    _setCurrentScreen();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

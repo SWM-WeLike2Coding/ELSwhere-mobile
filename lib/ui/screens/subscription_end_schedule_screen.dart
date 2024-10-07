@@ -1,4 +1,5 @@
 import 'package:elswhere/data/providers/els_product_provider.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -48,6 +49,21 @@ class _SubscriptionEndScheduleScreenState extends State<SubscriptionEndScheduleS
     DateTime today = DateTime(now.year, now.month, now.day);
     DateTime targetDate = DateTime(date.year, date.month, date.day);
     return targetDate.isAfter(today) || targetDate.isAtSameMomentAs(today);
+  }
+
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
+  Future<void> _setCurrentScreen() async {
+    await analytics.logScreenView(
+      screenName: '청약 마감 일정 화면',
+      screenClass: 'SubscriptionEndScheduleScreen',
+    );
+  }
+
+  @override
+  void initState() {
+    _setCurrentScreen();
+    super.initState();
   }
 
   @override

@@ -7,6 +7,7 @@ import 'package:elswhere/data/providers/els_products_provider.dart';
 import 'package:elswhere/ui/screens/notification_screen.dart';
 import 'package:elswhere/ui/widgets/els_product_card.dart';
 import 'package:elswhere/ui/widgets/stock_index_card_swiper.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../views/els_product_list_view.dart';
@@ -44,6 +45,21 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
     initialIndex: 0,
     animationDuration: const Duration(milliseconds: 300),
   );
+
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
+  Future<void> _setCurrentScreen() async {
+    await analytics.logScreenView(
+      screenName: '상품 화면',
+      screenClass: 'ProductScreen',
+    );
+  }
+
+  @override
+  void initState() {
+    _setCurrentScreen();
+    super.initState();
+  }
 
   void checkComparing(bool isCompare, SummarizedProductDto? product) {
     setState(() {

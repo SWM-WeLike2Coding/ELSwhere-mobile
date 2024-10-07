@@ -4,6 +4,7 @@ import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
 import 'package:elswhere/ui/views/add_holding_product_modal.dart';
 import 'package:elswhere/ui/views/els_product_detail_view.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -24,9 +25,19 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
   bool isBookmarked = false;
   bool isHeld = false;
 
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
+  Future<void> _setCurrentScreen() async {
+    await analytics.logScreenView(
+      screenName: '상품 상세 화면',
+      screenClass: 'ELSProductDetailScreen',
+    );
+  }
+
   @override
   void initState() {
     super.initState();
+    _setCurrentScreen();
     userProvider = Provider.of<UserInfoProvider>(context, listen: false);
     productProvider = Provider.of<ELSProductProvider>(context, listen: false);
   }

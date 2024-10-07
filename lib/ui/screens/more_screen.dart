@@ -1,24 +1,16 @@
-// import 'dart:nativewrappers/_internal/vm/lib/core_patch.dart';
-
-import 'dart:ui';
-
-import 'package:dio/dio.dart';
 import 'package:elswhere/config/app_resource.dart';
-import 'package:elswhere/data/services/user_service.dart';
 import 'package:elswhere/ui/screens/announcement_screen.dart';
-import 'package:elswhere/ui/screens/attention_setting_screen.dart';
 import 'package:elswhere/ui/screens/change_nickname_screen.dart';
 import 'package:elswhere/ui/screens/investment_guide_screen.dart';
 import 'package:elswhere/ui/screens/login_screen.dart';
 import 'package:elswhere/ui/screens/member_quit_screen.dart';
 import 'package:elswhere/ui/screens/service_agreement_screen.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../config/config.dart';
-import '../../data/models/dtos/response_user_info_dto.dart';
 import '../../data/providers/user_info_provider.dart';
 
 class MoreScreen extends StatefulWidget {
@@ -32,6 +24,21 @@ class _MoreScreenState extends State<MoreScreen> {
   final bool _isNoticeAlarmOn = false;
   final bool _isRedemptionAlarmOn = false;
   final bool _isDdayAlarmOn = false;
+
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
+  Future<void> _setCurrentScreen() async {
+    await analytics.logScreenView(
+      screenName: '더보기 화면',
+      screenClass: 'MoreScreen',
+    );
+  }
+
+  @override
+  void initState() {
+    _setCurrentScreen();
+    super.initState();
+  }
 
   void _showSaveConfirmation(BuildContext context) {
     const snackBar = SnackBar(
@@ -165,7 +172,7 @@ class _MoreScreenState extends State<MoreScreen> {
                             if (result) {
                               Navigator.pushAndRemoveUntil(
                                 context,
-                                MaterialPageRoute(builder: (context) => const LoginScreen()),
+                                MaterialPageRoute(builder: (context) => LoginScreen()),
                                 (route) => false,
                               );
                             }
@@ -189,11 +196,6 @@ class _MoreScreenState extends State<MoreScreen> {
         );
       },
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   @override

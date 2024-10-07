@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 
 import '../../config/app_resource.dart';
@@ -14,6 +15,15 @@ class _ServiceAgreementScreenState extends State<ServiceAgreementScreen> with Ti
   late final TabController tabController;
   String _appBarTitle = "서비스 약관";
 
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
+  Future<void> _setCurrentScreen() async {
+    await analytics.logScreenView(
+      screenName: '서비스 이용 약관 동의 화면',
+      screenClass: 'ServiceAgreementScreen',
+    );
+  }
+
   void _handleTabSelection() {
     setState(() {
       if (tabController.index == 0) {
@@ -27,6 +37,7 @@ class _ServiceAgreementScreenState extends State<ServiceAgreementScreen> with Ti
   @override
   void initState() {
     super.initState();
+    _setCurrentScreen();
     tabController = TabController(
       length: 2,
       vsync: this,
