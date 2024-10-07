@@ -886,7 +886,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
             children: [
               Text(
                 text,
-                style: textTheme.labelMedium!.copyWith(color: const Color(0xFF3B3D3F)),
+                style: textTheme.labelMedium!.copyWith(color: AppColors.gray900),
               ),
               const Icon(Icons.arrow_forward_ios_rounded),
             ],

@@ -1,3 +1,4 @@
+import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/data/models/dtos/post_dto.dart';
 import 'package:elswhere/ui/screens/investment_guide_detail_screen.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,7 @@ class PostCard extends StatelessWidget {
                 fontSize: 16,
                 height: 18.88 / 16,
                 letterSpacing: -0.02,
-                color: Color(0xFF3B3D3F),
+                color: AppColors.gray900,
               ),
             ),
           ),

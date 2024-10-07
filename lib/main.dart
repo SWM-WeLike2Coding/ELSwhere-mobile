@@ -7,11 +7,13 @@ import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/data/providers/els_products_provider.dart';
 import 'package:elswhere/data/providers/hot_products_provider.dart';
 import 'package:elswhere/data/providers/issuer_provider.dart';
+import 'package:elswhere/data/providers/post_provider.dart';
 import 'package:elswhere/data/providers/ticker_symbol_provider.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
 import 'package:elswhere/data/services/analysis_service.dart';
 import 'package:elswhere/data/services/dio_client.dart';
 import 'package:elswhere/data/services/els_product_service.dart';
+import 'package:elswhere/data/services/post_service.dart';
 import 'package:elswhere/data/services/user_service.dart';
 import 'package:elswhere/data/services/yfinance_service.dart';
 import 'package:elswhere/ui/screens/splash_screen.dart';
@@ -118,6 +120,7 @@ class ELSwhere extends StatelessWidget {
   late final UserService _userService;
   late final YFinanceService _yFinanceService;
   late final AnalysisService _analysisService;
+  late final PostService _postService;
 
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
@@ -128,6 +131,7 @@ class ELSwhere extends StatelessWidget {
     _userService = UserService(dio);
     _yFinanceService = YFinanceService.getInstance();
     _analysisService = AnalysisService(dio);
+    _postService = PostService(dio);
   }
 
   @override
@@ -141,6 +145,7 @@ class ELSwhere extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => TickerSymbolProvider(_productService)),
         ChangeNotifierProvider(create: (context) => UserInfoProvider(_userService)),
         ChangeNotifierProvider(create: (context) => HotProductsProvider(_productService)),
+        ChangeNotifierProvider(create: (context) => PostProvider(_postService)),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

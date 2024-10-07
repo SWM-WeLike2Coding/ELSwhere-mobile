@@ -1,4 +1,6 @@
 import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/config/strings.dart';
+import 'package:elswhere/data/providers/post_provider.dart';
 import 'package:elswhere/ui/screens/announcement_screen.dart';
 import 'package:elswhere/ui/screens/change_nickname_screen.dart';
 import 'package:elswhere/ui/screens/investment_guide_screen.dart';
@@ -27,6 +29,8 @@ class _MoreScreenState extends State<MoreScreen> {
 
   final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
+  late PostProvider _postProvider;
+
   Future<void> _setCurrentScreen() async {
     await analytics.logScreenView(
       screenName: '더보기 화면',
@@ -37,6 +41,7 @@ class _MoreScreenState extends State<MoreScreen> {
   @override
   void initState() {
     _setCurrentScreen();
+    _postProvider = Provider.of<PostProvider>(context, listen: false);
     super.initState();
   }
 
@@ -461,16 +466,10 @@ class _MoreScreenState extends State<MoreScreen> {
 
                   _buildMiddleListTile(title: "안내 및 지원"),
                   _buildLittleListTile(
-                      context: context,
-                      title: "공지사항",
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const AnnouncementScreen(),
-                          ),
-                        );
-                      }),
+                    context: context,
+                    title: "공지사항",
+                    onTap: _onTapAnnouncementButton,
+                  ),
                   _buildLittleListTile(
                       context: context,
                       title: "투자가이드",
@@ -589,7 +588,7 @@ class _MoreScreenState extends State<MoreScreen> {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    color: title == "회원탈퇴" ? const Color(0xFFEE5648) : const Color(0xFF3B3D3F),
+                    color: title == "회원탈퇴" ? const Color(0xFFEE5648) : AppColors.gray900,
                   ),
                 ),
                 trailing: const Padding(padding: EdgeInsets.only(right: 8), child: Icon(Icons.arrow_forward_ios, size: 16)),
@@ -599,5 +598,32 @@ class _MoreScreenState extends State<MoreScreen> {
         ),
       ],
     );
+  }
+
+  void _onTapAnnouncementButton() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return const Dialog(
+          child: Center(child: CircularProgressIndicator.adaptive()),
+        );
+      },
+    );
+
+    final result = await _postProvider.fetchNotices();
+
+    if (mounted) Navigator.pop(context);
+
+    if (result) {
+      if (mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AnnouncementScreen()),
+        );
+      }
+    } else {
+      Fluttertoast.showToast(msg: MSG_ERR_FETCH_NOTICES, toastLength: Toast.LENGTH_SHORT);
+    }
   }
 }

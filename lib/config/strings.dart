@@ -16,3 +16,7 @@ const String MSG_NICKNAME_RULE_BODY = "3-16자, 영어/숫자/한글/밑줄/공�
 const String MSG_INVALID_NICKNAME = "사용할 수 없는 닉네임입니다.";
 const String MSG_EXIST_NICKNAME = "이미 사용 중인 닉네임입니다";
 const String MSG_INSERT_NICKNAME = "닉네임을 입력하세요";
+
+// 공지사항 관련
+const String MSG_NO_NOTICES = "공지사항이 없습니다.";
+const String MSG_ERR_FETCH_NOTICES = "공지사항을 불러오는데 실패했습니다.";
