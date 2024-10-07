@@ -605,9 +605,7 @@ class _MoreScreenState extends State<MoreScreen> {
       context: context,
       barrierDismissible: false,
       builder: (context) {
-        return const Dialog(
-          child: Center(child: CircularProgressIndicator.adaptive()),
-        );
+        return const Center(child: CircularProgressIndicator.adaptive());
       },
     );
 

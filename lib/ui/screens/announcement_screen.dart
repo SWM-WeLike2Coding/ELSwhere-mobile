@@ -1,4 +1,5 @@
 import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/ui/views/notice_list_view.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,6 @@ class AnnouncementScreen extends StatefulWidget {
 }
 
 class _AnnouncementScreenState extends State<AnnouncementScreen> {
-
   final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   Future<void> _setCurrentScreen() async {
@@ -27,7 +27,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
     _setCurrentScreen();
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,37 +79,37 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
   }
 
   Widget _buildTopContent() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 24, left: 24, right: 24, bottom: 16),
+    return const Padding(
+      padding: EdgeInsets.only(top: 24, left: 24, right: 24, bottom: 16),
       child: Row(
         children: [
-          const SizedBox(
+          SizedBox(
             width: 4,
           ),
-          Container(
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(0xFFF06B23),
-            ),
-            width: 18,
-            height: 18,
-            child: const Center(
-              child: Text(
-                "N",
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFFFFFFFF),
-                  height: 16.52 / 14,
-                  letterSpacing: -0.02,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(
-            width: 8,
-          ),
-          const Text(
+          // Container(
+          //   decoration: const BoxDecoration(
+          //     shape: BoxShape.circle,
+          //     color: Color(0xFFF06B23),
+          //   ),
+          //   width: 18,
+          //   height: 18,
+          //   child: const Center(
+          //     child: Text(
+          //       "N",
+          //       style: TextStyle(
+          //         fontSize: 14,
+          //         fontWeight: FontWeight.w600,
+          //         color: Color(0xFFFFFFFF),
+          //         height: 16.52 / 14,
+          //         letterSpacing: -0.02,
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          // const SizedBox(
+          //   width: 8,
+          // ),
+          Text(
             "새로운 소식",
             style: TextStyle(
               fontWeight: FontWeight.w600,
@@ -124,6 +124,11 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
   }
 
   Widget _buildAnnouncementList() {
-    return const Expanded(child: Center(child: Text('공지사항이 없습니다.')));
+    return const Expanded(
+      child: Padding(
+        padding: edgeInsetsAll8,
+        child: NoticeListView(),
+      ),
+    );
   }
 }
