@@ -1,5 +1,6 @@
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/ui/views/holding_products_list_view.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 
 class HoldingProductsScreen extends StatefulWidget {
@@ -11,6 +12,20 @@ class HoldingProductsScreen extends StatefulWidget {
 
 class _HoldingProductsScreenState extends State<HoldingProductsScreen> {
   String type = 'latest';
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
+  Future<void> _setCurrentScreen() async {
+    await analytics.logScreenView(
+      screenName: '보유 상품 화면',
+      screenClass: 'HoldingProductsScreen',
+    );
+  }
+
+  @override
+  void initState() {
+    _setCurrentScreen();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

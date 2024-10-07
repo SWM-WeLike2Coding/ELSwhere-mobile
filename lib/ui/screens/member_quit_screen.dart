@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
 import 'package:elswhere/data/services/user_service.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -20,8 +21,18 @@ class MemberQuitScreen extends StatefulWidget {
 class _MemberQuitScreenState extends State<MemberQuitScreen> {
   bool _isAgreeBtnChecked = false;
 
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
+  Future<void> _setCurrentScreen() async {
+    await analytics.logScreenView(
+      screenName: '회원탈퇴 화면',
+      screenClass: 'MemberQuitScreen',
+    );
+  }
+
   @override
   void initState() {
+    _setCurrentScreen();
     super.initState();
   }
 

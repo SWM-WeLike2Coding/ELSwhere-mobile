@@ -6,6 +6,7 @@ import 'package:elswhere/data/providers/user_info_provider.dart';
 import 'package:elswhere/ui/screens/redemption_schedule_screen.dart';
 import 'package:elswhere/ui/screens/subscription_end_schedule_screen.dart';
 import 'package:elswhere/ui/widgets/holding_product_card.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -94,6 +95,21 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
     return targetDate.isAfter(today) || targetDate.isAtSameMomentAs(today);
   }
 
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
+  Future<void> _setCurrentScreen() async {
+    await analytics.logScreenView(
+      screenName: '관심 상품 일정 화면',
+      screenClass: 'AttentionSubscriptionScheduleScreen',
+    );
+  }
+
+  @override
+  void initState() {
+    _setCurrentScreen();
+    super.initState();
+  }
+
   void _updateScheduleMap(DateTime selectDate) {
     setState(() {
       // print(selectDate);
@@ -107,9 +123,7 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
       builder: (context, elsProductProvider, child) {
         var interestingProducts = Provider.of<ELSProductProvider>(context, listen: false).interestingProducts;
         var holdingProducts = Provider.of<UserInfoProvider>(context, listen: false).holdingProducts;
-        if (holdingProducts == null) {
-          holdingProducts = [];
-        }
+        holdingProducts ??= [];
 
         Map<DateTime, List<ElsProductForScheduleDto>> tempScheduleMap = {};
         Map<DateTime, List<ElsProductForScheduleDto>> filteredScheduleMap = {};

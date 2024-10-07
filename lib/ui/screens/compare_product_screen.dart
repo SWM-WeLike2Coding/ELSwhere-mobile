@@ -8,6 +8,7 @@ import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/data/providers/els_products_provider.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
 import 'package:elswhere/ui/screens/els_product_detail_screen.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -20,12 +21,21 @@ class CompareProductScreen extends StatelessWidget {
   late final double width;
   late final ELSProductProvider? productProvider;
   late final UserInfoProvider? userProvider;
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
+  Future<void> _setCurrentScreen() async {
+    await analytics.logScreenView(
+      screenName: '상품 비교 화면',
+      screenClass: 'CompareProductScreen',
+    );
+  }
 
   // ignore: prefer_const_constructors_in_immutables
   CompareProductScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    _setCurrentScreen();
     final Size size = MediaQuery.of(context).size;
     productProvider = Provider.of<ELSProductProvider>(context, listen: false);
     userProvider = Provider.of<UserInfoProvider>(context, listen: false);

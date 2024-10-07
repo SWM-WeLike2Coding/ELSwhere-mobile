@@ -1,4 +1,5 @@
 import 'package:elswhere/data/models/dtos/post_dto.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -6,10 +7,20 @@ import '../../config/app_resource.dart';
 
 class InvestmentGuideDetailScreen extends StatelessWidget {
   final PostDto post;
-  const InvestmentGuideDetailScreen({super.key, required this.post});
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
+  Future<void> _setCurrentScreen() async {
+    await analytics.logScreenView(
+      screenName: '투자가이드 상세 화면',
+      screenClass: 'InvestmentGuideDetailScreen',
+    );
+  }
+
+  InvestmentGuideDetailScreen({super.key, required this.post});
 
   @override
   Widget build(BuildContext context) {
+    _setCurrentScreen();
     return Scaffold(
       appBar: _buildAppbar(context),
       body: SingleChildScrollView(

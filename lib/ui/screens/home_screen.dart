@@ -8,6 +8,7 @@ import 'package:elswhere/ui/screens/hot_products_screen.dart';
 import 'package:elswhere/ui/screens/investment_propensity_screen.dart';
 import 'package:elswhere/ui/screens/notification_screen.dart';
 import 'package:elswhere/ui/widgets/stock_index_list.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -28,6 +29,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
+  Future<void> _setCurrentScreen() async {
+    await analytics.logScreenView(
+      screenName: '홈 화면',
+      screenClass: 'HomeScreen',
+    );
+  }
+
   ElsProductForScheduleDto convertInterestingProductToProductForSchedule(ResponseInterestingProductDto interestingProduct) {
     return ElsProductForScheduleDto(
       isHolding: false,
@@ -67,6 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    _setCurrentScreen();
     userProvider = Provider.of<UserInfoProvider>(context, listen: false);
     super.initState();
   }

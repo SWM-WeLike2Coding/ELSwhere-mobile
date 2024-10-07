@@ -1,5 +1,6 @@
 import 'package:elswhere/data/models/dtos/response_investment_type_dto.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +27,15 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
     } else {
       return false;
     }
+  }
+
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
+  Future<void> _setCurrentScreen() async {
+    await analytics.logScreenView(
+      screenName: '투자 성향 설문 화면',
+      screenClass: 'InvestmentPropensityScreen',
+    );
   }
 
   void _handleExperienceButtonPress(String text) {
@@ -97,6 +107,7 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
   @override
   void initState() {
     super.initState();
+    _setCurrentScreen();
     ResponseInvestmentTypeDto? interestingProducts = Provider.of<UserInfoProvider>(context, listen: false).investmentTypeInfo;
 
     if (interestingProducts != null) {
