@@ -68,7 +68,7 @@ class _StockPriceGraphViewState extends State<StockPriceGraphView> with SingleTi
             style: textTheme.labelSmall!.copyWith(
               fontSize: 13,
               fontWeight: FontWeight.w600,
-              color: index == _selectedIndex ? AppColors.contentWhite : const Color(0xFFACB2B5),
+              color: index == _selectedIndex ? AppColors.contentWhite : AppColors.gray300,
             ),
           ),
         ),

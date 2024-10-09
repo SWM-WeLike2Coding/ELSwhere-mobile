@@ -159,7 +159,7 @@ class _MemberQuitScreenState extends State<MemberQuitScreen> {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
-                              color: Color(0xFF4C4F53),
+                              color: AppColors.gray700,
                             ),
                           ),
                         ),

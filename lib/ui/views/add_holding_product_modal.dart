@@ -130,7 +130,7 @@ class _AddHoldingProductModalState extends State<AddHoldingProductModal> {
               onTap: () => Navigator.pop(context),
               child: const Icon(
                 Icons.close,
-                color: Color(0xFFACB2B5),
+                color: AppColors.gray300,
               ),
             ),
           ],
@@ -188,7 +188,7 @@ class _AddHoldingProductModalState extends State<AddHoldingProductModal> {
               child: Text(
                 '저장',
                 style: textTheme.labelSmall!.copyWith(
-                  color: disabled ? const Color(0xFFACB2B5) : AppColors.contentWhite,
+                  color: disabled ? AppColors.gray300 : AppColors.contentWhite,
                   fontWeight: FontWeight.w600,
                 ),
               ),

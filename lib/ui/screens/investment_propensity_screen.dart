@@ -241,7 +241,7 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
                 fontWeight: FontWeight.w500,
                 height: 1.18,
                 letterSpacing: -0.28,
-                color: isPressed ? const Color(0xFFFFFFFF) : const Color(0xFFACB2B5),
+                color: isPressed ? const Color(0xFFFFFFFF) : AppColors.gray300,
               ),
             ),
           ),
@@ -380,7 +380,7 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        color: Color(0xFF4C4F53),
+                        color: AppColors.gray700,
                       ),
                     ),
                   ),

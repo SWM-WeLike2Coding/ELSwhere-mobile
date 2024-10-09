@@ -93,7 +93,7 @@ class _PriceTextFieldState extends State<PriceTextField> {
         counterText: '',
         suffixIcon: _controller.text.isNotEmpty
             ? IconButton(
-                icon: const Icon(Icons.cancel, color: Color(0xFFACB2B5)),
+                icon: const Icon(Icons.cancel, color: AppColors.gray300),
                 onPressed: () => _controller.clear(),
               )
             : null,

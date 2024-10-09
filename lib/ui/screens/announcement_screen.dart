@@ -1,9 +1,7 @@
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/ui/views/notice_list_view.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class AnnouncementScreen extends StatefulWidget {
   const AnnouncementScreen({super.key});
@@ -47,11 +45,13 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
       preferredSize: const Size.fromHeight(72),
       child: Container(
         decoration: const BoxDecoration(
-            border: Border(
-                bottom: BorderSide(
-          color: AppColors.gray50,
-          width: 1,
-        ))),
+          border: Border(
+            bottom: BorderSide(
+              color: AppColors.gray50,
+              width: 1,
+            ),
+          ),
+        ),
         child: AppBar(
           leading: Padding(
             padding: const EdgeInsets.only(left: 24.0), // 좌측 패딩을 추가
@@ -83,9 +83,9 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
       padding: EdgeInsets.only(top: 24, left: 24, right: 24, bottom: 16),
       child: Row(
         children: [
-          SizedBox(
-            width: 4,
-          ),
+          // SizedBox(
+          //   width: 4,
+          // ),
           // Container(
           //   decoration: const BoxDecoration(
           //     shape: BoxShape.circle,
