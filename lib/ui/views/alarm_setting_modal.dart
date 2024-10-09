@@ -249,12 +249,12 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8.0),
                                     ),
-                                    backgroundColor: _selectedTypeIndex == index ? const Color(0xFF1C6BF9) : AppColors.gray50,
+                                    backgroundColor: _selectedTypeIndex == index ? AppColors.mainBlue : AppColors.gray50,
                                   ),
                                   child: Text(
                                     _getButtonText(index),
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: _selectedTypeIndex == index ? const Color(0xFFFFFFFF) : AppColors.gray300),
+                                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: _selectedTypeIndex == index ? Colors.white : AppColors.gray300),
                                   ),
                                 );
                               },
@@ -284,14 +284,14 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
-            backgroundColor: const Color(0xFF1C6BF9),
+            backgroundColor: AppColors.mainBlue,
           ),
           child: const Text(
             '관심 상품 알림 저장',
             style: TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 16,
-              color: Color(0xFFFFFFFF),
+              color: Colors.white,
             ),
           ),
         ),

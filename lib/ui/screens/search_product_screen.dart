@@ -104,7 +104,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                     IconButton(
                       icon: const Icon(
                         Icons.arrow_back,
-                        color: Color(0xFF000000),
+                        color: Colors.black,
                         size: 24,
                       ),
                       onPressed: () {
@@ -120,7 +120,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                           hintStyle: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xFF838A8E),
+                            color: AppColors.gray400,
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -140,7 +140,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                       icon: const Icon(
                         Icons.filter_list,
                         size: 24,
-                        color: Color(0xFF838A8E),
+                        color: AppColors.gray400,
                       ),
                       onPressed: () {
                         showModalBottomSheet(
@@ -166,7 +166,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
       padding: EdgeInsets.only(top: 24, left: 24, right: 24),
       child: Text(
         "최근 검색",
-        style: TextStyle(color: Color(0xFF595E62), fontSize: 14, fontWeight: FontWeight.w600, height: 1.18, letterSpacing: -0.28),
+        style: TextStyle(color: AppColors.gray600, fontSize: 14, fontWeight: FontWeight.w600, height: 1.18, letterSpacing: -0.28),
       ),
     );
   }
@@ -228,7 +228,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
         IconButton(
           icon: const Icon(
             Icons.close,
-            color: Color(0xFF838A8E),
+            color: AppColors.gray400,
             size: 24,
           ),
           onPressed: () {

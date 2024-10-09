@@ -149,7 +149,7 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
                     width: 75,
                     decoration: const BoxDecoration(
                       borderRadius: borderRadiusCircular10,
-                      color: Color(0xFF434648),
+                      color: AppColors.gray800,
                     ),
                     child: Padding(
                       padding: edgeInsetsAll16,

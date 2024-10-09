@@ -332,7 +332,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                                 style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,
-                                  color: Color(0xFF838A8E),
+                                  color: AppColors.gray400,
                                 ),
                               ),
                               onDeleted: () {
@@ -408,14 +408,14 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
-            backgroundColor: const Color(0xFF1C6BF9),
+            backgroundColor: AppColors.mainBlue,
           ),
           child: const Text(
             '상품 검색',
             style: TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 16,
-              color: Color(0xFFFFFFFF),
+              color: Colors.white,
             ),
           ),
         ),
@@ -443,7 +443,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                   hintStyle: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFF838A8E),
+                    color: AppColors.gray400,
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -539,7 +539,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                                   style: const TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 14,
-                                    color: Color(0xFF000000),
+                                    color: Colors.black,
                                   ),
                                 ),
                               ),
@@ -593,7 +593,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                                   style: const TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 14,
-                                    color: Color(0xFF000000),
+                                    color: Colors.black,
                                   ),
                                 ),
                               ),
@@ -655,7 +655,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                                   style: const TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 14,
-                                    color: Color(0xFF000000),
+                                    color: Colors.black,
                                   ),
                                 ),
                               ),
@@ -709,7 +709,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                                   style: const TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 14,
-                                    color: Color(0xFF000000),
+                                    color: Colors.black,
                                   ),
                                 ),
                               ),
@@ -888,7 +888,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
-                  backgroundColor: _isIndex ? const Color(0xFF1C6BF9) : AppColors.gray50,
+                  backgroundColor: _isIndex ? AppColors.mainBlue : AppColors.gray50,
                 ),
                 onPressed: () {
                   setState(() {
@@ -897,7 +897,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                 },
                 child: Text(
                   "지수형",
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: _isIndex ? const Color(0xFFFFFFFF) : AppColors.gray300),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: _isIndex ? Colors.white : AppColors.gray300),
                 ),
               ),
             ),
@@ -910,7 +910,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
-                  backgroundColor: _isStock ? const Color(0xFF1C6BF9) : AppColors.gray50,
+                  backgroundColor: _isStock ? AppColors.mainBlue : AppColors.gray50,
                 ),
                 onPressed: () {
                   setState(() {
@@ -919,7 +919,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                 },
                 child: Text(
                   "종목형",
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: _isStock ? const Color(0xFFFFFFFF) : AppColors.gray300),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: _isStock ? Colors.white : AppColors.gray300),
                 ),
               ),
             )
@@ -954,12 +954,12 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
-                  backgroundColor: _selectedTypeIndex == index ? const Color(0xFF1C6BF9) : AppColors.gray50,
+                  backgroundColor: _selectedTypeIndex == index ? AppColors.mainBlue : AppColors.gray50,
                 ),
                 child: Text(
                   _getButtonText(index),
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: _selectedTypeIndex == index ? const Color(0xFFFFFFFF) : AppColors.gray300),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: _selectedTypeIndex == index ? Colors.white : AppColors.gray300),
                 ),
               );
             },
@@ -1002,7 +1002,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),
-          backgroundColor: displayLabel != label ? const Color(0xFF1C6BF9) : AppColors.gray50,
+          backgroundColor: displayLabel != label ? AppColors.mainBlue : AppColors.gray50,
         ),
         // onPressed: () {
         //   if (displayLabel == label) {
@@ -1012,7 +1012,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
         onPressed: () => _handleDateSelection(context, index),
         child: Text(
           displayLabel,
-          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: displayLabel != label ? const Color(0xFFFFFFFF) : AppColors.gray300),
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: displayLabel != label ? Colors.white : AppColors.gray300),
         ),
       ),
     );

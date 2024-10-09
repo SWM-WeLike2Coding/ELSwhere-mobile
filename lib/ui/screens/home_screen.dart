@@ -186,7 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ));
         },
         child: Container(
-          decoration: BoxDecoration(color: const Color(0xFFFFFFFF), borderRadius: BorderRadius.circular(12), boxShadow: const [
+          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12), boxShadow: const [
             BoxShadow(
               color: Color.fromRGBO(0, 0, 0, 0.04), // 그림자 색상
               spreadRadius: 0, // 확산 반경
@@ -208,7 +208,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
-                        color: Color(0xFF838A8E),
+                        color: AppColors.gray400,
                       ),
                     ),
                     Text(
@@ -216,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFF000000),
+                        color: Colors.black,
                       ),
                     ),
                   ],
@@ -276,7 +276,7 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         },
         child: Container(
-          decoration: BoxDecoration(color: const Color(0xFFFFFFFF), borderRadius: BorderRadius.circular(12), boxShadow: const [
+          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12), boxShadow: const [
             BoxShadow(
               color: Color.fromRGBO(0, 0, 0, 0.04), // 그림자 색상
               spreadRadius: 0, // 확산 반경
@@ -301,7 +301,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontWeight: FontWeight.w500,
                         height: 1.18, // 118% line-height
                         letterSpacing: -0.28,
-                        color: Color(0xFF838A8E),
+                        color: AppColors.gray400,
                       ),
                     ),
                     const SizedBox(
@@ -314,7 +314,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontWeight: FontWeight.w600,
                         height: 1.30, // 118% line-height
                         letterSpacing: -0.44,
-                        color: Color(0xFF000000),
+                        color: Colors.black,
                       ),
                     ),
                     // const SizedBox(height: 4,),
@@ -365,7 +365,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Container(
         height: 100,
         decoration: BoxDecoration(
-          color: const Color(0xFFFFFFFF),
+          color: Colors.white,
           borderRadius: BorderRadius.circular(12),
           boxShadow: const [
             BoxShadow(
@@ -417,7 +417,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Container(
         height: 100,
         decoration: BoxDecoration(
-          color: const Color(0xFFFFFFFF),
+          color: Colors.white,
           borderRadius: BorderRadius.circular(12),
           boxShadow: const [
             BoxShadow(
@@ -494,7 +494,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 fontSize: 14,
                 height: 16.52 / 14,
                 letterSpacing: -0.02,
-                color: Color(0xFF000000),
+                color: Colors.black,
               ),
             )
           ],
@@ -534,7 +534,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontSize: 14,
                           height: 16.52 / 14,
                           letterSpacing: -0.02,
-                          color: Color(0xFF000000),
+                          color: Colors.black,
                         ),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
@@ -572,7 +572,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontWeight: FontWeight.w600,
                         height: 11.8 / 10,
                         letterSpacing: -0.02,
-                        color: Color(0xFFEE5648),
+                        color: AppColors.contentRed,
                       ),
                     ),
                   ),
@@ -630,7 +630,7 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             },
             child: Container(
-              decoration: BoxDecoration(color: const Color(0xFFFFFFFF), borderRadius: BorderRadius.circular(12), boxShadow: const [
+              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12), boxShadow: const [
                 BoxShadow(
                   color: Color.fromRGBO(0, 0, 0, 0.04), // 그림자 색상
                   spreadRadius: 0, // 확산 반경
@@ -651,7 +651,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontWeight: FontWeight.w600,
                         height: 1.18,
                         letterSpacing: -0.32,
-                        color: Color(0xFF000000),
+                        color: Colors.black,
                       ),
                     ),
                     const SizedBox(
@@ -664,7 +664,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontWeight: FontWeight.w500,
                         height: 1.18,
                         letterSpacing: -0.24,
-                        color: Color(0xFF838A8E),
+                        color: AppColors.gray400,
                       ),
                     ),
                     const SizedBox(
@@ -686,7 +686,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Padding(
       padding: const EdgeInsets.only(top: 16, left: 24, right: 24),
       child: Container(
-        decoration: BoxDecoration(color: const Color(0xFFFFFFFF), borderRadius: BorderRadius.circular(12), boxShadow: const [
+        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12), boxShadow: const [
           BoxShadow(
             color: Color.fromRGBO(0, 0, 0, 0.04), // 그림자 색상
             spreadRadius: 0, // 확산 반경
@@ -707,7 +707,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontSize: 16,
                   height: 1.18,
                   letterSpacing: -0.32,
-                  color: Color(0xFF000000),
+                  color: Colors.black,
                 ),
               ),
               SizedBox(

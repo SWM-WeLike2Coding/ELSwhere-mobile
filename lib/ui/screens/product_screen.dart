@@ -308,7 +308,7 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
         provider.compareProducts.clear();
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFF434648),
+        backgroundColor: AppColors.gray800,
       ),
     );
   }

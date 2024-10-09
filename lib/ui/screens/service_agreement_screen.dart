@@ -104,7 +104,7 @@ class _ServiceAgreementScreenState extends State<ServiceAgreementScreen> with Ti
                 ],
                 // labelPadding: EdgeInsets.symmetric(horizontal: 6), // 탭 사이의 패딩
                 indicator: const UnderlineTabIndicator(
-                  borderSide: BorderSide(color: Color(0xFF1C6BF9), width: 1.5),
+                  borderSide: BorderSide(color: AppColors.mainBlue, width: 1.5),
                 ),
                 // indicatorPadding: EdgeInsets.only(left: 24, right: 24), // 첫 번째 탭의 인디케이터 패딩
                 tabAlignment: TabAlignment.start,
@@ -153,7 +153,7 @@ class UsageAgreement extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF434648),
+                color: AppColors.gray800,
               ),
             ),
             Text(
@@ -161,7 +161,7 @@ class UsageAgreement extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
-                color: Color(0xFF434648),
+                color: AppColors.gray800,
               ),
             ),
             SizedBox(
@@ -172,7 +172,7 @@ class UsageAgreement extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF434648),
+                color: AppColors.gray800,
               ),
             ),
             OrderedList([
@@ -188,7 +188,7 @@ class UsageAgreement extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF434648),
+                color: AppColors.gray800,
               ),
             ),
             OrderedList([
@@ -204,7 +204,7 @@ class UsageAgreement extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF434648),
+                color: AppColors.gray800,
               ),
             ),
             OrderedList([
@@ -219,7 +219,7 @@ class UsageAgreement extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF434648),
+                color: AppColors.gray800,
               ),
             ),
             OrderedList([
@@ -235,7 +235,7 @@ class UsageAgreement extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF434648),
+                color: AppColors.gray800,
               ),
             ),
             OrderedList([
@@ -264,7 +264,7 @@ class PrivacyPolicy extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF434648),
+                color: AppColors.gray800,
               ),
             ),
             Text(
@@ -272,7 +272,7 @@ class PrivacyPolicy extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
-                color: Color(0xFF434648),
+                color: AppColors.gray800,
               ),
             ),
             SizedBox(
@@ -283,7 +283,7 @@ class PrivacyPolicy extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF434648),
+                color: AppColors.gray800,
               ),
             ),
             OrderedListItem(
@@ -316,7 +316,7 @@ class PrivacyPolicy extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF434648),
+                color: AppColors.gray800,
               ),
             ),
             Text(
@@ -324,7 +324,7 @@ class PrivacyPolicy extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
-                color: Color(0xFF434648),
+                color: AppColors.gray800,
               ),
             ),
             Padding(
@@ -343,7 +343,7 @@ class PrivacyPolicy extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF434648),
+                color: AppColors.gray800,
               ),
             ),
             Text(
@@ -351,7 +351,7 @@ class PrivacyPolicy extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
-                color: Color(0xFF434648),
+                color: AppColors.gray800,
               ),
             ),
             Padding(
@@ -367,7 +367,7 @@ class PrivacyPolicy extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
-                color: Color(0xFF434648),
+                color: AppColors.gray800,
               ),
             ),
             SizedBox(
@@ -378,7 +378,7 @@ class PrivacyPolicy extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF434648),
+                color: AppColors.gray800,
               ),
             ),
             Text(
@@ -386,7 +386,7 @@ class PrivacyPolicy extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
-                color: Color(0xFF434648),
+                color: AppColors.gray800,
               ),
             ),
           ],
@@ -429,7 +429,7 @@ class OrderedListItem extends StatelessWidget {
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w400,
-            color: Color(0xFF434648),
+            color: AppColors.gray800,
           ),
         ),
         Expanded(
@@ -438,7 +438,7 @@ class OrderedListItem extends StatelessWidget {
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w400,
-              color: Color(0xFF434648),
+              color: AppColors.gray800,
             ),
           ),
         ),
@@ -478,7 +478,7 @@ class UnorderedListItem extends StatelessWidget {
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w400,
-            color: Color(0xFF434648),
+            color: AppColors.gray800,
           ),
         ),
         Expanded(
@@ -487,7 +487,7 @@ class UnorderedListItem extends StatelessWidget {
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w400,
-              color: Color(0xFF434648),
+              color: AppColors.gray800,
             ),
           ),
         ),

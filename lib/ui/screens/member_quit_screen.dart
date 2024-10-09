@@ -118,8 +118,8 @@ class _MemberQuitScreenState extends State<MemberQuitScreen> {
                     _isAgreeBtnChecked = value ?? false;
                   });
                 },
-                checkColor: const Color(0xFFFFFFFF),
-                activeColor: const Color(0xFF1C6BF9),
+                checkColor: Colors.white,
+                activeColor: AppColors.mainBlue,
               ),
               GestureDetector(
                 onTap: _toggleCheckbox,
@@ -176,8 +176,8 @@ class _MemberQuitScreenState extends State<MemberQuitScreen> {
                         opacity: _isAgreeBtnChecked ? 1.0 : 0.4,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFEE5648),
-                              disabledBackgroundColor: const Color(0xFFEE5648),
+                              backgroundColor: AppColors.contentRed,
+                              disabledBackgroundColor: AppColors.contentRed,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               )),
@@ -196,7 +196,7 @@ class _MemberQuitScreenState extends State<MemberQuitScreen> {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
-                              color: Color(0xFFFFFFFF),
+                              color: Colors.white,
                             ),
                           ),
                         ),

@@ -1,4 +1,3 @@
-import 'package:card_swiper/card_swiper.dart';
 import 'package:elswhere/data/providers/ticker_symbol_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../config/app_resource.dart';
-import '../../data/models/dtos/response_ticker_symbol_dto.dart';
 
 class StockIndexList extends StatefulWidget {
   const StockIndexList({super.key});
@@ -40,9 +38,9 @@ class _StockIndexListItemState extends State<StockIndexList> {
                 String stockIndex = entry.value;
                 Color getColor(double rate) {
                   if (rate > 0) {
-                    return const Color(0xFFEE5648);
+                    return AppColors.contentRed;
                   } else if (rate < 0) {
-                    return const Color(0xFF3181F7);
+                    return AppColors.mainBlue;
                   } else {
                     return AppColors.gray600;
                   }
@@ -50,9 +48,7 @@ class _StockIndexListItemState extends State<StockIndexList> {
 
                 return Column(
                   children: [
-                    const SizedBox(
-                      height: 8,
-                    ),
+                    const SizedBox(height: 8),
                     Row(
                       children: [
                         SizedBox(
@@ -75,7 +71,7 @@ class _StockIndexListItemState extends State<StockIndexList> {
                             fontWeight: FontWeight.w500,
                             height: 1.18,
                             letterSpacing: -0.28,
-                            color: Color(0xFF000000),
+                            color: Colors.black,
                           ),
                         ),
                         const Spacer(),

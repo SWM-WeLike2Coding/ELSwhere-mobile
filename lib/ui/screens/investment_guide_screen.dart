@@ -113,7 +113,7 @@ class _InvestmentGuideScreenState extends State<InvestmentGuideScreen> {
           Container(
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
-              color: Color(0xFF1C6BF9),
+              color: AppColors.mainBlue,
             ),
             width: 18,
             height: 18,
@@ -123,7 +123,7 @@ class _InvestmentGuideScreenState extends State<InvestmentGuideScreen> {
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFFFFFFFF),
+                  color: Colors.white,
                   height: 16.52 / 14,
                   letterSpacing: -0.02,
                 ),
