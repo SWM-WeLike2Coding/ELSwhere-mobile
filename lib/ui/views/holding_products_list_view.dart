@@ -47,7 +47,7 @@ class HoldingProductsListView extends StatelessWidget {
               SizedBox(height: MediaQuery.of(context).size.height / 6),
               Text(
                 '보유 중인 상품이 없어요',
-                style: textTheme.headlineSmall!.copyWith(color: const Color(0xFF434648)),
+                style: textTheme.headlineSmall!.copyWith(color: AppColors.gray800),
               ),
               const SizedBox(height: 12),
               Text(

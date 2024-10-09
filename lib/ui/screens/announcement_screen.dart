@@ -99,7 +99,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
           //       style: TextStyle(
           //         fontSize: 14,
           //         fontWeight: FontWeight.w600,
-          //         color: Color(0xFFFFFFFF),
+          //         color: Colors.white,
           //         height: 16.52 / 14,
           //         letterSpacing: -0.02,
           //       ),

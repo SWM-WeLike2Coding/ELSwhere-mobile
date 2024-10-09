@@ -150,7 +150,7 @@ class _ChangeNicknameScreenState extends State<ChangeNicknameScreen> {
     return Center(
       child: Container(
         decoration: const BoxDecoration(
-          color: Color(0xFFD1E0FB),
+          color: AppColors.backgroundProfile,
           shape: BoxShape.circle,
         ),
         height: 64,
@@ -250,7 +250,7 @@ class _ChangeNicknameScreenState extends State<ChangeNicknameScreen> {
           children: [
             Container(
               decoration: const BoxDecoration(
-                color: Color(0xFF1C6BF9),
+                color: AppColors.mainBlue,
                 shape: BoxShape.circle,
               ),
               height: 18,
@@ -258,7 +258,7 @@ class _ChangeNicknameScreenState extends State<ChangeNicknameScreen> {
               child: const Center(
                 child: Icon(
                   Icons.check,
-                  color: Color(0xFFFFFFFF),
+                  color: Colors.white,
                   size: 12,
                 ),
               ),
@@ -273,7 +273,7 @@ class _ChangeNicknameScreenState extends State<ChangeNicknameScreen> {
                 fontSize: 14,
                 height: 1.18,
                 letterSpacing: -0.02,
-                color: Color(0xFF1C6BF9),
+                color: AppColors.mainBlue,
               ),
             ),
           ],
@@ -291,7 +291,7 @@ class _ChangeNicknameScreenState extends State<ChangeNicknameScreen> {
           children: [
             Container(
               decoration: const BoxDecoration(
-                color: Color(0xFFEE5648),
+                color: AppColors.contentRed,
                 shape: BoxShape.circle,
               ),
               height: 18,
@@ -299,7 +299,7 @@ class _ChangeNicknameScreenState extends State<ChangeNicknameScreen> {
               child: const Center(
                 child: Icon(
                   Icons.clear,
-                  color: Color(0xFFFFFFFF),
+                  color: Colors.white,
                   size: 12,
                 ),
               ),
@@ -343,7 +343,7 @@ class _ChangeNicknameScreenState extends State<ChangeNicknameScreen> {
             }
           },
           style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(const Color(0xFF1C6BF9)),
+            backgroundColor: WidgetStateProperty.all(AppColors.mainBlue),
             shape: WidgetStateProperty.all(RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8), // 버튼의 둥근 모서리
             )),

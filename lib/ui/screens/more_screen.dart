@@ -128,7 +128,7 @@ class _MoreScreenState extends State<MoreScreen> {
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 18,
-                    color: Color(0xFF000000),
+                    color: Colors.black,
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -164,7 +164,7 @@ class _MoreScreenState extends State<MoreScreen> {
                         height: 48, // 버튼 높이 조정 가능
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF1C6BF9),
+                            backgroundColor: AppColors.mainBlue,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
@@ -187,7 +187,7 @@ class _MoreScreenState extends State<MoreScreen> {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
-                              color: Color(0xFFFFFFFF),
+                              color: Colors.white,
                             ),
                           ),
                         ),
@@ -246,7 +246,7 @@ class _MoreScreenState extends State<MoreScreen> {
                         width: 36,
                         height: 36,
                         decoration: const BoxDecoration(
-                          color: Color(0xFFD1E0FB),
+                          color: AppColors.backgroundProfile,
                           shape: BoxShape.circle,
                         ),
                         child: Align(
@@ -277,7 +277,7 @@ class _MoreScreenState extends State<MoreScreen> {
                                 style: const TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
-                                  color: Color(0xFF838A8E),
+                                  color: AppColors.gray400,
                                 ),
                               );
                             },
@@ -289,7 +289,7 @@ class _MoreScreenState extends State<MoreScreen> {
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 16,
-                                  color: Color(0xFF000000),
+                                  color: Colors.black,
                                 ),
                               );
                             },
@@ -352,10 +352,10 @@ class _MoreScreenState extends State<MoreScreen> {
                   //                       _isNoticeAlarmOn = value;
                   //                     });
                   //                   },
-                  //                   activeColor: const Color(0xFFFFFFFF),
-                  //                   inactiveThumbColor: const Color(0xFFFFFFFF),
+                  //                   activeColor: Colors.white,
+                  //                   inactiveThumbColor: Colors.white,
                   //                   inactiveTrackColor: AppColors.gray100,
-                  //                   activeTrackColor: const Color(0xFF1C6BF9),
+                  //                   activeTrackColor: AppColors.mainBlue,
                   //                   trackOutlineColor: const WidgetStatePropertyAll(AppColors.gray100),
                   //                 ),
                   //               ),
@@ -394,10 +394,10 @@ class _MoreScreenState extends State<MoreScreen> {
                   //                       _isRedemptionAlarmOn = value;
                   //                     });
                   //                   },
-                  //                   activeColor: const Color(0xFFFFFFFF),
-                  //                   inactiveThumbColor: const Color(0xFFFFFFFF),
+                  //                   activeColor: Colors.white,
+                  //                   inactiveThumbColor: Colors.white,
                   //                   inactiveTrackColor: AppColors.gray100,
-                  //                   activeTrackColor: const Color(0xFF1C6BF9),
+                  //                   activeTrackColor: AppColors.mainBlue,
                   //                   trackOutlineColor: const WidgetStatePropertyAll(AppColors.gray100),
                   //                 ),
                   //               ),
@@ -436,10 +436,10 @@ class _MoreScreenState extends State<MoreScreen> {
                   //                       _isDdayAlarmOn = value;
                   //                     });
                   //                   },
-                  //                   activeColor: const Color(0xFFFFFFFF),
-                  //                   inactiveThumbColor: const Color(0xFFFFFFFF),
+                  //                   activeColor: Colors.white,
+                  //                   inactiveThumbColor: Colors.white,
                   //                   inactiveTrackColor: AppColors.gray100,
-                  //                   activeTrackColor: const Color(0xFF1C6BF9),
+                  //                   activeTrackColor: AppColors.mainBlue,
                   //                   trackOutlineColor: const WidgetStatePropertyAll(AppColors.gray100),
                   //                 ),
                   //               ),
@@ -588,7 +588,7 @@ class _MoreScreenState extends State<MoreScreen> {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    color: title == "회원탈퇴" ? const Color(0xFFEE5648) : AppColors.gray900,
+                    color: title == "회원탈퇴" ? AppColors.contentRed : AppColors.gray900,
                   ),
                 ),
                 trailing: const Padding(padding: EdgeInsets.only(right: 8), child: Icon(Icons.arrow_forward_ios, size: 16)),

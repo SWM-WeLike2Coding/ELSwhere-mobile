@@ -230,7 +230,7 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
           // width: double.infinity,
           height: 33,
           decoration: BoxDecoration(
-            color: isPressed ? const Color(0xFF1C6BF9) : AppColors.gray50,
+            color: isPressed ? AppColors.mainBlue : AppColors.gray50,
             borderRadius: BorderRadius.circular(8),
           ),
           child: Center(
@@ -241,7 +241,7 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
                 fontWeight: FontWeight.w500,
                 height: 1.18,
                 letterSpacing: -0.28,
-                color: isPressed ? const Color(0xFFFFFFFF) : AppColors.gray300,
+                color: isPressed ? Colors.white : AppColors.gray300,
               ),
             ),
           ),
@@ -337,8 +337,8 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
               _isAgreeBtnChecked = value ?? false;
             });
           },
-          checkColor: const Color(0xFFFFFFFF),
-          activeColor: const Color(0xFF1C6BF9),
+          checkColor: Colors.white,
+          activeColor: AppColors.mainBlue,
         ),
         GestureDetector(
           onTap: _toggleCheckbox,
@@ -397,8 +397,8 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
                   opacity: _isAllConditionSatisfied() ? 1.0 : 0.4,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF1C6BF9),
-                        disabledBackgroundColor: const Color(0xFF1C6BF9),
+                        backgroundColor: AppColors.mainBlue,
+                        disabledBackgroundColor: AppColors.mainBlue,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         )),
@@ -419,7 +419,7 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        color: Color(0xFFFFFFFF),
+                        color: Colors.white,
                       ),
                     ),
                   ),

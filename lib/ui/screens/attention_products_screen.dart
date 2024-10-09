@@ -130,7 +130,7 @@ class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: const Color(0xFF1C6BF9),
+            color: AppColors.mainBlue,
           ),
           width: double.infinity,
           child: Row(
@@ -147,7 +147,7 @@ class _AttentionProductsScreenState extends State<AttentionProductsScreen> {
                         fontSize: 18,
                         height: 1.18,
                         letterSpacing: -0.36,
-                        color: Color(0xFFFFFFFF),
+                        color: Colors.white,
                       ),
                     ),
                     SizedBox(

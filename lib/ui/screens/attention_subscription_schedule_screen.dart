@@ -247,7 +247,7 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
                 fontSize: 14,
                 height: 1.18,
                 letterSpacing: -0.28,
-                color: Color(0xFF434648),
+                color: AppColors.gray800,
               ),
             ),
             const Spacer(),
@@ -256,7 +256,7 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
               height: 28,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: Color(0xFF000000),
+                color: Colors.black,
               ),
               child: Center(
                 child: Text(
@@ -266,7 +266,7 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
                     fontWeight: FontWeight.w600,
                     height: 1.18,
                     letterSpacing: -0.28,
-                    color: Color(0xFFFFFFFF),
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -326,7 +326,7 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
 
   Widget _buildScheduleCalendar(Map<DateTime, List<ElsProductForScheduleDto>> scheduleMap) {
     TextStyle calendarTextStyle = const TextStyle(
-      color: Color(0xFF000000),
+      color: Colors.black,
       fontSize: 14,
       fontWeight: FontWeight.w500,
       height: 1.18,
@@ -378,14 +378,14 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
           defaultTextStyle: calendarTextStyle,
           weekendTextStyle: calendarTextStyle,
           todayTextStyle: const TextStyle(
-            color: Color(0xFF1C6BF9),
+            color: AppColors.mainBlue,
             fontWeight: FontWeight.w500,
             fontSize: 14,
             height: 1.18,
             letterSpacing: -0.28,
           ),
           selectedTextStyle: const TextStyle(
-            color: Color(0xFF000000),
+            color: Colors.black,
             fontSize: 14,
             fontWeight: FontWeight.w600,
             height: 1.18,
@@ -464,7 +464,7 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
                 Text(
                   '${date.day}',
                   style: const TextStyle(
-                    color: Color(0xFF1C6BF9),
+                    color: AppColors.mainBlue,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                     height: 1.18,
@@ -548,7 +548,7 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
                   fontWeight: FontWeight.w500,
                   height: 16.52 / 14,
                   letterSpacing: -0.02,
-                  color: Color(0xFF838A8E),
+                  color: AppColors.gray400,
                 ),
               ),
             ),

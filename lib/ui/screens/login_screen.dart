@@ -83,7 +83,7 @@ class LoginScreen extends StatelessWidget {
                     Text('ELSwhere in Everywhere',
                         style: textTheme.bodySmall!.copyWith(
                           fontSize: 14,
-                          color: const Color(0xFF838A8E),
+                          color: AppColors.gray400,
                         )),
                   ],
                 )),

@@ -231,7 +231,7 @@ class _ELSProductCardState extends State<HoldingProductCard> with AutomaticKeepA
       // '${nowPrice == 0 ? '' : nowPrice > 0 ? '+' : '-'}${format.format(nowPrice.toInt())}원',
       '연 ${product.yieldIfConditionsMet.toStringAsFixed(1)}%',
       style: textTheme.labelMedium!.copyWith(
-        // color: const Color(0xFF434648),
+        // color: AppColors.gray800,
         color: AppColors.contentRed,
         // fontSize: 14,
         fontWeight: FontWeight.w600,

@@ -194,7 +194,7 @@ class _SubscriptionEndScheduleScreenState extends State<SubscriptionEndScheduleS
                               fontWeight: FontWeight.w500,
                               height: 16.52 / 14,
                               letterSpacing: -0.02,
-                              color: Color(0xFF838A8E),
+                              color: AppColors.gray400,
                             ),
                           ),
                         ),

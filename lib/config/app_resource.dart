@@ -120,6 +120,7 @@ sealed class AppColors {
   static const Color contentBlack = Color(0xFF000000);
   static const Color contentWhite = Color(0xFFFFFFFF);
   static const Color textFieldWhite = Color(0xFFF3F3F3);
+  static const Color backgroundProfile = Color(0xFFD1E0FB);
 
   static const Color mainBlue = Color(0xFF1C6BF9); // 메인 색상
 

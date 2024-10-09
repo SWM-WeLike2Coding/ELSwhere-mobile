@@ -31,10 +31,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'firebase_options.dart';
 import 'package:firebase_in_app_messaging/firebase_in_app_messaging.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 void main() async {
   try {
     await initApp();
+    printAppVersion();
   } catch (e) {
     FlutterNativeSplash.remove();
     log('$e');
@@ -74,13 +76,19 @@ Future<void> initApp() async {
   //   .onError((err) {
   //
   //   });
-  // print(fcmToken);
+  // log(fcmToken);
 
   // await initPermissionSettings();
   // await setPermissionGranted();
 
-  print(accessToken);
-  print(refreshToken);
+  log(accessToken);
+  log(refreshToken);
+}
+
+void printAppVersion() async {
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+  log("App Version: ${packageInfo.version}");
+  log("Build Number: ${packageInfo.buildNumber}");
 }
 
 Future<void> initPermissionSettings() async {
