@@ -1,3 +1,4 @@
+import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/data/providers/els_products_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../views/detail_search_modal.dart';
-
 
 class SearchProductScreen extends StatefulWidget {
   const SearchProductScreen({super.key});
@@ -15,7 +15,7 @@ class SearchProductScreen extends StatefulWidget {
 }
 
 class _SearchProductScreenState extends State<SearchProductScreen> {
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   List<String> _searchHistory = [];
 
   @override
@@ -36,9 +36,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
 
     List<String>? existingHistory = prefs.getStringList("searchHistory");
 
-    if (existingHistory == null) {
-      existingHistory = [];
-    }
+    existingHistory ??= [];
 
     if (!existingHistory.contains(searchQuery)) {
       existingHistory.add(searchQuery);
@@ -55,19 +53,19 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
   Future<void> _saveSearchHistoryList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setStringList('searchHistory', _searchHistory);
-    setState(() {});            // UI 업데이트
+    setState(() {}); // UI 업데이트
   }
 
   void _onSearch(String query) async {
     if (query.isNotEmpty) {
-      _saveSearchHistory(query);  // 검색 기록 저장
-      _searchController.clear();  // 검색창 비우기
+      _saveSearchHistory(query); // 검색 기록 저장
+      _searchController.clear(); // 검색창 비우기
 
       await Provider.of<ELSOnSaleProductsProvider>(context, listen: false).fetchProductByNumber(int.parse(query));
       await Provider.of<ELSEndSaleProductsProvider>(context, listen: false).fetchProductByNumber(int.parse(query));
 
       Navigator.pop(context);
-      setState(() {});            // UI 업데이트
+      setState(() {}); // UI 업데이트
     }
   }
 
@@ -91,16 +89,14 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
     return Column(
       children: [
         Container(
-          decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                color: Color(0xFFF5F6F6),
-                width: 1,
-              )
-            )
-          ),
+          decoration: const BoxDecoration(
+              border: Border(
+                  bottom: BorderSide(
+            color: AppColors.gray50,
+            width: 1,
+          ))),
           child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Column(
               children: [
                 Row(
@@ -166,17 +162,11 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
   }
 
   Widget _buildLatestSearchText() {
-    return Padding(
+    return const Padding(
       padding: EdgeInsets.only(top: 24, left: 24, right: 24),
       child: Text(
         "최근 검색",
-        style: TextStyle(
-          color: Color(0xFF595E62),
-          fontSize: 14,
-          fontWeight: FontWeight.w600,
-          height: 1.18,
-          letterSpacing: -0.28
-        ),
+        style: TextStyle(color: Color(0xFF595E62), fontSize: 14, fontWeight: FontWeight.w600, height: 1.18, letterSpacing: -0.28),
       ),
     );
   }
@@ -186,7 +176,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
       itemCount: _searchHistory.length,
       itemBuilder: (context, index) {
         return Padding(
-          padding: EdgeInsets.only(
+          padding: const EdgeInsets.only(
             top: 4,
             left: 24,
             right: 24,
@@ -202,22 +192,23 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
       children: [
         Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(600),
-            border: Border.all(
-              color: Color(0xFFF5F6F6),
-              width: 1,
-            )
-          ),
-          child: Padding(
+              borderRadius: BorderRadius.circular(600),
+              border: Border.all(
+                color: AppColors.gray50,
+                width: 1,
+              )),
+          child: const Padding(
             padding: EdgeInsets.all(4),
             child: Icon(
               Icons.access_time,
-              color: Color(0xFFACB2B5),
+              color: AppColors.gray300,
               size: 18,
             ),
           ),
         ),
-        SizedBox(width: 12,),
+        const SizedBox(
+          width: 12,
+        ),
         GestureDetector(
           onTap: () {
             print(historyString);
@@ -225,7 +216,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
           },
           child: Text(
             historyString,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.w500,
               fontSize: 14,
               height: 1.18,
@@ -235,7 +226,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
         ),
         Expanded(child: Container()),
         IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.close,
             color: Color(0xFF838A8E),
             size: 24,
@@ -249,4 +240,3 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
     );
   }
 }
-

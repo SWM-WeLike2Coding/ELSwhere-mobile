@@ -420,11 +420,11 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
           formatButtonVisible: false,
           leftChevronIcon: const Icon(
             Icons.arrow_left,
-            color: Color(0xFFCFD2D3),
+            color: AppColors.gray200,
           ),
           rightChevronIcon: const Icon(
             Icons.arrow_right,
-            color: Color(0xFFCFD2D3),
+            color: AppColors.gray200,
           ),
           leftChevronMargin: EdgeInsets.zero,
           rightChevronMargin: const EdgeInsets.only(left: 10),

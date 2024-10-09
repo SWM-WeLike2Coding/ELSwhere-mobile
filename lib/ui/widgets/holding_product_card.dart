@@ -186,7 +186,7 @@ class _ELSProductCardState extends State<HoldingProductCard> with AutomaticKeepA
           return isOverflowing
               ? Marquee(
                   text: price,
-                  style: const TextStyle(color: Color(0xFF686F74), fontSize: 14),
+                  style: const TextStyle(color: AppColors.gray500, fontSize: 14),
                   scrollAxis: Axis.horizontal,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   startAfter: const Duration(seconds: 1),
@@ -200,7 +200,7 @@ class _ELSProductCardState extends State<HoldingProductCard> with AutomaticKeepA
                 )
               : Text(
                   price,
-                  style: const TextStyle(color: Color(0xFF686F74), fontSize: 14),
+                  style: const TextStyle(color: AppColors.gray500, fontSize: 14),
                 );
         },
       ),
@@ -212,7 +212,7 @@ class _ELSProductCardState extends State<HoldingProductCard> with AutomaticKeepA
       children: [
         Text('다음 상환평가일',
             style: textTheme.labelSmall!.copyWith(
-              color: const Color(0xFFACB2B5),
+              color: AppColors.gray300,
             )),
         const SizedBox(
           width: 4,

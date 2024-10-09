@@ -549,7 +549,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontSize: 12,
                           height: 14.16 / 12,
                           letterSpacing: -0.02,
-                          color: Color(0xFFACB2B5),
+                          color: AppColors.gray300,
                         ),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,

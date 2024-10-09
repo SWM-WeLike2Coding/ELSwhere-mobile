@@ -339,7 +339,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                                 _removeTickerFromSelected(ticker);
                               },
                               deleteIcon: const Icon(Icons.close),
-                              deleteIconColor: const Color(0xFFACB2B5),
+                              deleteIconColor: AppColors.gray300,
                               backgroundColor: AppColors.gray50,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(600),
@@ -530,7 +530,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                                 padding: EdgeInsets.only(left: 8),
                                 child: Text(
                                   "기초자산 수",
-                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: Color(0xFFACB2B5)),
+                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: AppColors.gray300),
                                 ))
                             : Padding(
                                 padding: const EdgeInsets.only(left: 8),
@@ -584,7 +584,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                                 padding: EdgeInsets.only(left: 8),
                                 child: Text(
                                   "발행회사",
-                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: Color(0xFFACB2B5)),
+                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: AppColors.gray300),
                                 ))
                             : Padding(
                                 padding: const EdgeInsets.only(left: 8),
@@ -646,7 +646,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                                 padding: EdgeInsets.only(left: 8),
                                 child: Text(
                                   "상품가입기간",
-                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: Color(0xFFACB2B5)),
+                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: AppColors.gray300),
                                 ))
                             : Padding(
                                 padding: const EdgeInsets.only(left: 8),
@@ -700,7 +700,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                                 padding: EdgeInsets.only(left: 8),
                                 child: Text(
                                   "상환일간격",
-                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: Color(0xFFACB2B5)),
+                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: AppColors.gray300),
                                 ))
                             : Padding(
                                 padding: const EdgeInsets.only(left: 8),
@@ -756,7 +756,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                     hintStyle: const TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
-                      color: Color(0xFFACB2B5),
+                      color: AppColors.gray300,
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -785,7 +785,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                   hintStyle: const TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 14,
-                    color: Color(0xFFACB2B5),
+                    color: AppColors.gray300,
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -819,7 +819,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                     hintStyle: const TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
-                      color: Color(0xFFACB2B5),
+                      color: AppColors.gray300,
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -849,7 +849,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                     hintStyle: const TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
-                      color: Color(0xFFACB2B5),
+                      color: AppColors.gray300,
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -897,7 +897,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                 },
                 child: Text(
                   "지수형",
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: _isIndex ? const Color(0xFFFFFFFF) : const Color(0xFFACB2B5)),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: _isIndex ? const Color(0xFFFFFFFF) : AppColors.gray300),
                 ),
               ),
             ),
@@ -919,7 +919,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                 },
                 child: Text(
                   "종목형",
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: _isStock ? const Color(0xFFFFFFFF) : const Color(0xFFACB2B5)),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: _isStock ? const Color(0xFFFFFFFF) : AppColors.gray300),
                 ),
               ),
             )
@@ -959,7 +959,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
                 child: Text(
                   _getButtonText(index),
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: _selectedTypeIndex == index ? const Color(0xFFFFFFFF) : const Color(0xFFACB2B5)),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: _selectedTypeIndex == index ? const Color(0xFFFFFFFF) : AppColors.gray300),
                 ),
               );
             },
@@ -1012,7 +1012,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
         onPressed: () => _handleDateSelection(context, index),
         child: Text(
           displayLabel,
-          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: displayLabel != label ? const Color(0xFFFFFFFF) : const Color(0xFFACB2B5)),
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: displayLabel != label ? const Color(0xFFFFFFFF) : AppColors.gray300),
         ),
       ),
     );

@@ -167,7 +167,7 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
                           child: Text(
                             '취소',
                             style: textTheme.headlineSmall!.copyWith(
-                              color: AppColors.titleGray,
+                              color: AppColors.gray700,
                             ),
                           ),
                         ),

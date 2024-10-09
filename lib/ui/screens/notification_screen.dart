@@ -70,7 +70,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             fontSize: 16,
             height: 1.18,
             letterSpacing: -0.32,
-            color: Color(0xFF686F74),
+            color: AppColors.gray500,
           ),
         ),
       ),

@@ -152,7 +152,7 @@ class _MoreScreenState extends State<MoreScreen> {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
-                              color: Color(0xFF4C4F53),
+                              color: AppColors.gray700,
                             ),
                           ),
                         ),
@@ -301,7 +301,7 @@ class _MoreScreenState extends State<MoreScreen> {
                         icon: const Icon(
                           Icons.arrow_forward_ios,
                           size: 18,
-                          color: Color(0xFFACB2B5),
+                          color: AppColors.gray300,
                         ),
                         onPressed: () {
                           Navigator.push(

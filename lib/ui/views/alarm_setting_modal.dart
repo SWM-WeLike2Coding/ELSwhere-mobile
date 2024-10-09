@@ -120,7 +120,7 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                               _removeTickerFromSelected(ticker);
                             },
                             deleteIcon: const Icon(Icons.close),
-                            deleteIconColor: const Color(0xFFACB2B5),
+                            deleteIconColor: AppColors.gray300,
                             backgroundColor: AppColors.gray50,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(600),
@@ -175,7 +175,7 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                                     hintStyle: TextStyle(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 14,
-                                      color: Color(0xFFACB2B5),
+                                      color: AppColors.gray300,
                                     ),
                                     border: InputBorder.none,
                                     filled: true,
@@ -199,7 +199,7 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                                     hintStyle: TextStyle(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 14,
-                                      color: Color(0xFFACB2B5),
+                                      color: AppColors.gray300,
                                     ),
                                     border: InputBorder.none,
                                     filled: true,
@@ -254,7 +254,7 @@ class _AlarmSettingModalState extends State<AlarmSettingModal> {
                                   child: Text(
                                     _getButtonText(index),
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: _selectedTypeIndex == index ? const Color(0xFFFFFFFF) : const Color(0xFFACB2B5)),
+                                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: _selectedTypeIndex == index ? const Color(0xFFFFFFFF) : AppColors.gray300),
                                   ),
                                 );
                               },
