@@ -50,13 +50,36 @@ class HotProductCard extends StatelessWidget {
                   children: [
                     Column(
                       children: [
-                        CircleAvatar(
-                          backgroundColor: AppColors.gray50,
-                          child: Padding(
-                            padding: edgeInsetsAll4,
-                            child:
-                                Assets.issuerIconMap[product.issuer] != null ? SvgPicture.asset(Assets.issuerIconMap[product.issuer]!) : const Icon(Icons.question_mark, color: AppColors.contentBlack),
-                          ),
+                        Consumer<ELSProductProvider>(
+                          builder: (context, provider, child) {
+                            return Column(
+                              children: [
+                                Stack(
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundColor: AppColors.gray50,
+                                      child: Padding(
+                                        padding: edgeInsetsAll4,
+                                        child: Assets.issuerIconMap[product.issuer] != null
+                                            ? SvgPicture.asset(Assets.issuerIconMap[product.issuer]!)
+                                            : const Icon(Icons.question_mark, color: AppColors.contentBlack),
+                                      ),
+                                    ),
+                                    if (provider.likeProducts.any((e) => e.id == product.id))
+                                      const Positioned(
+                                        right: 0,
+                                        bottom: 0,
+                                        child: Icon(
+                                          Icons.favorite,
+                                          color: AppColors.contentRed,
+                                          size: 16,
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              ],
+                            );
+                          },
                         ),
                       ],
                     ),

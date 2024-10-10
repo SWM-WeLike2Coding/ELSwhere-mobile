@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui' as ui;
 
 import 'package:elswhere/config/app_resource.dart';
@@ -213,18 +214,35 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              children: [
-                CircleAvatar(
-                  backgroundColor: AppColors.gray50,
-                  child: Padding(
-                    padding: edgeInsetsAll4,
-                    child: Assets.issuerIconMap[widget.product.issuer] != null
-                        ? SvgPicture.asset(Assets.issuerIconMap[widget.product.issuer]!)
-                        : const Icon(Icons.question_mark, color: AppColors.contentBlack),
-                  ),
-                ),
-              ],
+            Consumer<ELSProductProvider>(
+              builder: (context, provider, child) {
+                return Column(
+                  children: [
+                    Stack(
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: AppColors.gray50,
+                          child: Padding(
+                            padding: edgeInsetsAll4,
+                            child:
+                                Assets.issuerIconMap[product.issuer] != null ? SvgPicture.asset(Assets.issuerIconMap[product.issuer]!) : const Icon(Icons.question_mark, color: AppColors.contentBlack),
+                          ),
+                        ),
+                        if (provider.likeProducts.any((e) => e.id == product.id))
+                          const Positioned(
+                            right: 0,
+                            bottom: 0,
+                            child: Icon(
+                              Icons.favorite,
+                              color: AppColors.contentRed,
+                              size: 16,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ],
+                );
+              },
             ),
             const SizedBox(width: 16),
             Expanded(

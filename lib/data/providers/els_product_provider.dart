@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:elswhere/data/models/dtos/monte_carlo_response.dart';
+import 'package:elswhere/data/models/dtos/summarized_product_dto.dart';
 import 'package:elswhere/data/models/dtos/summarized_user_holding_dto.dart';
-import 'package:elswhere/data/models/dtos/user_like_product_dto.dart';
 import 'package:elswhere/data/services/analysis_service.dart';
 import 'package:elswhere/data/services/yfinance_service.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +33,7 @@ class ELSProductProvider with ChangeNotifier {
   int? _interestId;
   int? _holdingId;
   List<ResponseInterestingProductDto> _interestingProducts = [];
-  List<UserLikeProductDto> _likeProducts = [];
+  List<SummarizedProductDto> _likeProducts = [];
   final List<int> _compareId = [];
   List<ResponseSingleProductDto> _compareProducts = [];
   Map<String, YahooFinanceResponse>? _stockPrices;
@@ -49,7 +49,7 @@ class ELSProductProvider with ChangeNotifier {
   int? get holdingId => _holdingId;
   bool get isHeld => _isHeld;
   List<ResponseInterestingProductDto> get interestingProducts => _interestingProducts;
-  List<UserLikeProductDto> get likeProducts => _likeProducts;
+  List<SummarizedProductDto> get likeProducts => _likeProducts;
   List<int> get compareId => _compareId;
   List<ResponseSingleProductDto> get compareProducts => _compareProducts;
   Map<String, YahooFinanceResponse>? get stockPrices => _stockPrices;
@@ -214,6 +214,7 @@ class ELSProductProvider with ChangeNotifier {
       success = false;
     } finally {
       _isLoading = false;
+      notifyListeners();
     }
     return success;
   }
@@ -224,16 +225,28 @@ class ELSProductProvider with ChangeNotifier {
     try {
       final httpResponse = await _productService.postProductLike(id);
       final response = httpResponse.response;
-      if (response.statusCode != 200 || !await fetchLikeProducts()) {
+      if (response.statusCode != 200) {
         success = false;
         throw Exception("Error Code: ${response.statusCode}, ${response.statusMessage}");
       }
+      _likeProducts.add(
+        SummarizedProductDto(
+          id: id,
+          issuer: _product!.issuer,
+          name: _product!.name,
+          productType: _product!.type,
+          equities: _product!.equities,
+          yieldIfConditionsMet: _product!.yieldIfConditionsMet,
+          subscriptionStartDate: DateTime.parse(_product!.subscriptionStartDate),
+          subscriptionEndDate: DateTime.parse(_product!.subscriptionEndDate),
+        ),
+      );
       _isLiked = true;
-      _likes++;
+      _likes = httpResponse.data['likeCount'];
     } catch (e) {
       print("상품 좋아요 실패: $e");
     }
-    // notifyListeners();
+    notifyListeners();
     return success;
   }
 
@@ -243,16 +256,19 @@ class ELSProductProvider with ChangeNotifier {
     try {
       final httpResponse = await _productService.deleteProductLike(id);
       final response = httpResponse.response;
-      if (response.statusCode != 200 || !await fetchLikeProducts()) {
+      if (response.statusCode != 200) {
         success = false;
         throw Exception("Error Code: ${response.statusCode}, ${response.statusMessage}");
       }
+      final index = _likeProducts.indexWhere((e) => e.id == id);
+      log('$index');
+      _likeProducts.removeAt(index);
       _isLiked = false;
-      _likes--;
+      _likes = httpResponse.data['likeCount'];
     } catch (e) {
-      print("상품 좋아요 실패: $e");
+      print("상품 좋아요 삭제 실패: $e");
     }
-    // notifyListeners();
+    notifyListeners();
     return success;
   }
 

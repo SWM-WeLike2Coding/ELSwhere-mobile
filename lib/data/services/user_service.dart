@@ -3,8 +3,8 @@ import 'package:elswhere/config/config.dart';
 import 'package:elswhere/data/models/dtos/request_create_holding_dto.dart';
 import 'package:elswhere/data/models/dtos/response_interesting_product_dto.dart';
 import 'package:elswhere/data/models/dtos/response_investment_type_dto.dart';
+import 'package:elswhere/data/models/dtos/summarized_product_dto.dart';
 import 'package:elswhere/data/models/dtos/summarized_user_holding_dto.dart';
-import 'package:elswhere/data/models/dtos/user_like_product_dto.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'user_service.g.dart';
@@ -62,5 +62,5 @@ abstract class UserService {
   );
 
   @GET("/v1/product/like")
-  Future<HttpResponse<List<UserLikeProductDto>>> fetchLikeProducts();
+  Future<HttpResponse<List<SummarizedProductDto>>> fetchLikeProducts();
 }
