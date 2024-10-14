@@ -19,6 +19,7 @@ import 'package:elswhere/data/services/yfinance_service.dart';
 import 'package:elswhere/ui/screens/splash_screen.dart';
 import 'package:elswhere/utils/material_color_builder.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -29,6 +30,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 import 'package:firebase_in_app_messaging/firebase_in_app_messaging.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -36,7 +38,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 void main() async {
   try {
     await initApp();
-    printAppVersion();
+    await _checkAppVersion();
   } catch (e) {
     FlutterNativeSplash.remove();
     log('$e');
@@ -85,9 +87,29 @@ Future<void> initApp() async {
   log(refreshToken);
 }
 
-void printAppVersion() async {
+Future<void> _checkAppVersion() async {
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
-  log("App Version: ${packageInfo.version}");
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  final remoteConfig = FirebaseRemoteConfig.instance;
+  await remoteConfig.setConfigSettings(RemoteConfigSettings(
+    fetchTimeout: const Duration(seconds: 10),
+    minimumFetchInterval: const Duration(seconds: 10),
+  ));
+  remoteConfig.setDefaults({
+    'latest_version': '0.0.0',
+  });
+  await remoteConfig.fetchAndActivate();
+
+  remoteLatestVersion = Platform.isAndroid ? remoteConfig.getString('latest_version_android') : remoteConfig.getString('latest_version_ios');
+  if (remoteLatestVersion.isEmpty) {
+    remoteLatestVersion = prefs.get("latest_version")?.toString() ?? '0.0.0';
+  } else {
+    await prefs.setString('latest_version', remoteLatestVersion);
+  }
+  localLatestVersion = packageInfo.version;
+  log("Local App Version: $localLatestVersion");
+  log("Remote App Version: $remoteLatestVersion");
   log("Build Number: ${packageInfo.buildNumber}");
 }
 
