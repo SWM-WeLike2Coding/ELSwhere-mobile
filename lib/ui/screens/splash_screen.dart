@@ -72,6 +72,17 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
+  bool _checkAppVersion() {
+    List<int> remote = remoteLatestVersion.split(".").map((e) => int.parse(e)).toList();
+    List<int> local = localLatestVersion.split(".").map((e) => int.parse(e)).toList();
+
+    bool haveToUpdate = false;
+    for (int i = 0; i < 3; i++) {
+      if (remote[i] > local[i]) return false;
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     log("Splash Screen");
@@ -85,8 +96,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: FutureBuilder(
         future: Future.wait([_checkUser(context, accessToken)]),
         builder: (context, snapshot) {
-          if (localLatestVersion != remoteLatestVersion) {
-            log("불일치!");
+          if (!_checkAppVersion()) {
             // 앱 버전이 일치하지 않으면 다이얼로그 띄우기
             WidgetsBinding.instance.addPostFrameCallback((_) {
               _showUpdateDialog(); // 다이얼로그 표시
