@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:elswhere/data/models/dtos/request_product_search_dto.dart';
-import 'package:elswhere/data/models/dtos/response_product_comparison_main_dto.dart';
+import 'package:elswhere/data/models/dtos/product/request_product_search_dto.dart';
+import 'package:elswhere/data/models/dtos/product/response_product_comparison_main_dto.dart';
 import 'package:flutter/material.dart';
-import '../models/dtos/summarized_product_dto.dart';
-import '../services/els_product_service.dart';
+import '../models/dtos/product/summarized_product_dto.dart';
+import '../services/product/els_product_service.dart';
 import 'package:intl/intl.dart';
 
 class ELSProductsProvider extends ChangeNotifier {

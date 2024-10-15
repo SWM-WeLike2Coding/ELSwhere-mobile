@@ -1,5 +1,5 @@
-import 'package:elswhere/data/models/dtos/response_issuer_dto.dart';
-import 'package:elswhere/data/services/els_product_service.dart';
+import 'package:elswhere/data/models/dtos/product/response_issuer_dto.dart';
+import 'package:elswhere/data/services/product/els_product_service.dart';
 import 'package:flutter/material.dart';
 
 class IssuerProvider extends ChangeNotifier {

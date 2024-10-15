@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:elswhere/config/app_resource.dart';
-import 'package:elswhere/data/models/dtos/request_create_holding_dto.dart';
-import 'package:elswhere/data/models/dtos/response_investment_type_dto.dart';
-import 'package:elswhere/data/models/dtos/response_user_info_dto.dart';
-import 'package:elswhere/data/models/dtos/summarized_user_holding_dto.dart';
-import 'package:elswhere/data/services/user_service.dart';
-import 'package:elswhere/ui/screens/login_screen.dart';
+import 'package:elswhere/data/models/dtos/user/request_create_holding_dto.dart';
+import 'package:elswhere/data/models/dtos/user/response_investment_type_dto.dart';
+import 'package:elswhere/data/models/dtos/user/response_user_info_dto.dart';
+import 'package:elswhere/data/models/dtos/user/summarized_user_holding_dto.dart';
+import 'package:elswhere/data/services/user/user_service.dart';
+import 'package:elswhere/ui/screens/other/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class UserInfoProvider with ChangeNotifier {

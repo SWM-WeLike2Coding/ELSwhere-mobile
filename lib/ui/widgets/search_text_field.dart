@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:elswhere/config/app_resource.dart';
-import 'package:elswhere/ui/screens/search_product_screen.dart';
-import 'package:elswhere/ui/views/detail_search_modal.dart';
+import 'package:elswhere/ui/screens/product/search_product_screen.dart';
+import 'package:elswhere/ui/views/product/detail_search_modal.dart';
 import 'package:flutter/material.dart';
 
 class SearchTextField extends StatefulWidget {

@@ -1,5 +1,5 @@
-import 'package:elswhere/data/models/dtos/response_ticker_symbol_dto.dart';
-import 'package:elswhere/data/services/els_product_service.dart';
+import 'package:elswhere/data/models/dtos/product/response_ticker_symbol_dto.dart';
+import 'package:elswhere/data/services/product/els_product_service.dart';
 import 'package:flutter/material.dart';
 import 'package:yahoo_finance_data_reader/yahoo_finance_data_reader.dart';
 

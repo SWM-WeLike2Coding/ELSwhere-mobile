@@ -1,6 +1,6 @@
 import 'package:elswhere/config/app_resource.dart';
-import 'package:elswhere/data/models/dtos/post_dto.dart';
-import 'package:elswhere/ui/screens/investment_guide_detail_screen.dart';
+import 'package:elswhere/data/models/dtos/post/post_dto.dart';
+import 'package:elswhere/ui/screens/more/investment_guide_detail_screen.dart';
 import 'package:flutter/material.dart';
 
 class PostCard extends StatelessWidget {

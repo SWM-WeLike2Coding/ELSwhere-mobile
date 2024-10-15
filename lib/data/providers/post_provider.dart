@@ -1,10 +1,10 @@
 import 'dart:developer';
 
-import 'package:elswhere/data/models/dtos/post-service/request_title_and_body_dto.dart';
-import 'package:elswhere/data/models/dtos/post-service/request_update_notice_dto.dart';
-import 'package:elswhere/data/models/dtos/post-service/response_page_summarized_generic_post_dto.dart';
-import 'package:elswhere/data/models/dtos/post-service/response_single_generic_post_dto.dart';
-import 'package:elswhere/data/services/post_service.dart';
+import 'package:elswhere/data/models/dtos/post/request_title_and_body_dto.dart';
+import 'package:elswhere/data/models/dtos/post/request_update_notice_dto.dart';
+import 'package:elswhere/data/models/dtos/post/response_page_summarized_generic_post_dto.dart';
+import 'package:elswhere/data/models/dtos/post/response_single_generic_post_dto.dart';
+import 'package:elswhere/data/services/post/post_service.dart';
 import 'package:flutter/material.dart';
 
 class PostProvider extends ChangeNotifier {
