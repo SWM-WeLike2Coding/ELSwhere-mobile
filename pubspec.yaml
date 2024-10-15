@@ -103,6 +103,7 @@ flutter:
     - .env
     - assets/
     - assets/icons/
+    - assets/icons/icon/
     - assets/icons/flags/1x1/
     - assets/icons/flags/4x3/
     - assets/icons/company/

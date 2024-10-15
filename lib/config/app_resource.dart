@@ -13,12 +13,12 @@ sealed class Assets {
   static const String pretendardExtraBold = "assets/fonts/pretendard/Pretendard-ExtraBold.ttf";
   static const String pretendardBlack = "assets/fonts/pretendard/Pretendard-Black.ttf";
 
-  static const String iconELSwhere = "assets/icons/icon_elswhere.svg";
-  static const String logoELSwhere = "assets/icons/logo_elswhere.svg";
-  static const String logoELSwhereWhite = "assets/icons/logo_elswhere_white.png";
+  static const String iconELSwhere = "assets/icons/icon/icon_elswhere.svg";
+  static const String logoELSwhere = "assets/icons/icon/logo_elswhere.svg";
+  static const String logoELSwhereWhite = "assets/icons/icon/logo_elswhere_white.png";
 
-  static const String iconGoogle = "assets/icons/icon_google.svg";
-  static const String iconApple = "assets/icons/icon_apple.svg";
+  static const String iconGoogle = "assets/icons/icon/icon_google.svg";
+  static const String iconApple = "assets/icons/icon/icon_apple.svg";
 
   static const String iconBNK = "assets/icons/company/bnk.svg";
   static const String iconKyoBo = "assets/icons/company/교보.svg";

@@ -1,7 +1,7 @@
 import 'dart:developer';
 
-import 'package:elswhere/data/models/dtos/summarized_product_dto.dart';
-import 'package:elswhere/data/services/els_product_service.dart';
+import 'package:elswhere/data/models/dtos/product/summarized_product_dto.dart';
+import 'package:elswhere/data/services/product/els_product_service.dart';
 import 'package:flutter/material.dart';
 
 class HotProductsProvider extends ChangeNotifier {
