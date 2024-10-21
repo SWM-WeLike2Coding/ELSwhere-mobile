@@ -129,7 +129,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                           filled: true,
                           fillColor: Theme.of(context).scaffoldBackgroundColor,
                         ),
-                        keyboardType: TextInputType.number,
+                        keyboardType: TextInputType.numberWithOptions(signed: true, decimal: false), // done 버튼 있는 숫자 키보드
                         inputFormatters: <TextInputFormatter>[
                           FilteringTextInputFormatter.digitsOnly, // 숫자만 허용
                         ],
