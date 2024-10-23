@@ -44,8 +44,8 @@ class PrivacyPolicyDialog extends StatelessWidget {
                     _buildSectionTitle('2. 수집하는 개인정보의 항목'),
                     _buildSectionContent(
                       '‘ELSwhere’는 다음과 같은 정보를 수집합니다:\n'
-                      '- 회원가입 시: 이름, 이메일 주소, 비밀번호, 전화번호\n'
-                      '- 서비스 이용 시: 접속 기록, 서비스 사용 내역, 관심 ELS 상품 정보, 기기 정보(브라우저 종류, OS 등)',
+                      '- 회원가입 시: 이름, 이메일 주소, 사용자 식별 번호\n'
+                      '- 서비스 이용 시: 접속 기록, 서비스 사용 내역, 관심 ELS 상품 정보, 기기 정보',
                     ),
                     _buildSectionTitle('3. 개인정보의 보유 및 이용 기간'),
                     _buildSectionContent(
@@ -68,10 +68,10 @@ class PrivacyPolicyDialog extends StatelessWidget {
                     _buildSectionTitle('7. 개인정보 보호책임자'),
                     _buildSectionContent(
                       '개인정보 관련 문의는 아래의 개인정보 보호책임자에게 연락주시기 바랍니다:\n'
-                      '이름: 홍길동\n'
-                      '직위: 개인정보 보호책임자\n'
-                      '이메일: privacy@elswhere.com\n'
-                      '연락처: 02-123-4567',
+                      '이름: 조성범\n'
+                      '직위: 개발자 및 책임자\n'
+                      '이메일: welike2coding@gmail.com\n'
+                      '연락처: 010-6418-2264',
                     ),
                     _buildSectionTitle('8. 권리와 그 행사 방법'),
                     _buildSectionContent(
