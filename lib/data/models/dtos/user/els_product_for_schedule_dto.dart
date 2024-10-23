@@ -38,6 +38,6 @@ class ELSProductForScheduleDto {
     this.currentEarningPercent,
   });
 
-  factory ELSProductForScheduleDto.fromJson(Map<String, dynamic> json) => _$ElsProductForScheduleDtoFromJson(json);
-  Map<String, dynamic> toJson() => _$ElsProductForScheduleDtoToJson(this);
+  factory ELSProductForScheduleDto.fromJson(Map<String, dynamic> json) => _$ELSProductForScheduleDtoFromJson(json);
+  Map<String, dynamic> toJson() => _$ELSProductForScheduleDtoToJson(this);
 }

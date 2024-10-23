@@ -50,20 +50,19 @@ class _UserService implements UserService {
   }
 
   @override
-  Future<HttpResponse<dynamic>> changeNickname(Map<String, dynamic> body) async {
+  Future<HttpResponse<dynamic>> deleteUser() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(body);
+    const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<dynamic>>(Options(
-      method: 'PATCH',
+      method: 'DELETE',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          '/v1/user/change/nickname',
+          '/v1/user',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -79,19 +78,53 @@ class _UserService implements UserService {
   }
 
   @override
-  Future<HttpResponse<dynamic>> deleteUser() async {
+  Future<HttpResponse<dynamic>> signUp(
+    String signupToken,
+    Map<String, dynamic> agreed,
+  ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
+    final _data = <String, dynamic>{};
+    final _dio = DioClient.createDio(needAuth: false);
+    _data.addAll(agreed);
     final _options = _setStreamType<HttpResponse<dynamic>>(Options(
-      method: 'DELETE',
+      method: 'POST',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          '/v1/user',
+          '/v1/user/signup/${signupToken}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch(_options);
+    final _value = _result.data;
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
+  }
+
+  @override
+  Future<HttpResponse<dynamic>> changeNickname(Map<String, dynamic> body) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body);
+    final _options = _setStreamType<HttpResponse<dynamic>>(Options(
+      method: 'PATCH',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/v1/user/change/nickname',
           queryParameters: queryParameters,
           data: _data,
         )

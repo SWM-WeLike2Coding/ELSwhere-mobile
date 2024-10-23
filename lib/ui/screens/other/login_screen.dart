@@ -1,17 +1,27 @@
+import 'dart:developer';
+
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/config.dart';
 import 'package:elswhere/data/models/social_type.dart';
+import 'package:elswhere/data/providers/user_info_provider.dart';
 import 'package:elswhere/data/services/auth/auth_service.dart';
 import 'package:elswhere/ui/screens/other/initial_screen.dart';
+import 'package:elswhere/ui/screens/other/terms_and_conditions_consent_screen.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-
-  LoginScreen({super.key});
 
   Future<void> _setCurrentScreen() async {
     await analytics.logScreenView(
@@ -20,7 +30,7 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Future<bool> _login(SocialType socialType) async {
+  Future<String> _login(SocialType socialType) async {
     final authUrl = '$baseUrl$loginEndpoint/${switch (socialType) {
       SocialType.GOOGLE => 'google',
       SocialType.APPLE => 'apple',
@@ -29,28 +39,45 @@ class LoginScreen extends StatelessWidget {
     final response = await AuthService.authenticateUser(authUrl);
 
     if (response != null) {
-      accessToken = response.accessToken;
-      refreshToken = response.refreshToken;
-      storage.write(key: 'ACCESS_TOKEN', value: accessToken);
-      storage.write(key: 'REFRESH_TOKEN', value: refreshToken);
-      return true;
+      if (response.accessToken.isEmpty) {
+        final signupToken = response.refreshToken; // 액세스 토큰이 없으면, 리프레시 토큰이 signup token
+        log(signupToken);
+        Provider.of<UserInfoProvider>(context, listen: false).signupToken = signupToken;
+        return 'terms';
+      } else {
+        accessToken = response.accessToken;
+        refreshToken = response.refreshToken;
+        storage.write(key: 'ACCESS_TOKEN', value: accessToken);
+        storage.write(key: 'REFRESH_TOKEN', value: refreshToken);
+        return 'success';
+      }
     }
-    return false;
+    return 'failed';
   }
 
   void _onTapLoginButton(BuildContext context, SocialType socialType) async {
-    final bool result = await _login(socialType);
+    final String result = await _login(socialType);
 
-    if (result) {
-      print(accessToken);
-      print(refreshToken);
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const InitialScreen()),
-        (route) => false,
-      );
-    } else {
-      Fluttertoast.showToast(msg: '로그인에 실패했습니다.', toastLength: Toast.LENGTH_SHORT);
+    switch (result) {
+      case 'success':
+        {
+          log(accessToken);
+          log(refreshToken);
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const InitialScreen()),
+            (route) => false,
+          );
+        }
+      case 'failed':
+        Fluttertoast.showToast(msg: '로그인에 실패했습니다.', toastLength: Toast.LENGTH_SHORT);
+      case 'terms':
+        {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const TermsAndConditionsConsentScreen()),
+          );
+        }
     }
   }
 

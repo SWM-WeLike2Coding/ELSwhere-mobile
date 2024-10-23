@@ -6,7 +6,7 @@ import 'package:elswhere/ui/screens/more/change_nickname_screen.dart';
 import 'package:elswhere/ui/screens/more/investment_guide_screen.dart';
 import 'package:elswhere/ui/screens/other/login_screen.dart';
 import 'package:elswhere/ui/screens/more/member_quit_screen.dart';
-import 'package:elswhere/ui/screens/more/service_agreement_screen.dart';
+import 'package:elswhere/ui/screens/more/terms_and_conditions_display_screen.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -500,7 +500,7 @@ class _MoreScreenState extends State<MoreScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ServiceAgreementScreen(
+                              builder: (context) => const TermsAndConditionsDisplayScreen(
                                 typeIndex: 0,
                               ),
                             ));
@@ -512,7 +512,7 @@ class _MoreScreenState extends State<MoreScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ServiceAgreementScreen(
+                              builder: (context) => const TermsAndConditionsDisplayScreen(
                                 typeIndex: 1,
                               ),
                             ));

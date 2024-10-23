@@ -5,6 +5,7 @@ import 'package:elswhere/data/models/dtos/user/response_interesting_product_dto.
 import 'package:elswhere/data/models/dtos/user/response_investment_type_dto.dart';
 import 'package:elswhere/data/models/dtos/product/summarized_product_dto.dart';
 import 'package:elswhere/data/models/dtos/user/summarized_user_holding_dto.dart';
+import 'package:elswhere/data/services/other/dio_client.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'user_service.g.dart';
@@ -19,11 +20,14 @@ abstract class UserService {
   @GET("/v1/user")
   Future<HttpResponse> checkUser();
 
-  @PATCH("/v1/user/change/nickname")
-  Future<HttpResponse> changeNickname(@Body() Map<String, dynamic> body);
-
   @DELETE("/v1/user")
   Future<HttpResponse> deleteUser();
+
+  @POST("/v1/user/signup/{signup-token}")
+  Future<HttpResponse> signUp(@Path("signup-token") String signupToken, @Body() Map<String, dynamic> agreed);
+
+  @PATCH("/v1/user/change/nickname")
+  Future<HttpResponse> changeNickname(@Body() Map<String, dynamic> body);
 
   @GET("/v1/user/logout")
   Future<HttpResponse> logout();

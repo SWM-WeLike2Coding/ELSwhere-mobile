@@ -7,6 +7,7 @@ import 'package:elswhere/config/config.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
 import 'package:elswhere/ui/screens/other/initial_screen.dart';
 import 'package:elswhere/ui/screens/other/login_screen.dart';
+import 'package:elswhere/ui/screens/other/terms_and_conditions_consent_screen.dart';
 import 'package:elswhere/ui/screens/other/waiting_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -76,7 +77,6 @@ class _SplashScreenState extends State<SplashScreen> {
     List<int> remote = remoteLatestVersion.split(".").map((e) => int.parse(e)).toList();
     List<int> local = localLatestVersion.split(".").map((e) => int.parse(e)).toList();
 
-    bool haveToUpdate = false;
     for (int i = 0; i < 3; i++) {
       if (remote[i] > local[i]) return false;
     }
@@ -89,8 +89,7 @@ class _SplashScreenState extends State<SplashScreen> {
     userProvider = Provider.of<UserInfoProvider>(context, listen: false);
     FlutterNativeSplash.remove();
 
-    // Timer(const Duration(seconds: 2), () => FlutterNativeSplash.remove());
-
+    // return const TermsAndConditionsConsentScreen();
     return Scaffold(
       backgroundColor: AppColors.mainBlue,
       body: FutureBuilder(
@@ -112,7 +111,7 @@ class _SplashScreenState extends State<SplashScreen> {
             if (userProvider.checkAuthenticated) {
               return const InitialScreen();
             } else {
-              return LoginScreen();
+              return const LoginScreen();
             }
           }
         },

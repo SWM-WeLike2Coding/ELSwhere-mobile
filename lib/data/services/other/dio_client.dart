@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:elswhere/config/config.dart';
 
 class DioClient {
-  static Dio createDio() {
+  static Dio createDio({bool needAuth = true}) {
     final dio = Dio(
       BaseOptions(
         connectTimeout: const Duration(seconds: 10),
@@ -13,12 +13,12 @@ class DioClient {
 
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) {
-        options.headers["Authorization"] = accessToken;
+        if (needAuth) options.headers["Authorization"] = accessToken;
         return handler.next(options);
       },
       onResponse: (response, handler) {
         if (response.statusCode == 200) {
-          print('응답 + $response');
+          print('응답(Type: ${response.data.runtimeType}): $response');
           return handler.next(response);
         } else {
           print('Error!');

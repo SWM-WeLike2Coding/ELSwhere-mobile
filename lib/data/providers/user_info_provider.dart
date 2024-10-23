@@ -1,7 +1,12 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/config/config.dart';
 import 'package:elswhere/data/models/dtos/user/request_create_holding_dto.dart';
 import 'package:elswhere/data/models/dtos/user/response_investment_type_dto.dart';
+import 'package:elswhere/data/models/dtos/user/response_login_dto.dart';
 import 'package:elswhere/data/models/dtos/user/response_user_info_dto.dart';
 import 'package:elswhere/data/models/dtos/user/summarized_user_holding_dto.dart';
 import 'package:elswhere/data/services/user/user_service.dart';
@@ -14,6 +19,7 @@ class UserInfoProvider with ChangeNotifier {
   bool _isLoading = false;
   ResponseInvestmentTypeDto? _investmentTypeInfo;
   List<SummarizedUserHoldingDto>? _holdingProducts;
+  String? _signupToken;
   int _totalHoldingPrice = 0;
   int _profitAndLossPrice = 0;
 
@@ -22,8 +28,11 @@ class UserInfoProvider with ChangeNotifier {
   bool get checkAuthenticated => _userInfo != null;
   ResponseInvestmentTypeDto? get investmentTypeInfo => _investmentTypeInfo;
   List<SummarizedUserHoldingDto>? get holdingProducts => _holdingProducts ?? [];
+  String? get signupToken => _signupToken;
   int get totalHoldingPrice => _totalHoldingPrice;
   int get profitAndLossPrice => _profitAndLossPrice;
+
+  set signupToken(String? signupToken) => _signupToken = signupToken;
 
   String _nickname = "";
 
@@ -70,6 +79,34 @@ class UserInfoProvider with ChangeNotifier {
       print('Unexpected error: $e');
       return false;
     }
+  }
+
+  Future<bool> signUp() async {
+    bool success = true;
+
+    try {
+      final httpResponse = await _userService.signUp(_signupToken!, {"agreed": true});
+      final response = httpResponse.response;
+
+      if (response.statusCode == 200) {
+        final data = httpResponse.data as Map<String, dynamic>;
+
+        accessToken = data['accessToken'];
+        refreshToken = data['refreshToken'];
+        storage.write(key: 'ACCESS_TOKEN', value: accessToken);
+        storage.write(key: 'REFRESH_TOKEN', value: refreshToken);
+        // log(accessToken);
+        // log(refreshToken);
+      } else {
+        throw Exception('Error Code: ${response.statusCode}, ${response.statusMessage}');
+      }
+
+      _signupToken = null;
+    } catch (e) {
+      log('약관 동의 실패: $e');
+      success = false;
+    }
+    return success;
   }
 
   Future<bool> changeNickname(String nickname) async {
@@ -217,7 +254,7 @@ class UserInfoProvider with ChangeNotifier {
         notifyListeners();
         await storage.deleteAll();
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => LoginScreen()),
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
         );
         return true;
       } else {

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:elswhere/data/models/dtos/product/request_product_search_dto.dart';
 import 'package:elswhere/data/models/dtos/product/response_product_comparison_main_dto.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +12,7 @@ class ELSProductsProvider extends ChangeNotifier {
   bool _isLoading = false;
   bool _hasNext = true;
   int _page = 0;
+  int _selectedIndex = -1;
   final int _size = 5000;
   final String status;
 
@@ -26,6 +25,15 @@ class ELSProductsProvider extends ChangeNotifier {
   bool get isInit => _isInit;
   bool get isLoading => _isLoading;
   bool get hasNext => _hasNext;
+  int get selectedIndex => _selectedIndex;
+
+  void setSelectedIndex(int index) {
+    if (_selectedIndex == index)
+      _selectedIndex = -1;
+    else
+      _selectedIndex = index;
+    notifyListeners();
+  }
 
   Future<void> initProducts(String type) async {
     try {
@@ -89,17 +97,19 @@ class ELSProductsProvider extends ChangeNotifier {
   }
 
   List<SummarizedProductDto> convertToSummarizedProductDtoList(List<dynamic> data) {
-    return data.map((item) => SummarizedProductDto(
-      id: item['id'] as int,
-      issuer: item['issuer'] as String,
-      name: item['name'] as String,
-      productType: item['productType'] as String,
-      equities: item['equities'] as String,
-      yieldIfConditionsMet: (item['yieldIfConditionsMet'] as num).toDouble(),
-      knockIn: item['knockIn'] as int?,
-      subscriptionStartDate: DateFormat('yyyy-MM-dd').parse(item['subscriptionStartDate'] as String),
-      subscriptionEndDate: DateFormat('yyyy-MM-dd').parse(item['subscriptionEndDate'] as String),
-    )).toList();
+    return data
+        .map((item) => SummarizedProductDto(
+              id: item['id'] as int,
+              issuer: item['issuer'] as String,
+              name: item['name'] as String,
+              productType: item['productType'] as String,
+              equities: item['equities'] as String,
+              yieldIfConditionsMet: (item['yieldIfConditionsMet'] as num).toDouble(),
+              knockIn: item['knockIn'] as int?,
+              subscriptionStartDate: DateFormat('yyyy-MM-dd').parse(item['subscriptionStartDate'] as String),
+              subscriptionEndDate: DateFormat('yyyy-MM-dd').parse(item['subscriptionEndDate'] as String),
+            ))
+        .toList();
   }
 
   Future<void> fetchProductByNumber(int number) async {

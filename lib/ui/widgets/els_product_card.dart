@@ -51,9 +51,11 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
   }
 
   void onItemTapped() {
-    setState(() {
-      isSelected = !isSelected;
-    });
+    productsProvider.setSelectedIndex(widget.index);
+    // setState(() {
+    //   isSelected = productsProvider.selectedIndex == widget.index;
+    //   //   isSelected = !isSelected;
+    // });
   }
 
   void onDetailButtonTapped() async {
@@ -88,18 +90,23 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
   Widget build(BuildContext context) {
     super.build(context);
 
-    return LayoutBuilder(builder: (context, constraints) {
-      // final width = constraints.maxWidth;
-      return GestureDetector(
-        onTap: () => onItemTapped(),
-        child: Stack(
-          children: [
-            _buildHiddenButtons(),
-            _buildItemCard(),
-          ],
-        ),
-      );
-    });
+    return Consumer<ELSOnSaleProductsProvider>(
+      builder: (context, value, child) {
+        isSelected = productsProvider.selectedIndex == widget.index;
+        return LayoutBuilder(builder: (context, constraints) {
+          // final width = constraints.maxWidth;
+          return GestureDetector(
+            onTap: () => onItemTapped(),
+            child: Stack(
+              children: [
+                _buildHiddenButtons(),
+                _buildItemCard(),
+              ],
+            ),
+          );
+        });
+      },
+    );
   }
 
   Widget _buildHiddenButtons() {
