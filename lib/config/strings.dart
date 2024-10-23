@@ -1,5 +1,9 @@
 // ignore_for_file: constant_identifier_names
 
+// 공통
+const String MSG_ERR_UNEXPECTED = "예상치 못한 오류가 발생했습니다.";
+
+// 메시지
 const String MSG_DESCRIPTION_MONTECARLO = '분석 결과는 ELSwhere만의 독자적인 분석 결과를 통해 제공되는 수치이며, 절대적인 수치가 아님을 알려드립니다.';
 const String MSG_TO_BE_UPDATED = "추후 업데이트를 통해 제공될 예정입니다.";
 
@@ -20,3 +24,6 @@ const String MSG_INSERT_NICKNAME = "닉네임을 입력하세요";
 // 공지사항 관련
 const String MSG_NO_NOTICES = "공지사항이 없습니다.";
 const String MSG_ERR_FETCH_NOTICES = "공지사항을 불러오는데 실패했습니다.";
+
+// 약관 동의 관련
+const String TITLE_SERVICE_AGREEMENT = "ELSwhere 서비스 이용을 위해\n동의해 주세요.";

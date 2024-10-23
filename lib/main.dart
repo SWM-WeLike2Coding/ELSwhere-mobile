@@ -219,7 +219,7 @@ class ELSwhere extends StatelessWidget {
             child: child!,
           );
         },
-        home: SplashScreen(),
+        home: const SplashScreen(),
       ),
     );
   }

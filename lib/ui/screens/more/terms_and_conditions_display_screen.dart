@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 
 import '../../../config/app_resource.dart';
 
-class ServiceAgreementScreen extends StatefulWidget {
+class TermsAndConditionsDisplayScreen extends StatefulWidget {
   final int typeIndex;
-  const ServiceAgreementScreen({super.key, required this.typeIndex});
+  const TermsAndConditionsDisplayScreen({super.key, required this.typeIndex});
 
   @override
-  State<ServiceAgreementScreen> createState() => _ServiceAgreementScreenState();
+  State<TermsAndConditionsDisplayScreen> createState() => _TermsAndConditionsDisplayScreenState();
 }
 
-class _ServiceAgreementScreenState extends State<ServiceAgreementScreen> with TickerProviderStateMixin {
+class _TermsAndConditionsDisplayScreenState extends State<TermsAndConditionsDisplayScreen> with TickerProviderStateMixin {
   late final TabController tabController;
   String _appBarTitle = "서비스 약관";
 
