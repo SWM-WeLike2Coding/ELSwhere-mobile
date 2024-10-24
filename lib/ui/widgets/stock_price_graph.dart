@@ -32,6 +32,7 @@ class _StockPriceGraphState extends State<StockPriceGraph> {
     DateTime sixMonthsAgo = DateTime(now.year, now.month - 6, now.day);
     DateTime oneYearAgo = DateTime(now.year - 1, now.month, now.day);
     DateTime threeYearsAgo = DateTime(now.year - 3, now.month, now.day);
+    DateTime fiveYearsAgo = DateTime(now.year - 5, now.month, now.day);
 
     prices = response.map((equity, yResponse) {
       final convert = yResponse.candlesData.map((e) => StockPrice(date: e.date, price: e.close)).toList();
@@ -74,6 +75,13 @@ class _StockPriceGraphState extends State<StockPriceGraph> {
           return MapEntry(equity, stockPrice);
         });
         break;
+      case 5:
+        prices = prices?.map((equity, stockPrice) {
+          final location = stockPrice.indexWhere((element) => isDateMatchingWithPastPeriods(element.date, fiveYearsAgo));
+          stockPrice = stockPrice.sublist(location);
+          return MapEntry(equity, stockPrice);
+        });
+        break;
     }
 
     stockData = prices!.values.map((prices) {
@@ -99,18 +107,12 @@ class _StockPriceGraphState extends State<StockPriceGraph> {
   }
 
   double findMinY(List<List<FlSpot>> stockData) {
-    final result = stockData
-        .expand((data) => data)
-        .map((data) => data.y)
-        .reduce((a, b) => a < b ? a : b);
+    final result = stockData.expand((data) => data).map((data) => data.y).reduce((a, b) => a < b ? a : b);
     return result;
   }
 
   double findMaxY(List<List<FlSpot>> stockData) {
-    final result = stockData
-        .expand((data) => data)
-        .map((data) => data.y)
-        .reduce((a, b) => a > b ? a : b);
+    final result = stockData.expand((data) => data).map((data) => data.y).reduce((a, b) => a > b ? a : b);
     return result;
   }
 
@@ -124,7 +126,9 @@ class _StockPriceGraphState extends State<StockPriceGraph> {
         color: colors[index++],
         barWidth: 3,
         belowBarData: BarAreaData(show: false),
-        dotData: const FlDotData(show: false,), // 점 표시
+        dotData: const FlDotData(
+          show: false,
+        ), // 점 표시
       );
     }).toList();
 
@@ -144,7 +148,7 @@ class _StockPriceGraphState extends State<StockPriceGraph> {
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             reservedSize: 35,
-            interval: <double>[10.5, 31, 63, 365/3, 365][selectedPeriod],
+            interval: <double>[10.5, 31, 63, 365 / 3, 365, 365 * 5 / 3][selectedPeriod],
             showTitles: true,
             getTitlesWidget: (value, meta) {
               DateTime date = stockDataMap.values.first.first.date.add(Duration(days: value.toInt()));
@@ -154,8 +158,14 @@ class _StockPriceGraphState extends State<StockPriceGraph> {
                   textAlign: TextAlign.center,
                   text: TextSpan(
                     children: [
-                      TextSpan(text: '${DateFormat().addPattern('yyyy년').format(date)}\n', style: textTheme.labelSmall!.copyWith(color: Colors.black),),
-                      TextSpan(text: DateFormat().addPattern('MM월 dd일').format(date), style: textTheme.labelSmall!.copyWith(color: Colors.black),),
+                      TextSpan(
+                        text: '${DateFormat().addPattern('yyyy년').format(date)}\n',
+                        style: textTheme.labelSmall!.copyWith(color: Colors.black),
+                      ),
+                      TextSpan(
+                        text: DateFormat().addPattern('MM월 dd일').format(date),
+                        style: textTheme.labelSmall!.copyWith(color: Colors.black),
+                      ),
                     ],
                   ),
                 ),
@@ -165,19 +175,18 @@ class _StockPriceGraphState extends State<StockPriceGraph> {
         ),
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
-            reservedSize: 50,
-            interval: (maxY - minY + padding * 2) / 3,
-            showTitles: true,
-            getTitlesWidget: (value, meta) {
-              return Padding(
-                padding: const EdgeInsets.only(right: 8),
-                child: Text(
-                  '${value.toStringAsFixed(1)}%',
-                  style: textTheme.labelSmall,
-                ),
-              );
-            }
-          ),
+              reservedSize: 50,
+              interval: (maxY - minY + padding * 2) / 3,
+              showTitles: true,
+              getTitlesWidget: (value, meta) {
+                return Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: Text(
+                    value >= 0 ? '${value.toStringAsFixed(1)}%' : '',
+                    style: textTheme.labelSmall,
+                  ),
+                );
+              }),
         ),
       ),
       lineTouchData: LineTouchData(
@@ -198,16 +207,17 @@ class _StockPriceGraphState extends State<StockPriceGraph> {
                 '',
                 const TextStyle(),
                 children: [
-                  if (stockIndex == 0) TextSpan(
-                    text: '${format.format(touchedDate)}\n',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
+                  if (stockIndex == 0)
+                    TextSpan(
+                      text: '${format.format(touchedDate)}\n',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
                     ),
-                  ),
                   TextSpan(
-                    text: '$equity:\n${lineBarsData[stockIndex].spots[min(touchedSpot.spotIndex, lineBarsData[stockIndex].spots.length-1)].y.toStringAsFixed(2)}%',
+                    text: '$equity:\n${lineBarsData[stockIndex].spots[min(touchedSpot.spotIndex, lineBarsData[stockIndex].spots.length - 1)].y.toStringAsFixed(2)}%',
                     style: TextStyle(
                       color: color,
                       fontWeight: FontWeight.bold,
@@ -250,15 +260,15 @@ class _StockPriceGraphState extends State<StockPriceGraph> {
                   height: MediaQuery.of(context).size.height / 3.5,
                   child: stockData.isEmpty
                       ? const Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.warning_amber),
-                            SizedBox(width: 8),
-                            Text('주가를 불러오는데 실패했습니다.'),
-                          ],
-                        ),
-                      )
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.warning_amber),
+                              SizedBox(width: 8),
+                              Text('주가를 불러오는데 실패했습니다.'),
+                            ],
+                          ),
+                        )
                       : LineChart(getMultiLineChartData(prices!)),
                 ),
               ),
