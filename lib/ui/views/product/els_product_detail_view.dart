@@ -10,6 +10,7 @@ import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
 import 'package:elswhere/ui/views/product/add_holding_product_modal.dart';
 import 'package:elswhere/ui/views/product/stock_price_graph_view.dart';
+import 'package:elswhere/ui/widgets/price_ratio_table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
@@ -31,6 +32,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
   // late AnimatedDigitController _animatedDigitController;
   ResponseSingleProductDto? product;
   bool isHeld = false;
+  bool _isExpanded = true;
 
   @override
   void initState() {
@@ -530,10 +532,11 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
         borderRadius: borderRadiusCircular10,
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -552,10 +555,42 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
               ],
             ),
             const SizedBox(height: 12),
-            Text(
-              product!.initialBasePriceEvaluationDate ?? '',
-              style: textTheme.labelMedium,
-            ),
+            Row(children: [
+              Text(
+                product!.initialBasePriceEvaluationDate ?? '',
+                style: textTheme.labelMedium,
+              )
+            ]),
+            productProvider.priceRatioResponse != null
+                ? Column(
+                    children: [
+                      const SizedBox(height: 12),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          AnimatedSize(
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.fastOutSlowIn,
+                            child: _isExpanded ? const PriceRatioTable() : const SizedBox.shrink(),
+                          ),
+                          const SizedBox(height: 8),
+                          IconButton(
+                            visualDensity: const VisualDensity(
+                              horizontal: VisualDensity.minimumDensity,
+                              vertical: VisualDensity.minimumDensity,
+                            ),
+                            icon: Icon(_isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down, color: AppColors.gray600),
+                            onPressed: () {
+                              setState(() {
+                                _isExpanded = !_isExpanded;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
+                : const SizedBox(height: 8),
           ],
         ),
       ),

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:elswhere/data/models/dtos/analysis/monte_carlo_response.dart';
+import 'package:elswhere/data/models/dtos/analysis/price_ratio_response.dart';
 import 'package:elswhere/data/models/dtos/product/summarized_product_dto.dart';
 import 'package:elswhere/data/models/dtos/user/summarized_user_holding_dto.dart';
 import 'package:elswhere/data/services/analysis/analysis_service.dart';
@@ -25,6 +26,7 @@ class ELSProductProvider with ChangeNotifier {
   ResponseSingleProductDto? _product;
   SummarizedUserHoldingDto? _holdingProduct;
   MonteCarloResponse? _monteCarloResponse;
+  PriceRatioResponse? _priceRatioResponse;
   bool _isLoading = false;
   bool _isBookmarked = false;
   bool _isLiked = false;
@@ -41,6 +43,7 @@ class ELSProductProvider with ChangeNotifier {
   ResponseSingleProductDto? get product => _product;
   SummarizedUserHoldingDto? get holdingProduct => _holdingProduct;
   MonteCarloResponse? get monteCarloResponse => _monteCarloResponse;
+  PriceRatioResponse? get priceRatioResponse => _priceRatioResponse;
   bool get isLoading => _isLoading;
   bool get isBookmarked => _isBookmarked;
   bool get isLiked => _isLiked;
@@ -294,6 +297,28 @@ class ELSProductProvider with ChangeNotifier {
     } finally {
       _isLoading = false;
       notifyListeners();
+    }
+    return success;
+  }
+
+  Future<bool> fetchPriceRatio(int productId) async {
+    bool success = true;
+    _priceRatioResponse = null;
+
+    try {
+      final httpResponse = await _analysisService.getPriceRatio(productId);
+      final response = httpResponse.response;
+
+      if (response.statusCode == 200) {
+        _priceRatioResponse = httpResponse.data;
+        log(_priceRatioResponse.toString());
+      } else {
+        throw Exception('Error Code: ${response.statusCode}, ${response.statusMessage}');
+      }
+    } catch (e) {
+      log('최초기준가격 대비 현재 기초자산 가격 비율 조회 실패: $e');
+      _priceRatioResponse = null;
+      success = false;
     }
     return success;
   }

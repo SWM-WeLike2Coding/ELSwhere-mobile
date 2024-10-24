@@ -2,6 +2,7 @@ import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/data/models/dtos/user/summarized_user_holding_dto.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/ui/screens/other/waiting_screen.dart';
 import 'package:elswhere/ui/views/product/add_holding_product_modal.dart';
 import 'package:elswhere/ui/views/product/els_product_detail_view.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -29,7 +30,7 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
 
   Future<void> _setCurrentScreen() async {
     await analytics.logScreenView(
-      screenName: '상품 상세 화면',
+      screenName: '상품 상세 화면 - ${productProvider.product!.name}',
       screenClass: 'ELSProductDetailScreen',
     );
   }
@@ -37,9 +38,9 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
   @override
   void initState() {
     super.initState();
-    _setCurrentScreen();
     userProvider = Provider.of<UserInfoProvider>(context, listen: false);
     productProvider = Provider.of<ELSProductProvider>(context, listen: false);
+    _setCurrentScreen();
   }
 
   void _changeLiked() async {
@@ -111,18 +112,24 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ELSProductProvider>(
-      builder: (context, productProvider, child) {
-        isLiked = productProvider.isLiked;
-        isBookmarked = productProvider.isBookmarked;
-        isHeld = productProvider.isHeld;
+    return FutureBuilder(
+      future: productProvider.fetchPriceRatio(productProvider.product!.id),
+      builder: (context, snapshot) => Consumer<ELSProductProvider>(
+        builder: (context, productProvider, child) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const WaitingScreen(comment: '기준가 정보를 받아오는 중입니다');
+          }
+          isLiked = productProvider.isLiked;
+          isBookmarked = productProvider.isBookmarked;
+          isHeld = productProvider.isHeld;
 
-        return Scaffold(
-          backgroundColor: AppColors.gray50,
-          appBar: _buildAppBar(),
-          body: const ELSProductDetailView(),
-        );
-      },
+          return Scaffold(
+            backgroundColor: AppColors.gray50,
+            appBar: _buildAppBar(),
+            body: const ELSProductDetailView(),
+          );
+        },
+      ),
     );
   }
 
