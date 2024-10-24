@@ -168,6 +168,20 @@ class ELSProductsProvider extends ChangeNotifier {
             return result;
           });
         }
+      case '마감일순':
+        if (runtimeType == ELSOnSaleProductsProvider) {
+          _products.sort((a, b) {
+            final result = a.subscriptionEndDate.compareTo(b.subscriptionEndDate);
+            if (result == 0) return b.id.compareTo(a.id);
+            return result;
+          });
+        } else {
+          _products.sort((a, b) {
+            final result = b.subscriptionEndDate.compareTo(a.subscriptionEndDate);
+            if (result == 0) return b.id.compareTo(a.id);
+            return result;
+          });
+        }
     }
   }
 

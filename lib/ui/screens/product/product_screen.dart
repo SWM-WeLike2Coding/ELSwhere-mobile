@@ -20,12 +20,14 @@ class ProductScreen extends StatefulWidget {
     '최신순',
     '낙인순',
     '수익률순',
+    '마감일순',
   ];
 
   final Map<String, String> itemsMap = {
     '최신순': 'latest',
     '낙인순': 'knock-in',
     '수익률순': 'profit',
+    '마감일순': 'deadline',
   };
 
   @override
