@@ -1,14 +1,13 @@
 import 'package:yahoo_finance_data_reader/yahoo_finance_data_reader.dart';
 
 class YFinanceService {
-  
   static YFinanceService? _instance;
   late final YahooFinanceDailyReader _yahooFinanceDailyReader;
-  
+
   YFinanceService._internal() {
     _yahooFinanceDailyReader = const YahooFinanceDailyReader();
   }
-  
+
   static YFinanceService getInstance() {
     _instance ??= YFinanceService._internal();
     return _instance!;
@@ -20,7 +19,7 @@ class YFinanceService {
     try {
       final List<Future<MapEntry<String, YahooFinanceResponse>>> futures = tickers.entries.map((entry) async {
         final [equity, ticker] = [entry.key, entry.value];
-        final response = await _yahooFinanceDailyReader.getDailyDTOs(ticker, startDate: now.subtract(const Duration(days: 365 * 3)));
+        final response = await _yahooFinanceDailyReader.getDailyDTOs(ticker, startDate: now.subtract(const Duration(days: 365 * 5)));
         return MapEntry<String, YahooFinanceResponse>(equity, response);
       }).toList();
 
