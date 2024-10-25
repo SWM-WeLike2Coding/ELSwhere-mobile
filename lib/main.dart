@@ -70,7 +70,7 @@ Future<void> initApp() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  final fcmToken = await FirebaseMessaging.instance.getToken();
+  // final fcmToken = await FirebaseMessaging.instance.getToken();
   // FirebaseMessaging.instance.onTokenRefresh
   //   .listen((fcmToken) {
   //
@@ -97,7 +97,8 @@ Future<void> _checkAppVersion() async {
     minimumFetchInterval: const Duration(seconds: 10),
   ));
   remoteConfig.setDefaults({
-    'latest_version': '0.0.0',
+    'latest_version_android': '0.0.0',
+    'latest_version_ios': '0.0.0',
   });
   await remoteConfig.fetchAndActivate();
 
