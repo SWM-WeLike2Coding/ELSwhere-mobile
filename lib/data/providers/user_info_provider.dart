@@ -72,7 +72,7 @@ class UserInfoProvider with ChangeNotifier {
       if (e.response?.statusCode == 404) {
         print('Error fetching User: Resource not found (404)');
       } else {
-        print('Error fetching User: ${e.message}');
+        print('Error fetching User: ${e.message}, ${e.response?.data['errorMessage'] ?? ''}');
       }
       return false;
     } catch (e) {
