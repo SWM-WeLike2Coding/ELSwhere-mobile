@@ -25,6 +25,7 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
   bool isLiked = false;
   bool isBookmarked = false;
   bool isHeld = false;
+  bool _isLoading = true;
 
   final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
@@ -35,11 +36,17 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
     );
   }
 
+  Future<void> _initData() async {
+    await productProvider.fetchPriceRatio(productProvider.product!.id);
+    setState(() => _isLoading = false);
+  }
+
   @override
   void initState() {
     super.initState();
     userProvider = Provider.of<UserInfoProvider>(context, listen: false);
     productProvider = Provider.of<ELSProductProvider>(context, listen: false);
+    _initData();
     _setCurrentScreen();
   }
 
@@ -112,24 +119,21 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: productProvider.fetchPriceRatio(productProvider.product!.id),
-      builder: (context, snapshot) => Consumer<ELSProductProvider>(
-        builder: (context, productProvider, child) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const WaitingScreen(comment: '기준가 정보를 받아오는 중입니다');
-          }
-          isLiked = productProvider.isLiked;
-          isBookmarked = productProvider.isBookmarked;
-          isHeld = productProvider.isHeld;
+    return Consumer<ELSProductProvider>(
+      builder: (context, productProvider, child) {
+        if (_isLoading) {
+          return const WaitingScreen(comment: '기준가 정보를 받아오는 중입니다');
+        }
+        isLiked = productProvider.isLiked;
+        isBookmarked = productProvider.isBookmarked;
+        isHeld = productProvider.isHeld;
 
-          return Scaffold(
-            backgroundColor: AppColors.gray50,
-            appBar: _buildAppBar(),
-            body: const ELSProductDetailView(),
-          );
-        },
-      ),
+        return Scaffold(
+          backgroundColor: AppColors.gray50,
+          appBar: _buildAppBar(),
+          body: const ELSProductDetailView(),
+        );
+      },
     );
   }
 
