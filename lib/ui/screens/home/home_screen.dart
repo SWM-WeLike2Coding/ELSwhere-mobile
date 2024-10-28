@@ -1,4 +1,5 @@
 import 'package:elswhere/config/strings.dart';
+import 'package:elswhere/data/models/dtos/user/summarized_user_holding_dto.dart';
 import 'package:elswhere/data/providers/hot_products_provider.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
 import 'package:elswhere/ui/screens/home/attention_products_screen.dart';
@@ -49,6 +50,23 @@ class _HomeScreenState extends State<HomeScreen> {
       yieldIfConditionsMet: interestingProduct.yieldIfConditionsMet,
       subscriptionStartDate: interestingProduct.subscriptionStartDate,
       subscriptionEndDate: interestingProduct.subscriptionEndDate,
+    );
+  }
+
+  ELSProductForScheduleDto convertHoldingProductToProductForSchedule(SummarizedUserHoldingDto holdingProduct) {
+    return ELSProductForScheduleDto(
+      isHolding: true,
+      productId: holdingProduct.productId,
+      holdingId: holdingProduct.holdingId,
+      issuer: holdingProduct.issuer,
+      name: holdingProduct.name,
+      productType: holdingProduct.productType,
+      equities: '',
+      yieldIfConditionsMet: holdingProduct.yieldIfConditionsMet,
+      subscriptionStartDate: DateTime.now(),
+      subscriptionEndDate: holdingProduct.nextRepaymentEvaluationDate,
+      investingAmount: holdingProduct.price,
+      currentEarningPercent: holdingProduct.recentAndInitialPriceRatio,
     );
   }
 
@@ -465,6 +483,8 @@ class _HomeScreenState extends State<HomeScreen> {
       return subscriptionEndDate.difference(now).inDays;
     }
 
+    NumberFormat format = NumberFormat.decimalPattern('ko');
+
     if (product == null) {
       return SizedBox(
         width: double.infinity,
@@ -542,18 +562,32 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SizedBox(
                         height: 2,
                       ),
-                      Text(
-                        product.equities.replaceAll('/', '·'),
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12,
-                          height: 14.16 / 12,
-                          letterSpacing: -0.02,
-                          color: AppColors.gray300,
+                      if (product.investingAmount != null)
+                        Text(
+                          '${format.format(product.investingAmount)}원',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12,
+                            height: 14.16 / 12,
+                            letterSpacing: -0.02,
+                            color: AppColors.gray300,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
                         ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                      ),
+                      if (product.investingAmount == null)
+                        Text(
+                          product.equities.replaceAll('/', '·'),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12,
+                            height: 14.16 / 12,
+                            letterSpacing: -0.02,
+                            color: AppColors.gray300,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
                     ],
                   ),
                 ),
@@ -603,6 +637,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Consumer<ELSProductProvider>(
       builder: (context, provider, child) {
         var interestingProducts = Provider.of<ELSProductProvider>(context, listen: false).interestingProducts;
+        var holdingProducts = Provider.of<UserInfoProvider>(context, listen: false).holdingProducts;
         Map<DateTime, List<ELSProductForScheduleDto>> tempScheduleMap = {};
 
         for (int i = 0; i < interestingProducts.length; i++) {
@@ -614,6 +649,15 @@ class _HomeScreenState extends State<HomeScreen> {
         }
 
         // 나중에 여기에 보유 상품 관련 정보들도 DTO 변환해서 tempScheduleMap에 넣어줘야함!!!
+        if (holdingProducts != null) {
+          for (int i = 0; i < holdingProducts.length; i++) {
+            if (tempScheduleMap.containsKey(holdingProducts[i].nextRepaymentEvaluationDate)) {
+              tempScheduleMap[holdingProducts[i].nextRepaymentEvaluationDate]!.add(convertHoldingProductToProductForSchedule(holdingProducts[i]));
+            } else {
+              tempScheduleMap[holdingProducts[i].nextRepaymentEvaluationDate] = [convertHoldingProductToProductForSchedule(holdingProducts[i])];
+            }
+          }
+        }
 
         List<DateTime> sortedDates = tempScheduleMap.keys.toList()..sort();
         Map<DateTime, List<ELSProductForScheduleDto>> scheduleMap = {for (var key in sortedDates) key: tempScheduleMap[key]!};
