@@ -38,3 +38,9 @@ const String LABEL_LOW_RISK = "저위험";
 const String LABEL_MODERATE_RISK = "중위험";
 const String LABEL_HIGH_RISK = "고위험";
 const String LABEL_VERY_HIGH_RISK = "초고위험";
+
+// 상품 화면
+const String LABEL_SEARCH_TEXT_FILED = "상품 상세 검색";
+const String LABEL_DETAIL_SEARCH = "기초자산명을 입력하세요";
+const String LABEL_SEARCH_BUTTON = "상품 검색";
+const String MSG_INVALID_DATE = "마감일이 시작일보다 빠를 수 없습니다.";
