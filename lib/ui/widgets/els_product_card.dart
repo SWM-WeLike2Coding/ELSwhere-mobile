@@ -357,6 +357,9 @@ import 'package:elswhere/data/providers/els_products_provider.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
 import 'package:elswhere/ui/screens/product/compare_product_screen.dart';
 import 'package:elswhere/ui/screens/product/els_product_detail_screen.dart';
+import 'package:elswhere/ui/widgets/danger_degree_box.dart';
+import 'package:elswhere/utils/ai_result_converter.dart';
+import 'package:elswhere/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -392,6 +395,7 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
   late ELSProductProvider productProvider;
   late ELSProductsProvider productsProvider;
   late UserInfoProvider userProvider;
+  late Map<String, dynamic>? aiResult;
 
   final double cardHeight = 105.0;
 
@@ -403,6 +407,7 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
     productProvider = Provider.of<ELSProductProvider>(context, listen: false);
     productsProvider = Provider.of<ELSOnSaleProductsProvider>(context, listen: false);
     userProvider = Provider.of<UserInfoProvider>(context, listen: false);
+    aiResult = AIResultConverter.getResultMap(product.safetyScore);
   }
 
   void onItemTapped() {
@@ -626,7 +631,7 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
               height: 16,
               child: LayoutBuilder(
                 builder: (context, constraints) {
-                  final isOverflowing = _isTextOverflowing(widget.product.equities, constraints.maxWidth);
+                  final isOverflowing = isTextOverflowing(widget.product.equities, constraints.maxWidth, textTheme.M_14.copyWith(color: AppColors.gray400));
                   return isOverflowing
                       ? Marquee(
                           text: widget.product.equities,
@@ -649,7 +654,7 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
         ),
         Text(
           '${productType[widget.product.productType]!}형',
-          style: const TextStyle(color: AppColors.mainBlue),
+          style: textTheme.M_14.copyWith(color: AppColors.mainBlue),
         ),
       ],
     );
@@ -657,36 +662,33 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
 
   Widget _buildYieldInfo(int dayDifference) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        Text(
-          '연 ${widget.product.yieldIfConditionsMet}%',
-          style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-                letterSpacing: -0.02,
-                fontSize: 18,
-                color: AppColors.contentRed,
-              ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              '연 ${widget.product.yieldIfConditionsMet}%',
+              style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: -0.02,
+                    fontSize: 18,
+                    color: AppColors.contentRed,
+                  ),
+            ),
+            const SizedBox(height: 5),
+            Text(
+              '${dayDifference != 0 ? '${dayDifference.abs()}일 ${dayDifference < 0 ? '전' : '후'}' : '오늘'} 마감',
+              style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                    fontSize: 14,
+                    color: AppColors.gray600,
+                  ),
+            ),
+          ],
         ),
-        const SizedBox(height: 5),
-        Text(
-          '${dayDifference != 0 ? '${dayDifference.abs()}일 ${dayDifference < 0 ? '전' : '후'}' : '오늘'} 마감',
-          style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                fontSize: 14,
-                color: AppColors.gray600,
-              ),
-        ),
+        if (aiResult != null) DangerDegreeBox(aiResult: aiResult!, textStyle: textTheme.M_12),
       ],
     );
-  }
-
-  bool _isTextOverflowing(String text, double maxWidth) {
-    final textPainter = TextPainter(
-      text: TextSpan(text: text, style: const TextStyle(fontSize: 14)),
-      maxLines: 1,
-      textDirection: ui.TextDirection.ltr,
-    )..layout(maxWidth: maxWidth);
-
-    return textPainter.didExceedMaxLines;
   }
 }

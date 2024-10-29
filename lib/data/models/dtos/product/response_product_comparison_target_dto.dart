@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:elswhere/data/models/dtos/product/summarized_product_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -18,6 +20,7 @@ class ResponseProductComparisonTargetDto extends SummarizedProductDto {
   final double maximumLossRate;
   final DateTime subscriptionStartDate;
   final DateTime subscriptionEndDate;
+  final double? safetyScore;
 
   ResponseProductComparisonTargetDto({
     required this.id,
@@ -32,6 +35,7 @@ class ResponseProductComparisonTargetDto extends SummarizedProductDto {
     required this.maximumLossRate,
     required this.subscriptionStartDate,
     required this.subscriptionEndDate,
+    this.safetyScore,
   }) : super(
           id: id,
           issuer: issuer,
@@ -42,6 +46,7 @@ class ResponseProductComparisonTargetDto extends SummarizedProductDto {
           subscriptionStartDate: subscriptionStartDate,
           subscriptionEndDate: subscriptionEndDate,
           knockIn: knockIn,
+          safetyScore: safetyScore,
         );
 
   factory ResponseProductComparisonTargetDto.fromJson(Map<String, dynamic> json) => _$ResponseProductComparisonTargetDtoFromJson(json);

@@ -6,9 +6,7 @@ part of 'summarized_product_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-SummarizedProductDto _$SummarizedProductDtoFromJson(
-        Map<String, dynamic> json) =>
-    SummarizedProductDto(
+SummarizedProductDto _$SummarizedProductDtoFromJson(Map<String, dynamic> json) => SummarizedProductDto(
       id: (json['id'] as num).toInt(),
       issuer: json['issuer'] as String,
       name: json['name'] as String,
@@ -16,15 +14,12 @@ SummarizedProductDto _$SummarizedProductDtoFromJson(
       equities: json['equities'] as String,
       yieldIfConditionsMet: (json['yieldIfConditionsMet'] as num).toDouble(),
       knockIn: (json['knockIn'] as num?)?.toInt(),
-      subscriptionStartDate:
-          DateTime.parse(json['subscriptionStartDate'] as String),
-      subscriptionEndDate:
-          DateTime.parse(json['subscriptionEndDate'] as String),
+      subscriptionStartDate: DateTime.parse(json['subscriptionStartDate'] as String),
+      subscriptionEndDate: DateTime.parse(json['subscriptionEndDate'] as String),
+      safetyScore: (json['safetyScore'] as num?)?.toDouble(),
     );
 
-Map<String, dynamic> _$SummarizedProductDtoToJson(
-        SummarizedProductDto instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$SummarizedProductDtoToJson(SummarizedProductDto instance) => <String, dynamic>{
       'id': instance.id,
       'issuer': instance.issuer,
       'name': instance.name,
@@ -34,4 +29,5 @@ Map<String, dynamic> _$SummarizedProductDtoToJson(
       'knockIn': instance.knockIn,
       'subscriptionStartDate': instance.subscriptionStartDate.toIso8601String(),
       'subscriptionEndDate': instance.subscriptionEndDate.toIso8601String(),
+      'safetyScore': instance.safetyScore,
     };

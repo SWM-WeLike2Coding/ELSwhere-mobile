@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'summarized_product_dto.g.dart';
@@ -13,6 +15,7 @@ class SummarizedProductDto {
   final int? knockIn;
   final DateTime subscriptionStartDate;
   final DateTime subscriptionEndDate;
+  final double? safetyScore;
 
   SummarizedProductDto({
     required this.id,
@@ -24,6 +27,7 @@ class SummarizedProductDto {
     this.knockIn,
     required this.subscriptionStartDate,
     required this.subscriptionEndDate,
+    this.safetyScore,
   });
 
   factory SummarizedProductDto.fromJson(Map<String, dynamic> json) => _$SummarizedProductDtoFromJson(json);
