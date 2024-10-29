@@ -1,5 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/config/strings.dart';
 import 'package:elswhere/data/models/dtos/product/response_single_product_dto.dart';
 import 'package:elswhere/data/models/dtos/product/summarized_product_dto.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
@@ -7,6 +8,7 @@ import 'package:elswhere/data/providers/els_products_provider.dart';
 import 'package:elswhere/ui/screens/home/notification_screen.dart';
 import 'package:elswhere/ui/widgets/els_product_card.dart';
 import 'package:elswhere/ui/widgets/stock_index_card_swiper.dart';
+import 'package:elswhere/utils/utils.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -94,6 +96,7 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
 
   @override
   Widget build(BuildContext context) {
+    final maxWidth = MediaQuery.of(context).size.width;
     print('비교중?: $nowComparing');
     return Scaffold(
       appBar: _buildAppBar(),
@@ -311,6 +314,40 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.gray800,
+      ),
+    );
+  }
+
+  Widget _buildWarningPhrase({required double maxWidth}) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ClipRRect(
+        borderRadius: borderRadiusCircular8,
+        child: Container(
+          color: AppColors.gray500,
+          padding: edgeInsetsAll8,
+          width: maxWidth - 32,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Icons.warning_amber_rounded,
+                color: AppColors.contentYellow,
+              ),
+              const SizedBox(width: 8),
+              getMarqueeIfOverflow(
+                maxWidth: maxWidth - 80,
+                height: 20,
+                text: MSG_ANALYSIS_NOT_YET,
+                style: textTheme.M_14.copyWith(color: Colors.white),
+              ),
+              // Text(
+              //   MSG_ANALYSIS_NOT_YET,
+              //   style: textTheme.M_14.copyWith(color: Colors.white),
+              // )
+            ],
+          ),
+        ),
       ),
     );
   }

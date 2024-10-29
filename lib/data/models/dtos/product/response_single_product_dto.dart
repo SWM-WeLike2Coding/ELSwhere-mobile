@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'response_single_product_dto.g.dart';
@@ -28,6 +30,7 @@ class ResponseSingleProductDto {
   final Map<String, String> equityTickerSymbols;
   final int likes;
   final bool liked;
+  final double? safetyScore;
 
   ResponseSingleProductDto({
     required this.id,
@@ -54,6 +57,7 @@ class ResponseSingleProductDto {
     required this.equityTickerSymbols,
     required this.likes,
     required this.liked,
+    this.safetyScore,
   });
 
   factory ResponseSingleProductDto.fromJson(Map<String, dynamic> json) => _$ResponseSingleProductDtoFromJson(json);

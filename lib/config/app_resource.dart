@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -123,6 +125,11 @@ sealed class AppColors {
   static const Color textFieldWhite = Color(0xFFF3F3F3);
   static const Color backgroundProfile = Color(0xFFD1E0FB);
 
+  static const Color lowRisk = Color(0xFF388E3C);
+  static const Color moderateRisk = Color(0xFFFBC02D);
+  static const Color highRisk = Color(0xFFE65100);
+  static const Color veryHighRisk = Color(0xFFD32F2F);
+
   static const Color mainBlue = Color(0xFF1C6BF9); // 메인 색상
 
   static const Color gray50 = Color(0xFFF5F6F6);
@@ -170,6 +177,7 @@ const edgeInsetsAll16 = EdgeInsets.all(16);
 const edgeInsetsAll24 = EdgeInsets.all(24);
 
 const borderRadiusCircular10 = BorderRadius.all(Radius.circular(10));
+const borderRadiusCircular8 = BorderRadius.all(Radius.circular(8));
 
 late final FlutterSecureStorage storage;
 

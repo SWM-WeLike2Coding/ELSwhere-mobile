@@ -10,7 +10,9 @@ import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
 import 'package:elswhere/ui/views/product/add_holding_product_modal.dart';
 import 'package:elswhere/ui/views/product/stock_price_graph_view.dart';
+import 'package:elswhere/ui/widgets/danger_degree_box.dart';
 import 'package:elswhere/ui/widgets/price_ratio_table.dart';
+import 'package:elswhere/utils/ai_result_converter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
@@ -29,8 +31,10 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
   late ELSProductProvider productProvider;
   late UserInfoProvider userProvider;
   late OverlayPortalController _overlayPortalController;
+  late OverlayPortalController _aiOverlayPortalController;
   // late AnimatedDigitController _animatedDigitController;
   ResponseSingleProductDto? product;
+  Map<String, dynamic>? aiResult;
   bool isHeld = false;
   bool _isExpanded = true;
 
@@ -40,6 +44,10 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
     productProvider = Provider.of<ELSProductProvider>(context, listen: false);
     userProvider = Provider.of<UserInfoProvider>(context, listen: false);
     _overlayPortalController = OverlayPortalController();
+    _aiOverlayPortalController = OverlayPortalController();
+    product = productProvider.product!;
+    isHeld = productProvider.isHeld;
+    aiResult = AIResultConverter.getResultMap(product!.safetyScore);
   }
 
   @override
@@ -51,8 +59,6 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
         } else if (productProvider.product == null) {
           return const Center(child: Text('상품이 존재하지 않습니다.'));
         }
-        product = productProvider.product!;
-        isHeld = productProvider.isHeld;
 
         print('보유중인가?: $isHeld');
 
@@ -69,6 +75,10 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildProductTitle(width),
+                    if (aiResult != null) ...[
+                      const SizedBox(height: 8),
+                      _buildDangerDegree(),
+                    ],
                     const SizedBox(height: 48),
                     _buildInvestmentStatusWidget(),
                     Row(
@@ -119,6 +129,79 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
         );
       });
     });
+  }
+
+  Widget _buildDangerDegree() {
+    return Column(
+      children: [
+        Row(
+          children: [
+            DangerDegreeBox(aiResult: aiResult!, textStyle: textTheme.M_18),
+            const SizedBox(width: 8),
+            OverlayPortal(
+              controller: _aiOverlayPortalController,
+              overlayChildBuilder: (context) {
+                return Positioned(
+                  top: 30,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Padding(
+                      padding: edgeInsetsAll24,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Container(
+                          color: Colors.white,
+                          child: Padding(
+                            padding: edgeInsetsAll16,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                GestureDetector(
+                                  onTap: _aiOverlayPortalController.hide,
+                                  child: const Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 4),
+                                    child: Icon(Icons.close),
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  MSG_DESCRIPTION_AI,
+                                  style: textTheme.headlineSmall,
+                                  softWrap: true,
+                                  maxLines: null,
+                                  overflow: TextOverflow.visible,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+              child: SizedBox(
+                width: 24,
+                height: 24,
+                child: GestureDetector(
+                  onTap: _aiOverlayPortalController.toggle,
+                  child: CircleAvatar(
+                    backgroundColor: AppColors.gray100,
+                    child: Text(
+                      '?',
+                      style: textTheme.labelSmall!.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      ],
+    );
   }
 
   Widget _buildProductTitle(double width) {

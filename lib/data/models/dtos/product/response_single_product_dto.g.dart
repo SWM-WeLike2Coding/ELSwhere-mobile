@@ -6,9 +6,7 @@ part of 'response_single_product_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ResponseSingleProductDto _$ResponseSingleProductDtoFromJson(
-        Map<String, dynamic> json) =>
-    ResponseSingleProductDto(
+ResponseSingleProductDto _$ResponseSingleProductDtoFromJson(Map<String, dynamic> json) => ResponseSingleProductDto(
       id: (json['id'] as num).toInt(),
       issuer: json['issuer'] as String,
       name: json['name'] as String,
@@ -16,32 +14,27 @@ ResponseSingleProductDto _$ResponseSingleProductDtoFromJson(
       equityCount: (json['equityCount'] as num).toInt(),
       knockIn: (json['knockIn'] as num?)?.toInt(),
       volatilites: json['volatilites'] as String,
-      earlyRepaymentEvaluationDates:
-          json['earlyRepaymentEvaluationDates'] as String?,
+      earlyRepaymentEvaluationDates: json['earlyRepaymentEvaluationDates'] as String?,
       issuedDate: json['issuedDate'] as String,
       maturityDate: json['maturityDate'] as String,
       yieldIfConditionsMet: (json['yieldIfConditionsMet'] as num).toDouble(),
       maximumLossRate: (json['maximumLossRate'] as num).toDouble(),
       subscriptionStartDate: json['subscriptionStartDate'] as String,
       subscriptionEndDate: json['subscriptionEndDate'] as String,
-      initialBasePriceEvaluationDate:
-          json['initialBasePriceEvaluationDate'] as String?,
+      initialBasePriceEvaluationDate: json['initialBasePriceEvaluationDate'] as String?,
       type: json['type'] as String,
       productFullInfo: json['productFullInfo'] as String,
       productInfo: json['productInfo'] as String?,
       remarks: json['remarks'] as String,
       link: json['link'] as String,
-      summaryInvestmentProspectusLink:
-          json['summaryInvestmentProspectusLink'] as String,
-      equityTickerSymbols:
-          Map<String, String>.from(json['equityTickerSymbols'] as Map),
+      summaryInvestmentProspectusLink: json['summaryInvestmentProspectusLink'] as String,
+      equityTickerSymbols: Map<String, String>.from(json['equityTickerSymbols'] as Map),
       likes: (json['likes'] as num).toInt(),
       liked: json['liked'] as bool,
+      safetyScore: (json['safetyScore'] as num?)?.toDouble(),
     );
 
-Map<String, dynamic> _$ResponseSingleProductDtoToJson(
-        ResponseSingleProductDto instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$ResponseSingleProductDtoToJson(ResponseSingleProductDto instance) => <String, dynamic>{
       'id': instance.id,
       'issuer': instance.issuer,
       'name': instance.name,
@@ -62,9 +55,9 @@ Map<String, dynamic> _$ResponseSingleProductDtoToJson(
       'productInfo': instance.productInfo,
       'remarks': instance.remarks,
       'link': instance.link,
-      'summaryInvestmentProspectusLink':
-          instance.summaryInvestmentProspectusLink,
+      'summaryInvestmentProspectusLink': instance.summaryInvestmentProspectusLink,
       'equityTickerSymbols': instance.equityTickerSymbols,
       'likes': instance.likes,
       'liked': instance.liked,
+      'safetyScore': instance.safetyScore,
     };
