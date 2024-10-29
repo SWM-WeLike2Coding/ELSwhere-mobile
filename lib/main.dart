@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/config.dart';
+import 'package:elswhere/config/flavor_config.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/data/providers/els_products_provider.dart';
 import 'package:elswhere/data/providers/hot_products_provider.dart';
@@ -31,11 +33,11 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'utils/firebase_options.dart';
 import 'package:firebase_in_app_messaging/firebase_in_app_messaging.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import './firebase_options.dart';
 
-void main() async {
+FutureOr<void> main() async {
   try {
     await initApp();
     await _checkAppVersion();
@@ -50,8 +52,10 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterL
 
 Future<void> initApp() async {
   await dotenv.load(fileName: ".env");
-  baseUrl = dotenv.env['ELS_BASE_URL']!;
-  loginEndpoint = dotenv.env['ELS_LOGIN_ENDPOINT']!;
+  final config = Config.instance;
+
+  baseUrl = config.baseUrl;
+  loginEndpoint = config.loginEndpoint;
   // await storage.deleteAll();
 
   storage = const FlutterSecureStorage();

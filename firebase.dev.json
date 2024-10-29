@@ -1,0 +1,30 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "elswhere-dev",
+          "appId": "1:945515654091:android:a01d936d4e1eed1dc6a44e",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "elswhere-dev",
+          "appId": "1:945515654091:ios:3c7eac7532c5eac7c6a44e",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "elswhere-dev",
+          "configurations": {
+            "android": "1:945515654091:android:a01d936d4e1eed1dc6a44e",
+            "ios": "1:945515654091:ios:3c7eac7532c5eac7c6a44e"
+          }
+        }
+      }
+    }
+  }
+}
