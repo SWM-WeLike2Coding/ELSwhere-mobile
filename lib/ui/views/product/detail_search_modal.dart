@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:elswhere/config/app_resource.dart';
-import 'package:elswhere/config/strings.dart';
 import 'package:elswhere/data/models/dtos/product/request_product_search_dto.dart';
 import 'package:elswhere/data/models/dtos/product/response_issuer_dto.dart';
 import 'package:elswhere/data/providers/els_products_provider.dart';
@@ -394,7 +393,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
               if (startDate.isAfter(endDate)) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text(MSG_INVALID_DATE),
+                    content: Text('마감일이 시작일보다 빠를 수 없습니다.'),
                   ),
                 );
                 return;
@@ -412,7 +411,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
             backgroundColor: AppColors.mainBlue,
           ),
           child: const Text(
-            LABEL_SEARCH_BUTTON,
+            '상품 검색',
             style: TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 16,
@@ -440,7 +439,7 @@ class _DetailSearchModalState extends State<DetailSearchModal> {
               child: TextField(
                 controller: _equityController,
                 decoration: InputDecoration(
-                  hintText: LABEL_DETAIL_SEARCH,
+                  hintText: '기초자산명을 검색해보세요',
                   hintStyle: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,

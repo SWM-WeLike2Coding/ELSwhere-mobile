@@ -114,7 +114,10 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('선택한 상품', style: textTheme.displayMedium!.copyWith(fontWeight: FontWeight.w600)),
+                    child: Text('선택한 상품',
+                        style: textTheme.displayMedium!.copyWith(
+                          fontWeight: FontWeight.w600,
+                        )),
                   ),
                 ],
               ),
