@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "elswhere-dev",
+    "dev": "elswhere-dev",              
+    "prod": "elswhere-adaf5"
+  }
+}
