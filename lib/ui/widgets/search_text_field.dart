@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/config/strings.dart';
 import 'package:elswhere/ui/screens/product/search_product_screen.dart';
 import 'package:elswhere/ui/views/product/detail_search_modal.dart';
 import 'package:flutter/material.dart';
@@ -67,7 +68,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
             Icons.search,
             color: Colors.black.withOpacity(0.4),
           ),
-          hintText: '상품 검색',
+          hintText: LABEL_SEARCH_TEXT_FILED,
           hintStyle: const TextStyle(color: AppColors.gray600, letterSpacing: -0.02),
           border: const OutlineInputBorder(
             borderRadius: borderRadiusCircular10,
