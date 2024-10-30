@@ -78,6 +78,7 @@ sealed class Assets {
   static const String iconSCFirst = "assets/icons/company/sc제일.svg";
   static const String iconSK = "assets/icons/company/sk.svg";
   static const String iconVisa = "assets/icons/company/visa.svg";
+  static const String iconiM = "assets/icons/company/iM.svg";
 
   static const Map<String, String> issuerIconMap = {
     "DB금융투자": "assets/icons/company/db.svg",
@@ -96,6 +97,7 @@ sealed class Assets {
     "삼성증권": "assets/icons/company/삼성.svg",
     "신영증권": "assets/icons/company/신영.svg",
     "신한투자증권": "assets/icons/company/신한.svg",
+    "아이엠증권": "assets/icons/company/iM.svg",
     "유안타증권": "assets/icons/company/유안타.svg",
     "유진투자증권": "assets/icons/company/유진.svg",
     "케이프투자증권": "assets/icons/company/케이프.svg",
