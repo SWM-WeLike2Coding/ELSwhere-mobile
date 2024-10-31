@@ -13,6 +13,7 @@ import 'package:elswhere/ui/views/product/stock_price_graph_view.dart';
 import 'package:elswhere/ui/widgets/danger_degree_box.dart';
 import 'package:elswhere/ui/widgets/price_ratio_table.dart';
 import 'package:elswhere/utils/ai_result_converter.dart';
+import 'package:elswhere/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
@@ -75,7 +76,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildProductTitle(width),
-                    if (aiResult != null) ...[
+                    if (aiResult != null && isDateAfterOrSame(DateTime.parse(product!.subscriptionEndDate))) ...[
                       const SizedBox(height: 8),
                       _buildDangerDegree(),
                     ],

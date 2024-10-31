@@ -7,6 +7,8 @@ import 'package:elswhere/data/models/dtos/product/summarized_product_dto.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
 import 'package:elswhere/ui/screens/product/els_product_detail_screen.dart';
+import 'package:elswhere/ui/widgets/danger_degree_box.dart';
+import 'package:elswhere/utils/ai_result_converter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -27,6 +29,7 @@ class HotProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dayDifference = product.subscriptionEndDate.difference(DateTime.now()).inDays;
+    Map<String, dynamic>? aiResult = AIResultConverter.getResultMap(product.safetyScore);
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
@@ -151,25 +154,32 @@ class HotProductCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Text(
-                          '연 ${product.yieldIfConditionsMet}%',
-                          style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: -0.02,
-                                fontSize: 18,
-                                color: AppColors.contentRed,
-                              ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              '연 ${product.yieldIfConditionsMet}%',
+                              style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: -0.02,
+                                    fontSize: 18,
+                                    color: AppColors.contentRed,
+                                  ),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              '${dayDifference != 0 ? '${dayDifference.abs()}일 ${dayDifference < 0 ? '전' : '후'}' : '오늘'} 마감',
+                              style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                                    fontSize: 14,
+                                    color: AppColors.gray600,
+                                  ),
+                            )
+                          ],
                         ),
-                        const SizedBox(height: 5),
-                        Text(
-                          '${dayDifference != 0 ? '${dayDifference.abs()}일 ${dayDifference < 0 ? '전' : '후'}' : '오늘'} 마감',
-                          style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                                fontSize: 14,
-                                color: AppColors.gray600,
-                              ),
-                        )
+                        if (aiResult != null && dayDifference >= 0) DangerDegreeBox(aiResult: aiResult, textStyle: textTheme.M_12),
                       ],
                     ),
                   ],
