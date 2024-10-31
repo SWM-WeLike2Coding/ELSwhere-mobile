@@ -1,5 +1,6 @@
 import 'package:elswhere/data/models/dtos/product/request_product_search_dto.dart';
 import 'package:elswhere/data/models/dtos/product/response_product_comparison_main_dto.dart';
+import 'package:elswhere/utils/utils.dart';
 import 'package:flutter/material.dart';
 import '../models/dtos/product/summarized_product_dto.dart';
 import '../services/product/els_product_service.dart';
@@ -86,7 +87,7 @@ class ELSProductsProvider extends ChangeNotifier {
       for (var e in responsePage.content) {
         print(e.equities.split('/').length);
       }
-      _products = responsePage.content.where((e) => status == 'on' ? e.subscriptionEndDate.compareTo(now) >= 0 : e.subscriptionEndDate.compareTo(now) < 0).toList();
+      _products = responsePage.content.where((e) => status == 'on' ? isDateAfterOrSame(e.subscriptionEndDate) : !isDateAfterOrSame(e.subscriptionEndDate)).toList();
     } catch (error) {
       print('Error fetching products: $error');
       // 에러 처리 로직 추가
@@ -113,6 +114,7 @@ class ELSProductsProvider extends ChangeNotifier {
   }
 
   Future<void> fetchProductByNumber(int number) async {
+    final now = DateTime.now();
     resetProducts();
     _isInit = false;
     _isLoading = true;
@@ -121,9 +123,15 @@ class ELSProductsProvider extends ChangeNotifier {
       final response = await _productService.fetchProductByNumber(number);
       final tempProductList = convertToSummarizedProductDtoList(response.data);
 
-      for (var tempProduct in tempProductList) {
-        _products.add(tempProduct);
-      }
+      _products = tempProductList.where((e) => status == 'on' ? isDateAfterOrSame(e.subscriptionEndDate) : !isDateAfterOrSame(e.subscriptionEndDate)).toList();
+
+      // for (var tempProduct in tempProductList) {
+      //   if (now.isAfter(tempProduct.subscriptionEndDate.copyWith())) {
+      //     if (!isOnsale) _products.add(tempProduct);
+      //   } else {
+      //     if (isOnsale) _products.add(tempProduct);
+      //   }
+      // }
     } catch (error) {
       print('Error fetching products: $error');
       // 에러 처리 로직 추가
