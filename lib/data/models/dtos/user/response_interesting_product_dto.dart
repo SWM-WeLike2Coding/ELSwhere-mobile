@@ -14,8 +14,7 @@ class ResponseInterestingProductDto {
   final int? knockIn;
   final DateTime subscriptionStartDate;
   final DateTime subscriptionEndDate;
-
-
+  final double? safetyScore;
 
   ResponseInterestingProductDto({
     required this.interestId,
@@ -28,6 +27,7 @@ class ResponseInterestingProductDto {
     this.knockIn,
     required this.subscriptionStartDate,
     required this.subscriptionEndDate,
+    this.safetyScore,
   });
 
   factory ResponseInterestingProductDto.fromJson(Map<String, dynamic> json) => _$ResponseInterestingProductDtoFromJson(json);

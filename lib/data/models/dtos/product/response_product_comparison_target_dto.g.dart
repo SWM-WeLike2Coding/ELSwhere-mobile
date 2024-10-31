@@ -6,7 +6,9 @@ part of 'response_product_comparison_target_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ResponseProductComparisonTargetDto _$ResponseProductComparisonTargetDtoFromJson(Map<String, dynamic> json) => ResponseProductComparisonTargetDto(
+ResponseProductComparisonTargetDto _$ResponseProductComparisonTargetDtoFromJson(
+        Map<String, dynamic> json) =>
+    ResponseProductComparisonTargetDto(
       id: (json['id'] as num).toInt(),
       issuer: json['issuer'] as String,
       name: json['name'] as String,
@@ -17,12 +19,16 @@ ResponseProductComparisonTargetDto _$ResponseProductComparisonTargetDtoFromJson(
       productInfo: json['productInfo'] as String?,
       knockIn: (json['knockIn'] as num?)?.toInt(),
       maximumLossRate: (json['maximumLossRate'] as num).toDouble(),
-      subscriptionStartDate: DateTime.parse(json['subscriptionStartDate'] as String),
-      subscriptionEndDate: DateTime.parse(json['subscriptionEndDate'] as String),
+      subscriptionStartDate:
+          DateTime.parse(json['subscriptionStartDate'] as String),
+      subscriptionEndDate:
+          DateTime.parse(json['subscriptionEndDate'] as String),
       safetyScore: (json['safetyScore'] as num?)?.toDouble(),
     );
 
-Map<String, dynamic> _$ResponseProductComparisonTargetDtoToJson(ResponseProductComparisonTargetDto instance) => <String, dynamic>{
+Map<String, dynamic> _$ResponseProductComparisonTargetDtoToJson(
+        ResponseProductComparisonTargetDto instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'issuer': instance.issuer,
       'name': instance.name,

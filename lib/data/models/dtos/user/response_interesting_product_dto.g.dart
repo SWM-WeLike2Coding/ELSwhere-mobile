@@ -21,6 +21,7 @@ ResponseInterestingProductDto _$ResponseInterestingProductDtoFromJson(
           DateTime.parse(json['subscriptionStartDate'] as String),
       subscriptionEndDate:
           DateTime.parse(json['subscriptionEndDate'] as String),
+      safetyScore: (json['safetyScore'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$ResponseInterestingProductDtoToJson(
@@ -36,4 +37,5 @@ Map<String, dynamic> _$ResponseInterestingProductDtoToJson(
       'knockIn': instance.knockIn,
       'subscriptionStartDate': instance.subscriptionStartDate.toIso8601String(),
       'subscriptionEndDate': instance.subscriptionEndDate.toIso8601String(),
+      'safetyScore': instance.safetyScore,
     };

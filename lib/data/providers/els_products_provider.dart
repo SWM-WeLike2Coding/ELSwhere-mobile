@@ -99,17 +99,20 @@ class ELSProductsProvider extends ChangeNotifier {
 
   List<SummarizedProductDto> convertToSummarizedProductDtoList(List<dynamic> data) {
     return data
-        .map((item) => SummarizedProductDto(
-              id: item['id'] as int,
-              issuer: item['issuer'] as String,
-              name: item['name'] as String,
-              productType: item['productType'] as String,
-              equities: item['equities'] as String,
-              yieldIfConditionsMet: (item['yieldIfConditionsMet'] as num).toDouble(),
-              knockIn: item['knockIn'] as int?,
-              subscriptionStartDate: DateFormat('yyyy-MM-dd').parse(item['subscriptionStartDate'] as String),
-              subscriptionEndDate: DateFormat('yyyy-MM-dd').parse(item['subscriptionEndDate'] as String),
-            ))
+        .map(
+          (item) => SummarizedProductDto(
+            id: item['id'] as int,
+            issuer: item['issuer'] as String,
+            name: item['name'] as String,
+            productType: item['productType'] as String,
+            equities: item['equities'] as String,
+            yieldIfConditionsMet: (item['yieldIfConditionsMet'] as num).toDouble(),
+            knockIn: item['knockIn'] as int?,
+            subscriptionStartDate: DateFormat('yyyy-MM-dd').parse(item['subscriptionStartDate'] as String),
+            subscriptionEndDate: DateFormat('yyyy-MM-dd').parse(item['subscriptionEndDate'] as String),
+            safetyScore: (item['safetyScore'] as num?)?.toDouble(),
+          ),
+        )
         .toList();
   }
 
