@@ -1,7 +1,12 @@
 import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/config/strings.dart';
+import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/ui/screens/other/waiting_screen.dart';
 import 'package:elswhere/ui/views/home/holding_products_list_view.dart';
+import 'package:elswhere/ui/widgets/custom_appbar.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HoldingProductsScreen extends StatefulWidget {
   const HoldingProductsScreen({super.key});
@@ -13,6 +18,7 @@ class HoldingProductsScreen extends StatefulWidget {
 class _HoldingProductsScreenState extends State<HoldingProductsScreen> {
   String type = 'latest';
   final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  late UserInfoProvider _userInfoProvider;
 
   Future<void> _setCurrentScreen() async {
     await analytics.logScreenView(
@@ -24,53 +30,67 @@ class _HoldingProductsScreenState extends State<HoldingProductsScreen> {
   @override
   void initState() {
     _setCurrentScreen();
+    _userInfoProvider = Provider.of<UserInfoProvider>(context, listen: false);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(72),
-        child: Container(
-          decoration: const BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                color: AppColors.gray50,
-                width: 1,
-              ),
+    return FutureBuilder(
+      future: _userInfoProvider.fetchHoldingProducts(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const WaitingScreen(comment: MSG_LOADING_HOLDING_PRODUCTS);
+        } else {
+          return Scaffold(
+            appBar: CustomAppBar(
+              leading: IconButton(icon: const Icon(Icons.arrow_back_rounded), onPressed: () => Navigator.pop(context)),
+              title: Text('보유 상품', style: textTheme.SM_18),
             ),
-          ),
-          child: AppBar(
-            leading: Padding(
-              padding: const EdgeInsets.only(left: 24.0), // 좌측 패딩을 추가
-              child: Align(
-                alignment: Alignment.center, // 아이콘을 수직 가운데 정렬
-                child: IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
+            // appBar: PreferredSize(
+            //   preferredSize: const Size.fromHeight(72),
+            //   child: Container(
+            //     decoration: const BoxDecoration(
+            //       border: Border(
+            //         bottom: BorderSide(
+            //           color: AppColors.gray50,
+            //           width: 1,
+            //         ),
+            //       ),
+            //     ),
+            //     child: AppBar(
+            //       leading: Padding(
+            //         padding: const EdgeInsets.only(left: 24.0), // 좌측 패딩을 추가
+            //         child: Align(
+            //           alignment: Alignment.center, // 아이콘을 수직 가운데 정렬
+            //           child: IconButton(
+            //             icon: const Icon(Icons.arrow_back),
+            //             onPressed: () {
+            //               Navigator.pop(context);
+            //             },
+            //           ),
+            //         ),
+            //       ),
+            //       title: const Text(
+            //         "보유 상품",
+            //         style: TextStyle(
+            //           fontWeight: FontWeight.w600,
+            //           fontSize: 18,
+            //         ),
+            //       ),
+            //       centerTitle: false,
+            //     ),
+            //   ),
+            // ),
+            body: Column(
+              children: [
+                _buildHoldingProductsString(),
+                HoldingProductsListView(),
+              ],
             ),
-            title: const Text(
-              "보유 상품",
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 18,
-              ),
-            ),
-            centerTitle: false,
-          ),
-        ),
-      ),
-      body: Column(
-        children: [
-          _buildHoldingProductsString(),
-          HoldingProductsListView(),
-        ],
-      ),
+          );
+        }
+      },
     );
   }
 }

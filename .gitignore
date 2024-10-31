@@ -80,4 +80,5 @@ local.properties
 /devtools_options.yaml
 /android/java_pid77905.hprof
 # /assets/*
-/android/app/release/app-release.aab
+/android/app/release/*.aab
+ios/Runner/GoogleService-Info.plist

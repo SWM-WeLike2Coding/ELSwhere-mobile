@@ -44,3 +44,6 @@ const String LABEL_SEARCH_TEXT_FILED = "상품 상세 검색";
 const String LABEL_DETAIL_SEARCH = "기초자산명을 입력하세요";
 const String LABEL_SEARCH_BUTTON = "상품 검색";
 const String MSG_INVALID_DATE = "마감일이 시작일보다 빠를 수 없습니다.";
+
+// 보유 상품 관련
+const String MSG_LOADING_HOLDING_PRODUCTS = "보유 상품을 불러오는 중입니다...";
