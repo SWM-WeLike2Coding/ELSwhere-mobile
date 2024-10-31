@@ -687,7 +687,7 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
             ),
           ],
         ),
-        if (aiResult != null) DangerDegreeBox(aiResult: aiResult!, textStyle: textTheme.M_12),
+        if (aiResult != null && isOnSale) DangerDegreeBox(aiResult: aiResult!, textStyle: textTheme.M_12),
       ],
     );
   }
