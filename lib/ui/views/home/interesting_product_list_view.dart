@@ -1,7 +1,7 @@
-
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/data/models/dtos/product/summarized_product_dto.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
+import 'package:elswhere/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +26,7 @@ class InterestingProductListView extends StatelessWidget {
       knockIn: interestingProduct.knockIn,
       subscriptionStartDate: interestingProduct.subscriptionStartDate,
       subscriptionEndDate: interestingProduct.subscriptionEndDate,
+      safetyScore: interestingProduct.safetyScore,
     );
   }
 
@@ -49,9 +50,7 @@ class InterestingProductListView extends StatelessWidget {
                 } else {
                   return NotificationListener<ScrollNotification>(
                     onNotification: (ScrollNotification scrollInfo) {
-                      if (!productProvider.isLoading &&
-                          scrollInfo.metrics.pixels ==
-                              scrollInfo.metrics.maxScrollExtent) {
+                      if (!productProvider.isLoading && scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
                         productProvider.fetchInterested();
                       }
                       return false;
@@ -64,9 +63,14 @@ class InterestingProductListView extends StatelessWidget {
                       child: ListView.builder(
                         itemCount: productProvider.interestingProducts.length,
                         itemBuilder: (context, index) {
+                          final product = productProvider.interestingProducts[index];
+                          final date = product.subscriptionEndDate;
+                          final isOnSale = isDateAfterOrSame(date);
                           return ELSProductCard(
-                            product: convertToSummarizedProduct(productProvider.interestingProducts[index]),
+                            key: ValueKey(product.productId),
+                            product: convertToSummarizedProduct(product),
                             index: index,
+                            isOnSale: isOnSale,
                           );
                         },
                       ),
