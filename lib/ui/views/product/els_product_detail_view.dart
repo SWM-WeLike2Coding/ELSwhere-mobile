@@ -45,9 +45,6 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
     userProvider = Provider.of<UserInfoProvider>(context, listen: false);
     _overlayPortalController = OverlayPortalController();
     _aiOverlayPortalController = OverlayPortalController();
-    product = productProvider.product!;
-    isHeld = productProvider.isHeld;
-    aiResult = AIResultConverter.getResultMap(product!.safetyScore);
   }
 
   @override
@@ -60,6 +57,9 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
           return const Center(child: Text('상품이 존재하지 않습니다.'));
         }
 
+        product = productProvider.product!;
+        isHeld = productProvider.isHeld;
+        aiResult = AIResultConverter.getResultMap(product!.safetyScore);
         print('보유중인가?: $isHeld');
 
         return LayoutBuilder(
