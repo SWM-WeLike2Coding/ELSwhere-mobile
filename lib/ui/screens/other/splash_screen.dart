@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -73,6 +74,43 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
+  Future<void> _getAnalysisResult() async {
+    log('분석 결과 불러오기');
+
+    // Base64 문자열 디코딩 함수
+    String fixBase64Padding(String base64String) {
+      // 길이가 4의 배수가 아닐 때 패딩 문자를 추가하여 문제 해결
+      int paddingLength = (4 - base64String.length % 4) % 4;
+      return base64String + ('=' * paddingLength);
+    }
+
+    // AI 파일 로드
+    try {
+      final base64ContentsAI = await rootBundle.loadString('assets/data/ai_result.txt');
+      log('AI 파일 로드 성공');
+
+      // Base64 디코딩 및 JSON 변환
+      final decodedJsonStringAI = utf8.decode(base64Decode(fixBase64Padding(base64ContentsAI)));
+      final List<Map<String, dynamic>> jsonMapAI = List<Map<String, dynamic>>.from(jsonDecode(decodedJsonStringAI));
+      aiData = jsonMapAI;
+    } catch (e) {
+      log('AI 파일 로드 오류: $e');
+    }
+
+    // MCS 파일 로드
+    try {
+      final base64ContentsMCS = await rootBundle.loadString('assets/data/mcs_result.txt');
+      log('MCS 파일 로드 성공');
+
+      // Base64 디코딩 및 JSON 변환
+      final decodedJsonStringMCS = utf8.decode(base64Decode(fixBase64Padding(base64ContentsMCS)));
+      final List<Map<String, dynamic>> jsonMapMCS = List<Map<String, dynamic>>.from(jsonDecode(decodedJsonStringMCS));
+      mcsData = jsonMapMCS;
+    } catch (e) {
+      log('MCS 파일 로드 오류: $e');
+    }
+  }
+
   bool _checkAppVersion() {
     List<int> remote = remoteLatestVersion.split(".").map((e) => int.parse(e)).toList();
     List<int> local = localLatestVersion.split(".").map((e) => int.parse(e)).toList();
@@ -93,7 +131,10 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: AppColors.mainBlue,
       body: FutureBuilder(
-        future: Future.wait([_checkUser(context, accessToken)]),
+        future: Future.wait([
+          _checkUser(context, accessToken),
+          _getAnalysisResult(),
+        ]),
         builder: (context, snapshot) {
           if (!_checkAppVersion()) {
             // 앱 버전이 일치하지 않으면 다이얼로그 띄우기
