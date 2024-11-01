@@ -2,6 +2,8 @@ import 'package:elswhere/data/models/dtos/user/response_investment_type_dto.dart
 import 'package:elswhere/data/providers/user_info_provider.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
@@ -15,14 +17,16 @@ class InvestmentPropensityScreen extends StatefulWidget {
 }
 
 class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen> {
+  final TextEditingController _controller = TextEditingController();
+
   int doesUserHaveExperience = -1; // 1이 경험 있음, 0은 없음
-  int preferredInvestmentType = -1; // 0: 1년미만, 1: 1~2년, 2: 3년이상
-  int riskTakingType = -1; // 0이 위험 감수형, 1은 안전추구형
+  int ristAppetiteType = -1; // 0: 초고위험, 1: 고위험, 2: 중위험, 3: 저위험
+  int preferredRedemptionPeriodType = -1; // 0이 위험 감수형, 1은 안전추구형
 
   bool _isAgreeBtnChecked = false;
 
   bool _isAllConditionSatisfied() {
-    if (_isAgreeBtnChecked && doesUserHaveExperience != -1 && riskTakingType != -1 && preferredInvestmentType != -1) {
+    if (_isAgreeBtnChecked && doesUserHaveExperience != -1 && preferredRedemptionPeriodType != -1 && ristAppetiteType != -1) {
       return true;
     } else {
       return false;
@@ -56,43 +60,55 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
     });
   }
 
-  void _handleInvestmentTypeButtonPress(String text) {
+  void _handleRiskAppetiteButtonPress(String text) {
     setState(() {
-      if (text == "1년 미만") {
-        if (preferredInvestmentType == 0) {
-          preferredInvestmentType = -1;
+      if (text == "초고위험") {
+        if (ristAppetiteType == 0) {
+          ristAppetiteType = -1;
         } else {
-          preferredInvestmentType = 0;
+          ristAppetiteType = 0;
         }
-      } else if (text == "1~2년") {
-        if (preferredInvestmentType == 1) {
-          preferredInvestmentType = -1;
+      } else if (text == "고위험") {
+        if (ristAppetiteType == 1) {
+          ristAppetiteType = -1;
         } else {
-          preferredInvestmentType = 1;
+          ristAppetiteType = 1;
         }
-      } else if (text == "3년 이상") {
-        if (preferredInvestmentType == 2) {
-          preferredInvestmentType = -1;
+      } else if (text == "중위험") {
+        if (ristAppetiteType == 2) {
+          ristAppetiteType = -1;
         } else {
-          preferredInvestmentType = 2;
+          ristAppetiteType = 2;
+        }
+      } else if (text == "저위험") {
+        if (ristAppetiteType == 3) {
+          ristAppetiteType = -1;
+        } else {
+          ristAppetiteType = 3;
         }
       }
     });
   }
 
-  void _handleRiskTakingAbilityButtonPress(String text) {
+  void _handlePreferredRedemptionPeriodButtonPress(String text) {
     setState(() {
-      if (text == "위험감수형") {
-        if (riskTakingType == 0) {
-          riskTakingType = -1;
+      if (text == "조기상환") {
+        if (preferredRedemptionPeriodType == 0) {
+          preferredRedemptionPeriodType = -1;
         } else {
-          riskTakingType = 0;
+          preferredRedemptionPeriodType = 0;
+        }
+      } else if (text == "만기상환") {
+        if (preferredRedemptionPeriodType == 1) {
+          preferredRedemptionPeriodType = -1;
+        } else {
+          preferredRedemptionPeriodType = 1;
         }
       } else {
-        if (riskTakingType == 1) {
-          riskTakingType = -1;
+        if (preferredRedemptionPeriodType == 2) {
+          preferredRedemptionPeriodType = -1;
         } else {
-          riskTakingType = 1;
+          preferredRedemptionPeriodType = 2;
         }
       }
     });
@@ -112,17 +128,17 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
 
     if (interestingProducts != null) {
       if (interestingProducts.riskTakingAbility == 'RISK_TAKING_TYPE') {
-        riskTakingType = 0;
+        preferredRedemptionPeriodType = 0;
       } else if (interestingProducts.riskTakingAbility == 'STABILITY_SEEKING_TYPE') {
-        riskTakingType = 1;
+        preferredRedemptionPeriodType = 1;
       }
 
       if (interestingProducts.investmentPreferredPeriod == 'LESS_THAN_A_YEAR') {
-        preferredInvestmentType = 0;
+        ristAppetiteType = 0;
       } else if (interestingProducts.investmentPreferredPeriod == 'A_YEAR_OR_TWO') {
-        preferredInvestmentType = 1;
+        ristAppetiteType = 1;
       } else if (interestingProducts.investmentPreferredPeriod == 'MORE_THAN_THREE_YEARS') {
-        preferredInvestmentType = 2;
+        ristAppetiteType = 2;
       }
 
       if (interestingProducts.investmentExperience == 'YES') {
@@ -136,39 +152,7 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(72),
-        child: Container(
-          decoration: const BoxDecoration(
-              border: Border(
-                  bottom: BorderSide(
-            color: AppColors.gray50,
-            width: 1,
-          ))),
-          child: AppBar(
-            leading: Padding(
-              padding: const EdgeInsets.only(left: 24.0), // 좌측 패딩을 추가
-              child: Align(
-                alignment: Alignment.center, // 아이콘을 수직 가운데 정렬
-                child: IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-            ),
-            title: const Text(
-              "투자성향",
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 18,
-              ),
-            ),
-            centerTitle: false,
-          ),
-        ),
-      ),
+      appBar: _buildAppBar(),
       body: Column(
         children: [
           Expanded(
@@ -177,24 +161,52 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
               child: Column(
                 children: [
                   _buildInvestmentExperienceForm(),
-                  const SizedBox(
-                    height: 24,
-                  ),
-                  _buildPreferredInvestmentPeriod(),
-                  const SizedBox(
-                    height: 24,
-                  ),
-                  _buildRiskTakingAbilityForm(),
+                  _buildRiskAppetiteForm(),
+                  _buildPreferredRedemptionPeriodForm(),
+                  _buildPreferredMinimumCouponForm(),
                 ],
               ),
             ),
           ),
           _buildAgreementCheckbox(),
-          const SizedBox(
-            height: 8,
-          ),
           _buildBottomButton(),
         ],
+      ),
+    );
+  }
+
+  PreferredSize _buildAppBar() {
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(72),
+      child: Container(
+        decoration: const BoxDecoration(
+            border: Border(
+                bottom: BorderSide(
+                  color: AppColors.gray50,
+                  width: 1,
+                ))),
+        child: AppBar(
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 24.0), // 좌측 패딩을 추가
+            child: Align(
+              alignment: Alignment.center, // 아이콘을 수직 가운데 정렬
+              child: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ),
+          title: const Text(
+            "투자성향",
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 18,
+            ),
+          ),
+          centerTitle: false,
+        ),
       ),
     );
   }
@@ -206,11 +218,11 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
         isPressed = true;
       }
     } else if (buttonType == 2) {
-      if ((text == "1년 미만" && integerFlag == 0) || (text == "1~2년" && integerFlag == 1) || (text == "3년 이상" && integerFlag == 2)) {
+      if ((text == "초고위험" && integerFlag == 0) || (text == "고위험" && integerFlag == 1) || (text == "중위험" && integerFlag == 2) || (text == "저위험" && integerFlag == 3)) {
         isPressed = true;
       }
     } else if (buttonType == 3) {
-      if ((text == "위험감수형" && integerFlag == 0) || (text == "안전추구형" && integerFlag == 1)) {
+      if ((text == "조기상환" && integerFlag == 0) || (text == "만기상환" && integerFlag == 1) || (text == "상관없음" && integerFlag == 2)) {
         isPressed = true;
       }
     }
@@ -221,9 +233,9 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
           if (buttonType == 1) {
             _handleExperienceButtonPress(text);
           } else if (buttonType == 2) {
-            _handleInvestmentTypeButtonPress(text);
+            _handleRiskAppetiteButtonPress(text);
           } else if (buttonType == 3) {
-            _handleRiskTakingAbilityButtonPress(text);
+            _handlePreferredRedemptionPeriodButtonPress(text);
           }
         },
         child: Container(
@@ -269,81 +281,169 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
               _buildCustomButton("없음", doesUserHaveExperience, 1),
             ],
           ),
+          const SizedBox(height: 24,),
         ],
       ),
     );
   }
 
-  Widget _buildPreferredInvestmentPeriod() {
+  Widget _buildRiskAppetiteForm() {
     return SizedBox(
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("2. 선호 투자 기간"),
+          const Text("2. 위험 성향"),
           const SizedBox(
             height: 12,
           ),
           Row(
             children: [
-              _buildCustomButton("1년 미만", preferredInvestmentType, 2),
+              _buildCustomButton("초고위험", ristAppetiteType, 2),
               const SizedBox(
                 width: 8,
               ),
-              _buildCustomButton("1~2년", preferredInvestmentType, 2),
+              _buildCustomButton("고위험", ristAppetiteType, 2),
               const SizedBox(
                 width: 8,
               ),
-              _buildCustomButton("3년 이상", preferredInvestmentType, 2),
+              _buildCustomButton("중위험", ristAppetiteType, 2),
+              const SizedBox(
+                width: 8,
+              ),
+              _buildCustomButton("저위험", ristAppetiteType, 2),
             ],
           ),
+          const SizedBox(height: 24,),
         ],
       ),
     );
   }
 
-  Widget _buildRiskTakingAbilityForm() {
+  Widget _buildPreferredRedemptionPeriodForm() {
     return SizedBox(
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("3. 투자자 위험 감수 능력"),
+          const Text("3. 희망 상환 기간"),
           const SizedBox(
             height: 12,
           ),
           Row(
             children: [
-              _buildCustomButton("위험감수형", riskTakingType, 3),
+              _buildCustomButton("조기상환", preferredRedemptionPeriodType, 3),
               const SizedBox(
                 width: 12,
               ),
-              _buildCustomButton("안전추구형", riskTakingType, 3),
+              _buildCustomButton("만기상환", preferredRedemptionPeriodType, 3),
+              const SizedBox(
+                width: 12,
+              ),
+              _buildCustomButton("상관없음", preferredRedemptionPeriodType, 3),
             ],
           ),
+          const SizedBox(height: 24,),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPreferredMinimumCouponForm() {
+    const String removeIcon = "assets/icons/icon/icon_remove_all.svg";
+
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text("4. 선호 최소 수익률"),
+          const SizedBox(height: 12,),
+          Container(
+            width: MediaQuery.of(context).size.width * 0.33,
+            height: 40,
+            decoration: BoxDecoration(
+              color: const Color(0xFFFFFFFF),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: AppColors.gray100,
+                width: 1,
+              )
+            ),
+            child: Row(
+              // alignment: Alignment.centerRight,
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _controller,
+                    showCursor: true,
+                    cursorColor: AppColors.mainBlue,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      FilteringTextInputFormatter.allow(RegExp(r'^([1-9]?[0-9]|100)$')),
+                    ],
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(horizontal: 12),
+                      hintText: "0 - 100",
+                      hintStyle: TextStyle(color: AppColors.gray400),
+                      isDense: true,
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+
+                      });
+                    },
+                  ),
+                ),
+                if (_controller.text.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 12),
+                    child: GestureDetector(
+                      onTap: () {
+                        _controller.clear();
+                        setState(() {});
+                      },
+                      child: SvgPicture.asset(
+                        removeIcon,
+                        width: 16,
+                        height: 16,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+              ],
+            )
+          )
         ],
       ),
     );
   }
 
   Widget _buildAgreementCheckbox() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
       children: [
-        Checkbox(
-          value: _isAgreeBtnChecked,
-          onChanged: (bool? value) {
-            setState(() {
-              _isAgreeBtnChecked = value ?? false;
-            });
-          },
-          checkColor: Colors.white,
-          activeColor: AppColors.mainBlue,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Checkbox(
+              value: _isAgreeBtnChecked,
+              onChanged: (bool? value) {
+                setState(() {
+                  _isAgreeBtnChecked = value ?? false;
+                });
+              },
+              checkColor: Colors.white,
+              activeColor: AppColors.mainBlue,
+            ),
+            GestureDetector(
+              onTap: _toggleCheckbox,
+              child: const Text("투자자 정보 제공에 동의합니다."),
+            ),
+          ],
         ),
-        GestureDetector(
-          onTap: _toggleCheckbox,
-          child: const Text("투자자 정보 제공에 동의합니다."),
-        ),
+        const SizedBox(height: 8,),
       ],
     );
   }
@@ -404,7 +504,7 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
                         )),
                     onPressed: _isAllConditionSatisfied()
                         ? () async {
-                            if (await userInfoProvider.changeInvestmentType(doesUserHaveExperience, preferredInvestmentType, riskTakingType)) {
+                            if (await userInfoProvider.changeInvestmentType(doesUserHaveExperience, ristAppetiteType, preferredRedemptionPeriodType)) {
                               print("투자 타입 정보 저장 성공");
                               Fluttertoast.showToast(msg: "성공적으로 저장되었습니다");
                             } else {
