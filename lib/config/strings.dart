@@ -4,8 +4,11 @@
 const String MSG_ERR_UNEXPECTED = "예상치 못한 오류가 발생했습니다.";
 
 // 메시지
-const String MSG_DESCRIPTION_MONTECARLO = '분석 결과는 ELSwhere만의 수학적인 분석 결과를 통해 제공되는 수치이며, 절대적인 수치가 아님을 알려드립니다.';
-const String MSG_DESCRIPTION_AI = "안전 점수는 ELSwhere의 AI 분석 결과에 따라 '저위험', '중위험', '고위험', '초고위험'으로 분류되며, 안전 점수가 낮을수록 손실 확률이 높습니다.";
+// const String MSG_DESCRIPTION_MONTECARLO = '분석 결과는 ELSwhere만의 수학적인 분석 결과를 통해 제공되는 수치이며, 절대적인 수치가 아님을 알려드립니다.';
+// const String MSG_DESCRIPTION_AI = "안전 점수는 ELSwhere의 AI 분석 결과에 따라 '저위험', '중위험', '고위험', '초고위험'으로 분류되며, 안전 점수가 낮을수록 손실 확률이 높습니다.";
+const String MSG_DESCRIPTION_MONTECARLO = '분석 결과는 ELS 상품 공정가격을 계산하는 기법을 통해 산출된 것으로, 만기 손실율이 높을수록 원금 손실 가능성도 증가합니다.';
+const String MSG_DESCRIPTION_AI = "안전 점수는 ELS 투자 시 중요한 지표들을 반영하여 ELSwhere AI가 산출한 결과입니다. 이 점수를 기반으로 상품은 '저위험', '중위험', '고위험', '초고위험'으로 분류되며, 안전 점수가 낮을수록 원금 손실 가능성이 커집니다.";
+
 const String MSG_TO_BE_UPDATED = "추후 업데이트를 통해 제공될 예정입니다.";
 
 // HOT 상품 관련

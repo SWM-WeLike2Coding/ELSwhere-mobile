@@ -173,6 +173,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
                                 maxLines: null,
                                 overflow: TextOverflow.visible,
                               ),
+                              const SizedBox(height: 4,),
                               const Text(
                                 MSG_AI_RESULT_STATISTICS,
                                 softWrap: true,
@@ -193,6 +194,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
                                   barMessage: '점수',
                                   bottomTitle: '안전점수',
                                 ),
+
                               ],
                             ],
                           ),
