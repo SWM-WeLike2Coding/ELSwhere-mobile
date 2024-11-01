@@ -98,7 +98,7 @@ Future<void> _checkAppVersion() async {
   try {
     final remoteConfig = FirebaseRemoteConfig.instance;
     await remoteConfig.setConfigSettings(RemoteConfigSettings(
-      fetchTimeout: const Duration(seconds: 5),
+      fetchTimeout: const Duration(seconds: 10),
       minimumFetchInterval: const Duration(hours: 24),
     ));
     remoteConfig.setDefaults({
