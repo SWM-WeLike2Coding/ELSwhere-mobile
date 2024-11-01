@@ -91,27 +91,38 @@ Future<void> _checkAppVersion() async {
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  final remoteConfig = FirebaseRemoteConfig.instance;
-  await remoteConfig.setConfigSettings(RemoteConfigSettings(
-    fetchTimeout: const Duration(seconds: 10),
-    minimumFetchInterval: const Duration(seconds: 10),
-  ));
-  remoteConfig.setDefaults({
-    'latest_version_android': '0.0.0',
-    'latest_version_ios': '0.0.0',
-  });
-  await remoteConfig.fetchAndActivate();
-
-  remoteLatestVersion = Platform.isAndroid ? remoteConfig.getString('latest_version_android') : remoteConfig.getString('latest_version_ios');
-  if (remoteLatestVersion.isEmpty) {
-    remoteLatestVersion = prefs.get("latest_version")?.toString() ?? '0.0.0';
-  } else {
-    await prefs.setString('latest_version', remoteLatestVersion);
-  }
   localLatestVersion = packageInfo.version;
-  log("Local App Version: $localLatestVersion");
-  log("Remote App Version: $remoteLatestVersion");
-  log("Build Number: ${packageInfo.buildNumber}");
+  String localRemoteLatest = prefs.get('latest_version') as String? ?? '0.0.0';
+  log('Local Remote Version: $localRemoteLatest');
+
+  try {
+    final remoteConfig = FirebaseRemoteConfig.instance;
+    await remoteConfig.setConfigSettings(RemoteConfigSettings(
+      fetchTimeout: const Duration(seconds: 5),
+      minimumFetchInterval: const Duration(hours: 24),
+    ));
+    remoteConfig.setDefaults({
+      'latest_version_android': '0.0.0',
+      'latest_version_ios': '0.0.0',
+    });
+    await remoteConfig.fetchAndActivate();
+
+    remoteLatestVersion = Platform.isAndroid ? remoteConfig.getString('latest_version_android') : remoteConfig.getString('latest_version_ios');
+    if (remoteLatestVersion.isEmpty) {
+      remoteLatestVersion = prefs.get("latest_version")?.toString() ?? '0.0.0';
+    } else {
+      await prefs.setString('latest_version', remoteLatestVersion);
+    }
+    log('Firebase Remote Config 가져오기 성공');
+  } catch (e) {
+    log('$e');
+    remoteLatestVersion = localRemoteLatest;
+    await prefs.setString('latest_version', remoteLatestVersion);
+  } finally {
+    log("Local App Version: $localLatestVersion");
+    log("Remote App Version: $remoteLatestVersion");
+    log("Build Number: ${packageInfo.buildNumber}");
+  }
 }
 
 Future<void> initPermissionSettings() async {

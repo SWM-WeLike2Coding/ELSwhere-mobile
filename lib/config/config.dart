@@ -11,8 +11,8 @@ late final Dio dio;
 late final String baseUrl;
 late final String loginEndpoint;
 
-late final String localLatestVersion;
-late final String remoteLatestVersion;
+String localLatestVersion = '0.0.0';
+String remoteLatestVersion = '0.0.0';
 
 late String accessToken;
 late String refreshToken;
@@ -20,5 +20,5 @@ const Map<String, String> productType = {
   'STEP_DOWN': '스텝다운',
   'LIZARD': '리자드',
   'MONTHLY_PAYMENT': '월지급',
-  'ETC': '기타유'
+  'ETC': '기타유',
 };
