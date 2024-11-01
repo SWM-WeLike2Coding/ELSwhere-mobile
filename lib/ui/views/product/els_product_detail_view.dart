@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui' as ui;
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:elswhere/config/app_resource.dart';
@@ -16,6 +17,7 @@ import 'package:elswhere/ui/widgets/price_ratio_table.dart';
 import 'package:elswhere/utils/ai_result_converter.dart';
 import 'package:elswhere/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:marquee/marquee.dart';
@@ -149,13 +151,14 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
                     width: MediaQuery.of(context).size.width,
                     child: Padding(
                       padding: edgeInsetsAll24,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Container(
-                          color: Colors.white,
-                          padding: edgeInsetsAll16,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
+                      child: Container(
+                        padding: edgeInsetsAll16,
+                        decoration: BoxDecoration(color: Colors.white, border: Border.all(color: AppColors.gray200), borderRadius: BorderRadius.circular(8)),
+                        child: Builder(builder: (context) {
+                          final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+                          final size = MediaQuery.of(context).size;
+
+                          return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               GestureDetector(
@@ -166,39 +169,94 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
                                 ),
                               ),
                               const SizedBox(height: 4),
-                              Text(
-                                MSG_DESCRIPTION_AI,
-                                style: textTheme.headlineSmall,
-                                softWrap: true,
-                                maxLines: null,
-                                overflow: TextOverflow.visible,
-                              ),
-                              const SizedBox(height: 8,),
-                              const Text(
-                                MSG_AI_RESULT_STATISTICS,
-                                softWrap: true,
-                              ),
-                              if (product!.safetyScore != null) ...[
-                                const SizedBox(height: 12),
-                                Center(
-                                  child: Text(
-                                    'AI 분석 결과 그래프',
-                                    style: textTheme.M_18,
-                                  ),
-                                ),
-                                const SizedBox(height: 12),
-                                AnalysisResultGraph(
-                                  data: aiData,
-                                  prob: product!.safetyScore! * 100,
-                                  scaler: 100,
-                                  barMessage: '점수',
-                                  bottomTitle: '안전점수',
-                                ),
-
-                              ],
+                              isPortrait
+                                  ? Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          MSG_DESCRIPTION_AI,
+                                          style: textTheme.headlineSmall,
+                                          softWrap: true,
+                                          maxLines: null,
+                                          overflow: TextOverflow.visible,
+                                        ),
+                                        const SizedBox(height: 8),
+                                        const Text(
+                                          MSG_AI_RESULT_STATISTICS,
+                                          softWrap: true,
+                                        ),
+                                        if (product!.safetyScore != null) ...[
+                                          const SizedBox(height: 12),
+                                          Center(
+                                            child: Text(
+                                              'AI 분석 결과 그래프',
+                                              style: textTheme.M_18,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 12),
+                                          AnalysisResultGraph(
+                                            data: aiData,
+                                            prob: product!.safetyScore! * 100,
+                                            height: min(size.width, size.height) - 200,
+                                            scaler: 100,
+                                            barMessage: '점수',
+                                            bottomTitle: '안전점수',
+                                          ),
+                                        ],
+                                      ],
+                                    )
+                                  : Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                MSG_DESCRIPTION_AI,
+                                                style: textTheme.headlineSmall,
+                                                softWrap: true,
+                                                maxLines: null,
+                                                overflow: TextOverflow.visible,
+                                              ),
+                                              const SizedBox(height: 8),
+                                              const Text(
+                                                MSG_AI_RESULT_STATISTICS,
+                                                softWrap: true,
+                                              ),
+                                              if (product!.safetyScore != null) const SizedBox(height: 12),
+                                            ],
+                                          ),
+                                        ),
+                                        if (product!.safetyScore != null) ...[
+                                          Expanded(
+                                            child: Column(
+                                              children: [
+                                                Center(
+                                                  child: Text(
+                                                    'AI 분석 결과 그래프',
+                                                    style: textTheme.M_18,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 12),
+                                                AnalysisResultGraph(
+                                                  data: aiData,
+                                                  prob: product!.safetyScore! * 100,
+                                                  height: min(size.width, size.height) - 200,
+                                                  scaler: 100,
+                                                  barMessage: '점수',
+                                                  bottomTitle: '안전점수',
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ],
+                                    ),
                             ],
-                          ),
-                        ),
+                          );
+                        }),
                       ),
                     ),
                   ),
@@ -878,54 +936,110 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
                 width: MediaQuery.of(context).size.width,
                 child: Padding(
                   padding: edgeInsetsAll24,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Container(
+                  child: Container(
+                    decoration: BoxDecoration(
                       color: Colors.white,
-                      child: Padding(
-                        padding: edgeInsetsAll16,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            GestureDetector(
-                              onTap: _overlayPortalController.hide,
-                              child: const Padding(
-                                padding: EdgeInsets.symmetric(vertical: 4),
-                                child: Icon(Icons.close),
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  MSG_DESCRIPTION_MONTECARLO,
-                                  style: textTheme.headlineSmall,
-                                  softWrap: true,
-                                  maxLines: null,
-                                  overflow: TextOverflow.visible,
-                                ),
-                                const SizedBox(height: 12),
-                              ],
-                            ),
-                            if (monteCarloResponse != null) ...[
-                              Center(
-                                child: Text(
-                                  'ELSwhere 분석 결과 그래프',
-                                  style: textTheme.M_18,
+                      border: Border.all(color: AppColors.gray200),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Padding(
+                      padding: edgeInsetsAll16,
+                      child: Builder(
+                        builder: (context) {
+                          final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+                          final size = MediaQuery.of(context).size;
+                          // 세로 모드일 때와 가로 모드일 때 배치 다르게 설정
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              GestureDetector(
+                                onTap: _overlayPortalController.hide,
+                                child: const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 4),
+                                  child: Icon(Icons.close),
                                 ),
                               ),
-                              const SizedBox(height: 12),
-                              AnalysisResultGraph(
-                                data: mcsData,
-                                prob: monteCarloResponse.lossProbability,
-                                barMessage: '손실율',
-                                bottomTitle: '손실율',
-                              ),
+                              const SizedBox(height: 4),
+                              isPortrait
+                                  ? Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              MSG_DESCRIPTION_MONTECARLO,
+                                              style: textTheme.headlineSmall,
+                                              softWrap: true,
+                                              maxLines: null,
+                                              overflow: TextOverflow.visible,
+                                            ),
+                                            const SizedBox(height: 12),
+                                          ],
+                                        ),
+                                        if (monteCarloResponse != null) ...[
+                                          Center(
+                                            child: Text(
+                                              'ELSwhere 분석 결과 그래프',
+                                              style: textTheme.M_18,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 12),
+                                          AnalysisResultGraph(
+                                            data: mcsData,
+                                            prob: monteCarloResponse.lossProbability,
+                                            height: min(size.width, size.height) - 200,
+                                            barMessage: '손실율',
+                                            bottomTitle: '손실율',
+                                          ),
+                                        ],
+                                      ],
+                                    )
+                                  : Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                MSG_DESCRIPTION_MONTECARLO,
+                                                style: textTheme.headlineSmall,
+                                                softWrap: true,
+                                                maxLines: null,
+                                                overflow: TextOverflow.visible,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(width: 16),
+                                        // 그래프를 오른쪽에 배치
+                                        if (monteCarloResponse != null)
+                                          Expanded(
+                                            child: Column(
+                                              children: [
+                                                Center(
+                                                  child: Text(
+                                                    'ELSwhere 분석 결과 그래프',
+                                                    style: textTheme.M_18,
+                                                  ),
+                                                ),
+                                                AnalysisResultGraph(
+                                                  data: mcsData,
+                                                  prob: monteCarloResponse.lossProbability,
+                                                  height: min(size.width, size.height) - 200,
+                                                  barMessage: '손실율',
+                                                  bottomTitle: '손실율',
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                      ],
+                                    ),
                             ],
-                          ],
-                        ),
+                          );
+                        },
                       ),
                     ),
                   ),

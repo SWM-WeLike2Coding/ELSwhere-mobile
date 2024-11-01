@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 class AnalysisResultGraph extends StatefulWidget {
   final List<Map<String, dynamic>> data;
   final double prob;
+  final double height;
   double scaler = 1;
   final String barMessage;
   final String bottomTitle;
@@ -15,6 +16,7 @@ class AnalysisResultGraph extends StatefulWidget {
     super.key,
     required this.data,
     required this.prob,
+    required this.height,
     this.scaler = 1,
     required this.barMessage,
     required this.bottomTitle,
@@ -29,6 +31,7 @@ class _AnalysisResultGraphState extends State<AnalysisResultGraph> {
   late double scaler;
   late String barMessage;
   late String bottomTitle;
+  late double height;
 
   @override
   void initState() {
@@ -37,6 +40,7 @@ class _AnalysisResultGraphState extends State<AnalysisResultGraph> {
     barMessage = widget.barMessage;
     scaler = widget.scaler;
     bottomTitle = widget.bottomTitle;
+    height = widget.height;
   }
 
   // LineChartBarData 생성 함수
@@ -167,7 +171,7 @@ class _AnalysisResultGraphState extends State<AnalysisResultGraph> {
     return Column(
       children: [
         SizedBox(
-          height: MediaQuery.of(context).size.height / 3,
+          height: height,
           child: LineChart(
             _getMultiLineChartData(),
             curve: Curves.bounceInOut,
