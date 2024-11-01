@@ -22,3 +22,6 @@ const Map<String, String> productType = {
   'MONTHLY_PAYMENT': '월지급',
   'ETC': '기타유',
 };
+
+List<Map<String, dynamic>> aiData = [{}];
+List<Map<String, dynamic>> mcsData = [{}];
