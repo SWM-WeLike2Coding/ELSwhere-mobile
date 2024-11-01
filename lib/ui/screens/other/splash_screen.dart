@@ -114,9 +114,15 @@ class _SplashScreenState extends State<SplashScreen> {
   bool _checkAppVersion() {
     List<int> remote = remoteLatestVersion.split(".").map((e) => int.parse(e)).toList();
     List<int> local = localLatestVersion.split(".").map((e) => int.parse(e)).toList();
+    log('Remote Latest Version: $remoteLatestVersion');
+    log('Local Latest Version: $localLatestVersion');
 
     for (int i = 0; i < 3; i++) {
-      if (remote[i] > local[i]) return false;
+      if (remote[i] > local[i]) {
+        return false;
+      } else if (remote[i] < local[i]) {
+        return true;
+      }
     }
     return true;
   }
