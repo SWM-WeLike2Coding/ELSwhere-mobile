@@ -23,12 +23,12 @@ class Config {
         _instance = Config._prod();
         break;
       default:
-        _instance = Config._dev();
+        _instance = Config._prod();
         break;
     }
     return instance;
   }
 
   static Config? _instance;
-  static Config get instance => _instance ?? Config(F.appFlavor ?? Flavor.dev);
+  static Config get instance => _instance ?? Config(F.appFlavor ?? Flavor.prod);
 }

@@ -15,7 +15,7 @@ class F {
       case Flavor.prod:
         return 'ELSwhere';
       default:
-        return 'title';
+        return 'ELSwhere';
     }
   }
 
