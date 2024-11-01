@@ -108,7 +108,7 @@ class _AnalysisResultGraphState extends State<AnalysisResultGraph> {
 
             return touchedSpots.map((touchedSpot) {
               final index = touchedSpots.indexOf(touchedSpot);
-              final title = ['상환 상품 개수:', '미상환 상품 개수:'][index];
+              final title = ['수익 실현 상품 개수:', '원금 손실 상품 개수:'][index];
               final color = [Colors.red, Colors.blue][index];
 
               final item = LineTooltipItem(
