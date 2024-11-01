@@ -173,7 +173,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
                                 maxLines: null,
                                 overflow: TextOverflow.visible,
                               ),
-                              const SizedBox(height: 4,),
+                              const SizedBox(height: 8,),
                               const Text(
                                 MSG_AI_RESULT_STATISTICS,
                                 softWrap: true,

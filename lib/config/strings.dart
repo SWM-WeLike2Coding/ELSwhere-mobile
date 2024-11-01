@@ -36,7 +36,7 @@ const String MSG_ERR_FETCH_NOTICES = "공지사항을 불러오는데 실패했�
 const String TITLE_SERVICE_AGREEMENT = "ELSwhere 서비스 이용을 위해\n동의해 주세요.";
 
 // AI 위험 분석도 관련
-const String MSG_AI_RESULT_STATISTICS = '''과거 데이터 기반 각 위험도별 원금 손실 상품 비율
+const String MSG_AI_RESULT_STATISTICS = '''최근 6년 증권사 ELS 상품 데이터 기반 각 위험도별 원금 손실 상품 비율
 1. 초고위험 : 85.88%
 2. 고위험 : 30.45%
 3. 중위험 : 13.04%
