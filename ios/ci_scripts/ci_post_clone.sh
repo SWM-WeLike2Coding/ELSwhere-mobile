@@ -32,4 +32,12 @@ brew install cocoapods
 # Install CocoaPods dependencies.
 cd ios && pod install # run `pod install` in the `ios` directory.
 
+# Xcode 스킴에 따라 플래버를 설정
+if [ "$CI_XCODE_SCHEME" = "prod" ]; then
+    echo "Building for production"
+    flutter build ios --flavor prod --release
+else
+    echo "Building for development"
+    flutter build ios --flavor dev --debug
+
 exit 0
