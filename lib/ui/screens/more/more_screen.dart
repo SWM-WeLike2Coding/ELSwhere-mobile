@@ -229,93 +229,93 @@ class _MoreScreenState extends State<MoreScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 24, right: 24),
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: AppColors.gray100,
-                        width: 1.0,
-                      )),
-                  height: 70,
-                  child: Row(
-                    children: [
-                      const SizedBox(
-                        width: 16,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ChangeNicknameScreen(),
                       ),
-                      Container(
-                        width: 36,
-                        height: 36,
-                        decoration: const BoxDecoration(
-                          color: AppColors.backgroundProfile,
-                          shape: BoxShape.circle,
+                    );
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: AppColors.gray100,
+                          width: 1.0,
+                        )),
+                    height: 70,
+                    child: Row(
+                      children: [
+                        const SizedBox(
+                          width: 16,
                         ),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: SvgPicture.asset(
-                            manIcon,
-                            width: 27,
-                            height: 23.16,
-                            fit: BoxFit.contain,
+                        Container(
+                          width: 36,
+                          height: 36,
+                          decoration: const BoxDecoration(
+                            color: AppColors.backgroundProfile,
+                            shape: BoxShape.circle,
                           ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 16,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Consumer<UserInfoProvider>(
-                            builder: (context, provider, child) {
-                              DateTime? createdTime = Provider.of<UserInfoProvider>(context, listen: false).userInfo?.createdAt;
-                              DateTime now = DateTime.now();
-                              Duration difference = now.difference(createdTime!);
-
-                              return Text(
-                                "${difference.inDays + 1}일동안 함께한",
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.gray400,
-                                ),
-                              );
-                            },
-                          ),
-                          Consumer<UserInfoProvider>(
-                            builder: (context, userInfoProvider, child) {
-                              return Text(
-                                '${userInfoProvider.getNickname()}님', // 여기에서 닉네임을 받아옵니다.
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                ),
-                              );
-                            },
-                          )
-                        ],
-                      ),
-                      const Spacer(),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.arrow_forward_ios,
-                          size: 18,
-                          color: AppColors.gray300,
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ChangeNicknameScreen(),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: SvgPicture.asset(
+                              manIcon,
+                              width: 27,
+                              height: 23.16,
+                              fit: BoxFit.contain,
                             ),
-                          );
-                        },
-                      ),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                    ],
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Consumer<UserInfoProvider>(
+                              builder: (context, provider, child) {
+                                DateTime? createdTime = Provider.of<UserInfoProvider>(context, listen: false).userInfo?.createdAt;
+                                DateTime now = DateTime.now();
+                                Duration difference = now.difference(createdTime!);
+
+                                return Text(
+                                  "${difference.inDays + 1}일동안 함께한",
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.gray400,
+                                  ),
+                                );
+                              },
+                            ),
+                            Consumer<UserInfoProvider>(
+                              builder: (context, userInfoProvider, child) {
+                                return Text(
+                                  '${userInfoProvider.getNickname()}님', // 여기에서 닉네임을 받아옵니다.
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                  ),
+                                );
+                              },
+                            )
+                          ],
+                        ),
+                        const Spacer(),
+                        const Icon(
+                            Icons.arrow_forward_ios,
+                            size: 18,
+                            color: AppColors.gray300,
+                        ),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
