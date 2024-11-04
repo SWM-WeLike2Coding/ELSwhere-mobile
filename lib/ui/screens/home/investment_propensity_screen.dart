@@ -21,9 +21,11 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
 
   int doesUserHaveExperience = -1; // 1이 경험 있음, 0은 없음
   int ristAppetiteType = -1; // 0: 초고위험, 1: 고위험, 2: 중위험, 3: 저위험
-  int preferredRedemptionPeriodType = -1; // 0이 위험 감수형, 1은 안전추구형
+  int preferredRedemptionPeriodType = -1; // 0: 조기상환, 1: 만기상환, 2: 상관없음
 
   bool _isAgreeBtnChecked = false;
+
+  FocusNode focusNode = FocusNode();
 
   bool _isAllConditionSatisfied() {
     if (_isAgreeBtnChecked && doesUserHaveExperience != -1 && preferredRedemptionPeriodType != -1 && ristAppetiteType != -1) {
@@ -35,11 +37,17 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
 
   final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
+
+
   Future<void> _setCurrentScreen() async {
     await analytics.logScreenView(
       screenName: '투자 성향 설문 화면',
       screenClass: 'InvestmentPropensityScreen',
     );
+  }
+
+  void onTapOutside(FocusNode focusNode) {
+    focusNode.unfocus();
   }
 
   void _handleExperienceButtonPress(String text) {
@@ -150,27 +158,45 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(),
-      body: Column(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                children: [
-                  _buildInvestmentExperienceForm(),
-                  _buildRiskAppetiteForm(),
-                  _buildPreferredRedemptionPeriodForm(),
-                  _buildPreferredMinimumCouponForm(),
-                ],
-              ),
+    return GestureDetector(
+      onTap: () {
+        onTapOutside(focusNode);
+      },
+      child: Scaffold(
+        appBar: _buildAppBar(),
+        body: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: Column(
+                        children: [
+                          _buildInvestmentExperienceForm(),
+                          _buildRiskAppetiteForm(),
+                          _buildPreferredRedemptionPeriodForm(),
+                          _buildPreferredMinimumCouponForm(),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
             ),
-          ),
-          _buildAgreementCheckbox(),
-          _buildBottomButton(),
-        ],
+            _buildAgreementCheckbox(),
+            _buildBottomButton(),
+          ],
+        ),
       ),
     );
   }
@@ -371,17 +397,19 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
               )
             ),
             child: Row(
-              // alignment: Alignment.centerRight,
               children: [
                 Expanded(
                   child: TextField(
                     controller: _controller,
+                    focusNode: focusNode,
                     showCursor: true,
                     cursorColor: AppColors.mainBlue,
                     keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.done,
                     inputFormatters: [
                       FilteringTextInputFormatter.digitsOnly,
-                      FilteringTextInputFormatter.allow(RegExp(r'^([1-9]?[0-9]|100)$')),
+                      NumberRangeInputFormatter(),
+                      // FilteringTextInputFormatter.allow(RegExp(r'^([1-9]?[0-9]|100)$')),
                     ],
                     decoration: const InputDecoration(
                       border: InputBorder.none,
@@ -532,3 +560,23 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
     );
   }
 }
+
+class NumberRangeInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    if (newValue.text.isEmpty) {
+      return newValue;
+    }
+
+    if (int.tryParse(newValue.text) == null) {
+      return oldValue;
+    }
+
+    final number = int.parse(newValue.text);
+
+    if (number >= 0 && number <= 100) {
+      return newValue;
+    }
+
+    return oldValue;
+  }}
