@@ -28,6 +28,7 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   Map<DateTime, List<ELSProductForScheduleDto>>? _scheduleMap;
+  final ScrollController _scrollController = ScrollController();
 
   ELSProductForScheduleDto convertInterestingProductToProductForSchedule(ResponseInterestingProductDto interestingProduct) {
     return ELSProductForScheduleDto(
@@ -95,6 +96,16 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
     return targetDate.isAfter(today) || targetDate.isAtSameMomentAs(today);
   }
 
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    });
+  }
+
   final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   Future<void> _setCurrentScreen() async {
@@ -108,13 +119,6 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
   void initState() {
     _setCurrentScreen();
     super.initState();
-  }
-
-  void _updateScheduleMap(DateTime selectDate) {
-    setState(() {
-      // print(selectDate);
-      // print(_scheduleMap!.values.toString());
-    });
   }
 
   @override
@@ -160,40 +164,9 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
         print(finalScheduleMap.values.toString());
 
         return Scaffold(
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(72),
-            child: Container(
-              decoration: const BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(
-                color: AppColors.gray50,
-                width: 1,
-              ))),
-              child: AppBar(
-                leading: Padding(
-                  padding: const EdgeInsets.only(left: 24.0), // 좌측 패딩을 추가
-                  child: Align(
-                    alignment: Alignment.center, // 아이콘을 수직 가운데 정렬
-                    child: IconButton(
-                      icon: const Icon(Icons.arrow_back),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                ),
-                title: const Text(
-                  "관심 청약 일정",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18,
-                  ),
-                ),
-                centerTitle: false,
-              ),
-            ),
-          ),
+          appBar: _buildAppBar(),
           body: SingleChildScrollView(
+            controller: _scrollController,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -206,6 +179,42 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
           ),
         );
       },
+    );
+  }
+
+  PreferredSize _buildAppBar() {
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(72),
+      child: Container(
+        decoration: const BoxDecoration(
+            border: Border(
+                bottom: BorderSide(
+                  color: AppColors.gray50,
+                  width: 1,
+                ))),
+        child: AppBar(
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 24.0), // 좌측 패딩을 추가
+            child: Align(
+              alignment: Alignment.center, // 아이콘을 수직 가운데 정렬
+              child: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ),
+          title: const Text(
+            "관심 청약 일정",
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 18,
+            ),
+          ),
+          centerTitle: false,
+        ),
+      ),
     );
   }
 
@@ -355,8 +364,8 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
             setState(() {
               _selectedDay = selectedDay;
               _focusedDay = focusedDay;
-              _updateScheduleMap(selectedDay);
             });
+            _scrollToBottom();
           }
         },
         onFormatChanged: (format) {
@@ -402,7 +411,8 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
                   blurRadius: 16, // 블러 반경
                   offset: Offset(0, 0), // 그림자의 x, y 오프셋
                 ),
-              ]),
+              ]
+          ),
           todayDecoration: const BoxDecoration(
             color: Colors.white,
             shape: BoxShape.circle,
@@ -507,8 +517,6 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
   }
 
   Widget _buildSchedules(Map<DateTime, List<ELSProductForScheduleDto>> scheduleMap, bool isDaySelected) {
-    DateTime now = DateTime.now();
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       // children: scheduleMap.entries.where((entry) => isTodayOrFuture(entry.key)).map((entry){
