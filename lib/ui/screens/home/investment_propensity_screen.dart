@@ -484,84 +484,130 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
 
     return SizedBox(
       height: 100,
+      width: double.infinity,
       child: Padding(
-        padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 32),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: SizedBox(
-                height: double.infinity,
-                child: Opacity(
-                  opacity: _isAllConditionSatisfied() ? 1.0 : 0.4,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.gray100,
-                        disabledBackgroundColor: AppColors.gray100,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        )),
-                    onPressed: _isAgreeBtnChecked
-                        ? () {
-                            Navigator.pop(context);
-                          }
-                        : null,
-                    child: const Text(
-                      '취소',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.gray700,
-                      ),
-                    ),
-                  ),
+        padding: const EdgeInsets.only(left: 24, right: 24, top: 16, bottom: 32),
+        child: SizedBox(
+          height: double.infinity,
+          child: Opacity(
+            opacity: _isAllConditionSatisfied() ? 1.0 : 0.4,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.mainBlue,
+                  disabledBackgroundColor: AppColors.mainBlue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  )),
+              onPressed: _isAllConditionSatisfied()
+                  ? () async {
+                if (await userInfoProvider.changeInvestmentType(doesUserHaveExperience, ristAppetiteType, preferredRedemptionPeriodType)) {
+                  print("투자 타입 정보 저장 성공");
+                  Fluttertoast.showToast(msg: "성공적으로 저장되었습니다");
+                } else {
+                  print("투자 타입 정보 저장 실패");
+                  Fluttertoast.showToast(msg: "투자 성형 정보 저장에 실패했습니다");
+                }
+                Navigator.of(context).pop();
+              }
+                  : null,
+              child: const Text(
+                '저장하기',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white,
                 ),
               ),
             ),
-            const SizedBox(
-              width: 4,
-            ),
-            Expanded(
-              child: SizedBox(
-                height: double.infinity,
-                child: Opacity(
-                  opacity: _isAllConditionSatisfied() ? 1.0 : 0.4,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.mainBlue,
-                        disabledBackgroundColor: AppColors.mainBlue,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        )),
-                    onPressed: _isAllConditionSatisfied()
-                        ? () async {
-                            if (await userInfoProvider.changeInvestmentType(doesUserHaveExperience, ristAppetiteType, preferredRedemptionPeriodType)) {
-                              print("투자 타입 정보 저장 성공");
-                              Fluttertoast.showToast(msg: "성공적으로 저장되었습니다");
-                            } else {
-                              print("투자 타입 정보 저장 실패");
-                              Fluttertoast.showToast(msg: "투자 성형 정보 저장에 실패했습니다");
-                            }
-                            Navigator.of(context).pop();
-                          }
-                        : null,
-                    child: const Text(
-                      '저장하기',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
   }
+
+  // Widget _buildBottomButton() {
+  //   final userInfoProvider = Provider.of<UserInfoProvider>(context, listen: false);
+  //
+  //   return SizedBox(
+  //     height: 100,
+  //     child: Padding(
+  //       padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 32),
+  //       child: Row(
+  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //         children: [
+  //           Expanded(
+  //             child: SizedBox(
+  //               height: double.infinity,
+  //               child: Opacity(
+  //                 opacity: _isAllConditionSatisfied() ? 1.0 : 0.4,
+  //                 child: ElevatedButton(
+  //                   style: ElevatedButton.styleFrom(
+  //                       backgroundColor: AppColors.gray100,
+  //                       disabledBackgroundColor: AppColors.gray100,
+  //                       shape: RoundedRectangleBorder(
+  //                         borderRadius: BorderRadius.circular(8),
+  //                       )),
+  //                   onPressed: _isAgreeBtnChecked
+  //                       ? () {
+  //                           Navigator.pop(context);
+  //                         }
+  //                       : null,
+  //                   child: const Text(
+  //                     '취소',
+  //                     style: TextStyle(
+  //                       fontSize: 16,
+  //                       fontWeight: FontWeight.w500,
+  //                       color: AppColors.gray700,
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //           const SizedBox(
+  //             width: 4,
+  //           ),
+  //           Expanded(
+  //             child: SizedBox(
+  //               height: double.infinity,
+  //               child: Opacity(
+  //                 opacity: _isAllConditionSatisfied() ? 1.0 : 0.4,
+  //                 child: ElevatedButton(
+  //                   style: ElevatedButton.styleFrom(
+  //                       backgroundColor: AppColors.mainBlue,
+  //                       disabledBackgroundColor: AppColors.mainBlue,
+  //                       shape: RoundedRectangleBorder(
+  //                         borderRadius: BorderRadius.circular(8),
+  //                       )),
+  //                   onPressed: _isAllConditionSatisfied()
+  //                       ? () async {
+  //                           if (await userInfoProvider.changeInvestmentType(doesUserHaveExperience, ristAppetiteType, preferredRedemptionPeriodType)) {
+  //                             print("투자 타입 정보 저장 성공");
+  //                             Fluttertoast.showToast(msg: "성공적으로 저장되었습니다");
+  //                           } else {
+  //                             print("투자 타입 정보 저장 실패");
+  //                             Fluttertoast.showToast(msg: "투자 성형 정보 저장에 실패했습니다");
+  //                           }
+  //                           Navigator.of(context).pop();
+  //                         }
+  //                       : null,
+  //                   child: const Text(
+  //                     '저장하기',
+  //                     style: TextStyle(
+  //                       fontSize: 16,
+  //                       fontWeight: FontWeight.w500,
+  //                       color: Colors.white,
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 }
 
 class NumberRangeInputFormatter extends TextInputFormatter {
