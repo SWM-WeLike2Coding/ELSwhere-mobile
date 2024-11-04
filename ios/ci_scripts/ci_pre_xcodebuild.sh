@@ -3,7 +3,7 @@
 echo "Setting up build for the correct flavor"
 
 # Xcode 스킴에 따라 플래버를 설정
-if [ "$CI_XCODE_SCHEME" == "prod" ]; then
+if [ "$CI_XCODE_SCHEME" = "prod" ]; then
     echo "Building for production"
     flutter build ios --flavor prod --release
 else
