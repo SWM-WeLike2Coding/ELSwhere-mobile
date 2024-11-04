@@ -414,8 +414,11 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
                     decoration: const InputDecoration(
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.symmetric(horizontal: 12),
-                      hintText: "0 - 100",
-                      hintStyle: TextStyle(color: AppColors.gray400),
+                      hintText: "최소 수익률(%)",
+                      hintStyle: TextStyle(
+                        color: AppColors.gray400,
+                        fontSize: 14,
+                      ),
                       isDense: true,
                     ),
                     onChanged: (value) {
