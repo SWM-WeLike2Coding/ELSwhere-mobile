@@ -25,6 +25,8 @@
 		C99D37414EF939CD9C78E05C /* devDebug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = C37D3D0789BF2CF7BE70D2EA /* devDebug.xcconfig */; };
 		D42EDB692CA5387F0058CAAA /* ci_post_clone.sh in Resources */ = {isa = PBXBuildFile; fileRef = D42EDB682CA5387F0058CAAA /* ci_post_clone.sh */; };
 		D42EDB6A2CA5387F0058CAAA /* ci_post_clone.sh in Resources */ = {isa = PBXBuildFile; fileRef = D42EDB682CA5387F0058CAAA /* ci_post_clone.sh */; };
+		D4ACC5322CD89CFE0041005F /* ci_pre_build.sh in Resources */ = {isa = PBXBuildFile; fileRef = D4ACC5312CD89CF30041005F /* ci_pre_build.sh */; };
+		D4ACC5332CD89CFE0041005F /* ci_pre_build.sh in Resources */ = {isa = PBXBuildFile; fileRef = D4ACC5312CD89CF30041005F /* ci_pre_build.sh */; };
 		EB39FFF926C8DF2BECD1FACF /* prodProfile.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1192E87E89E01F1E4A0D500E /* prodProfile.xcconfig */; };
 		ED1693EBEA40804D1235272D /* prodLaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7AC7A05DA69E05BED5C98733 /* prodLaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -95,6 +97,7 @@
 		CC981BF2C02ED67FDAD77F9C /* devProfile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = devProfile.xcconfig; path = Flutter/devProfile.xcconfig; sourceTree = "<group>"; };
 		D41927002C8AF7060026A4B7 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		D42EDB682CA5387F0058CAAA /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
+		D4ACC5312CD89CF30041005F /* ci_pre_build.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_pre_build.sh; sourceTree = "<group>"; };
 		F3BF94B9D32EAB7A262CEA6D /* Pods-RunnerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.debug.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		F46790D5C6A1A73F9F989E24 /* devRelease.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = devRelease.xcconfig; path = Flutter/devRelease.xcconfig; sourceTree = "<group>"; };
 		F82E3CCB042AD08229553862 /* prodRelease.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = prodRelease.xcconfig; path = Flutter/prodRelease.xcconfig; sourceTree = "<group>"; };
@@ -199,6 +202,7 @@
 		D42EDB642CA42FD40058CAAA /* ci_scripts */ = {
 			isa = PBXGroup;
 			children = (
+				D4ACC5312CD89CF30041005F /* ci_pre_build.sh */,
 				D42EDB682CA5387F0058CAAA /* ci_post_clone.sh */,
 			);
 			path = ci_scripts;
@@ -320,6 +324,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D42EDB6A2CA5387F0058CAAA /* ci_post_clone.sh in Resources */,
+				D4ACC5322CD89CFE0041005F /* ci_pre_build.sh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -333,6 +338,7 @@
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
 				D42EDB692CA5387F0058CAAA /* ci_post_clone.sh in Resources */,
 				5ECC5479B378A262CFD776BB /* GoogleService-Info.plist in Resources */,
+				D4ACC5332CD89CFE0041005F /* ci_pre_build.sh in Resources */,
 				C99D37414EF939CD9C78E05C /* devDebug.xcconfig in Resources */,
 				985E7DB1D9641AE1DC733DD7 /* devProfile.xcconfig in Resources */,
 				195C293FF4168919A3A95D34 /* devRelease.xcconfig in Resources */,
@@ -456,7 +462,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
+			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
 		};
 		B90A6062F316FAFB446E3716 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
