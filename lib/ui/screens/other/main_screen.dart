@@ -18,7 +18,7 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
 
   final List<Widget> _pages = [
     const HomeScreen(),
-    ProductScreen(),
+    const ProductScreen(),
     const MoreScreen(),
   ];
 

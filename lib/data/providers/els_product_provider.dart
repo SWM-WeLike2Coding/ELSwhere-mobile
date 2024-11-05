@@ -27,6 +27,8 @@ class ELSProductProvider with ChangeNotifier {
   SummarizedUserHoldingDto? _holdingProduct;
   MonteCarloResponse? _monteCarloResponse;
   PriceRatioResponse? _priceRatioResponse;
+  SummarizedProductDto? _selectedProduct;
+  SummarizedProductDto? _singleProduct;
   bool _isLoading = false;
   bool _isBookmarked = false;
   bool _isLiked = false;
@@ -44,6 +46,8 @@ class ELSProductProvider with ChangeNotifier {
   SummarizedUserHoldingDto? get holdingProduct => _holdingProduct;
   MonteCarloResponse? get monteCarloResponse => _monteCarloResponse;
   PriceRatioResponse? get priceRatioResponse => _priceRatioResponse;
+  SummarizedProductDto? get selectedProduct => _selectedProduct;
+  SummarizedProductDto? get singleProduct => _singleProduct;
   bool get isLoading => _isLoading;
   bool get isBookmarked => _isBookmarked;
   bool get isLiked => _isLiked;
@@ -51,6 +55,7 @@ class ELSProductProvider with ChangeNotifier {
   int? get interestedId => _interestId;
   int? get holdingId => _holdingId;
   bool get isHeld => _isHeld;
+  bool get nowComparing => _compareId.isNotEmpty;
   List<ResponseInterestingProductDto> get interestingProducts => _interestingProducts;
   List<SummarizedProductDto> get likeProducts => _likeProducts;
   List<int> get compareId => _compareId;
@@ -104,6 +109,25 @@ class ELSProductProvider with ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  void addCompareProduct(SummarizedProductDto product) {
+    _compareId.add(product.id);
+    if (_compareId.length == 1) {
+      _selectedProduct = product;
+    }
+    notifyListeners();
+  }
+
+  void cancelCompareProduct() {
+    _compareId.clear();
+    _compareProducts.clear();
+    _selectedProduct = null;
+    notifyListeners();
+  }
+
+  void setSingleProduct(SummarizedProductDto product) {
+    _singleProduct = product;
   }
 
   Future<bool> registerInterested(int id) async {

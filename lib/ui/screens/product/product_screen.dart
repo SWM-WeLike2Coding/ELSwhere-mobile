@@ -1,5 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/config/config.dart';
 import 'package:elswhere/config/strings.dart';
 import 'package:elswhere/data/models/dtos/product/response_single_product_dto.dart';
 import 'package:elswhere/data/models/dtos/product/summarized_product_dto.dart';
@@ -16,21 +17,7 @@ import '../../views/product/els_product_list_view.dart';
 import '../../widgets/search_text_field.dart';
 
 class ProductScreen extends StatefulWidget {
-  ProductScreen({super.key});
-
-  final List<String> items = [
-    '최신순',
-    '낙인순',
-    '수익률순',
-    '마감일순',
-  ];
-
-  final Map<String, String> itemsMap = {
-    '최신순': 'latest',
-    '낙인순': 'knock-in',
-    '수익률순': 'profit',
-    '마감일순': 'deadline',
-  };
+  const ProductScreen({super.key});
 
   @override
   State<ProductScreen> createState() => _ProductScreenState();
@@ -42,6 +29,7 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
   bool applyTendency = false;
   bool nowComparing = false;
   SummarizedProductDto? selectedProduct;
+  late ELSProductProvider productProvider;
 
   late final TabController tabController = TabController(
     length: 2,
@@ -62,14 +50,8 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
   @override
   void initState() {
     _setCurrentScreen();
+    productProvider = Provider.of<ELSProductProvider>(context, listen: false);
     super.initState();
-  }
-
-  void checkComparing(bool isCompare, SummarizedProductDto? product) {
-    setState(() {
-      nowComparing = isCompare;
-      if (selectedProduct == null || product == null) selectedProduct = product;
-    });
   }
 
   Future<void> typeChanged(BuildContext context, String? value) async {
@@ -82,7 +64,7 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
     // }
     setState(() {
       selectedValue = value!;
-      type = widget.itemsMap[value]!;
+      type = itemsMap[value]!;
       Provider.of<ELSOnSaleProductsProvider>(context, listen: false).sortProducts(value);
       Provider.of<ELSEndSaleProductsProvider>(context, listen: false).sortProducts(value);
     });
@@ -97,133 +79,124 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     final maxWidth = MediaQuery.of(context).size.width;
-    print('비교중?: $nowComparing');
-    return Scaffold(
-      appBar: _buildAppBar(),
-      body: Padding(
-        padding: edgeInsetsAll8,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (!nowComparing) ...[
-              _buildSearchTextField(),
-              _buildTabBar(),
-            ],
-            if (nowComparing) ...[
-              Column(
+    return Consumer<ELSProductProvider>(builder: (context, value, child) {
+      nowComparing = productProvider.nowComparing;
+      print('비교중?: $nowComparing');
+      return Scaffold(
+        appBar: _buildAppBar(),
+        body: Padding(
+          padding: edgeInsetsAll8,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (!nowComparing) ...[
+                _buildSearchTextField(),
+                _buildTabBar(),
+              ],
+              if (nowComparing) ...[
+                Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('선택한 상품', style: textTheme.displayMedium!.copyWith(fontWeight: FontWeight.w600)),
+                    ),
+                  ],
+                ),
+                ELSProductCard<SummarizedProductDto>(product: productProvider.selectedProduct!, index: 1),
+              ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('선택한 상품', style: textTheme.displayMedium!.copyWith(fontWeight: FontWeight.w600)),
+                    padding: edgeInsetsAll8,
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton2<String>(
+                        isExpanded: true,
+                        hint: Text(
+                          '정렬 기준을 선택해주세요.',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Theme.of(context).hintColor,
+                          ),
+                        ),
+                        items: items
+                            .map((String item) => DropdownMenuItem<String>(
+                                  value: item,
+                                  child: Text(item),
+                                ))
+                            .toList(),
+                        value: selectedValue,
+                        onChanged: (String? value) async {
+                          await typeChanged(context, value);
+                        },
+                        buttonStyleData: const ButtonStyleData(
+                          height: 40,
+                          width: 90,
+                        ),
+                        menuItemStyleData: const MenuItemStyleData(
+                          height: 40,
+                        ),
+                      ),
+                    ),
                   ),
+                  // Padding(
+                  //   padding: edgeInsetsAll8,
+                  //   child: Row(
+                  //     children: [
+                  //       Text(
+                  //         '투자 성향 반영',
+                  //         style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                  //           fontSize: 14,
+                  //           color: AppColors.gray400,
+                  //         ),
+                  //       ),
+                  //       const SizedBox(width: 8),
+                  //       SizedBox(
+                  //         height: 32,
+                  //         child: FittedBox(
+                  //           fit: BoxFit.fitHeight,
+                  //           child: Switch(
+                  //             value: applyTendency,
+                  //             onChanged: (value) => _changeTendency(value),
+                  //             inactiveTrackColor: AppColors.gray400,
+                  //             trackOutlineWidth: const WidgetStatePropertyAll(0),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // )
                 ],
               ),
-              ELSProductCard<SummarizedProductDto>(product: selectedProduct!, index: 1),
+              Expanded(
+                child: nowComparing
+                    ? Column(
+                        children: [
+                          ELSProductListView<ELSOnSaleProductsProvider>(type: type),
+                        ],
+                      )
+                    : TabBarView(
+                        controller: tabController,
+                        children: [
+                          Column(
+                            children: [
+                              ELSProductListView<ELSOnSaleProductsProvider>(type: type),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              ELSProductListView<ELSEndSaleProductsProvider>(type: type),
+                            ],
+                          ),
+                        ],
+                      ),
+              ),
             ],
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: edgeInsetsAll8,
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton2<String>(
-                      isExpanded: true,
-                      hint: Text(
-                        '정렬 기준을 선택해주세요.',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Theme.of(context).hintColor,
-                        ),
-                      ),
-                      items: widget.items
-                          .map((String item) => DropdownMenuItem<String>(
-                                value: item,
-                                child: Text(item),
-                              ))
-                          .toList(),
-                      value: selectedValue,
-                      onChanged: (String? value) async {
-                        await typeChanged(context, value);
-                      },
-                      buttonStyleData: const ButtonStyleData(
-                        height: 40,
-                        width: 90,
-                      ),
-                      menuItemStyleData: const MenuItemStyleData(
-                        height: 40,
-                      ),
-                    ),
-                  ),
-                ),
-                // Padding(
-                //   padding: edgeInsetsAll8,
-                //   child: Row(
-                //     children: [
-                //       Text(
-                //         '투자 성향 반영',
-                //         style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                //           fontSize: 14,
-                //           color: AppColors.gray400,
-                //         ),
-                //       ),
-                //       const SizedBox(width: 8),
-                //       SizedBox(
-                //         height: 32,
-                //         child: FittedBox(
-                //           fit: BoxFit.fitHeight,
-                //           child: Switch(
-                //             value: applyTendency,
-                //             onChanged: (value) => _changeTendency(value),
-                //             inactiveTrackColor: AppColors.gray400,
-                //             trackOutlineWidth: const WidgetStatePropertyAll(0),
-                //           ),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // )
-              ],
-            ),
-            Expanded(
-              child: nowComparing
-                  ? Column(
-                      children: [
-                        ELSProductListView<ELSOnSaleProductsProvider>(
-                          type: type,
-                          nowComparing: nowComparing,
-                          checkCompare: checkComparing,
-                        ),
-                      ],
-                    )
-                  : TabBarView(
-                      controller: tabController,
-                      children: [
-                        Column(
-                          children: [
-                            ELSProductListView<ELSOnSaleProductsProvider>(
-                              type: type,
-                              nowComparing: nowComparing,
-                              checkCompare: checkComparing,
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            ELSProductListView<ELSEndSaleProductsProvider>(
-                              type: type,
-                              nowComparing: nowComparing,
-                              checkCompare: checkComparing,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-            ),
-          ],
+          ),
         ),
-      ),
-      floatingActionButton: nowComparing ? _buildFloatingButton(context) : null,
-    );
+        floatingActionButton: nowComparing ? _buildFloatingButton(context) : null,
+      );
+    });
   }
 
   AppBar _buildAppBar() {
@@ -305,9 +278,7 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
       ),
       onPressed: () {
         final provider = Provider.of<ELSProductProvider>(context, listen: false);
-        checkComparing(!nowComparing, null);
-        provider.compareId.clear();
-        provider.compareProducts.clear();
+        provider.cancelCompareProduct();
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.gray800,

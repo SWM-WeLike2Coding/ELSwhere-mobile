@@ -370,13 +370,11 @@ class ELSProductCard<T extends SummarizedProductDto> extends StatefulWidget {
   final T product;
   final int index;
   bool isOnSale = false;
-  void Function(bool, SummarizedProductDto)? checkCompare;
 
   ELSProductCard({
     super.key,
     required this.product,
     required this.index,
-    this.checkCompare,
     this.isOnSale = false,
   });
 
@@ -418,24 +416,23 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
   }
 
   Future<void> onDetailButtonTapped() async {
-    _showLoadingDialog();
+    // _showLoadingDialog();
 
-    await productProvider.fetchProduct(product.id);
-    await productProvider.fetchStockPrices();
-    await productProvider.fetchMonteCarloResponse(product.id);
-    final result = productProvider.checkisHeld(userProvider.holdingProducts ?? []);
+    // await productProvider.fetchProduct(product.id);
+    // await productProvider.fetchStockPrices();
+    // await productProvider.fetchMonteCarloResponse(product.id);
+    // final result = productProvider.checkisHeld(userProvider.holdingProducts ?? []);
 
-    Navigator.of(context).pop(); // 로딩 다이얼로그 닫기
+    // if (mounted) Navigator.of(context).pop(); // 로딩 다이얼로그 닫기
 
-    if (productProvider.product != null && result) {
+    // if (productProvider.product != null && result) {
+    productProvider.setSingleProduct(product);
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const ELSProductDetailScreen()),
       );
       onItemTapped();
-    } else {
-      Fluttertoast.showToast(msg: '상품을 불러오는데 실패했습니다.', toastLength: Toast.LENGTH_SHORT);
-    }
+    // }
   }
 
   void _showLoadingDialog() {
@@ -449,15 +446,13 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
   }
 
   void onCompareTapped() async {
-    productProvider.compareId.add(widget.product.id);
+    productProvider.addCompareProduct(widget.product);
     if (productProvider.compareId.length == 2) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => CompareProductScreen()),
       );
     } else {
-      setState(() => nowComparing = !nowComparing);
-      widget.checkCompare?.call(nowComparing, widget.product);
       final result = await productsProvider.fetchSimilarProducts(widget.product.id);
       if (!result) {
         Fluttertoast.showToast(msg: '제품을 불러오는데 실패했습니다.', toastLength: Toast.LENGTH_SHORT);
