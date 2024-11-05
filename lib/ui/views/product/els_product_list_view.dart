@@ -1,5 +1,6 @@
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/data/models/dtos/product/summarized_product_dto.dart';
+import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/data/providers/els_products_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,11 +8,10 @@ import '../../widgets/els_product_card.dart';
 
 class ELSProductListView<T extends ELSProductsProvider> extends StatelessWidget {
   final String type;
-  bool nowComparing;
-  void Function(bool, SummarizedProductDto)? checkCompare;
   late ELSProductsProvider provider;
+  late ELSProductProvider productProvider;
 
-  ELSProductListView({super.key, this.checkCompare, required this.type, required this.nowComparing});
+  ELSProductListView({super.key, required this.type});
 
   void _refreshList(BuildContext context) {
     Provider.of<T>(context, listen: false).refreshProducts(type);
@@ -20,6 +20,8 @@ class ELSProductListView<T extends ELSProductsProvider> extends StatelessWidget 
   @override
   Widget build(BuildContext context) {
     provider = Provider.of<T>(context, listen: false);
+    productProvider = Provider.of<ELSProductProvider>(context, listen: false);
+    
     print(type);
     return Expanded(
       child: FutureBuilder(
@@ -30,8 +32,9 @@ class ELSProductListView<T extends ELSProductsProvider> extends StatelessWidget 
           } else if (snapshot.hasError) {
             return const Center(child: Text('An error occurred!'));
           } else {
-            return Consumer<T>(
-              builder: (context, productsProvider, child) {
+            return Consumer2<T, ELSProductProvider>(
+              builder: (context, productsProvider, productProvider, child) {
+                final nowComparing = productProvider.nowComparing;
                 if (!nowComparing) {
                   if (productsProvider.isLoading && productsProvider.products.isEmpty) {
                     return const Center(child: CircularProgressIndicator());
@@ -66,7 +69,6 @@ class ELSProductListView<T extends ELSProductsProvider> extends StatelessWidget 
                               key: ValueKey(productsProvider.products[index].id),
                               product: productsProvider.products[index],
                               index: index,
-                              checkCompare: checkCompare,
                               isOnSale: productsProvider.runtimeType == ELSOnSaleProductsProvider,
                             );
                           },
@@ -87,7 +89,6 @@ class ELSProductListView<T extends ELSProductsProvider> extends StatelessWidget 
                           key: ValueKey(productsProvider.similarProducts!.results[index].id),
                           product: productsProvider.similarProducts!.results[index],
                           index: index,
-                          checkCompare: checkCompare,
                           isOnSale: productsProvider.runtimeType == ELSOnSaleProductsProvider,
                         );
                       },

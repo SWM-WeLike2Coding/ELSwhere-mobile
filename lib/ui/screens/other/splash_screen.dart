@@ -5,7 +5,9 @@ import 'dart:io';
 
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/config.dart';
+import 'package:elswhere/config/strings.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/data/providers/waiting_provider.dart';
 import 'package:elswhere/ui/screens/other/initial_screen.dart';
 import 'package:elswhere/ui/screens/other/login_screen.dart';
 import 'package:elswhere/ui/screens/other/terms_and_conditions_consent_screen.dart';
@@ -150,10 +152,10 @@ class _SplashScreenState extends State<SplashScreen> {
             return const SizedBox.shrink();
           } else {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const WaitingScreen(comment: '사용자 정보를 불러오는 중입니다...');
+              return const WaitingScreen(initialComment: MSG_LOADING_USER_INFO);
             }
             if (accessToken != '' && userProvider.userInfo == null) {
-              Fluttertoast.showToast(msg: '사용자 정보를 불러오는데 실패했습니다.', toastLength: Toast.LENGTH_SHORT);
+              Fluttertoast.showToast(msg: MSG_ERR_FETCH_USER_INFO, toastLength: Toast.LENGTH_SHORT);
             }
             if (userProvider.checkAuthenticated) {
               return const InitialScreen();

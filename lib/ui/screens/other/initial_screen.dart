@@ -1,8 +1,10 @@
 import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/config/strings.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/data/providers/issuer_provider.dart';
 import 'package:elswhere/data/providers/ticker_symbol_provider.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/data/providers/waiting_provider.dart';
 import 'package:elswhere/ui/screens/other/main_screen.dart';
 import 'package:elswhere/ui/screens/other/waiting_screen.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +28,7 @@ class InitialScreen extends StatelessWidget {
       ]),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const WaitingScreen(comment: '데이터 로딩중 입니다...');
+          return const WaitingScreen(initialComment: MSG_LOADING_DATA);
         } else if (snapshot.hasError) {
           return const Center(child: Text('An error occurred!'));
         } else {

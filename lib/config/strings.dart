@@ -3,6 +3,14 @@
 // 공통
 const String MSG_ERR_UNEXPECTED = "예상치 못한 오류가 발생했습니다.";
 
+// 로딩 관련
+const String MSG_LOADING_DATA = "데이터 로딩 중입니다...";
+const String MSG_LOADING_PRODUCT_INFO = "상품 정보를 불러오는 중입니다...";
+const String MSG_LOADING_USER_INFO = "사용자 정보를 불러오는 중입니다...";
+const String MSG_LOADING_STOCK_PRICE = "주가 정보를 불러오는 중입니다...";
+const String MSG_LOADING_ANALYSIS_RESULT = "분석 정보를 불러오는 중입니다...";
+const String MSG_LOADING_PRICE_RATIO = "기준가 정보를 받아오는 중입니다...";
+
 // 메시지
 // const String MSG_DESCRIPTION_MONTECARLO = '분석 결과는 ELSwhere만의 수학적인 분석 결과를 통해 제공되는 수치이며, 절대적인 수치가 아님을 알려드립니다.';
 // const String MSG_DESCRIPTION_AI = "안전 점수는 ELSwhere의 AI 분석 결과에 따라 '저위험', '중위험', '고위험', '초고위험'으로 분류되며, 안전 점수가 낮을수록 손실 확률이 높습니다.";
@@ -20,6 +28,8 @@ const String MSG_NO_PRICERATIO = '현재 상품의 기준가가 정해지지 않
 
 // 로딩 실패
 const String MSG_ERR_FETCH = "정보를 불러오는데 실패했습니다. 다시 시도해 주세요.";
+const String MSG_ERR_FETCH_LIKE = "좋아요 정보를 불러오는데 실패했습니다.";
+const String MSG_ERR_FETCH_USER_INFO = "사용자 정보를 불러오는데 실패했습니다.";
 
 // 닉네임 관련
 const String MSG_NICKNAME_RULE_TITLE = "• 닉네임 변경 규칙:";
