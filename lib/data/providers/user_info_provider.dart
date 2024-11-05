@@ -51,9 +51,12 @@ class UserInfoProvider with ChangeNotifier {
       } else {
         print('Error fetching Investment Type: ${e.message}');
       }
+      _investmentTypeInfo = null;
+
       return false;
     } catch (e) {
       print('Unexpected error: $e');
+      _investmentTypeInfo = null;
       return false;
     }
   }
@@ -136,11 +139,11 @@ class UserInfoProvider with ChangeNotifier {
     return false;
   }
 
-  Future<bool> changeInvestmentType(int investmentExperience, int investmentPreferredPeriod, int riskTakingAbility) async {
+  Future<bool> changeInvestmentType(int investmentExperience, int riskPropensity, int repaymentOption, int minPreferredReturn) async {
     try {
       String investmentExperienceStr = '';
-      String investmentPreferredPeriodStr = '';
-      String riskTakingAbilityStr = '';
+      String riskPropensityStr = '';
+      String repaymentOptionStr = '';
 
       if (investmentExperience == 1) {
         investmentExperienceStr = "YES";
@@ -148,29 +151,34 @@ class UserInfoProvider with ChangeNotifier {
         investmentExperienceStr = "NO";
       }
 
-      if (investmentPreferredPeriod == 0) {
-        investmentPreferredPeriodStr = "LESS_THAN_A_YEAR";
-      } else if (investmentPreferredPeriod == 1) {
-        investmentPreferredPeriodStr = "A_YEAR_OR_TWO";
+      if (riskPropensity == 0) {
+        riskPropensityStr = "EXTREME_RISK";
+      } else if (riskPropensity == 1) {
+        riskPropensityStr = "HIGH_RISK";
+      } else if (riskPropensity == 2){
+        riskPropensityStr = "MEDIUM_RISK";
       } else {
-        investmentPreferredPeriodStr = "MORE_THAN_THREE_YEARS";
+        riskPropensityStr = "LOW_RISK";
       }
 
-      if (riskTakingAbility == 0) {
-        riskTakingAbilityStr = 'RISK_TAKING_TYPE';
+      if (repaymentOption == 0) {
+        repaymentOptionStr = 'EARLY_REPAYMENT';
+      } else if (repaymentOption == 1){
+        repaymentOptionStr = 'MATURITY_REPAYMENT';
       } else {
-        riskTakingAbilityStr = 'STABILITY_SEEKING_TYPE';
+        repaymentOptionStr = 'NO_PREFERENCE';
       }
 
       final response = await _userService.sendNewInvestmentType({
         'investmentExperience': investmentExperienceStr,
-        'investmentPreferredPeriod': investmentPreferredPeriodStr,
-        'riskTakingAbility': riskTakingAbilityStr,
+        'riskPropensity': riskPropensityStr,
+        'repaymentOption': repaymentOptionStr,
+        'minPreferredReturn': minPreferredReturn,
       });
       if (response.response.statusCode == 200) {
         print('Investment Type changed successfully');
         _investmentTypeInfo =
-            ResponseInvestmentTypeDto(investmentExperience: investmentExperienceStr, investmentPreferredPeriod: investmentPreferredPeriodStr, riskTakingAbility: riskTakingAbilityStr);
+            ResponseInvestmentTypeDto(investmentExperience: investmentExperienceStr, riskPropensity: riskPropensityStr, repaymentOption: repaymentOptionStr, minPreferredReturn: minPreferredReturn);
         notifyListeners();
         return true;
       } else {
