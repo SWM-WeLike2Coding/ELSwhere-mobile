@@ -51,10 +51,12 @@ class UserInfoProvider with ChangeNotifier {
       } else {
         print('Error fetching Investment Type: ${e.message}');
       }
+      _investmentTypeInfo = null;
 
       return false;
     } catch (e) {
       print('Unexpected error: $e');
+      _investmentTypeInfo = null;
       return false;
     }
   }

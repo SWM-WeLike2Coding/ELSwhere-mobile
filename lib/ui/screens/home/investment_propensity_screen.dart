@@ -134,6 +134,7 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
     super.initState();
     _setCurrentScreen();
     ResponseInvestmentTypeDto? investmentTypeInfo = Provider.of<UserInfoProvider>(context, listen: false).investmentTypeInfo;
+    print(investmentTypeInfo);
 
     if (investmentTypeInfo != null) {
       if (investmentTypeInfo.investmentExperience == 'YES') {
