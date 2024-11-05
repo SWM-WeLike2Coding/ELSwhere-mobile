@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyBg9M181UgLKYRA-ohnlC4aMY_ivkkpky8</string>
+	<string>AIzaSyBtzBXYrhUfHTe7-aAb6H3JlSjHPQpoH9Q</string>
 	<key>GCM_SENDER_ID</key>
-	<string>420188564022</string>
+	<string>945515654091</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.welike2coding.elswhere</string>
 	<key>PROJECT_ID</key>
-	<string>elswhere-adaf5</string>
+	<string>elswhere-dev</string>
 	<key>STORAGE_BUCKET</key>
-	<string>elswhere-adaf5.appspot.com</string>
+	<string>elswhere-dev.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:420188564022:ios:d57b165c64ee77cc368697</string>
+	<string>1:945515654091:ios:3c7eac7532c5eac7c6a44e</string>
 </dict>
 </plist>

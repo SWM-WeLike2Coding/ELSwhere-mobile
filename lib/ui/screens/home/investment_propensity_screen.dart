@@ -22,13 +22,14 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
   int doesUserHaveExperience = -1; // 1이 경험 있음, 0은 없음
   int ristAppetiteType = -1; // 0: 초고위험, 1: 고위험, 2: 중위험, 3: 저위험
   int preferredRedemptionPeriodType = -1; // 0: 조기상환, 1: 만기상환, 2: 상관없음
+  int minimumPreferredReturn = -1;
 
   bool _isAgreeBtnChecked = false;
 
   FocusNode focusNode = FocusNode();
 
   bool _isAllConditionSatisfied() {
-    if (_isAgreeBtnChecked && doesUserHaveExperience != -1 && preferredRedemptionPeriodType != -1 && ristAppetiteType != -1) {
+    if (_isAgreeBtnChecked && doesUserHaveExperience != -1 && preferredRedemptionPeriodType != -1 && ristAppetiteType != -1 && minimumPreferredReturn != -1) {
       return true;
     } else {
       return false;
@@ -132,29 +133,57 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
   void initState() {
     super.initState();
     _setCurrentScreen();
-    ResponseInvestmentTypeDto? interestingProducts = Provider.of<UserInfoProvider>(context, listen: false).investmentTypeInfo;
+    ResponseInvestmentTypeDto? investmentTypeInfo = Provider.of<UserInfoProvider>(context, listen: false).investmentTypeInfo;
+    print(investmentTypeInfo);
 
-    if (interestingProducts != null) {
-      if (interestingProducts.riskTakingAbility == 'RISK_TAKING_TYPE') {
-        preferredRedemptionPeriodType = 0;
-      } else if (interestingProducts.riskTakingAbility == 'STABILITY_SEEKING_TYPE') {
-        preferredRedemptionPeriodType = 1;
-      }
-
-      if (interestingProducts.investmentPreferredPeriod == 'LESS_THAN_A_YEAR') {
-        ristAppetiteType = 0;
-      } else if (interestingProducts.investmentPreferredPeriod == 'A_YEAR_OR_TWO') {
-        ristAppetiteType = 1;
-      } else if (interestingProducts.investmentPreferredPeriod == 'MORE_THAN_THREE_YEARS') {
-        ristAppetiteType = 2;
-      }
-
-      if (interestingProducts.investmentExperience == 'YES') {
+    if (investmentTypeInfo != null) {
+      if (investmentTypeInfo.investmentExperience == 'YES') {
         doesUserHaveExperience = 1;
-      } else if (interestingProducts.investmentExperience == 'NO') {
+      } else if (investmentTypeInfo.investmentExperience == 'NO') {
         doesUserHaveExperience = 0;
       }
+
+      if (investmentTypeInfo.riskPropensity == 'EXTREME_RISK') {
+        ristAppetiteType = 0;
+      } else if (investmentTypeInfo.riskPropensity == 'HIGH_RISK') {
+        ristAppetiteType = 1;
+      } else if (investmentTypeInfo.riskPropensity == 'MEDIUM_RISK') {
+        ristAppetiteType = 2;
+      } else {
+        ristAppetiteType = 3;
+      }
+
+      if (investmentTypeInfo.repaymentOption == 'EARLY_REPAYMENT') {
+        preferredRedemptionPeriodType = 0;
+      } else if (investmentTypeInfo.repaymentOption == 'MATURITY_REPAYMENT') {
+        preferredRedemptionPeriodType = 1;
+      } else if (investmentTypeInfo.repaymentOption == 'NO_PREFERENCE') {
+        preferredRedemptionPeriodType = 2;
+      }
+
+      minimumPreferredReturn = investmentTypeInfo.minPreferredReturn;
+    } else {
+      doesUserHaveExperience = -1;
+      ristAppetiteType = -1;
+      preferredRedemptionPeriodType = -1;
+      minimumPreferredReturn = -1;
     }
+
+    if (minimumPreferredReturn != -1) {
+      _controller.text = minimumPreferredReturn.toString();
+    }
+
+    _controller.addListener(() {
+      final value = _controller.text;
+      setState(() {
+        minimumPreferredReturn = int.tryParse(value) ?? -1;
+      });
+    });
+
+    print(doesUserHaveExperience);
+    print(ristAppetiteType);
+    print(preferredRedemptionPeriodType);
+    print(minimumPreferredReturn);
   }
 
   @override
@@ -411,11 +440,11 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
                       NumberRangeInputFormatter(),
                       // FilteringTextInputFormatter.allow(RegExp(r'^([1-9]?[0-9]|100)$')),
                     ],
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 12),
-                      hintText: "최소 수익률(%)",
-                      hintStyle: TextStyle(
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                      hintText: minimumPreferredReturn == -1 ? "최소 수익률(%)" : null,
+                      hintStyle: const TextStyle(
                         color: AppColors.gray400,
                         fontSize: 14,
                       ),
@@ -423,7 +452,7 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
                     ),
                     onChanged: (value) {
                       setState(() {
-
+                        minimumPreferredReturn = int.tryParse(value) ?? -1;
                       });
                     },
                   ),
@@ -500,7 +529,7 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
                   )),
               onPressed: _isAllConditionSatisfied()
                   ? () async {
-                if (await userInfoProvider.changeInvestmentType(doesUserHaveExperience, ristAppetiteType, preferredRedemptionPeriodType)) {
+                if (await userInfoProvider.changeInvestmentType(doesUserHaveExperience, ristAppetiteType, preferredRedemptionPeriodType, minimumPreferredReturn)) {
                   print("투자 타입 정보 저장 성공");
                   Fluttertoast.showToast(msg: "성공적으로 저장되었습니다");
                 } else {
@@ -524,90 +553,6 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
       ),
     );
   }
-
-  // Widget _buildBottomButton() {
-  //   final userInfoProvider = Provider.of<UserInfoProvider>(context, listen: false);
-  //
-  //   return SizedBox(
-  //     height: 100,
-  //     child: Padding(
-  //       padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 32),
-  //       child: Row(
-  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //         children: [
-  //           Expanded(
-  //             child: SizedBox(
-  //               height: double.infinity,
-  //               child: Opacity(
-  //                 opacity: _isAllConditionSatisfied() ? 1.0 : 0.4,
-  //                 child: ElevatedButton(
-  //                   style: ElevatedButton.styleFrom(
-  //                       backgroundColor: AppColors.gray100,
-  //                       disabledBackgroundColor: AppColors.gray100,
-  //                       shape: RoundedRectangleBorder(
-  //                         borderRadius: BorderRadius.circular(8),
-  //                       )),
-  //                   onPressed: _isAgreeBtnChecked
-  //                       ? () {
-  //                           Navigator.pop(context);
-  //                         }
-  //                       : null,
-  //                   child: const Text(
-  //                     '취소',
-  //                     style: TextStyle(
-  //                       fontSize: 16,
-  //                       fontWeight: FontWeight.w500,
-  //                       color: AppColors.gray700,
-  //                     ),
-  //                   ),
-  //                 ),
-  //               ),
-  //             ),
-  //           ),
-  //           const SizedBox(
-  //             width: 4,
-  //           ),
-  //           Expanded(
-  //             child: SizedBox(
-  //               height: double.infinity,
-  //               child: Opacity(
-  //                 opacity: _isAllConditionSatisfied() ? 1.0 : 0.4,
-  //                 child: ElevatedButton(
-  //                   style: ElevatedButton.styleFrom(
-  //                       backgroundColor: AppColors.mainBlue,
-  //                       disabledBackgroundColor: AppColors.mainBlue,
-  //                       shape: RoundedRectangleBorder(
-  //                         borderRadius: BorderRadius.circular(8),
-  //                       )),
-  //                   onPressed: _isAllConditionSatisfied()
-  //                       ? () async {
-  //                           if (await userInfoProvider.changeInvestmentType(doesUserHaveExperience, ristAppetiteType, preferredRedemptionPeriodType)) {
-  //                             print("투자 타입 정보 저장 성공");
-  //                             Fluttertoast.showToast(msg: "성공적으로 저장되었습니다");
-  //                           } else {
-  //                             print("투자 타입 정보 저장 실패");
-  //                             Fluttertoast.showToast(msg: "투자 성형 정보 저장에 실패했습니다");
-  //                           }
-  //                           Navigator.of(context).pop();
-  //                         }
-  //                       : null,
-  //                   child: const Text(
-  //                     '저장하기',
-  //                     style: TextStyle(
-  //                       fontSize: 16,
-  //                       fontWeight: FontWeight.w500,
-  //                       color: Colors.white,
-  //                     ),
-  //                   ),
-  //                 ),
-  //               ),
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
 }
 
 class NumberRangeInputFormatter extends TextInputFormatter {
@@ -621,6 +566,10 @@ class NumberRangeInputFormatter extends TextInputFormatter {
       return oldValue;
     }
 
+    if (newValue.text.startsWith('0') && newValue.text != '0') {
+      return oldValue;
+    }
+
     final number = int.parse(newValue.text);
 
     if (number >= 0 && number <= 100) {
@@ -628,4 +577,5 @@ class NumberRangeInputFormatter extends TextInputFormatter {
     }
 
     return oldValue;
-  }}
+  }
+}
