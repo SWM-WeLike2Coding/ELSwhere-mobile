@@ -5,13 +5,15 @@ part 'response_investment_type_dto.g.dart';
 @JsonSerializable()
 class ResponseInvestmentTypeDto {
   final String investmentExperience;
-  final String investmentPreferredPeriod;
-  final String riskTakingAbility;
+  final String riskPropensity;
+  final String repaymentOption;
+  final int minPreferredReturn;
 
   ResponseInvestmentTypeDto({
     required this.investmentExperience,
-    required this.investmentPreferredPeriod,
-    required this.riskTakingAbility,
+    required this.riskPropensity,
+    required this.repaymentOption,
+    required this.minPreferredReturn,
   });
 
   factory ResponseInvestmentTypeDto.fromJson(Map<String, dynamic> json) => _$ResponseInvestmentTypeDtoFromJson(json);
