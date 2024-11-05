@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/config/strings.dart';
 import 'package:elswhere/data/models/dtos/user/summarized_user_holding_dto.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/data/providers/waiting_provider.dart';
 import 'package:elswhere/ui/screens/other/waiting_screen.dart';
 import 'package:elswhere/ui/views/product/add_holding_product_modal.dart';
 import 'package:elswhere/ui/views/product/els_product_detail_view.dart';
@@ -22,6 +26,7 @@ class ELSProductDetailScreen extends StatefulWidget {
 class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
   late UserInfoProvider userProvider;
   late ELSProductProvider productProvider;
+  late WaitingProvider waitingProvider;
   bool isLiked = false;
   bool isBookmarked = false;
   bool isHeld = false;
@@ -37,8 +42,26 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
   }
 
   Future<void> _initData() async {
-    await productProvider.fetchPriceRatio(productProvider.product!.id);
+    final product = productProvider.singleProduct!;
+    await productProvider.fetchPriceRatio(product.id);
+    waitingProvider.setLoadingValue(1 / 5);
+    waitingProvider.setComment(MSG_LOADING_PRODUCT_INFO);
+    await productProvider.fetchProduct(product.id);
+    waitingProvider.setLoadingValue(2 / 5);
+    waitingProvider.setComment(MSG_LOADING_STOCK_PRICE);
+    await productProvider.fetchStockPrices();
+    waitingProvider.setLoadingValue(3 / 5);
+    waitingProvider.setComment(MSG_LOADING_ANALYSIS_RESULT);
+    await productProvider.fetchMonteCarloResponse(product.id);
+    waitingProvider.setLoadingValue(4 / 5);
+    waitingProvider.setComment(MSG_LOADING_DATA);
+    final result = productProvider.checkisHeld(userProvider.holdingProducts ?? []);
+    waitingProvider.setLoadingValue(5 / 5);
+    if (!result) {
+      Fluttertoast.showToast(msg: MSG_ERR_FETCH_LIKE, toastLength: Toast.LENGTH_SHORT);
+    }
     setState(() => _isLoading = false);
+    waitingProvider.clear();
   }
 
   @override
@@ -46,8 +69,14 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
     super.initState();
     userProvider = Provider.of<UserInfoProvider>(context, listen: false);
     productProvider = Provider.of<ELSProductProvider>(context, listen: false);
-    _initData();
+    waitingProvider = Provider.of<WaitingProvider>(context, listen: false);
     _setCurrentScreen();
+    try {
+      _initData();
+    } catch (e) {
+      log('상세 보기 화면 불러오기 실패: $e');
+      Navigator.pop(context);
+    }
   }
 
   void _changeLiked() async {
@@ -122,7 +151,7 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
     return Consumer<ELSProductProvider>(
       builder: (context, productProvider, child) {
         if (_isLoading) {
-          return const WaitingScreen(comment: '기준가 정보를 받아오는 중입니다');
+          return const WaitingScreen(initialComment: MSG_LOADING_PRICE_RATIO);
         }
         isLiked = productProvider.isLiked;
         isBookmarked = productProvider.isBookmarked;

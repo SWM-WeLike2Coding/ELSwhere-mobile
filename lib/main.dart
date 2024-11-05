@@ -12,6 +12,7 @@ import 'package:elswhere/data/providers/issuer_provider.dart';
 import 'package:elswhere/data/providers/post_provider.dart';
 import 'package:elswhere/data/providers/ticker_symbol_provider.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/data/providers/waiting_provider.dart';
 import 'package:elswhere/data/services/analysis/analysis_service.dart';
 import 'package:elswhere/data/services/other/dio_client.dart';
 import 'package:elswhere/data/services/product/els_product_service.dart';
@@ -192,6 +193,7 @@ class ELSwhere extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => UserInfoProvider(_userService)),
         ChangeNotifierProvider(create: (context) => HotProductsProvider(_productService)),
         ChangeNotifierProvider(create: (context) => PostProvider(_postService)),
+        ChangeNotifierProvider(create: (context) => WaitingProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

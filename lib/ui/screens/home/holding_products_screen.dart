@@ -1,6 +1,7 @@
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/strings.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/data/providers/waiting_provider.dart';
 import 'package:elswhere/ui/screens/other/waiting_screen.dart';
 import 'package:elswhere/ui/views/home/holding_products_list_view.dart';
 import 'package:elswhere/ui/widgets/custom_appbar.dart';
@@ -40,7 +41,7 @@ class _HoldingProductsScreenState extends State<HoldingProductsScreen> {
       future: _userInfoProvider.fetchHoldingProducts(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const WaitingScreen(comment: MSG_LOADING_HOLDING_PRODUCTS);
+          return const WaitingScreen(initialComment: MSG_LOADING_HOLDING_PRODUCTS);
         } else {
           return Scaffold(
             appBar: CustomAppBar(
