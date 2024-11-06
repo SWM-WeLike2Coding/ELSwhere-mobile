@@ -36,7 +36,7 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
 
   Future<void> _setCurrentScreen() async {
     await analytics.logScreenView(
-      screenName: '상품 상세 화면 - ${productProvider.product!.name}',
+      screenName: '상품 상세 화면 - ${productProvider.singleProduct!.name}',
       screenClass: 'ELSProductDetailScreen',
     );
   }
@@ -57,6 +57,7 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
     waitingProvider.setComment(MSG_LOADING_DATA);
     final result = productProvider.checkisHeld(userProvider.holdingProducts ?? []);
     waitingProvider.setLoadingValue(5 / 5);
+    await Future.delayed(const Duration(milliseconds: 200));
     if (!result) {
       Fluttertoast.showToast(msg: MSG_ERR_FETCH_LIKE, toastLength: Toast.LENGTH_SHORT);
     }
