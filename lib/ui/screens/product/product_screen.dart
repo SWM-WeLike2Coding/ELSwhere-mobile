@@ -102,7 +102,11 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
                     ),
                   ],
                 ),
-                ELSProductCard<SummarizedProductDto>(product: productProvider.selectedProduct!, index: 1),
+                ELSProductCard<SummarizedProductDto>(
+                  product: productProvider.selectedProduct!,
+                  index: 1,
+                  isOnSale: true,
+                ),
               ],
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
