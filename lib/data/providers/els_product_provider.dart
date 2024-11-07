@@ -28,7 +28,7 @@ class ELSProductProvider with ChangeNotifier {
   MonteCarloResponse? _monteCarloResponse;
   PriceRatioResponse? _priceRatioResponse;
   SummarizedProductDto? _selectedProduct;
-  SummarizedProductDto? _singleProduct;
+  int? _singleProductId;
   bool _isLoading = false;
   bool _isBookmarked = false;
   bool _isLiked = false;
@@ -47,7 +47,7 @@ class ELSProductProvider with ChangeNotifier {
   MonteCarloResponse? get monteCarloResponse => _monteCarloResponse;
   PriceRatioResponse? get priceRatioResponse => _priceRatioResponse;
   SummarizedProductDto? get selectedProduct => _selectedProduct;
-  SummarizedProductDto? get singleProduct => _singleProduct;
+  int? get singleProductId => _singleProductId;
   bool get isLoading => _isLoading;
   bool get isBookmarked => _isBookmarked;
   bool get isLiked => _isLiked;
@@ -126,8 +126,8 @@ class ELSProductProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setSingleProduct(SummarizedProductDto product) {
-    _singleProduct = product;
+  void setSingleProduct(int id) {
+    _singleProductId = id;
   }
 
   Future<bool> registerInterested(int id) async {

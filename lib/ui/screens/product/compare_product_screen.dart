@@ -703,20 +703,22 @@ class CompareProductScreen extends StatelessWidget {
                     },
                   );
 
-                  await productProvider!.fetchMonteCarloResponse(compareProduct1.id);
-                  await productProvider!.fetchProduct(compareProduct1.id);
-                  productProvider!.checkisHeld(userProvider!.holdingProducts ?? []);
+                  productProvider!.setSingleProduct(compareProduct1.id);
+                  // await productProvider!.fetchMonteCarloResponse(compareProduct1.id);
+                  // await productProvider!.fetchProduct(compareProduct1.id);
+                  // productProvider!.checkisHeld(userProvider!.holdingProducts ?? []);
 
                   // 로딩 다이얼로그 닫기
                   Navigator.of(context).pop();
 
-                  if (productProvider!.product == null) throw Exception;
+                  // if (productProvider!.product == null) throw Exception;
 
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ELSProductDetailScreen(),
-                      ));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ELSProductDetailScreen(),
+                    ),
+                  );
                 } catch (e) {
                   Fluttertoast.showToast(msg: '상품 불러오기에 실패했습니다. 다시 시도해주세요.', toastLength: Toast.LENGTH_SHORT);
                 }
@@ -760,20 +762,22 @@ class CompareProductScreen extends StatelessWidget {
                     },
                   );
 
-                  await productProvider!.fetchMonteCarloResponse(compareProduct2.id);
-                  await productProvider!.fetchProduct(compareProduct2.id);
-                  productProvider!.checkisHeld(userProvider!.holdingProducts ?? []);
+                  productProvider!.setSingleProduct(compareProduct2.id);
+                  // await productProvider!.fetchMonteCarloResponse(compareProduct2.id);
+                  // await productProvider!.fetchProduct(compareProduct2.id);
+                  // productProvider!.checkisHeld(userProvider!.holdingProducts ?? []);
 
                   // 로딩 다이얼로그 닫기
                   Navigator.of(context).pop();
 
-                  if (productProvider!.product == null) throw Exception;
+                  // if (productProvider!.product == null) throw Exception;
 
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ELSProductDetailScreen(),
-                      ));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ELSProductDetailScreen(),
+                    ),
+                  );
                 } catch (e) {
                   Fluttertoast.showToast(msg: '상품 불러오기에 실패했습니다. 다시 시도해주세요.', toastLength: Toast.LENGTH_SHORT);
                 }

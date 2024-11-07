@@ -207,22 +207,23 @@ class HotProductCard extends StatelessWidget {
       },
     );
 
-    await productProvider.fetchMonteCarloResponse(product.id);
-    final result = [
-      await productProvider.fetchProduct(product.id),
-      await productProvider.fetchStockPrices(),
-      productProvider.checkisHeld(userProvider.holdingProducts!),
-    ].every((result) => result);
+    productProvider.setSingleProduct(product.id);
+    // await productProvider.fetchMonteCarloResponse(product.id);
+    // final result = [
+    //   await productProvider.fetchProduct(product.id),
+    //   await productProvider.fetchStockPrices(),
+    //   productProvider.checkisHeld(userProvider.holdingProducts!),
+    // ].every((result) => result);
 
     Navigator.pop(context);
 
-    if (result) {
+    // if (result) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const ELSProductDetailScreen()),
       );
-    } else {
-      Fluttertoast.showToast(msg: MSG_ERR_FETCH, toastLength: Toast.LENGTH_SHORT);
-    }
+    // } else {
+    //   Fluttertoast.showToast(msg: MSG_ERR_FETCH, toastLength: Toast.LENGTH_SHORT);
+    // }
   }
 }
