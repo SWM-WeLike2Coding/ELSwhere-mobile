@@ -1,12 +1,15 @@
 import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/config/config.dart';
 import 'package:elswhere/config/strings.dart';
 import 'package:elswhere/data/providers/post_provider.dart';
 import 'package:elswhere/ui/screens/more/announcement_screen.dart';
+import 'package:elswhere/ui/screens/more/app_version_screen.dart';
 import 'package:elswhere/ui/screens/more/change_nickname_screen.dart';
 import 'package:elswhere/ui/screens/more/investment_guide_screen.dart';
 import 'package:elswhere/ui/screens/other/login_screen.dart';
 import 'package:elswhere/ui/screens/more/member_quit_screen.dart';
 import 'package:elswhere/ui/screens/more/terms_and_conditions_display_screen.dart';
+import 'package:elswhere/utils/utils.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -177,7 +180,7 @@ class _MoreScreenState extends State<MoreScreen> {
                             if (result) {
                               Navigator.pushAndRemoveUntil(
                                 context,
-                                MaterialPageRoute(builder: (context) => LoginScreen()),
+                                MaterialPageRoute(builder: (context) => const LoginScreen()),
                                 (route) => false,
                               );
                             }
@@ -307,9 +310,9 @@ class _MoreScreenState extends State<MoreScreen> {
                         ),
                         const Spacer(),
                         const Icon(
-                            Icons.arrow_forward_ios,
-                            size: 18,
-                            color: AppColors.gray300,
+                          Icons.arrow_forward_ios,
+                          size: 18,
+                          color: AppColors.gray300,
                         ),
                         const SizedBox(
                           width: 8,
@@ -534,6 +537,19 @@ class _MoreScreenState extends State<MoreScreen> {
                           ));
                     },
                   ),
+                  const Divider(color: AppColors.gray200),
+                  _buildAppVersionTile(
+                    context: context,
+                    version: storeVersion,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AppVersionScreen(),
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             ],
@@ -597,6 +613,49 @@ class _MoreScreenState extends State<MoreScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildAppVersionTile({
+    required BuildContext context,
+    required String version,
+    required VoidCallback onTap,
+  }) {
+    bool needUpdate = !checkAppVersion(storeVersion);
+    return Padding(
+      padding: const EdgeInsets.only(left: 16),
+      child: InkWell(
+        onTap: onTap,
+        splashColor: Colors.grey.withOpacity(0.1),
+        child: SizedBox(
+          height: 75,
+          child: ListTile(
+            titleAlignment: ListTileTitleAlignment.center,
+            title: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                if (needUpdate) ...[
+                  CircleAvatar(
+                    backgroundColor: AppColors.contentOrange,
+                    radius: 9,
+                    child: Text('N', style: textTheme.SM_12.copyWith(color: Colors.white)),
+                  ),
+                  const SizedBox(width: 8),
+                ],
+                Text(
+                  '앱 버전',
+                  style: textTheme.R_16.copyWith(color: AppColors.gray900),
+                ),
+              ],
+            ),
+            subtitle: Text(
+              version,
+              style: textTheme.M_14.copyWith(color: AppColors.gray500),
+            ),
+            trailing: const Padding(padding: EdgeInsets.only(right: 8), child: Icon(Icons.arrow_forward_ios, size: 16)),
+          ),
+        ),
+      ),
     );
   }
 

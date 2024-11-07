@@ -8,6 +8,9 @@ import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/data/providers/els_products_provider.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
 import 'package:elswhere/ui/screens/product/els_product_detail_screen.dart';
+import 'package:elswhere/ui/widgets/danger_degree_box.dart';
+import 'package:elswhere/utils/ai_result_converter.dart';
+import 'package:elswhere/utils/utils.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -81,6 +84,10 @@ class CompareProductScreen extends StatelessWidget {
                                     _buildProductName(compareProducts[0], compareProducts[1]),
                                     const SizedBox(height: 32),
                                     _buildProductIssuer(compareProducts[0], compareProducts[1]),
+                                    const SizedBox(height: 32),
+                                    _buildProductAIResult(compareProducts[0], compareProducts[1]),
+                                    const SizedBox(height: 32),
+                                    _buildProductSafetyScore(compareProducts[0], compareProducts[1]),
                                     const SizedBox(height: 32),
                                     _buildProductYield(compareProducts[0], compareProducts[1]),
                                     const SizedBox(height: 32),
@@ -245,6 +252,111 @@ class CompareProductScreen extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildProductAIResult(ResponseSingleProductDto product1, ResponseSingleProductDto product2) {
+    final Map<String, dynamic>? aiResult1 = AIResultConverter.getResultMap(product1.safetyScore);
+    final Map<String, dynamic>? aiResult2 = AIResultConverter.getResultMap(product2.safetyScore);
+    return Row(
+      children: [
+        Expanded(
+          flex: 1,
+          child: Text(
+            'AI 분석\n위험도',
+            style: textTheme.labelSmall!.copyWith(
+              color: AppColors.gray600,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              letterSpacing: -0.28,
+            ),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          flex: 2,
+          child: aiResult1 != null
+              ? FittedBox(
+                  fit: BoxFit.none,
+                  alignment: Alignment.centerLeft,
+                  child: DangerDegreeBox(
+                    aiResult: aiResult1,
+                    textStyle: textTheme.M_14,
+                  ),
+                )
+              : Text('분석 정보 없음', style: textTheme.M_14),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          flex: 2,
+          child: aiResult2 != null
+              ? FittedBox(
+                  fit: BoxFit.none,
+                  alignment: Alignment.centerLeft,
+                  child: DangerDegreeBox(
+                    aiResult: aiResult2,
+                    textStyle: textTheme.M_14,
+                  ),
+                )
+              : Text('분석 정보 없음', style: textTheme.M_14),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildProductSafetyScore(ResponseSingleProductDto product1, ResponseSingleProductDto product2) {
+    final double? score1 = product1.safetyScore;
+    final double? score2 = product2.safetyScore;
+    TextStyle textStyle1 = textTheme.SM_24;
+    TextStyle textStyle2 = textTheme.SM_24;
+    Color color1 = Colors.black;
+    Color color2 = Colors.black;
+    if (score1 != null && score2 != null) {
+      if (score1 > score2) {
+        color1 = AppColors.mainBlue;
+        textStyle2 = textTheme.SM_18;
+      } else if (score1 < score2) {
+        color2 = AppColors.mainBlue;
+        textStyle1 = textTheme.SM_18;
+      } else {
+        color1 = color2 = Colors.black;
+      }
+    }
+    return Row(
+      children: [
+        Expanded(
+          flex: 1,
+          child: Text(
+            '안전 점수',
+            style: textTheme.labelSmall!.copyWith(
+              color: AppColors.gray600,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              letterSpacing: -0.28,
+            ),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          flex: 2,
+          child: score1 != null
+              ? Text(
+                  '${(score1 * 100).toStringAsFixed(2)}점',
+                  style: textStyle1.copyWith(color: color1),
+                )
+              : Text('분석 정보 없음', style: textTheme.M_14),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          flex: 2,
+          child: score2 != null
+              ? Text(
+                  '${(score2 * 100).toStringAsFixed(2)}점',
+                  style: textStyle2.copyWith(color: color2),
+                )
+              : Text('분석 정보 없음', style: textTheme.M_14),
         ),
       ],
     );
@@ -514,8 +626,8 @@ class CompareProductScreen extends StatelessWidget {
   }
 
   Widget _buildProductSubscriptionEndDate(ResponseSingleProductDto product1, ResponseSingleProductDto product2) {
-    final dayDifference1 = DateTime.parse(product1.subscriptionEndDate).difference(DateTime.now()).inDays;
-    final dayDifference2 = DateTime.parse(product2.subscriptionEndDate).difference(DateTime.now()).inDays;
+    final dayDifference1 = DateTime.parse(product1.subscriptionEndDate).getJustDay().difference(DateTime.now().getJustDay()).inDays;
+    final dayDifference2 = DateTime.parse(product2.subscriptionEndDate).getJustDay().difference(DateTime.now().getJustDay()).inDays;
 
     return Row(
       children: [

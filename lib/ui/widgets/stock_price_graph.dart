@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/data/models/stock_price.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
+import 'package:elswhere/ui/screens/more/more_screen.dart';
+import 'package:elswhere/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +24,7 @@ class _StockPriceGraphState extends State<StockPriceGraph> {
   int selectedPeriod = 0;
   List<List<FlSpot>> stockData = [];
   final DateFormat format = DateFormat().addPattern('yyyy년 MM월 dd일');
-  final DateTime now = DateTime.now();
+  final DateTime now = DateTime.now().getJustDay();
   Map<String, List<StockPrice>>? prices;
 
   // 기간별 데이터 불러오기

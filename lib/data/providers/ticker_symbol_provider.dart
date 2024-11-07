@@ -1,5 +1,6 @@
 import 'package:elswhere/data/models/dtos/product/response_ticker_symbol_dto.dart';
 import 'package:elswhere/data/services/product/els_product_service.dart';
+import 'package:elswhere/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:yahoo_finance_data_reader/yahoo_finance_data_reader.dart';
 
@@ -43,7 +44,7 @@ class TickerSymbolProvider extends ChangeNotifier {
   Future<void> fetchStockPrices() async {
     for (int i = 0; i < _length; i++) {
       final String stock = _tickerSymbol[i];
-      final now = DateTime.now();
+      final now = DateTime.now().getJustDay();
       final sevenDaysAgo = now.subtract(const Duration(days: 7));
       try {
         final response = await _yfinanceReader.getDailyDTOs('^$stock', startDate: sevenDaysAgo);

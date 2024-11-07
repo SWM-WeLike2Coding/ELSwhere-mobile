@@ -5,7 +5,9 @@ import 'package:elswhere/config/config.dart';
 import 'package:elswhere/data/models/dtos/user/summarized_user_holding_dto.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/ui/screens/more/more_screen.dart';
 import 'package:elswhere/ui/screens/product/els_product_detail_screen.dart';
+import 'package:elswhere/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -86,7 +88,7 @@ class _ELSProductCardState extends State<HoldingProductCard> with AutomaticKeepA
     super.build(context);
     return Consumer<UserInfoProvider>(builder: (context, userProvider, _) {
       product = widget.product;
-      dayDifference = product.nextRepaymentEvaluationDate.difference(DateTime.now()).inDays;
+      dayDifference = product.nextRepaymentEvaluationDate.getJustDay().difference(DateTime.now().getJustDay()).inDays;
       format = NumberFormat.decimalPattern('ko');
       price = '${format.format(product.price)}원';
       priceRatio = product.recentAndInitialPriceRatio;

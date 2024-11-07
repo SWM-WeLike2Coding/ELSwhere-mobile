@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:developer' as dev;
 import 'dart:ui' as ui;
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:elswhere/config/app_resource.dart';
@@ -688,7 +689,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
 
   Widget _buildInitialBasePriceEvaluationDateCard() {
     // final format = DateFormat().addPattern('yyyy-MM-dd');
-    final dayDifference = DateTime.parse(product!.initialBasePriceEvaluationDate.toString()).difference(DateTime.now()).inDays;
+    final dayDifference = DateTime.parse(product!.initialBasePriceEvaluationDate.toString()).getJustDay().difference(DateTime.now().getJustDay()).inDays;
 
     return Container(
       decoration: const BoxDecoration(
@@ -764,8 +765,8 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
   Widget _buildDateCard() {
     final format = DateFormat().addPattern('yyyy-MM-dd');
     final dayDifference = isHeld
-        ? DateTime.parse(productProvider.holdingProduct!.nextRepaymentEvaluationDate.toString()).difference(DateTime.now()).inDays
-        : DateTime.parse(product!.subscriptionEndDate).difference(DateTime.now()).inDays;
+        ? DateTime.parse(productProvider.holdingProduct!.nextRepaymentEvaluationDate.getJustDay().toString()).difference(DateTime.now().getJustDay()).inDays
+        : DateTime.parse(product!.subscriptionEndDate).getJustDay().difference(DateTime.now().getJustDay()).inDays;
 
     return isHeld
         ? Container(
@@ -1175,9 +1176,7 @@ class _ELSProductDetailViewState extends State<ELSProductDetailView> {
     return Text(
       '''본 상품은 $issuer에서 광고하는 상품으로
 엘스웨어는 상품 내용 및 판매에 관여하지 않습니다.''',
-      style: textTheme.displaySmall!.copyWith(
-        color: AppColors.gray300,
-      ),
+      style: textTheme.displaySmall!.copyWith(color: AppColors.gray300),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:elswhere/utils/utils.dart';
 import 'package:yahoo_finance_data_reader/yahoo_finance_data_reader.dart';
 
 class YFinanceService {
@@ -14,7 +15,7 @@ class YFinanceService {
   }
 
   Future<Map<String, YahooFinanceResponse>?> fetchStockPrices(Map<String, String> tickers) async {
-    final now = DateTime.now();
+    final now = DateTime.now().getJustDay();
     final Map<String, YahooFinanceResponse> responses = {};
     try {
       final List<Future<MapEntry<String, YahooFinanceResponse>>> futures = tickers.entries.map((entry) async {

@@ -1,12 +1,12 @@
-import 'package:elswhere/config/app_resource.dart';
+import 'package:elswhere/config/config.dart';
 import 'package:elswhere/config/strings.dart';
 import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/data/providers/issuer_provider.dart';
 import 'package:elswhere/data/providers/ticker_symbol_provider.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
-import 'package:elswhere/data/providers/waiting_provider.dart';
 import 'package:elswhere/ui/screens/other/main_screen.dart';
 import 'package:elswhere/ui/screens/other/waiting_screen.dart';
+import 'package:elswhere/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +26,7 @@ class InitialScreen extends StatelessWidget {
         Provider.of<ELSProductProvider>(context, listen: false).fetchInterested(),
         Provider.of<UserInfoProvider>(context, listen: false).fetchHoldingProducts(),
         Provider.of<ELSProductProvider>(context, listen: false).fetchLikeProducts(),
+        currentStoreVersion(packageName),
       ]),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {

@@ -122,6 +122,7 @@ sealed class Assets {
 sealed class AppColors {
   static const Color contentRed = Color(0xFFEE5648);
   static const Color contentYellow = Color(0xFFF3972C);
+  static const Color contentOrange = Color(0xFFF06B23);
   static const Color contentBlack = Color(0xFF000000);
   static const Color contentWhite = Color(0xFFFFFFFF);
   static const Color textFieldWhite = Color(0xFFF3F3F3);
