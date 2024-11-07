@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:elswhere/config/config.dart';
+import 'package:elswhere/data/models/dtos/product/response_page_summarized_product_dto.dart';
 import 'package:elswhere/data/models/dtos/user/request_create_holding_dto.dart';
 import 'package:elswhere/data/models/dtos/user/response_interesting_product_dto.dart';
 import 'package:elswhere/data/models/dtos/user/response_investment_type_dto.dart';
@@ -67,4 +68,14 @@ abstract class UserService {
 
   @GET("/v1/product/like")
   Future<HttpResponse<List<SummarizedProductDto>>> fetchLikeProducts();
+
+  @GET("/v1/propensity/survey/check")
+  Future<HttpResponse> getSurveyParticipationStatus();
+
+  @GET("/v1/propensity")
+  Future<ResponsePageSummarizedProductDto> fetchPersonalizedProducts(
+      @Query("type") String type,
+      @Query("page") int page,
+      @Query("size") int size,
+  );
 }

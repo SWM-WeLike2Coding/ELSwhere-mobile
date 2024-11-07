@@ -24,6 +24,7 @@ class HotProductsListView extends StatelessWidget {
                   key: ValueKey(provider.hotProducts[index]),
                   rank: index + 1,
                   product: provider.hotProducts[index],
+                  
                 );
               },
             );

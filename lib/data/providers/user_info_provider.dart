@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/config.dart';
+import 'package:elswhere/data/models/dtos/product/summarized_product_dto.dart';
 import 'package:elswhere/data/models/dtos/user/request_create_holding_dto.dart';
 import 'package:elswhere/data/models/dtos/user/response_investment_type_dto.dart';
 import 'package:elswhere/data/models/dtos/user/response_login_dto.dart';
@@ -19,18 +21,26 @@ class UserInfoProvider with ChangeNotifier {
   bool _isLoading = false;
   ResponseInvestmentTypeDto? _investmentTypeInfo;
   List<SummarizedUserHoldingDto>? _holdingProducts;
+  List<SummarizedProductDto> _personalizedProducts = [];
   String? _signupToken;
   int _totalHoldingPrice = 0;
   int _profitAndLossPrice = 0;
+  bool _surveyParticipationStatus = false;
+  int _page = 0;
+  bool _isInit = true;
+  final int _size = 5000;
 
   ResponseUserInfoDto? get userInfo => _userInfo;
   bool get isLoading => _isLoading;
   bool get checkAuthenticated => _userInfo != null;
   ResponseInvestmentTypeDto? get investmentTypeInfo => _investmentTypeInfo;
   List<SummarizedUserHoldingDto>? get holdingProducts => _holdingProducts ?? [];
+  List<SummarizedProductDto> get personalizedProducts => _personalizedProducts ?? [];
   String? get signupToken => _signupToken;
   int get totalHoldingPrice => _totalHoldingPrice;
   int get profitAndLossPrice => _profitAndLossPrice;
+  bool get surveyParticipationStatus => _surveyParticipationStatus;
+  bool get isInit => _isInit;
 
   set signupToken(String? signupToken) => _signupToken = signupToken;
 
@@ -57,6 +67,90 @@ class UserInfoProvider with ChangeNotifier {
     } catch (e) {
       print('Unexpected error: $e');
       _investmentTypeInfo = null;
+      return false;
+    }
+  }
+
+  Future<void> fetchPersonalizedProducts(String type) async {
+    try {
+      final responsePage = await _userService.fetchPersonalizedProducts(type, _page, _size);
+      _personalizedProducts += responsePage.content;
+      // _hasNext = responsePage.hasNext;
+      _page++;
+    } catch (error) {
+      print('Error fetching personalized products: $error');
+      _personalizedProducts = [];
+      _surveyParticipationStatus = false;
+      // 에러 처리 로직 추가
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  void sortPeronalizedProducts(String type) {
+    switch (type) {
+      case '최신순':
+        _personalizedProducts.sort((a, b) => b.id.compareTo(a.id));
+      case '낙인순':
+        _personalizedProducts.sort((a, b) {
+          final x = a.knockIn ?? 999;
+          final y = b.knockIn ?? 999;
+          final result = x.compareTo(y);
+          if (result == 0) return b.id.compareTo(a.id);
+          return result;
+        });
+      case '수익률순':
+        _personalizedProducts.sort((a, b) {
+          final result = b.yieldIfConditionsMet.compareTo(a.yieldIfConditionsMet);
+          if (result == 0) return b.id.compareTo(a.id);
+          return result;
+        });
+      case '마감일순':
+        _personalizedProducts.sort((a, b) {
+          final result = a.subscriptionEndDate.compareTo(b.subscriptionEndDate);
+          if (result == 0) return b.id.compareTo(a.id);
+          return result;
+        });
+    }
+  }
+
+  void resetPersonalizedProducts() {
+    _personalizedProducts = [];
+    _page = 0;
+    notifyListeners();
+  }
+
+  Future<void> refreshProducts(String type) async {
+    _isInit = true;
+    resetPersonalizedProducts();
+    fetchPersonalizedProducts(type);
+    notifyListeners();
+  }
+
+  Future<bool> getSurveyParticipationStatus() async {
+    try {
+      final response = await _userService.getSurveyParticipationStatus();
+
+      final message = response.data['message'] as String;
+      if (message == 'ok') {
+        _surveyParticipationStatus = true;
+      } else {
+        _surveyParticipationStatus = false;
+      }
+      notifyListeners();
+      return true;
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        print('Error fetching User: Resource not found (404)');
+      } else {
+        print('Error fetching User: ${e.message}, ${e.response?.data['errorMessage'] ?? ''}');
+      }
+      _surveyParticipationStatus = false;
+      return false;
+    } catch (e) {
+      print('Unexpected error: $e');
+      _surveyParticipationStatus = false;
       return false;
     }
   }
@@ -179,6 +273,7 @@ class UserInfoProvider with ChangeNotifier {
         print('Investment Type changed successfully');
         _investmentTypeInfo =
             ResponseInvestmentTypeDto(investmentExperience: investmentExperienceStr, riskPropensity: riskPropensityStr, repaymentOption: repaymentOptionStr, minPreferredReturn: minPreferredReturn);
+        _surveyParticipationStatus = true;
         notifyListeners();
         return true;
       } else {

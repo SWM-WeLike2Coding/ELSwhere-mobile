@@ -47,6 +47,10 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
     );
   }
 
+  Future<void> _refreshList(BuildContext context) async {
+    Provider.of<UserInfoProvider>(context, listen: false).refreshProducts("latest");
+  }
+
   void onTapOutside(FocusNode focusNode) {
     focusNode.unfocus();
   }
@@ -134,7 +138,6 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
     super.initState();
     _setCurrentScreen();
     ResponseInvestmentTypeDto? investmentTypeInfo = Provider.of<UserInfoProvider>(context, listen: false).investmentTypeInfo;
-    print(investmentTypeInfo);
 
     if (investmentTypeInfo != null) {
       if (investmentTypeInfo.investmentExperience == 'YES') {
@@ -179,11 +182,6 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
         minimumPreferredReturn = int.tryParse(value) ?? -1;
       });
     });
-
-    print(doesUserHaveExperience);
-    print(ristAppetiteType);
-    print(preferredRedemptionPeriodType);
-    print(minimumPreferredReturn);
   }
 
   @override
@@ -223,7 +221,7 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
               )
             ),
             _buildAgreementCheckbox(),
-            _buildBottomButton(),
+            _buildBottomButton(context),
           ],
         ),
       ),
@@ -508,7 +506,7 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
     );
   }
 
-  Widget _buildBottomButton() {
+  Widget _buildBottomButton(BuildContext context) {
     final userInfoProvider = Provider.of<UserInfoProvider>(context, listen: false);
 
     return SizedBox(
@@ -536,6 +534,9 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
                   print("투자 타입 정보 저장 실패");
                   Fluttertoast.showToast(msg: "투자 성형 정보 저장에 실패했습니다");
                 }
+                // userInfoProvider.fetchPersonalizedProducts("latest");
+
+                await _refreshList(context);
                 Navigator.of(context).pop();
               }
                   : null,

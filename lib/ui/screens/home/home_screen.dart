@@ -8,7 +8,7 @@ import 'package:elswhere/ui/screens/home/holding_products_screen.dart';
 import 'package:elswhere/ui/screens/home/hot_products_screen.dart';
 import 'package:elswhere/ui/screens/home/investment_propensity_screen.dart';
 import 'package:elswhere/ui/screens/home/notification_screen.dart';
-import 'package:elswhere/ui/screens/more/more_screen.dart';
+import 'package:elswhere/ui/screens/home/personalized_products_screen.dart';
 import 'package:elswhere/ui/widgets/stock_index_list.dart';
 import 'package:elswhere/utils/utils.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -197,60 +197,72 @@ class _HomeScreenState extends State<HomeScreen> {
     const String profileIcon = "assets/icons/icon/icon_profile.svg";
     return Padding(
       padding: const EdgeInsets.only(left: 24, right: 24, top: 24),
-      child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const InvestmentPropensityScreen(),
-              ));
-        },
-        child: Container(
-          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12), boxShadow: const [
-            BoxShadow(
-              color: Color.fromRGBO(0, 0, 0, 0.04), // 그림자 색상
-              spreadRadius: 0, // 확산 반경
-              blurRadius: 16, // 블러 반경
-              offset: Offset(0, 0), // 그림자의 x, y 오프셋
+      child: Consumer<UserInfoProvider>(
+        builder: (context, userInfoProvider, child) => GestureDetector(
+          onTap: () {
+            if (userInfoProvider.surveyParticipationStatus) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const PersonalizedProductsScreen(),
+                ),
+              );
+            } else {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const InvestmentPropensityScreen(),
+                ),
+              );
+            }
+          },
+          child: Container(
+            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12), boxShadow: const [
+              BoxShadow(
+                color: Color.fromRGBO(0, 0, 0, 0.04), // 그림자 색상
+                spreadRadius: 0, // 확산 반경
+                blurRadius: 16, // 블러 반경
+                offset: Offset(0, 0), // 그림자의 x, y 오프셋
+              ),
+            ]),
+            width: double.infinity,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 24, top: 16, bottom: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "나에게 딱 맞는 상품 추천",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.gray400,
+                        ),
+                      ),
+                      Text(
+                        userInfoProvider.surveyParticipationStatus ? "내 투자 성향에 맞는 상품 보기" : "나의 투자 성향을 진단하기",
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 24),
+                  child: SvgPicture.asset(
+                    profileIcon,
+                    height: 36,
+                    width: 36,
+                  ),
+                ),
+              ],
             ),
-          ]),
-          width: double.infinity,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(left: 24, top: 16, bottom: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "나에게 딱 맞는 상품 추천",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.gray400,
-                      ),
-                    ),
-                    Text(
-                      "나의 투자 성향을 진단하기",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 24),
-                child: SvgPicture.asset(
-                  profileIcon,
-                  height: 36,
-                  width: 36,
-                ),
-              ),
-            ],
           ),
         ),
       ),
@@ -602,7 +614,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8, top: 2, bottom: 2),
                     child: Text(
-                      "D-${calculateDDay(product.subscriptionEndDate)}",
+                      "D-${calculateDDay(product.subscriptionEndDate) == 0 ? "Day" : "${calculateDDay(product.subscriptionEndDate)}"}",
                       style: const TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w600,
