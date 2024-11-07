@@ -71,6 +71,7 @@ class InterestingProductListView extends StatelessWidget {
                             product: convertToSummarizedProduct(product),
                             index: index,
                             isOnSale: isOnSale,
+                            showAIResult: isOnSale,
                           );
                         },
                       ),

@@ -19,6 +19,7 @@ class ELSProductForScheduleDto {
   final List<DateTime>? earlyRedemptionEvaluationDates; // 조기상환평가일
   final double? currentEarningPercent;
   final int? interestId;
+  final double? safetyScore;
 
   ELSProductForScheduleDto({
     required this.isHolding,
@@ -36,6 +37,7 @@ class ELSProductForScheduleDto {
     this.investingAmount,
     this.earlyRedemptionEvaluationDates,
     this.currentEarningPercent,
+    this.safetyScore,    
   });
 
   factory ELSProductForScheduleDto.fromJson(Map<String, dynamic> json) => _$ELSProductForScheduleDtoFromJson(json);

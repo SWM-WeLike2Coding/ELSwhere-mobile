@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:elswhere/data/models/dtos/user/els_product_for_schedule_dto.dart';
 import 'package:elswhere/data/models/dtos/user/response_interesting_product_dto.dart';
 import 'package:elswhere/data/models/dtos/user/summarized_user_holding_dto.dart';
@@ -43,6 +45,7 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
       yieldIfConditionsMet: interestingProduct.yieldIfConditionsMet,
       subscriptionStartDate: interestingProduct.subscriptionStartDate,
       subscriptionEndDate: interestingProduct.subscriptionEndDate,
+      safetyScore: interestingProduct.safetyScore,
     );
   }
 
@@ -74,6 +77,7 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
       yieldIfConditionsMet: product.yieldIfConditionsMet,
       subscriptionStartDate: product.subscriptionStartDate,
       subscriptionEndDate: product.subscriptionEndDate,
+      safetyScore: product.safetyScore,
     );
   }
 
@@ -102,7 +106,7 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.easeOut,
       );
     });
@@ -191,9 +195,9 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
         decoration: const BoxDecoration(
             border: Border(
                 bottom: BorderSide(
-                  color: AppColors.gray50,
-                  width: 1,
-                ))),
+          color: AppColors.gray50,
+          width: 1,
+        ))),
         child: AppBar(
           leading: Padding(
             padding: const EdgeInsets.only(left: 24.0), // 좌측 패딩을 추가
@@ -413,8 +417,7 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
                   blurRadius: 16, // 블러 반경
                   offset: Offset(0, 0), // 그림자의 x, y 오프셋
                 ),
-              ]
-          ),
+              ]),
           todayDecoration: const BoxDecoration(
             color: Colors.white,
             shape: BoxShape.circle,
@@ -584,7 +587,12 @@ class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscript
                     children: interestedProducts.asMap().entries.map((entry) {
                       int index = entry.key;
                       ELSProductForScheduleDto product = entry.value;
-                      return ELSProductCard(product: convertProductForScheduleToSummarized(product), index: index);
+                      log('${product.safetyScore}');
+                      return ELSProductCard(
+                        product: convertProductForScheduleToSummarized(product),
+                        index: index,
+                        showAIResult: true,
+                      );
                     }).toList(),
                   ),
                 ],

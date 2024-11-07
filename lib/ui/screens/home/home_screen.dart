@@ -10,6 +10,7 @@ import 'package:elswhere/ui/screens/home/investment_propensity_screen.dart';
 import 'package:elswhere/ui/screens/home/notification_screen.dart';
 import 'package:elswhere/ui/screens/home/personalized_products_screen.dart';
 import 'package:elswhere/ui/widgets/stock_index_list.dart';
+import 'package:elswhere/utils/utils.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -492,8 +493,8 @@ class _HomeScreenState extends State<HomeScreen> {
       if (subscriptionEndDate == null) {
         return 0;
       }
-      DateTime now = DateTime.now();
-      return subscriptionEndDate.difference(now).inDays;
+      DateTime now = DateTime.now().getJustDay();
+      return subscriptionEndDate.getJustDay().difference(now).inDays;
     }
 
     NumberFormat format = NumberFormat.decimalPattern('ko');
@@ -613,7 +614,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8, top: 2, bottom: 2),
                     child: Text(
-                      "D-${calculateDDay(product.subscriptionEndDate)}",
+                      "D-${calculateDDay(product.subscriptionEndDate) == 0 ? "Day" : "${calculateDDay(product.subscriptionEndDate)}"}",
                       style: const TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w600,

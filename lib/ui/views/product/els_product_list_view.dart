@@ -70,6 +70,7 @@ class ELSProductListView<T extends ELSProductsProvider> extends StatelessWidget 
                               product: productsProvider.products[index],
                               index: index,
                               isOnSale: productsProvider.runtimeType == ELSOnSaleProductsProvider,
+                              showAIResult: productsProvider.runtimeType == ELSOnSaleProductsProvider,
                             );
                           },
                         ),

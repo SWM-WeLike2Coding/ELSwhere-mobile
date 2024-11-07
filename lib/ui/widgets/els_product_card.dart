@@ -370,12 +370,14 @@ class ELSProductCard<T extends SummarizedProductDto> extends StatefulWidget {
   final T product;
   final int index;
   bool isOnSale = false;
+  bool showAIResult = false;
 
   ELSProductCard({
     super.key,
     required this.product,
     required this.index,
     this.isOnSale = false,
+    this.showAIResult = false,
   });
 
   @override
@@ -389,6 +391,7 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
   bool isSelected = false;
   bool nowComparing = false;
   bool isOnSale = false;
+  bool showAIResult = false;
   late SummarizedProductDto product;
   late ELSProductProvider productProvider;
   late ELSProductsProvider productsProvider;
@@ -401,6 +404,7 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
   void initState() {
     super.initState();
     isOnSale = widget.isOnSale;
+    showAIResult = widget.showAIResult;
     product = widget.product;
     productProvider = Provider.of<ELSProductProvider>(context, listen: false);
     productsProvider = Provider.of<ELSOnSaleProductsProvider>(context, listen: false);
@@ -427,11 +431,11 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
 
     // if (productProvider.product != null && result) {
     productProvider.setSingleProduct(product);
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const ELSProductDetailScreen()),
-      );
-      onItemTapped();
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const ELSProductDetailScreen()),
+    );
+    onItemTapped();
     // }
   }
 
@@ -682,7 +686,7 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
             ),
           ],
         ),
-        if (aiResult != null && isOnSale) DangerDegreeBox(aiResult: aiResult!, textStyle: textTheme.M_12),
+        if (aiResult != null && showAIResult) DangerDegreeBox(aiResult: aiResult!, textStyle: textTheme.M_12),
       ],
     );
   }
