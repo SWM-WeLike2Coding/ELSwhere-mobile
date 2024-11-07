@@ -36,23 +36,23 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
 
   Future<void> _setCurrentScreen() async {
     await analytics.logScreenView(
-      screenName: '상품 상세 화면 - ${productProvider.singleProduct!.name}',
+      screenName: '상품 상세 화면 - ${productProvider.product!.name}',
       screenClass: 'ELSProductDetailScreen',
     );
   }
 
   Future<void> _initData() async {
-    final product = productProvider.singleProduct!;
-    await productProvider.fetchPriceRatio(product.id);
+    final productId = productProvider.singleProductId!;
+    await productProvider.fetchPriceRatio(productId);
     waitingProvider.setLoadingValue(1 / 5);
     waitingProvider.setComment(MSG_LOADING_PRODUCT_INFO);
-    await productProvider.fetchProduct(product.id);
+    await productProvider.fetchProduct(productId);
     waitingProvider.setLoadingValue(2 / 5);
     waitingProvider.setComment(MSG_LOADING_STOCK_PRICE);
     await productProvider.fetchStockPrices();
     waitingProvider.setLoadingValue(3 / 5);
     waitingProvider.setComment(MSG_LOADING_ANALYSIS_RESULT);
-    await productProvider.fetchMonteCarloResponse(product.id);
+    await productProvider.fetchMonteCarloResponse(productId);
     waitingProvider.setLoadingValue(4 / 5);
     waitingProvider.setComment(MSG_LOADING_DATA);
     final result = productProvider.checkisHeld(userProvider.holdingProducts ?? []);
@@ -63,6 +63,7 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
     }
     setState(() => _isLoading = false);
     waitingProvider.clear();
+    _setCurrentScreen();
   }
 
   @override
@@ -71,7 +72,6 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
     userProvider = Provider.of<UserInfoProvider>(context, listen: false);
     productProvider = Provider.of<ELSProductProvider>(context, listen: false);
     waitingProvider = Provider.of<WaitingProvider>(context, listen: false);
-    _setCurrentScreen();
     try {
       _initData();
     } catch (e) {

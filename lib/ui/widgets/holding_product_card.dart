@@ -62,25 +62,26 @@ class _ELSProductCardState extends State<HoldingProductCard> with AutomaticKeepA
       },
     );
 
-    await productProvider.fetchMonteCarloResponse(product.productId);
-    final result = [
-      await productProvider.fetchProduct(product.productId),
-      await productProvider.fetchStockPrices(),
-      productProvider.checkisHeld(userProvider.holdingProducts!),
-    ].every((result) => result);
+    productProvider.setSingleProduct(product.productId);
+    // await productProvider.fetchMonteCarloResponse(product.productId);
+    // final result = [
+    //   await productProvider.fetchProduct(product.productId),
+    //   await productProvider.fetchStockPrices(),
+    //   productProvider.checkisHeld(userProvider.holdingProducts!),
+    // ].every((result) => result);
 
     if (mounted) Navigator.pop(context);
 
-    if (result) {
+    // if (result) {
       if (mounted) {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const ELSProductDetailScreen()),
         );
       }
-    } else {
-      Fluttertoast.showToast(msg: '정보를 불러오는데 실패했습니다. 다시 시도해주세요.', toastLength: Toast.LENGTH_SHORT);
-    }
+    // } else {
+    //   Fluttertoast.showToast(msg: '정보를 불러오는데 실패했습니다. 다시 시도해주세요.', toastLength: Toast.LENGTH_SHORT);
+    // }
   }
 
   @override

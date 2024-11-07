@@ -430,7 +430,7 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
     // if (mounted) Navigator.of(context).pop(); // 로딩 다이얼로그 닫기
 
     // if (productProvider.product != null && result) {
-    productProvider.setSingleProduct(product);
+    productProvider.setSingleProduct(product.id);
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const ELSProductDetailScreen()),
