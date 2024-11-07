@@ -8,7 +8,9 @@ import 'package:elswhere/ui/screens/home/holding_products_screen.dart';
 import 'package:elswhere/ui/screens/home/hot_products_screen.dart';
 import 'package:elswhere/ui/screens/home/investment_propensity_screen.dart';
 import 'package:elswhere/ui/screens/home/notification_screen.dart';
+import 'package:elswhere/ui/screens/more/more_screen.dart';
 import 'package:elswhere/ui/widgets/stock_index_list.dart';
+import 'package:elswhere/utils/utils.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -479,8 +481,8 @@ class _HomeScreenState extends State<HomeScreen> {
       if (subscriptionEndDate == null) {
         return 0;
       }
-      DateTime now = DateTime.now();
-      return subscriptionEndDate.difference(now).inDays;
+      DateTime now = DateTime.now().getJustDay();
+      return subscriptionEndDate.getJustDay().difference(now).inDays;
     }
 
     NumberFormat format = NumberFormat.decimalPattern('ko');
