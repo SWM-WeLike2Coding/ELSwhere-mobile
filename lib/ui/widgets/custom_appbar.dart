@@ -32,17 +32,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      leading: leading,
-      automaticallyImplyLeading: automaticallyImplyLeading,
-      title: title,
-      actions: actions,
-      bottom: bottom,
-      elevation: elevation,
-      backgroundColor: backgroundColor,
-      foregroundColor: foregroundColor,
-      centerTitle: centerTitle,
-      systemOverlayStyle: systemOverlayStyle,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: AppBar(
+        leading: leading,
+        automaticallyImplyLeading: automaticallyImplyLeading,
+        title: title,
+        actions: actions,
+        bottom: bottom,
+        elevation: elevation,
+        backgroundColor: backgroundColor,
+        foregroundColor: foregroundColor,
+        centerTitle: centerTitle,
+        systemOverlayStyle: systemOverlayStyle,
+      ),
     );
   }
 }

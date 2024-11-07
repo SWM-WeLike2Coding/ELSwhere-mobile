@@ -3,6 +3,7 @@ import 'package:elswhere/config/strings.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
 import 'package:elswhere/data/providers/waiting_provider.dart';
 import 'package:elswhere/ui/screens/other/waiting_screen.dart';
+import 'package:elswhere/ui/screens/product/product_screen.dart';
 import 'package:elswhere/ui/views/home/holding_products_list_view.dart';
 import 'package:elswhere/ui/widgets/custom_appbar.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -47,6 +48,23 @@ class _HoldingProductsScreenState extends State<HoldingProductsScreen> {
             appBar: CustomAppBar(
               leading: IconButton(icon: const Icon(Icons.arrow_back_rounded), onPressed: () => Navigator.pop(context)),
               title: Text('보유 상품', style: textTheme.SM_18),
+              actions: [
+                IconButton(
+                  iconSize: 24,
+                  style: IconButton.styleFrom(
+                    backgroundColor: AppColors.gray50,
+                    shape: const CircleBorder(),
+                  ),
+                  color: AppColors.gray600,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ProductScreen()),
+                    );
+                  },
+                  icon: const Icon(Icons.add),
+                )
+              ],
             ),
             // appBar: PreferredSize(
             //   preferredSize: const Size.fromHeight(72),
