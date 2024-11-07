@@ -10,6 +10,7 @@ import 'package:elswhere/data/providers/user_info_provider.dart';
 import 'package:elswhere/ui/screens/product/els_product_detail_screen.dart';
 import 'package:elswhere/ui/widgets/danger_degree_box.dart';
 import 'package:elswhere/utils/ai_result_converter.dart';
+import 'package:elswhere/utils/utils.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -625,8 +626,8 @@ class CompareProductScreen extends StatelessWidget {
   }
 
   Widget _buildProductSubscriptionEndDate(ResponseSingleProductDto product1, ResponseSingleProductDto product2) {
-    final dayDifference1 = DateTime.parse(product1.subscriptionEndDate).difference(DateTime.now()).inDays;
-    final dayDifference2 = DateTime.parse(product2.subscriptionEndDate).difference(DateTime.now()).inDays;
+    final dayDifference1 = DateTime.parse(product1.subscriptionEndDate).getJustDay().difference(DateTime.now().getJustDay()).inDays;
+    final dayDifference2 = DateTime.parse(product2.subscriptionEndDate).getJustDay().difference(DateTime.now().getJustDay()).inDays;
 
     return Row(
       children: [

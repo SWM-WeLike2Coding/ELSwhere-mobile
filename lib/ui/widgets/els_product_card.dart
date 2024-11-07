@@ -548,7 +548,7 @@ class _ELSProductCardState extends State<ELSProductCard> with AutomaticKeepAlive
   }
 
   Widget _buildItemCard() {
-    final dayDifference = widget.product.subscriptionEndDate.difference(DateTime.now()).inDays;
+    final dayDifference = widget.product.subscriptionEndDate.getJustDay().difference(DateTime.now().getJustDay()).inDays;
     return AnimatedContainer(
       curve: Curves.fastOutSlowIn,
       duration: const Duration(milliseconds: 500),

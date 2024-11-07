@@ -9,6 +9,7 @@ import 'package:elswhere/data/providers/user_info_provider.dart';
 import 'package:elswhere/ui/screens/product/els_product_detail_screen.dart';
 import 'package:elswhere/ui/widgets/danger_degree_box.dart';
 import 'package:elswhere/utils/ai_result_converter.dart';
+import 'package:elswhere/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -28,7 +29,7 @@ class HotProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dayDifference = product.subscriptionEndDate.difference(DateTime.now()).inDays;
+    final dayDifference = product.subscriptionEndDate.getJustDay().difference(DateTime.now().getJustDay()).inDays;
     Map<String, dynamic>? aiResult = AIResultConverter.getResultMap(product.safetyScore);
 
     return GestureDetector(

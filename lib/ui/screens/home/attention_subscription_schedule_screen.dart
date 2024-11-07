@@ -5,7 +5,9 @@ import 'package:elswhere/data/providers/els_product_provider.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
 import 'package:elswhere/ui/screens/home/redemption_schedule_screen.dart';
 import 'package:elswhere/ui/screens/home/subscription_end_schedule_screen.dart';
+import 'package:elswhere/ui/screens/more/more_screen.dart';
 import 'package:elswhere/ui/widgets/holding_product_card.dart';
+import 'package:elswhere/utils/utils.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -25,7 +27,7 @@ class AttentionSubscriptionScheduleScreen extends StatefulWidget {
 
 class _AttentionSubscriptionScheduleScreenState extends State<AttentionSubscriptionScheduleScreen> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
-  DateTime _focusedDay = DateTime.now();
+  DateTime _focusedDay = DateTime.now().getJustDay();
   DateTime? _selectedDay;
   Map<DateTime, List<ELSProductForScheduleDto>>? _scheduleMap;
   final ScrollController _scrollController = ScrollController();

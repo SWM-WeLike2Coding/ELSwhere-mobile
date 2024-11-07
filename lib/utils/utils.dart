@@ -86,17 +86,21 @@ Future<String?> currentStoreVersion(String bundleId) async {
 }
 
 bool checkAppVersion(String remoteVersion) {
-    List<int> remote = remoteVersion.split(".").map((e) => int.parse(e)).toList();
-    List<int> local = localLatestVersion.split(".").map((e) => int.parse(e)).toList();
-    log('Remote Latest Version: $remoteVersion');
-    log('Local Latest Version: $localLatestVersion');
+  List<int> remote = remoteVersion.split(".").map((e) => int.parse(e)).toList();
+  List<int> local = localLatestVersion.split(".").map((e) => int.parse(e)).toList();
+  log('Remote Latest Version: $remoteVersion');
+  log('Local Latest Version: $localLatestVersion');
 
-    for (int i = 0; i < 3; i++) {
-      if (remote[i] > local[i]) {
-        return false;
-      } else if (remote[i] < local[i]) {
-        return true;
-      }
+  for (int i = 0; i < 3; i++) {
+    if (remote[i] > local[i]) {
+      return false;
+    } else if (remote[i] < local[i]) {
+      return true;
     }
-    return true;
   }
+  return true;
+}
+
+extension DateTimeUtils on DateTime {
+  DateTime getJustDay() => DateTime(year, month, day);
+}

@@ -77,7 +77,6 @@ class ELSProductsProvider extends ChangeNotifier {
 
   // 07-22 상품 검색 구현하면서 try 함수
   Future<void> fetchFilteredProducts(RequestProductSearchDto body) async {
-    final now = DateTime.now().copyWith(hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0);
     resetProducts();
     _isInit = false;
     _isLoading = true;
@@ -117,7 +116,6 @@ class ELSProductsProvider extends ChangeNotifier {
   }
 
   Future<void> fetchProductByNumber(int number) async {
-    final now = DateTime.now();
     resetProducts();
     _isInit = false;
     _isLoading = true;
