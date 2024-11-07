@@ -34,7 +34,7 @@ class _PersonalizedProductsScreenState extends State<PersonalizedProductsScreen>
       body: Column(
         children: [
           _buildPersonalizedProductsStringAndFilter(),
-          PersonalizedProductsListView(type: type,),
+          PersonalizedProductsListView(type: type),
         ],
       ),
     );
@@ -45,11 +45,13 @@ class _PersonalizedProductsScreenState extends State<PersonalizedProductsScreen>
       preferredSize: const Size.fromHeight(72),
       child: Container(
         decoration: const BoxDecoration(
-            border: Border(
-                bottom: BorderSide(
-                  color: AppColors.gray50,
-                  width: 1,
-                ))),
+          border: Border(
+            bottom: BorderSide(
+              color: AppColors.gray50,
+              width: 1,
+            ),
+          ),
+        ),
         child: AppBar(
           leading: Padding(
             padding: const EdgeInsets.only(left: 24.0), // 좌측 패딩을 추가
@@ -73,7 +75,7 @@ class _PersonalizedProductsScreenState extends State<PersonalizedProductsScreen>
           centerTitle: false,
           actions: [
             Padding(
-              padding: EdgeInsets.only(right: 24),
+              padding: const EdgeInsets.only(right: 24),
               child: Container(
                 width: 40,
                 height: 40,
@@ -82,9 +84,9 @@ class _PersonalizedProductsScreenState extends State<PersonalizedProductsScreen>
                   borderRadius: BorderRadius.circular(600),
                 ),
                 child: IconButton(
-                  icon: Icon(Icons.settings),
+                  icon: const Icon(Icons.settings),
                   iconSize: 24,
-                  color: Color(0xFF595E62),
+                  color: const Color(0xFF595E62),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -107,7 +109,7 @@ class _PersonalizedProductsScreenState extends State<PersonalizedProductsScreen>
       padding: const EdgeInsets.only(top: 24, left: 24, right: 24, bottom: 16),
       child: Row(
         children: [
-          Text(
+          const Text(
             "내 투자 성향에 맞는 상품",
             style: TextStyle(
               fontSize: 16,
@@ -131,9 +133,9 @@ class _PersonalizedProductsScreenState extends State<PersonalizedProductsScreen>
                 ),
                 items: items
                     .map((String item) => DropdownMenuItem<String>(
-                  value: item,
-                  child: Text(item),
-                ))
+                          value: item,
+                          child: Text(item),
+                        ))
                     .toList(),
                 value: selectedValue,
                 onChanged: (String? value) async {
