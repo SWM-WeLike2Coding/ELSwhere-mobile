@@ -7,11 +7,10 @@ import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/config.dart';
 import 'package:elswhere/config/strings.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
-import 'package:elswhere/data/providers/waiting_provider.dart';
 import 'package:elswhere/ui/screens/other/initial_screen.dart';
 import 'package:elswhere/ui/screens/other/login_screen.dart';
-import 'package:elswhere/ui/screens/other/terms_and_conditions_consent_screen.dart';
 import 'package:elswhere/ui/screens/other/waiting_screen.dart';
+import 'package:elswhere/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -113,22 +112,6 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
-  bool _checkAppVersion() {
-    List<int> remote = remoteLatestVersion.split(".").map((e) => int.parse(e)).toList();
-    List<int> local = localLatestVersion.split(".").map((e) => int.parse(e)).toList();
-    log('Remote Latest Version: $remoteLatestVersion');
-    log('Local Latest Version: $localLatestVersion');
-
-    for (int i = 0; i < 3; i++) {
-      if (remote[i] > local[i]) {
-        return false;
-      } else if (remote[i] < local[i]) {
-        return true;
-      }
-    }
-    return true;
-  }
-
   @override
   Widget build(BuildContext context) {
     log("Splash Screen");
@@ -144,7 +127,7 @@ class _SplashScreenState extends State<SplashScreen> {
           _getAnalysisResult(),
         ]),
         builder: (context, snapshot) {
-          if (!_checkAppVersion()) {
+          if (!checkAppVersion(remoteLatestVersion)) {
             // 앱 버전이 일치하지 않으면 다이얼로그 띄우기
             WidgetsBinding.instance.addPostFrameCallback((_) {
               _showUpdateDialog(); // 다이얼로그 표시
