@@ -14,6 +14,8 @@ late final String loginEndpoint;
 String localLatestVersion = '0.0.0';
 String remoteLatestVersion = '0.0.0';
 
+String storeVersion = '0.0.0';
+
 late String accessToken;
 late String refreshToken;
 const Map<String, String> productType = {
