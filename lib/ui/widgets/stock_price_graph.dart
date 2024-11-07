@@ -197,7 +197,7 @@ class _StockPriceGraphState extends State<StockPriceGraph> {
             interval: (maxY - minY + padding * 2) / 3,
             showTitles: true,
             getTitlesWidget: (value, meta) {
-              if (value - minY + padding < 0.01 || maxY + padding - value < 0.01 || ((value - minY).abs() > padding && (maxY - value).abs() > padding)) {
+              if (value == minY - padding || maxY + padding == value || ((value - minY).abs() > padding && (maxY - value).abs() > padding)) {
                 return Padding(
                   padding: const EdgeInsets.only(right: 8),
                   child: Text(
