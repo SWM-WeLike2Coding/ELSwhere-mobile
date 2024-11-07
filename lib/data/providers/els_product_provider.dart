@@ -172,8 +172,10 @@ class ELSProductProvider with ChangeNotifier {
     _isLoading = true;
     try {
       _compareProducts.clear();
-      _compareProducts.add(await _productService.fetchProduct(id1));
-      _compareProducts.add(await _productService.fetchProduct(id2));
+      final product1 = await _productService.fetchProduct(id1);
+      final product2 = await _productService.fetchProduct(id2);
+      _compareProducts.add(product1);
+      _compareProducts.add(product2);
     } catch (error) {
       print('Error fetching product: $error');
       _compareProducts = [];
