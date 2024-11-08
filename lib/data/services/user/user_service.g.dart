@@ -87,6 +87,7 @@ class _UserService implements UserService {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(agreed);
+    final _dio = DioClient.createDio(needAuth: false);
     final _options = _setStreamType<HttpResponse<dynamic>>(Options(
       method: 'POST',
       headers: _headers,
@@ -110,8 +111,7 @@ class _UserService implements UserService {
   }
 
   @override
-  Future<HttpResponse<dynamic>> changeNickname(
-      Map<String, dynamic> body) async {
+  Future<HttpResponse<dynamic>> changeNickname(Map<String, dynamic> body) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -173,30 +173,26 @@ class _UserService implements UserService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options =
-        _setStreamType<List<ResponseInterestingProductDto>>(Options(
+    final _options = _setStreamType<List<ResponseInterestingProductDto>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              '/v1/interest',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            )));
+        .compose(
+          _dio.options,
+          '/v1/interest',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
     final _result = await _dio.fetch<List<dynamic>>(_options);
     late List<ResponseInterestingProductDto> _value;
     try {
-      _value = _result.data!
-          .map((dynamic i) =>
-              ResponseInterestingProductDto.fromJson(i as Map<String, dynamic>))
-          .toList();
+      _value = _result.data!.map((dynamic i) => ResponseInterestingProductDto.fromJson(i as Map<String, dynamic>)).toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -205,8 +201,7 @@ class _UserService implements UserService {
   }
 
   @override
-  Future<HttpResponse<dynamic>> registerInterestedProduct(
-      Map<String, dynamic> body) async {
+  Future<HttpResponse<dynamic>> registerInterestedProduct(Map<String, dynamic> body) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -263,8 +258,7 @@ class _UserService implements UserService {
   }
 
   @override
-  Future<HttpResponse<dynamic>> checkNicknamePossible(
-      Map<String, dynamic> body) async {
+  Future<HttpResponse<dynamic>> checkNicknamePossible(Map<String, dynamic> body) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -326,8 +320,7 @@ class _UserService implements UserService {
   }
 
   @override
-  Future<HttpResponse<dynamic>> sendNewInvestmentType(
-      Map<String, dynamic> body) async {
+  Future<HttpResponse<dynamic>> sendNewInvestmentType(Map<String, dynamic> body) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -356,36 +349,31 @@ class _UserService implements UserService {
   }
 
   @override
-  Future<HttpResponse<List<SummarizedUserHoldingDto>>>
-      fetchHoldingProducts() async {
+  Future<HttpResponse<List<SummarizedUserHoldingDto>>> fetchHoldingProducts() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options =
-        _setStreamType<HttpResponse<List<SummarizedUserHoldingDto>>>(Options(
+    final _options = _setStreamType<HttpResponse<List<SummarizedUserHoldingDto>>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              '/v1/holding',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            )));
+        .compose(
+          _dio.options,
+          '/v1/holding',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
     final _result = await _dio.fetch<List<dynamic>>(_options);
     late List<SummarizedUserHoldingDto> _value;
     try {
-      _value = _result.data!
-          .map((dynamic i) =>
-              SummarizedUserHoldingDto.fromJson(i as Map<String, dynamic>))
-          .toList();
+      _value = _result.data!.map((dynamic i) => SummarizedUserHoldingDto.fromJson(i as Map<String, dynamic>)).toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -395,8 +383,7 @@ class _UserService implements UserService {
   }
 
   @override
-  Future<HttpResponse<dynamic>> addHoldingProduct(
-      RequestCreateHoldingDto body) async {
+  Future<HttpResponse<dynamic>> addHoldingProduct(RequestCreateHoldingDto body) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -489,30 +476,26 @@ class _UserService implements UserService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options =
-        _setStreamType<HttpResponse<List<SummarizedProductDto>>>(Options(
+    final _options = _setStreamType<HttpResponse<List<SummarizedProductDto>>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              '/v1/product/like',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            )));
+        .compose(
+          _dio.options,
+          '/v1/product/like',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
     final _result = await _dio.fetch<List<dynamic>>(_options);
     late List<SummarizedProductDto> _value;
     try {
-      _value = _result.data!
-          .map((dynamic i) =>
-              SummarizedProductDto.fromJson(i as Map<String, dynamic>))
-          .toList();
+      _value = _result.data!.map((dynamic i) => SummarizedProductDto.fromJson(i as Map<String, dynamic>)).toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -591,9 +574,7 @@ class _UserService implements UserService {
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
-    if (T != dynamic &&
-        !(requestOptions.responseType == ResponseType.bytes ||
-            requestOptions.responseType == ResponseType.stream)) {
+    if (T != dynamic && !(requestOptions.responseType == ResponseType.bytes || requestOptions.responseType == ResponseType.stream)) {
       if (T == String) {
         requestOptions.responseType = ResponseType.plain;
       } else {
