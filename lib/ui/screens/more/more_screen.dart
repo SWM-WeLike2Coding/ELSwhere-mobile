@@ -540,7 +540,7 @@ class _MoreScreenState extends State<MoreScreen> {
                   const Divider(color: AppColors.gray200),
                   _buildAppVersionTile(
                     context: context,
-                    version: storeVersion,
+                    version: localLatestVersion,
                     onTap: () {
                       Navigator.push(
                         context,

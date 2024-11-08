@@ -74,8 +74,8 @@ abstract class UserService {
 
   @GET("/v1/propensity")
   Future<ResponsePageSummarizedProductDto> fetchPersonalizedProducts(
-      @Query("type") String type,
-      @Query("page") int page,
-      @Query("size") int size,
+    @Query("type") String type,
+    @Query("page") int page,
+    @Query("size") int size,
   );
 }
