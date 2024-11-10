@@ -23,6 +23,7 @@ class InitialScreen extends StatelessWidget {
         Provider.of<UserInfoProvider>(context, listen: false).checkUser(),
         Provider.of<UserInfoProvider>(context, listen: false).checkMyInvestmentType(),
         Provider.of<UserInfoProvider>(context, listen: false).getSurveyParticipationStatus(),
+        Provider.of<UserInfoProvider>(context, listen: false).fetchPersonalizedProducts('latest'),
         Provider.of<ELSProductProvider>(context, listen: false).fetchInterested(),
         Provider.of<UserInfoProvider>(context, listen: false).fetchHoldingProducts(),
         Provider.of<ELSProductProvider>(context, listen: false).fetchLikeProducts(),
