@@ -74,9 +74,10 @@ class UserInfoProvider with ChangeNotifier {
   Future<void> fetchPersonalizedProducts(String type) async {
     try {
       final responsePage = await _userService.fetchPersonalizedProducts(type, _page, _size);
+      _personalizedProducts = [];
       _personalizedProducts += responsePage.content;
       // _hasNext = responsePage.hasNext;
-      _page++;
+      // _page++;
     } catch (error) {
       print('Error fetching personalized products: $error');
       _personalizedProducts = [];

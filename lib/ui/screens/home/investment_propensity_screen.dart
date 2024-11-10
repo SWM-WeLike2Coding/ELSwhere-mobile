@@ -1,5 +1,6 @@
 import 'package:elswhere/data/models/dtos/user/response_investment_type_dto.dart';
 import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/ui/screens/more/investment_guide_screen.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -538,6 +539,13 @@ class _InvestmentPropensityScreenState extends State<InvestmentPropensityScreen>
 
                 await _refreshList(context);
                 Navigator.of(context).pop();
+
+                if (doesUserHaveExperience == 0) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const InvestmentGuideScreen()),
+                  );
+                }
               }
                   : null,
               child: const Text(
