@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/config.dart';
 import 'package:elswhere/data/models/social_type.dart';
-import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/data/providers/user/user_info_provider.dart';
 import 'package:elswhere/data/services/auth/auth_service.dart';
 import 'package:elswhere/ui/screens/other/initial_screen.dart';
 import 'package:elswhere/ui/screens/other/terms_and_conditions_consent_screen.dart';

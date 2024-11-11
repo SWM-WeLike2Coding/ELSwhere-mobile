@@ -1,6 +1,6 @@
 import 'package:elswhere/config/app_resource.dart';
-import 'package:elswhere/data/providers/els_products_provider.dart';
-import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/data/providers/product/els_products_provider.dart';
+import 'package:elswhere/data/providers/user/user_info_provider.dart';
 import 'package:elswhere/ui/screens/product/product_screen.dart';
 import 'package:elswhere/ui/widgets/holding_product_card.dart';
 import 'package:flutter/material.dart';

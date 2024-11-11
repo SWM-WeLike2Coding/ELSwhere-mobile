@@ -1,6 +1,6 @@
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/strings.dart';
-import 'package:elswhere/data/providers/post_provider.dart';
+import 'package:elswhere/data/providers/post/post_provider.dart';
 import 'package:elswhere/ui/widgets/notice_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

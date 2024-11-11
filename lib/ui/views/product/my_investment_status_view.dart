@@ -1,5 +1,5 @@
 import 'package:elswhere/data/models/dtos/product/response_single_product_dto.dart';
-import 'package:elswhere/data/providers/els_product_provider.dart';
+import 'package:elswhere/data/providers/product/els_product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

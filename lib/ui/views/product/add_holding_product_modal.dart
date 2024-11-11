@@ -1,7 +1,7 @@
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/data/models/dtos/user/request_create_holding_dto.dart';
-import 'package:elswhere/data/providers/els_product_provider.dart';
-import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/data/providers/product/els_product_provider.dart';
+import 'package:elswhere/data/providers/user/user_info_provider.dart';
 import 'package:elswhere/ui/widgets/price_text_field.dart';
 import 'package:elswhere/ui/widgets/success_dialog.dart';
 import 'package:flutter/material.dart';

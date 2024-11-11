@@ -177,6 +177,7 @@ const edgeInsetsAll4 = EdgeInsets.all(4);
 const edgeInsetsAll8 = EdgeInsets.all(8);
 const edgeInsetsAll12 = EdgeInsets.all(12);
 const edgeInsetsAll16 = EdgeInsets.all(16);
+const edgeInsetsAll20 = EdgeInsets.all(20);
 const edgeInsetsAll24 = EdgeInsets.all(24);
 
 const borderRadiusCircular10 = BorderRadius.all(Radius.circular(10));

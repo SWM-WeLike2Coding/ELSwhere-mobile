@@ -33,6 +33,9 @@ abstract class ProductService {
     @Query("size") int size,
   );
 
+  @GET("/v1/product/on-sale/ai/recommendation")
+  Future<HttpResponse<List<SummarizedProductDto>>> fetchAIRecommendationProducts();
+
   @GET("/v1/product/{id}")
   Future<ResponseSingleProductDto> fetchProduct(@Path("id") int id);
 

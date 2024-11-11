@@ -1,7 +1,7 @@
 import 'package:elswhere/config/strings.dart';
 import 'package:elswhere/data/models/dtos/user/summarized_user_holding_dto.dart';
-import 'package:elswhere/data/providers/hot_products_provider.dart';
-import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/data/providers/product/hot_products_provider.dart';
+import 'package:elswhere/data/providers/user/user_info_provider.dart';
 import 'package:elswhere/ui/screens/home/attention_products_screen.dart';
 import 'package:elswhere/ui/screens/home/attention_subscription_schedule_screen.dart';
 import 'package:elswhere/ui/screens/home/holding_products_screen.dart';
@@ -9,6 +9,7 @@ import 'package:elswhere/ui/screens/home/hot_products_screen.dart';
 import 'package:elswhere/ui/screens/home/investment_propensity_screen.dart';
 import 'package:elswhere/ui/screens/home/notification_screen.dart';
 import 'package:elswhere/ui/screens/home/personalized_products_screen.dart';
+import 'package:elswhere/ui/widgets/ai_recommendation_product_card.dart';
 import 'package:elswhere/ui/widgets/stock_index_list.dart';
 import 'package:elswhere/utils/utils.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -22,7 +23,7 @@ import '../../../../config/app_resource.dart';
 import '../../../../data/models/dtos/user/els_product_for_schedule_dto.dart';
 import '../../../../data/models/dtos/user/response_interesting_product_dto.dart';
 import '../../../../data/models/dtos/product/summarized_product_dto.dart';
-import '../../../../data/providers/els_product_provider.dart';
+import '../../../data/providers/product/els_product_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -115,6 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 children: [
                   _buildInvestmentTasteTestWidget(context),
+                  _buildAIRecommendationProductWidget(),
                   _buildHoldingProductAssetWidget(context),
                   _buildHotAndAttentionProductWidget(context),
                   _buildAttentionScheduleWidget(context),
@@ -267,6 +269,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  Widget _buildAIRecommendationProductWidget() {
+    return const AiRecommendationProductCard();
   }
 
   Widget _buildHoldingProductAssetWidget(BuildContext context) {

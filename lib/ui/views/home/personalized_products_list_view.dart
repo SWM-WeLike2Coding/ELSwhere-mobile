@@ -1,5 +1,5 @@
 import 'package:elswhere/config/app_resource.dart';
-import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/data/providers/user/user_info_provider.dart';
 import 'package:elswhere/ui/widgets/els_product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

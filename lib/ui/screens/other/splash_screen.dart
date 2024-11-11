@@ -6,7 +6,7 @@ import 'dart:io';
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/config.dart';
 import 'package:elswhere/config/strings.dart';
-import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/data/providers/user/user_info_provider.dart';
 import 'package:elswhere/ui/screens/other/initial_screen.dart';
 import 'package:elswhere/ui/screens/other/login_screen.dart';
 import 'package:elswhere/ui/screens/other/waiting_screen.dart';

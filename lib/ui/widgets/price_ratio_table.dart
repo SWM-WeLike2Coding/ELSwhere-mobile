@@ -2,7 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/strings.dart';
 import 'package:elswhere/data/models/dtos/analysis/price_ratio_response.dart';
-import 'package:elswhere/data/providers/els_product_provider.dart';
+import 'package:elswhere/data/providers/product/els_product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

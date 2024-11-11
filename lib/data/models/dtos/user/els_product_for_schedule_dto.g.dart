@@ -6,7 +6,9 @@ part of 'els_product_for_schedule_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ELSProductForScheduleDto _$ELSProductForScheduleDtoFromJson(Map<String, dynamic> json) => ELSProductForScheduleDto(
+ELSProductForScheduleDto _$ELSProductForScheduleDtoFromJson(
+        Map<String, dynamic> json) =>
+    ELSProductForScheduleDto(
       isHolding: json['isHolding'] as bool,
       productId: (json['productId'] as num).toInt(),
       holdingId: (json['holdingId'] as num?)?.toInt(),
@@ -14,18 +16,26 @@ ELSProductForScheduleDto _$ELSProductForScheduleDtoFromJson(Map<String, dynamic>
       name: json['name'] as String,
       equities: json['equities'] as String,
       yieldIfConditionsMet: (json['yieldIfConditionsMet'] as num).toDouble(),
-      subscriptionStartDate: DateTime.parse(json['subscriptionStartDate'] as String),
-      subscriptionEndDate: DateTime.parse(json['subscriptionEndDate'] as String),
+      subscriptionStartDate:
+          DateTime.parse(json['subscriptionStartDate'] as String),
+      subscriptionEndDate:
+          DateTime.parse(json['subscriptionEndDate'] as String),
       interestId: (json['interestId'] as num?)?.toInt(),
       productType: json['productType'] as String,
       knockIn: (json['knockIn'] as num?)?.toInt(),
       investingAmount: (json['investingAmount'] as num?)?.toDouble(),
-      earlyRedemptionEvaluationDates: (json['earlyRedemptionEvaluationDates'] as List<dynamic>?)?.map((e) => DateTime.parse(e as String)).toList(),
-      currentEarningPercent: (json['currentEarningPercent'] as num?)?.toDouble(),
+      earlyRedemptionEvaluationDates:
+          (json['earlyRedemptionEvaluationDates'] as List<dynamic>?)
+              ?.map((e) => DateTime.parse(e as String))
+              .toList(),
+      currentEarningPercent:
+          (json['currentEarningPercent'] as num?)?.toDouble(),
       safetyScore: (json['safetyScore'] as num?)?.toDouble(),
     );
 
-Map<String, dynamic> _$ELSProductForScheduleDtoToJson(ELSProductForScheduleDto instance) => <String, dynamic>{
+Map<String, dynamic> _$ELSProductForScheduleDtoToJson(
+        ELSProductForScheduleDto instance) =>
+    <String, dynamic>{
       'isHolding': instance.isHolding,
       'productId': instance.productId,
       'holdingId': instance.holdingId,
@@ -38,7 +48,9 @@ Map<String, dynamic> _$ELSProductForScheduleDtoToJson(ELSProductForScheduleDto i
       'knockIn': instance.knockIn,
       'productType': instance.productType,
       'investingAmount': instance.investingAmount,
-      'earlyRedemptionEvaluationDates': instance.earlyRedemptionEvaluationDates?.map((e) => e.toIso8601String()).toList(),
+      'earlyRedemptionEvaluationDates': instance.earlyRedemptionEvaluationDates
+          ?.map((e) => e.toIso8601String())
+          .toList(),
       'currentEarningPercent': instance.currentEarningPercent,
       'interestId': instance.interestId,
       'safetyScore': instance.safetyScore,

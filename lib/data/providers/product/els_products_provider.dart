@@ -2,8 +2,8 @@ import 'package:elswhere/data/models/dtos/product/request_product_search_dto.dar
 import 'package:elswhere/data/models/dtos/product/response_product_comparison_main_dto.dart';
 import 'package:elswhere/utils/utils.dart';
 import 'package:flutter/material.dart';
-import '../models/dtos/product/summarized_product_dto.dart';
-import '../services/product/els_product_service.dart';
+import '../../models/dtos/product/summarized_product_dto.dart';
+import '../../services/product/els_product_service.dart';
 import 'package:intl/intl.dart';
 
 class ELSProductsProvider extends ChangeNotifier {

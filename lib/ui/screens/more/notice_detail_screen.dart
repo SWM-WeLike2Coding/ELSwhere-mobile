@@ -1,5 +1,5 @@
 import 'package:elswhere/config/app_resource.dart';
-import 'package:elswhere/data/providers/post_provider.dart';
+import 'package:elswhere/data/providers/post/post_provider.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

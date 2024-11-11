@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../../config/app_resource.dart';
 import '../../../config/config.dart';
-import '../../../data/providers/user_info_provider.dart';
+import '../../../data/providers/user/user_info_provider.dart';
 import 'investment_propensity_screen.dart';
 
 class PersonalizedProductsScreen extends StatefulWidget {

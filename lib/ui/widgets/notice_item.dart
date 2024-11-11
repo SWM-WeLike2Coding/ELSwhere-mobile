@@ -1,7 +1,7 @@
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/strings.dart';
 import 'package:elswhere/data/models/dtos/post/summarized_generic_post_dto.dart';
-import 'package:elswhere/data/providers/post_provider.dart';
+import 'package:elswhere/data/providers/post/post_provider.dart';
 import 'package:elswhere/ui/screens/more/notice_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';

@@ -1,5 +1,5 @@
 import 'package:elswhere/config/strings.dart';
-import 'package:elswhere/data/providers/hot_products_provider.dart';
+import 'package:elswhere/data/providers/product/hot_products_provider.dart';
 import 'package:elswhere/ui/widgets/hot_product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
