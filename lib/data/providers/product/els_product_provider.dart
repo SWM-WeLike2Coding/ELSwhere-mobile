@@ -10,10 +10,10 @@ import 'package:elswhere/data/services/other/yfinance_service.dart';
 import 'package:flutter/material.dart';
 import 'package:retrofit/dio.dart';
 import 'package:yahoo_finance_data_reader/yahoo_finance_data_reader.dart';
-import '../models/dtos/user/response_interesting_product_dto.dart';
-import '../models/dtos/product/response_single_product_dto.dart';
-import '../services/product/els_product_service.dart';
-import '../services/user/user_service.dart';
+import '../../models/dtos/user/response_interesting_product_dto.dart';
+import '../../models/dtos/product/response_single_product_dto.dart';
+import '../../services/product/els_product_service.dart';
+import '../../services/user/user_service.dart';
 
 class ELSProductProvider with ChangeNotifier {
   final ProductService _productService;

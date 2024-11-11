@@ -1,6 +1,6 @@
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/data/models/dtos/product/summarized_product_dto.dart';
-import 'package:elswhere/data/providers/els_product_provider.dart';
+import 'package:elswhere/data/providers/product/els_product_provider.dart';
 import 'package:elswhere/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

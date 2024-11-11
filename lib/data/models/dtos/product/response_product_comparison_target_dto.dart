@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:elswhere/data/models/dtos/product/summarized_product_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -16,7 +14,7 @@ class ResponseProductComparisonTargetDto extends SummarizedProductDto {
   final String productType;
   final String productFullInfo;
   final String? productInfo;
-  final int? knockIn;
+  final int? knockIn; 
   final double maximumLossRate;
   final DateTime subscriptionStartDate;
   final DateTime subscriptionEndDate;

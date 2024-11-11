@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/data/models/stock_price.dart';
-import 'package:elswhere/data/providers/els_product_provider.dart';
+import 'package:elswhere/data/providers/product/els_product_provider.dart';
 import 'package:elswhere/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

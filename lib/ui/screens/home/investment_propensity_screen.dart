@@ -1,5 +1,5 @@
 import 'package:elswhere/data/models/dtos/user/response_investment_type_dto.dart';
-import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/data/providers/user/user_info_provider.dart';
 import 'package:elswhere/ui/screens/more/investment_guide_screen.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';

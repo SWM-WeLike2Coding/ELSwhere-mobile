@@ -5,13 +5,14 @@ import 'dart:io';
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/config.dart';
 import 'package:elswhere/config/flavor_config.dart';
-import 'package:elswhere/data/providers/els_product_provider.dart';
-import 'package:elswhere/data/providers/els_products_provider.dart';
-import 'package:elswhere/data/providers/hot_products_provider.dart';
+import 'package:elswhere/data/providers/analysis/ai_product_provider.dart';
+import 'package:elswhere/data/providers/product/els_product_provider.dart';
+import 'package:elswhere/data/providers/product/els_products_provider.dart';
+import 'package:elswhere/data/providers/product/hot_products_provider.dart';
 import 'package:elswhere/data/providers/issuer_provider.dart';
-import 'package:elswhere/data/providers/post_provider.dart';
+import 'package:elswhere/data/providers/post/post_provider.dart';
 import 'package:elswhere/data/providers/ticker_symbol_provider.dart';
-import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/data/providers/user/user_info_provider.dart';
 import 'package:elswhere/data/providers/waiting_provider.dart';
 import 'package:elswhere/data/services/analysis/analysis_service.dart';
 import 'package:elswhere/data/services/other/dio_client.dart';
@@ -194,6 +195,7 @@ class ELSwhere extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => HotProductsProvider(_productService)),
         ChangeNotifierProvider(create: (context) => PostProvider(_postService)),
         ChangeNotifierProvider(create: (context) => WaitingProvider()),
+        ChangeNotifierProvider(create: (context) => AIProductProvider(_productService)),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

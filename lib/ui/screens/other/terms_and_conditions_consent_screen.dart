@@ -1,6 +1,6 @@
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/strings.dart';
-import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/data/providers/user/user_info_provider.dart';
 import 'package:elswhere/ui/screens/other/initial_screen.dart';
 import 'package:elswhere/ui/widgets/privacy_policy_dialog.dart';
 import 'package:elswhere/ui/widgets/signup_success_dialog.dart';

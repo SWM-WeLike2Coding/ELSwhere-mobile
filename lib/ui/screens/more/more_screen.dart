@@ -1,7 +1,7 @@
 import 'package:elswhere/config/app_resource.dart';
 import 'package:elswhere/config/config.dart';
 import 'package:elswhere/config/strings.dart';
-import 'package:elswhere/data/providers/post_provider.dart';
+import 'package:elswhere/data/providers/post/post_provider.dart';
 import 'package:elswhere/ui/screens/more/announcement_screen.dart';
 import 'package:elswhere/ui/screens/more/app_version_screen.dart';
 import 'package:elswhere/ui/screens/more/change_nickname_screen.dart';
@@ -16,7 +16,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../../data/providers/user_info_provider.dart';
+import '../../../data/providers/user/user_info_provider.dart';
 
 class MoreScreen extends StatefulWidget {
   const MoreScreen({super.key});

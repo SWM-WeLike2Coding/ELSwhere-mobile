@@ -87,7 +87,7 @@ class _UserService implements UserService {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(agreed);
-    final _dio = DioClient.createDio(needAuth: false);
+    final Dio _dio = DioClient.createDio(needAuth: false);
     final _options = _setStreamType<HttpResponse<dynamic>>(Options(
       method: 'POST',
       headers: _headers,

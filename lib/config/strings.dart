@@ -4,18 +4,21 @@
 const String MSG_ERR_UNEXPECTED = "예상치 못한 오류가 발생했습니다.";
 
 // 로딩 관련
+const String MSG_LOADING_COMPLETE = "로딩 완료!";
 const String MSG_LOADING_DATA = "데이터 로딩 중입니다...";
 const String MSG_LOADING_PRODUCT_INFO = "상품 정보를 불러오는 중입니다...";
 const String MSG_LOADING_USER_INFO = "사용자 정보를 불러오는 중입니다...";
 const String MSG_LOADING_STOCK_PRICE = "주가 정보를 불러오는 중입니다...";
 const String MSG_LOADING_ANALYSIS_RESULT = "분석 정보를 불러오는 중입니다...";
 const String MSG_LOADING_PRICE_RATIO = "기준가 정보를 받아오는 중입니다...";
+const String MSG_LOADING_AI_PRODUCTS = "AI 추천 상품을 불러오는 중입니다...";
 
 // 메시지
 // const String MSG_DESCRIPTION_MONTECARLO = '분석 결과는 ELSwhere만의 수학적인 분석 결과를 통해 제공되는 수치이며, 절대적인 수치가 아님을 알려드립니다.';
 // const String MSG_DESCRIPTION_AI = "안전 점수는 ELSwhere의 AI 분석 결과에 따라 '저위험', '중위험', '고위험', '초고위험'으로 분류되며, 안전 점수가 낮을수록 손실 확률이 높습니다.";
 const String MSG_DESCRIPTION_MONTECARLO = '분석 결과는 ELS 상품 공정가격을 계산하는 기법을 통해 산출된 것으로, 만기 손실율이 높을수록 원금 손실 가능성도 증가합니다.';
 const String MSG_DESCRIPTION_AI = "안전 점수는 ELS 투자 시 중요한 지표들을 반영하여 ELSwhere AI가 산출한 결과입니다. 이 점수를 기반으로 상품은 '저위험', '중위험', '고위험', '초고위험'으로 분류되며, 안전 점수가 낮을수록 원금 손실 가능성이 커집니다.";
+const String MSG_DESCRIPTION_AI_RECOMMENDATION = "AI 추천 상품은 현재 스텝다운 상품에 대해서만 제공하며, 안전점수가 높은 순서대로 제공합니다.";
 
 const String MSG_TO_BE_UPDATED = "추후 업데이트를 통해 제공될 예정입니다.";
 

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:elswhere/data/providers/user_info_provider.dart';
+import 'package:elswhere/data/providers/user/user_info_provider.dart';
 import 'package:elswhere/data/services/user/user_service.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
