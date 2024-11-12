@@ -5,6 +5,7 @@ import 'package:elswhere/data/providers/waiting_provider.dart';
 import 'package:elswhere/ui/screens/other/waiting_screen.dart';
 import 'package:elswhere/ui/views/home/ai_recommendation_products_list_view.dart';
 import 'package:elswhere/ui/widgets/custom_appbar.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -21,13 +22,22 @@ class _AIRecommendationProductScreenState extends State<AIRecommendationProductS
   late AIProductProvider _aiProductProvider;
   late WaitingProvider _waitingProvider;
   late OverlayPortalController _overlayPortalController;
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   @override
   void initState() {
     _aiProductProvider = Provider.of<AIProductProvider>(context, listen: false);
     _waitingProvider = Provider.of<WaitingProvider>(context, listen: false);
     _overlayPortalController = OverlayPortalController();
+    _setCurrentScreen();
     super.initState();
+  }
+
+  Future<void> _setCurrentScreen() async {
+    await analytics.logScreenView(
+      screenName: 'AI 상품 추천 화면',
+      screenClass: 'AIRecommendationProductScreen',
+    );
   }
 
   Future<void> init() async {
@@ -35,7 +45,8 @@ class _AIRecommendationProductScreenState extends State<AIRecommendationProductS
     _waitingProvider.setComment(MSG_LOADING_COMPLETE);
     _waitingProvider.setLoadingValue(1);
     await Future.delayed(const Duration(milliseconds: 200));
-    _isInit = false;
+    setState(() => _isInit = false);
+    _waitingProvider.clear();
   }
 
   @override
