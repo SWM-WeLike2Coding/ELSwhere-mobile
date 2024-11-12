@@ -57,6 +57,7 @@ class _ELSProductDetailScreenState extends State<ELSProductDetailScreen> {
     waitingProvider.setComment(MSG_LOADING_DATA);
     final result = productProvider.checkisHeld(userProvider.holdingProducts ?? []);
     waitingProvider.setLoadingValue(5 / 5);
+    waitingProvider.setComment(MSG_LOADING_COMPLETE);
     await Future.delayed(const Duration(milliseconds: 200));
     if (!result) {
       Fluttertoast.showToast(msg: MSG_ERR_FETCH_LIKE, toastLength: Toast.LENGTH_SHORT);
