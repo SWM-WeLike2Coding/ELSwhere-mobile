@@ -27,6 +27,7 @@ class AnalysisResultGraph extends StatefulWidget {
 }
 
 class _AnalysisResultGraphState extends State<AnalysisResultGraph> {
+  double maxX = 0;
   double maxY = 100;
   late double scaler;
   late String barMessage;
@@ -51,6 +52,7 @@ class _AnalysisResultGraphState extends State<AnalysisResultGraph> {
               point[yKey].toDouble(),
             ))
         .toList();
+    maxX = _findMaxX(spots);
     maxY = max(maxY, _findMaxY(spots));
     return LineChartBarData(
       spots: spots,
@@ -152,13 +154,18 @@ class _AnalysisResultGraphState extends State<AnalysisResultGraph> {
           dashArray: [8, 4], // 점선 스타일 (선 길이, 공백 길이)
           label: VerticalLineLabel(
             show: true,
-            alignment: widget.prob < 50 ? Alignment.topRight : Alignment.topLeft,
+            alignment: widget.prob < maxX / 2 ? Alignment.topRight : Alignment.topLeft,
             labelResolver: (line) => '현재 상품의 $barMessage: ${widget.prob.toStringAsFixed(2)}',
             style: textTheme.M_16.copyWith(color: Colors.green[700], fontWeight: FontWeight.w700),
           ),
         ),
       ]),
     );
+  }
+
+  double _findMaxX(List<FlSpot> probabilityData) {
+    final result = probabilityData.map((data) => data.x).reduce((a, b) => a > b ? a : b);
+    return result;
   }
 
   double _findMaxY(List<FlSpot> probabilityData) {
