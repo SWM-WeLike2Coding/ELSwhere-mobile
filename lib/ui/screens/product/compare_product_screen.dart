@@ -19,11 +19,11 @@ import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
 
 class CompareProductScreen extends StatelessWidget {
-  late final double statusBarHeight;
-  late final double height;
-  late final double width;
-  late final ELSProductProvider? productProvider;
-  late final UserInfoProvider? userProvider;
+  late double statusBarHeight;
+  late double height;
+  late double width;
+  late ELSProductProvider productProvider;
+  late UserInfoProvider userProvider;
   final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   Future<void> _setCurrentScreen() async {
